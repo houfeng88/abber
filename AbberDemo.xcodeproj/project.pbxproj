@@ -236,6 +236,10 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/AbberSource/build/Debug-iphoneos",
 				);
+				OTHER_LDFLAGS = (
+					"-lxml2",
+					"-lresolv",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -254,6 +258,10 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/AbberSource/build/Debug-iphoneos",
+				);
+				OTHER_LDFLAGS = (
+					"-lxml2",
+					"-lresolv",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
