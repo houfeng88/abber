@@ -392,10 +392,9 @@
 				DSTROOT = /tmp/abber.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = abber/Prefix.pch;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/abber/Vendors/openssl",
-				);
+				HEADER_SEARCH_PATHS = $SRCROOT/abber/Vendors;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				LIBRARY_SEARCH_PATHS = $SRCROOT/abber/Vendors/openssl;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -408,10 +407,9 @@
 				DSTROOT = /tmp/abber.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = abber/Prefix.pch;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/abber/Vendors/openssl",
-				);
+				HEADER_SEARCH_PATHS = $SRCROOT/abber/Vendors;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				LIBRARY_SEARCH_PATHS = $SRCROOT/abber/Vendors/openssl;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

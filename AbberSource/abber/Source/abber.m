@@ -10,4 +10,9 @@
 
 @implementation abber
 
+- (int)doit
+{
+  return 21;
+}
+
 @end

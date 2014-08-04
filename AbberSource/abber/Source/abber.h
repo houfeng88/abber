@@ -11,4 +11,6 @@
 @interface abber : NSObject {
 }
 
+- (int)doit;
+
 @end
