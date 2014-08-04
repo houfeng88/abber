@@ -1,9 +1,14 @@
 
-*/*.xcodeproj/*
-*/!*.xcodeproj/project.pbxproj
+AbberSource/*.xcodeproj/*
+AbberSource/!*.xcodeproj/project.pbxproj
 
-*/*.xcworkspace/*
-*/!*.xcworkspace/contents.xcworkspacedata
+
+
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+
+*.xcworkspace/*
+!*.xcworkspace/contents.xcworkspacedata
 
 
 # Lib
