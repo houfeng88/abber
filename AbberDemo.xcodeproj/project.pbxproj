@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A5BAE6319913665001EF07E /* ABIq.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5BAE6219913665001EF07E /* ABIq.m */; };
+		0A5BAE661991367B001EF07E /* ABMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5BAE651991367B001EF07E /* ABMessage.m */; };
+		0A5BAE6919913688001EF07E /* ABPresence.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5BAE6819913688001EF07E /* ABPresence.m */; };
+		0A5BAE6D19913715001EF07E /* ABStanza.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5BAE6C19913715001EF07E /* ABStanza.m */; };
+		0A5BAE701991382E001EF07E /* ABClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5BAE6F1991382E001EF07E /* ABClient.m */; };
 		0A692A3619910BB0008F3C74 /* logger.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A692A3519910BB0008F3C74 /* logger.m */; };
 		23F6C0DA19909596005D2ED7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23F6C0D919909596005D2ED7 /* Foundation.framework */; };
 		23F6C0DE19909596005D2ED7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23F6C0DD19909596005D2ED7 /* UIKit.framework */; };
@@ -40,6 +45,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A5BAE6119913665001EF07E /* ABIq.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABIq.h; sourceTree = "<group>"; };
+		0A5BAE6219913665001EF07E /* ABIq.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABIq.m; sourceTree = "<group>"; };
+		0A5BAE641991367B001EF07E /* ABMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABMessage.h; sourceTree = "<group>"; };
+		0A5BAE651991367B001EF07E /* ABMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABMessage.m; sourceTree = "<group>"; };
+		0A5BAE6719913688001EF07E /* ABPresence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABPresence.h; sourceTree = "<group>"; };
+		0A5BAE6819913688001EF07E /* ABPresence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABPresence.m; sourceTree = "<group>"; };
+		0A5BAE6B19913715001EF07E /* ABStanza.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABStanza.h; sourceTree = "<group>"; };
+		0A5BAE6C19913715001EF07E /* ABStanza.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABStanza.m; sourceTree = "<group>"; };
+		0A5BAE6E1991382E001EF07E /* ABClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABClient.h; sourceTree = "<group>"; };
+		0A5BAE6F1991382E001EF07E /* ABClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABClient.m; sourceTree = "<group>"; };
 		0A692A3419910BB0008F3C74 /* logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = logger.h; sourceTree = "<group>"; };
 		0A692A3519910BB0008F3C74 /* logger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = logger.m; sourceTree = "<group>"; };
 		23F6C0D619909596005D2ED7 /* AbberDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AbberDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -185,6 +200,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0A5BAE6A199136C7001EF07E /* Stanza */ = {
+			isa = PBXGroup;
+			children = (
+				0A5BAE6B19913715001EF07E /* ABStanza.h */,
+				0A5BAE6C19913715001EF07E /* ABStanza.m */,
+				0A5BAE6119913665001EF07E /* ABIq.h */,
+				0A5BAE6219913665001EF07E /* ABIq.m */,
+				0A5BAE641991367B001EF07E /* ABMessage.h */,
+				0A5BAE651991367B001EF07E /* ABMessage.m */,
+				0A5BAE6719913688001EF07E /* ABPresence.h */,
+				0A5BAE6819913688001EF07E /* ABPresence.m */,
+			);
+			name = Stanza;
+			sourceTree = "<group>";
+		};
 		0A692A3319910BB0008F3C74 /* internal */ = {
 			isa = PBXGroup;
 			children = (
@@ -375,8 +405,11 @@
 			isa = PBXGroup;
 			children = (
 				23F6C1DB1990AC3E005D2ED7 /* abber.h */,
+				0A5BAE6E1991382E001EF07E /* ABClient.h */,
+				0A5BAE6F1991382E001EF07E /* ABClient.m */,
 				23F6C1DC1990AD7E005D2ED7 /* ABJid.h */,
 				23F6C1DD1990AD7E005D2ED7 /* ABJid.m */,
+				0A5BAE6A199136C7001EF07E /* Stanza */,
 				0A692A3319910BB0008F3C74 /* internal */,
 			);
 			path = abber;
@@ -483,10 +516,14 @@
 				23F6C1D11990A993005D2ED7 /* parser.c in Sources */,
 				23F6C1D91990A993005D2ED7 /* util.c in Sources */,
 				23F6C1D01990A993005D2ED7 /* oostanza.cpp in Sources */,
+				0A5BAE701991382E001EF07E /* ABClient.m in Sources */,
 				23F6C1CA1990A993005D2ED7 /* event.c in Sources */,
+				0A5BAE6D19913715001EF07E /* ABStanza.m in Sources */,
 				23F6C1D71990A993005D2ED7 /* thread.c in Sources */,
 				23F6C0EA19909596005D2ED7 /* AppDelegate.m in Sources */,
+				0A5BAE6919913688001EF07E /* ABPresence.m in Sources */,
 				0A692A3619910BB0008F3C74 /* logger.m in Sources */,
+				0A5BAE661991367B001EF07E /* ABMessage.m in Sources */,
 				23F6C1CF1990A993005D2ED7 /* oocontext.cpp in Sources */,
 				23F6C1E71990B26B005D2ED7 /* roster.m in Sources */,
 				23F6C1DE1990AD7E005D2ED7 /* ABJid.m in Sources */,
@@ -499,6 +536,7 @@
 				23F6C1D81990A993005D2ED7 /* tls.c in Sources */,
 				23F6C1D51990A993005D2ED7 /* sock.c in Sources */,
 				23F6C1CE1990A993005D2ED7 /* md5.c in Sources */,
+				0A5BAE6319913665001EF07E /* ABIq.m in Sources */,
 				23F6C1CD1990A993005D2ED7 /* jid.c in Sources */,
 				23F6C1C71990A993005D2ED7 /* auth.c in Sources */,
 				23F6C1C91990A993005D2ED7 /* ctx.c in Sources */,
