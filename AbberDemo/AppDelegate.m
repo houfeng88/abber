@@ -14,6 +14,9 @@
 {
   _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   
+  NSArray *ary = @[ @"A", @"B" ];
+  NSLog(@"%@", [ary objectOrNilAtIndex:0]);
+  
   _window.backgroundColor = [UIColor whiteColor];
   [_window makeKeyAndVisible];
   return YES;

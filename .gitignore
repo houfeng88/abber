@@ -1,9 +1,4 @@
 
-AbberSource/*.xcodeproj/*
-AbberSource/!*.xcodeproj/project.pbxproj
-
-
-
 *.xcodeproj/*
 !*.xcodeproj/project.pbxproj
 
