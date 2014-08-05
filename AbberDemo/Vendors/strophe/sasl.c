@@ -225,7 +225,7 @@ char *sasl_digest_md5(xmpp_ctx_t *ctx, const char *challenge,
     char *value;
     char *response;
     int rlen;
-    struct MD5Context MD5;
+    md5_ctx_t md5;
     unsigned char digest[16], HA1[16], HA2[16];
     char hex[32];
 
@@ -273,62 +273,62 @@ char *sasl_digest_md5(xmpp_ctx_t *ctx, const char *challenge,
     /* generate response */
 
     /* construct MD5(node : realm : password) */
-    MD5Init(&MD5);
-    MD5Update(&MD5, (unsigned char *)node, strlen(node));
-    MD5Update(&MD5, (unsigned char *)":", 1);
-    MD5Update(&MD5, (unsigned char *)realm, strlen(realm));
-    MD5Update(&MD5, (unsigned char *)":", 1);
-    MD5Update(&MD5, (unsigned char *)password, strlen(password));
-    MD5Final(digest, &MD5);
+    md5_init(&md5);
+    md5_update(&md5, (unsigned char *)node, strlen(node));
+    md5_update(&md5, (unsigned char *)":", 1);
+    md5_update(&md5, (unsigned char *)realm, strlen(realm));
+    md5_update(&md5, (unsigned char *)":", 1);
+    md5_update(&md5, (unsigned char *)password, strlen(password));
+    md5_final(digest, &md5);
 
     /* digest now contains the first field of A1 */
 
-    MD5Init(&MD5);
-    MD5Update(&MD5, digest, 16);
-    MD5Update(&MD5, (unsigned char *)":", 1);
+    md5_init(&md5);
+    md5_update(&md5, digest, 16);
+    md5_update(&md5, (unsigned char *)":", 1);
     value = hash_get(table, "nonce");
-    MD5Update(&MD5, (unsigned char *)value, strlen(value));
-    MD5Update(&MD5, (unsigned char *)":", 1);
+    md5_update(&md5, (unsigned char *)value, strlen(value));
+    md5_update(&md5, (unsigned char *)":", 1);
     value = hash_get(table, "cnonce");
-    MD5Update(&MD5, (unsigned char *)value, strlen(value));
-    MD5Final(digest, &MD5);
+    md5_update(&md5, (unsigned char *)value, strlen(value));
+    md5_final(digest, &md5);
 
     /* now digest is MD5(A1) */
     memcpy(HA1, digest, 16);
 
     /* construct MD5(A2) */
-    MD5Init(&MD5);
-    MD5Update(&MD5, (unsigned char *)"AUTHENTICATE:", 13);
+    md5_init(&md5);
+    md5_update(&md5, (unsigned char *)"AUTHENTICATE:", 13);
     value = hash_get(table, "digest-uri");
-    MD5Update(&MD5, (unsigned char *)value, strlen(value));
+    md5_update(&md5, (unsigned char *)value, strlen(value));
     if (strcmp(hash_get(table, "qop"), "auth") != 0) {
-	MD5Update(&MD5, (unsigned char *)":00000000000000000000000000000000",
+	md5_update(&md5, (unsigned char *)":00000000000000000000000000000000",
 		  33);
     }
-    MD5Final(digest, &MD5);
+    md5_final(digest, &md5);
 
     memcpy(HA2, digest, 16);
 
     /* construct response */
-    MD5Init(&MD5);
+    md5_init(&md5);
     _digest_to_hex((char *)HA1, hex);
-    MD5Update(&MD5, (unsigned char *)hex, 32);
-    MD5Update(&MD5, (unsigned char *)":", 1);
+    md5_update(&md5, (unsigned char *)hex, 32);
+    md5_update(&md5, (unsigned char *)":", 1);
     value = hash_get(table, "nonce");
-    MD5Update(&MD5, (unsigned char *)value, strlen(value));
-    MD5Update(&MD5, (unsigned char *)":", 1);
+    md5_update(&md5, (unsigned char *)value, strlen(value));
+    md5_update(&md5, (unsigned char *)":", 1);
     value = hash_get(table, "nc");
-    MD5Update(&MD5, (unsigned char *)value, strlen(value));
-    MD5Update(&MD5, (unsigned char *)":", 1);
+    md5_update(&md5, (unsigned char *)value, strlen(value));
+    md5_update(&md5, (unsigned char *)":", 1);
     value = hash_get(table, "cnonce");
-    MD5Update(&MD5, (unsigned char *)value, strlen(value));
-    MD5Update(&MD5, (unsigned char *)":", 1);
+    md5_update(&md5, (unsigned char *)value, strlen(value));
+    md5_update(&md5, (unsigned char *)":", 1);
     value = hash_get(table, "qop");
-    MD5Update(&MD5, (unsigned char *)value, strlen(value));
-    MD5Update(&MD5, (unsigned char *)":", 1);
+    md5_update(&md5, (unsigned char *)value, strlen(value));
+    md5_update(&md5, (unsigned char *)":", 1);
     _digest_to_hex((char *)HA2, hex);
-    MD5Update(&MD5, (unsigned char *)hex, 32);
-    MD5Final(digest, &MD5);
+    md5_update(&md5, (unsigned char *)hex, 32);
+    md5_final(digest, &md5);
 
     response = xmpp_alloc(ctx, 32+1);
     _digest_to_hex((char *)digest, hex);
