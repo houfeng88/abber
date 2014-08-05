@@ -19,10 +19,11 @@
 
   #import <CocoaLumberjack/DDLog.h>
   #import <CocoaLumberjack/DDTTYLogger.h>
-//  #ifdef DEBUG
-//    static const int ddLogLevel = LOG_LEVEL_DEBUG;
-//  #else
-//    static const int ddLogLevel = LOG_LEVEL_OFF;
-//  #endif
+  #import <CocoaLumberjack/DDFileLogger.h>
+  #ifdef DEBUG
+    static const int ddLogLevel = LOG_LEVEL_WARN;
+  #else
+    static const int ddLogLevel = LOG_LEVEL_OFF;
+  #endif
 
 #endif

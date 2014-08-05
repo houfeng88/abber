@@ -7,14 +7,15 @@
 //
 
 #import "AppDelegate.h"
+#import "roster.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [self addLoggers];
   
-  [DDLog addLogger:[DDTTYLogger sharedInstance]];
-  
+  roster();
   
   _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   
@@ -24,9 +25,20 @@
   //NSObject *object = [[NSObject alloc] init];
   //[object string];
   
+  DDLogError(@"abc");
+  
   _window.backgroundColor = [UIColor whiteColor];
   [_window makeKeyAndVisible];
   return YES;
+}
+
+- (void)addLoggers
+{
+  [DDLog addLogger:[DDTTYLogger sharedInstance]];
+  
+  DDFileLogger *fileLogger = [[DDFileLogger alloc] init];
+  fileLogger.rollingFrequency = 24*60*60;
+  [DDLog addLogger:fileLogger];
 }
 
 @end

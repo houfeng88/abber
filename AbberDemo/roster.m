@@ -7,7 +7,9 @@
 //
 
 #import "roster.h"
-#import "strophe/strophe.h"
+#include <strophe/strophe.h>
+#include <strophe/common.h>
+#include <abber/internal/logger.h>
 
 
 int handle_reply(xmpp_conn_t * const conn,
@@ -49,6 +51,11 @@ void roster_conn_handler(xmpp_conn_t * const conn, const xmpp_conn_event_t statu
 {
   xmpp_ctx_t *ctx = (xmpp_ctx_t *)userdata;
   xmpp_stanza_t *iq, *query;
+  
+  xmpp_debug(ctx, "event", "This is an debug.");
+  xmpp_info(ctx, "event", "This is an info.");
+  xmpp_warn(ctx, "event", "This is an warn.");
+  xmpp_error(ctx, "event", "This is an error.");
   
   if (status == XMPP_CONN_CONNECT) {
     fprintf(stderr, "DEBUG: connected\n");
@@ -97,8 +104,8 @@ void roster()
   xmpp_initialize();
   
   /* create a context */
-  xmpp_log_t *log = xmpp_get_default_logger(XMPP_LEVEL_DEBUG); /* pass NULL instead to silence output */
-  xmpp_ctx_t *ctx = xmpp_ctx_new(NULL, log);
+  //xmpp_log_t *log = xmpp_get_default_logger(XMPP_LEVEL_DEBUG); /* pass NULL instead to silence output */
+  xmpp_ctx_t *ctx = xmpp_ctx_new(NULL, &ab_default_logger);
   
   /* create a connection */
   xmpp_conn_t *conn = xmpp_conn_new(ctx);
