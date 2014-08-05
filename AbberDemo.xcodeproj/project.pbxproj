@@ -34,6 +34,9 @@
 		23F6C1D81990A993005D2ED7 /* tls.c in Sources */ = {isa = PBXBuildFile; fileRef = 23F6C1C31990A993005D2ED7 /* tls.c */; };
 		23F6C1D91990A993005D2ED7 /* util.c in Sources */ = {isa = PBXBuildFile; fileRef = 23F6C1C51990A993005D2ED7 /* util.c */; };
 		23F6C1DE1990AD7E005D2ED7 /* ABJid.m in Sources */ = {isa = PBXBuildFile; fileRef = 23F6C1DD1990AD7E005D2ED7 /* ABJid.m */; };
+		23F6C1E51990B26B005D2ED7 /* basic.m in Sources */ = {isa = PBXBuildFile; fileRef = 23F6C1E01990B26B005D2ED7 /* basic.m */; };
+		23F6C1E61990B26B005D2ED7 /* bot.m in Sources */ = {isa = PBXBuildFile; fileRef = 23F6C1E21990B26B005D2ED7 /* bot.m */; };
+		23F6C1E71990B26B005D2ED7 /* roster.m in Sources */ = {isa = PBXBuildFile; fileRef = 23F6C1E41990B26B005D2ED7 /* roster.m */; };
 		EA9353CCE6D74E15BC8AE20F /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B1913D25686C44FE914483C3 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -159,6 +162,12 @@
 		23F6C1DB1990AC3E005D2ED7 /* abber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = abber.h; sourceTree = "<group>"; };
 		23F6C1DC1990AD7E005D2ED7 /* ABJid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABJid.h; sourceTree = "<group>"; };
 		23F6C1DD1990AD7E005D2ED7 /* ABJid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABJid.m; sourceTree = "<group>"; };
+		23F6C1DF1990B26B005D2ED7 /* basic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = basic.h; sourceTree = "<group>"; };
+		23F6C1E01990B26B005D2ED7 /* basic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = basic.m; sourceTree = "<group>"; };
+		23F6C1E11990B26B005D2ED7 /* bot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bot.h; sourceTree = "<group>"; };
+		23F6C1E21990B26B005D2ED7 /* bot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = bot.m; sourceTree = "<group>"; };
+		23F6C1E31990B26B005D2ED7 /* roster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = roster.h; sourceTree = "<group>"; };
+		23F6C1E41990B26B005D2ED7 /* roster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = roster.m; sourceTree = "<group>"; };
 		8D5CFBFC87D94D85A7209A57 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		B1913D25686C44FE914483C3 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -215,6 +224,12 @@
 				23F6C0E719909596005D2ED7 /* Prefix.pch */,
 				23F6C0E819909596005D2ED7 /* AppDelegate.h */,
 				23F6C0E919909596005D2ED7 /* AppDelegate.m */,
+				23F6C1DF1990B26B005D2ED7 /* basic.h */,
+				23F6C1E01990B26B005D2ED7 /* basic.m */,
+				23F6C1E11990B26B005D2ED7 /* bot.h */,
+				23F6C1E21990B26B005D2ED7 /* bot.m */,
+				23F6C1E31990B26B005D2ED7 /* roster.h */,
+				23F6C1E41990B26B005D2ED7 /* roster.m */,
 				23F6C1551990A8DF005D2ED7 /* Vendors */,
 				23F6C0EB19909596005D2ED7 /* Images.xcassets */,
 			);
@@ -469,10 +484,12 @@
 				23F6C1D71990A993005D2ED7 /* thread.c in Sources */,
 				23F6C0EA19909596005D2ED7 /* AppDelegate.m in Sources */,
 				23F6C1CF1990A993005D2ED7 /* oocontext.cpp in Sources */,
+				23F6C1E71990B26B005D2ED7 /* roster.m in Sources */,
 				23F6C1DE1990AD7E005D2ED7 /* ABJid.m in Sources */,
 				23F6C1D61990A993005D2ED7 /* stanza.c in Sources */,
 				23F6C1CB1990A993005D2ED7 /* handler.c in Sources */,
 				23F6C1D21990A993005D2ED7 /* sasl.c in Sources */,
+				23F6C1E51990B26B005D2ED7 /* basic.m in Sources */,
 				23F6C1CC1990A993005D2ED7 /* hash.c in Sources */,
 				23F6C1C81990A993005D2ED7 /* conn.c in Sources */,
 				23F6C0E619909596005D2ED7 /* main.m in Sources */,
@@ -481,6 +498,7 @@
 				23F6C1CE1990A993005D2ED7 /* md5.c in Sources */,
 				23F6C1CD1990A993005D2ED7 /* jid.c in Sources */,
 				23F6C1C71990A993005D2ED7 /* auth.c in Sources */,
+				23F6C1E61990B26B005D2ED7 /* bot.m in Sources */,
 				23F6C1C91990A993005D2ED7 /* ctx.c in Sources */,
 				23F6C1D41990A993005D2ED7 /* snprintf.c in Sources */,
 			);

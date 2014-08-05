@@ -7,7 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#include <strophe/strophe.h>
 
-@interface ABJid : NSObject
+@interface ABJid : NSObject {
+}
 
 @end
