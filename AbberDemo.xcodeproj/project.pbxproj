@@ -155,6 +155,7 @@
 		23F6C1C41990A993005D2ED7 /* tls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tls.h; sourceTree = "<group>"; };
 		23F6C1C51990A993005D2ED7 /* util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = util.c; sourceTree = "<group>"; };
 		23F6C1C61990A993005D2ED7 /* util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = util.h; sourceTree = "<group>"; };
+		23F6C1DB1990AC3E005D2ED7 /* abber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = abber.h; sourceTree = "<group>"; };
 		8D5CFBFC87D94D85A7209A57 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		B1913D25686C44FE914483C3 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -220,6 +221,7 @@
 		23F6C1551990A8DF005D2ED7 /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				23F6C1DA1990AC3E005D2ED7 /* abber */,
 				23F6C1A61990A993005D2ED7 /* strophe */,
 				23F6C1561990A8DF005D2ED7 /* openssl */,
 			);
@@ -347,6 +349,14 @@
 				23F6C1C61990A993005D2ED7 /* util.h */,
 			);
 			path = strophe;
+			sourceTree = "<group>";
+		};
+		23F6C1DA1990AC3E005D2ED7 /* abber */ = {
+			isa = PBXGroup;
+			children = (
+				23F6C1DB1990AC3E005D2ED7 /* abber.h */,
+			);
+			path = abber;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
