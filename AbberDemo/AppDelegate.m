@@ -12,6 +12,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  
+  [DDLog addLogger:[DDTTYLogger sharedInstance]];
+  
+  
   _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   
   NSArray *ary = @[ @"A", @"B" ];

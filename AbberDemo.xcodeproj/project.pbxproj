@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		236EDEA51990E42D0021BC61 /* ABLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 236EDEA41990E42D0021BC61 /* ABLogger.m */; };
 		23F6C0DA19909596005D2ED7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23F6C0D919909596005D2ED7 /* Foundation.framework */; };
 		23F6C0DE19909596005D2ED7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23F6C0DD19909596005D2ED7 /* UIKit.framework */; };
 		23F6C0E619909596005D2ED7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 23F6C0E519909596005D2ED7 /* main.m */; };
@@ -41,6 +42,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		236EDEA31990E42D0021BC61 /* ABLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABLogger.h; sourceTree = "<group>"; };
+		236EDEA41990E42D0021BC61 /* ABLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABLogger.m; sourceTree = "<group>"; };
 		23F6C0D619909596005D2ED7 /* AbberDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AbberDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		23F6C0D919909596005D2ED7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		23F6C0DD19909596005D2ED7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -375,6 +378,8 @@
 				23F6C1DB1990AC3E005D2ED7 /* abber.h */,
 				23F6C1DC1990AD7E005D2ED7 /* ABJid.h */,
 				23F6C1DD1990AD7E005D2ED7 /* ABJid.m */,
+				236EDEA31990E42D0021BC61 /* ABLogger.h */,
+				236EDEA41990E42D0021BC61 /* ABLogger.m */,
 			);
 			path = abber;
 			sourceTree = "<group>";
@@ -482,6 +487,7 @@
 				23F6C1D01990A993005D2ED7 /* oostanza.cpp in Sources */,
 				23F6C1CA1990A993005D2ED7 /* event.c in Sources */,
 				23F6C1D71990A993005D2ED7 /* thread.c in Sources */,
+				236EDEA51990E42D0021BC61 /* ABLogger.m in Sources */,
 				23F6C0EA19909596005D2ED7 /* AppDelegate.m in Sources */,
 				23F6C1CF1990A993005D2ED7 /* oocontext.cpp in Sources */,
 				23F6C1E71990B26B005D2ED7 /* roster.m in Sources */,
