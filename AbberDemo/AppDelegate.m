@@ -17,6 +17,9 @@
   NSArray *ary = @[ @"A", @"B" ];
   NSLog(@"%@", [ary objectOrNilAtIndex:0]);
   
+  //NSObject *object = [[NSObject alloc] init];
+  //[object string];
+  
   _window.backgroundColor = [UIColor whiteColor];
   [_window makeKeyAndVisible];
   return YES;
