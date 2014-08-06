@@ -58,7 +58,7 @@
 
 - (void)stop:(id)sender
 {
-  [[ABClient sharedObject] disconnect];
+  [[ABClient sharedObject] requestRoster];
 }
 
 @end

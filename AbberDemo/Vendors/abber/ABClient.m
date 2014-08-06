@@ -10,9 +10,9 @@
 #include <strophe/common.h>
 #import "internal/logger.h"
 
-int handle_reply(xmpp_conn_t * const conn,
-                 xmpp_stanza_t * const stanza,
-                 void * const userdata)
+int ab_roster_handler(xmpp_conn_t * const conn,
+                      xmpp_stanza_t * const stanza,
+                      void * const userdata)
 {
   xmpp_stanza_t *query, *item;
   char *type, *name;
@@ -43,39 +43,16 @@ int handle_reply(xmpp_conn_t * const conn,
   return 0;
 }
 
-void conn_handler(xmpp_conn_t * const conn, const xmpp_conn_event_t status,
-                  const int error, xmpp_stream_error_t * const stream_error,
-                  void * const userdata)
+void ab_connection_handler(xmpp_conn_t * const conn,
+                           const xmpp_conn_event_t status,
+                           const int error,
+                           xmpp_stream_error_t * const stream_error,
+                           void * const userdata)
 {
   xmpp_ctx_t *ctx = (xmpp_ctx_t *)userdata;
-  xmpp_stanza_t *iq, *query;
   
   if (status == XMPP_CONN_CONNECT) {
     fprintf(stderr, "DEBUG: connected\n");
-    
-    /* create iq stanza for request */
-    iq = xmpp_stanza_new(ctx);
-    xmpp_stanza_set_name(iq, "iq");
-    xmpp_stanza_set_type(iq, "get");
-    xmpp_stanza_set_id(iq, "roster1");
-    
-    query = xmpp_stanza_new(ctx);
-    xmpp_stanza_set_name(query, "query");
-    xmpp_stanza_set_ns(query, XMPP_NS_ROSTER);
-    
-    xmpp_stanza_add_child(iq, query);
-    
-    /* we can release the stanza since it belongs to iq now */
-    xmpp_stanza_release(query);
-    
-    /* set up reply handler */
-    xmpp_id_handler_add(conn, handle_reply, "roster1", ctx);
-    
-    /* send out the stanza */
-    xmpp_send(conn, iq);
-    
-    /* release the stanza */
-    xmpp_stanza_release(iq);
   } else {
     fprintf(stderr, "DEBUG: disconnected\n");
     xmpp_stop(ctx);
@@ -119,10 +96,6 @@ void conn_handler(xmpp_conn_t * const conn, const xmpp_conn_event_t status,
 
 - (BOOL)connectWithAccount:(NSString *)acnt password:(NSString *)pswd
 {
-  if ( [self state]!=ABClientStateDisconnected ) {
-    return YES;
-  }
-  
   if ( [acnt length]<=0 ) {
     return NO;
   }
@@ -132,13 +105,9 @@ void conn_handler(xmpp_conn_t * const conn, const xmpp_conn_event_t status,
   }
   
   
-  const char *svr = NULL;
-  if ( [_server length]>0 ) {
-    svr = [_server UTF8String];
+  if ( [self state]!=ABClientStateDisconnected ) {
+    return YES;
   }
-  
-  unsigned short prt = 0;
-  prt = [_port intValue];
   
   
   _ctx = xmpp_ctx_new(NULL, &ab_default_logger);
@@ -154,23 +123,15 @@ void conn_handler(xmpp_conn_t * const conn, const xmpp_conn_event_t status,
   }
   
   xmpp_conn_set_jid(_conn, [acnt UTF8String]);
+  _account = [acnt copy];
   
   xmpp_conn_set_pass(_conn, [pswd UTF8String]);
+  _password = [pswd copy];
   
-  if ( xmpp_connect_client(_conn, svr, prt, conn_handler, _ctx)!=0 ) {
-    [self clearConnection];
-    return NO;
-  }
-  
-  [self performSelector:@selector(startRunning)
+  [self performSelector:@selector(connectAndRun)
                onThread:[[self class] workingThread]
              withObject:nil
           waitUntilDone:NO];
-  
-  
-  _account = [acnt copy];
-  
-  _password = [pswd copy];
   
   return YES;
 }
@@ -199,13 +160,48 @@ void conn_handler(xmpp_conn_t * const conn, const xmpp_conn_event_t status,
 }
 
 
+- (void)requestRoster
+{
+//  <iq from='juliet@example.com/balcony'
+//      id='bv1bs71f'
+//      type='get'>
+//    <query xmlns='jabber:iq:roster'/>
+//  </iq>
+  
+  if ( [self state]==ABClientStateConnected ) {
+    xmpp_id_handler_add(_conn, ab_roster_handler, "ROSTER_1", _ctx);
+    
+    
+    xmpp_stanza_t *iq = xmpp_stanza_new(_ctx);
+    xmpp_stanza_set_name(iq, "iq");
+    xmpp_stanza_set_attribute(iq, "from", [_account UTF8String]);
+    xmpp_stanza_set_attribute(iq, "id", "ROSTER_1");
+    xmpp_stanza_set_attribute(iq, "type", "get");
+    
+    xmpp_stanza_t *query = xmpp_stanza_new(_ctx);
+    xmpp_stanza_set_name(query, "query");
+    xmpp_stanza_set_ns(query, XMPP_NS_ROSTER);
+    xmpp_stanza_add_child(iq, query);
+    xmpp_stanza_release(query);
+    
+    xmpp_send(_conn, iq);
+    xmpp_stanza_release(iq);
+  }
+}
+
 
 #pragma mark - Private methods
 
-- (void)startRunning
+- (void)connectAndRun
 {
-  xmpp_run(_ctx);
-  DDLogDebug(@"[client] Run loop did end");
+  const char *server = [_server UTF8String];
+  
+  unsigned short port = [_port intValue];
+  
+  if ( xmpp_connect_client(_conn, server, port, ab_connection_handler, _ctx)==0 ) {
+    xmpp_run(_ctx);
+    DDLogDebug(@"[client] Run loop did end");
+  }
   
   [self clearConnection];
 }

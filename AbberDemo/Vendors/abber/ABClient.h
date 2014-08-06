@@ -44,4 +44,7 @@ typedef enum {
 
 - (ABClientState)state;
 
+
+- (void)requestRoster;
+
 @end

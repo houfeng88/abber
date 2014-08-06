@@ -520,9 +520,9 @@ static int _disconnect_cleanup(xmpp_conn_t * const conn,
  */
 void xmpp_disconnect(xmpp_conn_t * const conn)
 {
-    if (conn->state != XMPP_STATE_CONNECTING &&
-	conn->state != XMPP_STATE_CONNECTED)
-	return;
+  if (conn->state != XMPP_STATE_CONNECTING && conn->state != XMPP_STATE_CONNECTED) {
+    return;
+  }
 
     /* close the stream */
     xmpp_send_raw_string(conn, "</stream:stream>");
