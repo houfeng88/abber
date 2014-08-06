@@ -1,0 +1,181 @@
+1 自己 vCard
+
+1.1 请求自己的 vCard，不用包含 to 属性
+<iq from='stpeter@jabber.org/roundabout'
+    id='v1'
+    type='get'>
+  <vCard xmlns='vcard-temp'/>
+</iq>
+
+1.2 如果用户拥有 vCard，则返回 IQ-Result
+<iq id='v1'
+    to='stpeter@jabber.org/roundabout'
+    type='result'>
+  <vCard xmlns='vcard-temp'>
+    <FN>Peter Saint-Andre</FN>
+    <N>
+      <FAMILY>Saint-Andre</FAMILY>
+      <GIVEN>Peter</GIVEN>
+      <MIDDLE/>
+    </N>
+    <NICKNAME>stpeter</NICKNAME>
+    <URL>http://www.xmpp.org/xsf/people/stpeter.shtml</URL>
+    <BDAY>1966-08-06</BDAY>
+    <ORG>
+      <ORGNAME>XMPP Standards Foundation</ORGNAME>
+      <ORGUNIT/>
+    </ORG>
+    <TITLE>Executive Director</TITLE>
+    <ROLE>Patron Saint</ROLE>
+    <TEL><WORK/><VOICE/><NUMBER>303-308-3282</NUMBER></TEL>
+    <TEL><WORK/><FAX/><NUMBER/></TEL>
+    <TEL><WORK/><MSG/><NUMBER/></TEL>
+    <ADR>
+      <WORK/>
+      <EXTADD>Suite 600</EXTADD>
+      <STREET>1899 Wynkoop Street</STREET>
+      <LOCALITY>Denver</LOCALITY>
+      <REGION>CO</REGION>
+      <PCODE>80202</PCODE>
+      <CTRY>USA</CTRY>
+    </ADR>
+    <TEL><HOME/><VOICE/><NUMBER>303-555-1212</NUMBER></TEL>
+    <TEL><HOME/><FAX/><NUMBER/></TEL>
+    <TEL><HOME/><MSG/><NUMBER/></TEL>
+    <ADR>
+      <HOME/>
+      <EXTADD/>
+      <STREET/>
+      <LOCALITY>Denver</LOCALITY>
+      <REGION>CO</REGION>
+      <PCODE>80209</PCODE>
+      <CTRY>USA</CTRY>
+    </ADR>
+    <EMAIL><INTERNET/><PREF/><USERID>stpeter@jabber.org</USERID></EMAIL>
+    <JABBERID>stpeter@jabber.org</JABBERID>
+    <DESC>
+      More information about me is located on my 
+      personal website: http://www.saint-andre.com/
+    </DESC>
+  </vCard>
+</iq>
+
+1.3 如果用户没有 vCard，服务器必须返回节错误或 IQ-Result
+1.3.1 节错误应该是 <item-not-found/>
+<iq id='v1'
+    to='stpeter@jabber.org/roundabout'
+    type='error'>
+  <vCard xmlns='vcard-temp'/>
+  <error type='cancel'>
+    <item-not-found xmlns='urn:ietf:params:xml:ns:xmpp-stanzas'/>
+  </error>
+</iq>
+1.3.2 IQ-Result 应该包含空的 vCard
+<iq id='v1'
+    to='stpeter@jabber.org/roundabout'
+    type='result'>
+  <vCard xmlns='vcard-temp'/>
+</iq>
+
+1.4 更新自己的 vCard，不用包含 to 属性
+<iq id='v2' type='set'>
+  <vCard xmlns='vcard-temp'>
+    <FN>Peter Saint-Andre</FN>
+    <N>
+      <FAMILY>Saint-Andre</FAMILY>
+      <GIVEN>Peter</GIVEN>
+      <MIDDLE/>
+    </N>
+    <NICKNAME>stpeter</NICKNAME>
+    <URL>http://www.xmpp.org/xsf/people/stpeter.shtml</URL>
+    <BDAY>1966-08-06</BDAY>
+    <ORG>
+      <ORGNAME>XMPP Standards Foundation</ORGNAME>
+      <ORGUNIT/>
+    </ORG>
+    <TITLE>Executive Director</TITLE>
+    <ROLE>Patron Saint</ROLE>
+    <TEL><WORK/><VOICE/><NUMBER>303-308-3282</NUMBER></TEL>
+    <TEL><WORK/><FAX/><NUMBER/></TEL>
+    <TEL><WORK/><MSG/><NUMBER/></TEL>
+    <ADR>
+      <WORK/>
+      <EXTADD>Suite 600</EXTADD>
+      <STREET>1899 Wynkoop Street</STREET>
+      <LOCALITY>Denver</LOCALITY>
+      <REGION>CO</REGION>
+      <PCODE>80202</PCODE>
+      <CTRY>USA</CTRY>
+    </ADR>
+    <TEL><HOME/><VOICE/><NUMBER>303-555-1212</NUMBER></TEL>
+    <TEL><HOME/><FAX/><NUMBER/></TEL>
+    <TEL><HOME/><MSG/><NUMBER/></TEL>
+    <ADR>
+      <HOME/>
+      <EXTADD/>
+      <STREET/>
+      <LOCALITY>Denver</LOCALITY>
+      <REGION>CO</REGION>
+      <PCODE>80209</PCODE>
+      <CTRY>USA</CTRY>
+    </ADR>
+    <EMAIL><INTERNET/><PREF/><USERID>stpeter@jabber.org</USERID></EMAIL>
+    <JABBERID>stpeter@jabber.org</JABBERID>
+    <DESC>
+      Check out my blog at https://stpeter.im/
+    </DESC>
+  </vCard>
+</iq>
+
+1.5 更新自己的 vCard 成功
+<iq id='v2'
+    to='stpeter@jabber.org/roundabout'
+    type='result'/>
+
+1.6 更新别人的 vCard 时，服务器必须返回节错误，这个节错误应该是 <forbidden/> 或 <not-allowed/>
+<iq id='v2'
+    to='stpeter@jabber.org/roundabout'
+    type='error'>
+  <error type='auth'>
+    <forbidden xmlns='urn:ietf:params:xml:ns:xmpp-stanzas'/>
+  </error>
+</iq>
+
+
+2 别人 vCard
+
+2.1 请求别人的 vCard
+<iq from='stpeter@jabber.org/roundabout'
+    id='v3'
+    to='jer@jabber.org'
+    type='get'>
+  <vCard xmlns='vcard-temp'/>
+</iq>
+
+2.2 请求别人的 vCard 成功
+<iq from='jer@jabber.org' 
+    to='stpeter@jabber.org/roundabout' 
+    type='result'
+    id='v3'>
+  <vCard xmlns='vcard-temp'>
+    <FN>JeremieMiller</FN>
+    <N>
+      <GIVEN>Jeremie</GIVEN>
+      <FAMILY>Miller</FAMILY>
+      <MIDDLE/>
+    </N>
+    <NICKNAME>jer</NICKNAME>
+    <EMAIL><INTERNET/><PREF/><USERID>jeremie@jabber.org</USERID></EMAIL>
+    <JABBERID>jer@jabber.org</JABBERID>
+  </vCard>
+</iq>
+
+2.3 别人不存在 vCard 或别人不存在时，服务器必须返回节错误，这个节错误应该是 <service-unavailable/> 或 <item-not-found/>
+<iq id='v3'
+    to='stpeter@jabber.org/roundabout'
+    type='error'>
+  <vCard xmlns='vcard-temp'/>
+  <error type='cancel'>
+    <service-unavailable xmlns='urn:ietf:params:xml:ns:xmpp-stanzas'/>
+  </error>
+</iq>
