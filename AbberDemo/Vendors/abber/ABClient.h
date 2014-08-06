@@ -12,17 +12,26 @@
 @interface ABClient : NSObject<
     TKObserving
 > {
+  NSString *_server;
+  NSString *_port;
+  
+  NSThread *_thread;
+  
   xmpp_ctx_t *_ctx;
   xmpp_conn_t *_conn;
 }
+
+@property (nonatomic, copy) NSString *server;
+@property (nonatomic, copy) NSString *port;
 
 + (void)saveObject:(ABClient *)object;
 
 + (ABClient *)sharedObject;
 
-- (BOOL)connectWithPassport:(NSString *)pspt password:(NSString *)pswd server:(NSString *)svr port:(NSString *)prt;
+- (BOOL)connectWithPassport:(NSString *)pspt password:(NSString *)pswd;
 
 - (NSString *)passport;
+
 - (NSString *)password;
 
 @end

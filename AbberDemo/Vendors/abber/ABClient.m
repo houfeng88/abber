@@ -37,7 +37,7 @@ int handle_reply(xmpp_conn_t * const conn,
   }
   
   /* disconnect */
-  xmpp_disconnect(conn);
+  //xmpp_disconnect(conn);
   
   return 0;
 }
@@ -126,7 +126,7 @@ static ABClient *Client = nil;
 
 
 
-- (BOOL)connectWithPassport:(NSString *)pspt password:(NSString *)pswd server:(NSString *)svr port:(NSString *)prt
+- (BOOL)connectWithPassport:(NSString *)pspt password:(NSString *)pswd
 {
   if ( [pspt length]<=0 ) {
     return NO;
@@ -136,20 +136,20 @@ static ABClient *Client = nil;
     return NO;
   }
   
-  const char *server = NULL;
-  if ( [svr length]>0 ) {
-    server = [svr UTF8String];
+  const char *svr = NULL;
+  if ( [_server length]>0 ) {
+    svr = [_server UTF8String];
   }
   
-  unsigned short port = 0;
-  port = [prt intValue];
+  unsigned short prt = 0;
+  prt = [_port intValue];
   
   
   xmpp_conn_set_jid(_conn, [pspt UTF8String]);
   
   xmpp_conn_set_pass(_conn, [pswd UTF8String]);
   
-  if ( xmpp_connect_client(_conn, server, port, conn_handler, _ctx)!=0 ) {
+  if ( xmpp_connect_client(_conn, svr, prt, conn_handler, _ctx)!=0 ) {
     return NO;
   }
   
@@ -177,6 +177,40 @@ static ABClient *Client = nil;
     return [[NSString alloc] initWithUTF8String:pswd];
   }
   return nil;
+}
+
+- (void)launch1
+{
+  NSLog(@"HERE1");
+  [self performSelector:@selector(doit1)
+               onThread:[[self class] workingThread]
+             withObject:nil
+          waitUntilDone:NO];
+}
+
+- (void)launch2
+{
+  NSLog(@"HERE2");
+  [self performSelector:@selector(doit2)
+               onThread:[[self class] workingThread]
+             withObject:nil
+          waitUntilDone:NO];
+}
+
+- (void)doit1
+{
+  while (1) {
+    NSLog(@"doit1");
+    [NSThread sleepForTimeInterval:0.5];
+  }
+}
+
+- (void)doit2
+{
+  while (1) {
+    NSLog(@"doit2");
+    [NSThread sleepForTimeInterval:0.5];
+  }
 }
 
 

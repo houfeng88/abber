@@ -25,13 +25,16 @@
   ABClient *client = [[ABClient alloc] init];
   [ABClient saveObject:client];
   
-  NSString *jid = @"tktony@is-a-furry.org";
-  NSString *pass = @"12345678";
+  [client performSelector:@selector(launch2) withObject:nil afterDelay:1.0];
+  [client performSelector:@selector(launch1) withObject:nil afterDelay:3.0];
   
-  [[ABClient sharedObject] connectWithPassport:jid
-                                      password:pass
-                                        server:nil
-                                          port:nil];
+//  NSString *jid = @"tktony@is-a-furry.org";
+//  NSString *pass = @"12345678";
+  
+//  [[ABClient sharedObject] connectWithPassport:jid
+//                                      password:pass
+//                                        server:nil
+//                                          port:nil];
   
   
   
