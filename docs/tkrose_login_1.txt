@@ -1,0 +1,58 @@
+<!-- OUT -->
+<?xml version="1.0"?><stream:stream xmlns="jabber:client" xmlns:stream="http://etherx.jabber.org/streams" to="is-a-furry.org" version="1.0">
+<!-- IN -->
+<?xml version='1.0'?><stream:stream xmlns:stream='http://etherx.jabber.org/streams' version='1.0' from='is-a-furry.org' id='0ad487ec-0a4c-43b2-b032-096b8bbfc1db' xml:lang='en' xmlns='jabber:client'><stream:features><register xmlns='http://jabber.org/features/iq-register'/><starttls xmlns='urn:ietf:params:xml:ns:xmpp-tls'><required/></starttls></stream:features>
+<!-- OUT -->
+<starttls xmlns="urn:ietf:params:xml:ns:xmpp-tls"/>
+<!-- IN -->
+<proceed xmlns='urn:ietf:params:xml:ns:xmpp-tls'/>
+<!-- OUT -->
+<?xml version="1.0"?><stream:stream xmlns="jabber:client" xmlns:stream="http://etherx.jabber.org/streams" to="is-a-furry.org" version="1.0">
+<!-- IN -->
+<?xml version='1.0'?><stream:stream xmlns:stream='http://etherx.jabber.org/streams' version='1.0' from='is-a-furry.org' id='bccb0b78-2f89-419e-b717-2fc74c0b5c82' xml:lang='en' xmlns='jabber:client'><stream:features><register xmlns='http://jabber.org/features/iq-register'/><mechanisms xmlns='urn:ietf:params:xml:ns:xmpp-sasl'><mechanism>SCRAM-SHA-1</mechanism><mechanism>PLAIN</mechanism></mechanisms><auth xmlns='http://jabber.org/features/iq-auth'/></stream:features>
+<!-- OUT -->
+<auth xmlns="urn:ietf:params:xml:ns:xmpp-sasl" mechanism="SCRAM-SHA-1">biwsbj10a3Jvc2Uscj00MDNmNmQ4Mi02YjhhLTQ3YjAtODY0Yy0yN2M4NTE4Yjk0ZjQ=</auth>
+<!-- IN -->
+<challenge xmlns='urn:ietf:params:xml:ns:xmpp-sasl'>cj00MDNmNmQ4Mi02YjhhLTQ3YjAtODY0Yy0yN2M4NTE4Yjk0ZjRkOTM5NWI3Mi1kMzQzLTQ1NDQtOWNmYS0wMTg2ZDExNzk4NDgscz1PVGxrTldVNE9HTXROemd3TkMwME1HRXdMV0U0Tm1ZdE5UWmlOelZqWW1SbU1qYzUsaT00MDk2</challenge>
+<!-- OUT -->
+<response xmlns="urn:ietf:params:xml:ns:xmpp-sasl">Yz1iaXdzLHI9NDAzZjZkODItNmI4YS00N2IwLTg2NGMtMjdjODUxOGI5NGY0ZDkzOTViNzItZDM0My00NTQ0LTljZmEtMDE4NmQxMTc5ODQ4LHA9YVNwMlJaVW0rUzJCMTNlV1VmeUJvVGlFUks4PQ==</response>
+<!-- IN -->
+<success xmlns='urn:ietf:params:xml:ns:xmpp-sasl'>dj03YnYwM1VrYVExR1ZHbXhLVmtwQ0ZWeFhyeVE9</success>
+<!-- OUT -->
+<?xml version="1.0"?><stream:stream xmlns="jabber:client" xmlns:stream="http://etherx.jabber.org/streams" to="is-a-furry.org" version="1.0">
+<!-- IN -->
+<?xml version='1.0'?><stream:stream xmlns:stream='http://etherx.jabber.org/streams' version='1.0' from='is-a-furry.org' id='a362ebde-d43d-48a3-baa5-ba13d6136618' xml:lang='en' xmlns='jabber:client'><stream:features><compression xmlns='http://jabber.org/features/compress'><method>zlib</method></compression><ver xmlns='urn:xmpp:features:rosterver'/><sm xmlns='urn:xmpp:sm:2'><optional/></sm><sm xmlns='urn:xmpp:sm:3'><optional/></sm><c hash='sha-1' ver='O8I2YTghBXfP1v4WNjYb7iuIkxE=' node='http://prosody.im' xmlns='http://jabber.org/protocol/caps'/><bind xmlns='urn:ietf:params:xml:ns:xmpp-bind'><required/></bind><session xmlns='urn:ietf:params:xml:ns:xmpp-session'><optional/></session></stream:features>
+<!-- OUT -->
+<iq id="session-bind" type="set"><bind xmlns="urn:ietf:params:xml:ns:xmpp-bind"/></iq>
+<!-- IN -->
+<iq id='session-bind' type='result'><bind xmlns='urn:ietf:params:xml:ns:xmpp-bind'><jid>tkrose@is-a-furry.org/3f3e5e7e-f8ac-4316-ac6d-c71290933063</jid></bind></iq>
+<!-- OUT -->
+<enable xmlns="urn:xmpp:sm:2"/>
+<!-- IN -->
+<enabled xmlns='urn:xmpp:sm:2'/>
+<!-- OUT -->
+<iq id="session-start" type="set"><session xmlns="urn:ietf:params:xml:ns:xmpp-session"/></iq>
+<!-- IN -->
+<iq id='session-start' type='result' to='tkrose@is-a-furry.org/3f3e5e7e-f8ac-4316-ac6d-c71290933063'/><r xmlns='urn:xmpp:sm:2'/>
+<!-- OUT -->
+<iq id="a3d2d644-49d3-4257-9202-206d7575e6ab" type="get"><vCard xmlns="vcard-temp"/></iq>
+<!-- OUT -->
+<iq id="6210a377-36b3-4b07-a163-46674daf675d" type="get"><query xmlns="jabber:iq:private"><storage xmlns="storage:bookmarks"/></query></iq>
+<!-- OUT -->
+<iq id="a0f4cd99-cb3d-4d30-bced-1729936a75f3" type="get"><query ver="" xmlns="jabber:iq:roster"/></iq>
+<!-- OUT -->
+<iq id="2708eab1-30bb-4208-9c55-e7c475af76a9" to="is-a-furry.org" type="get"><query xmlns="http://jabber.org/protocol/disco#info"/></iq>
+<!-- OUT -->
+<presence><status></status><c hash="sha-1" node="http://swift.im" ver="rs/tl9NCfXBpKoOYUy+JdBbPGDg=" xmlns="http://jabber.org/protocol/caps"/></presence>
+<!-- OUT -->
+<a h="1" xmlns="urn:xmpp:sm:2"/>
+<!-- IN -->
+<iq id='a3d2d644-49d3-4257-9202-206d7575e6ab' type='error' to='tkrose@is-a-furry.org/3f3e5e7e-f8ac-4316-ac6d-c71290933063'><error type='cancel'><item-not-found xmlns='urn:ietf:params:xml:ns:xmpp-stanzas'/></error></iq>
+<!-- IN -->
+<iq id='6210a377-36b3-4b07-a163-46674daf675d' type='result' to='tkrose@is-a-furry.org/3f3e5e7e-f8ac-4316-ac6d-c71290933063'><query xmlns='jabber:iq:private'><storage xmlns='storage:bookmarks'/></query></iq><iq id='a0f4cd99-cb3d-4d30-bced-1729936a75f3' type='result' to='tkrose@is-a-furry.org/3f3e5e7e-f8ac-4316-ac6d-c71290933063'><query ver='1' xmlns='jabber:iq:roster'><item jid='arsimael@im.it-native.de' subscription='both' name='Support'/></query></iq><iq id='2708eab1-30bb-4208-9c55-e7c475af76a9' type='result' to='tkrose@is-a-furry.org/3f3e5e7e-f8ac-4316-ac6d-c71290933063' from='is-a-furry.org'><query xmlns='http://jabber.org/protocol/disco#info'><identity type='pep' name='Prosody' category='pubsub'/><identity type='im' name='Prosody' category='server'/><feature var='http://jabber.org/protocol/commands'/><feature var='http://jabber.org/protocol/pubsub#publish'/><feature var='msgoffline'/><feature var='jabber:iq:privacy'/><feature var='jabber:iq:register'/><feature var='jabber:iq:roster'/><feature var='urn:xmpp:time'/><feature var='jabber:iq:time'/><feature var='jabber:iq:private'/><feature var='jabber:iq:search'/><feature var='urn:xmpp:ping'/><feature var='http://jabber.org/protocol/disco#info'/><feature var='http://jabber.org/protocol/disco#items'/><feature var='jabber:iq:version'/><feature var='vcard-temp'/><feature var='jabber:iq:last'/><feature var='jabber:iq:auth'/></query></iq><presence from='tkrose@is-a-furry.org/3f3e5e7e-f8ac-4316-ac6d-c71290933063'><status/><c hash='sha-1' ver='rs/tl9NCfXBpKoOYUy+JdBbPGDg=' node='http://swift.im' xmlns='http://jabber.org/protocol/caps'/></presence><presence type='unavailable' to='tkrose@is-a-furry.org/3f3e5e7e-f8ac-4316-ac6d-c71290933063' from='arsimael@im.it-native.de'/>
+<!-- OUT -->
+<iq id="a5b35a12-847c-4804-90d9-7d8f1c15fea3" to="is-a-furry.org" type="get"><query node="http://jabber.org/protocol/commands" xmlns="http://jabber.org/protocol/disco#items"/></iq>
+<!-- IN -->
+<iq id='a5b35a12-847c-4804-90d9-7d8f1c15fea3' type='result' to='tkrose@is-a-furry.org/3f3e5e7e-f8ac-4316-ac6d-c71290933063' from='is-a-furry.org'><query node='http://jabber.org/protocol/commands' xmlns='http://jabber.org/protocol/disco#items'><item jid='is-a-furry.org' name='Search settings' node='vjudsetup'/><item jid='is-a-furry.org' name='Ping' node='ping'/><item jid='is-a-furry.org' name='Get uptime' node='uptime'/></query></iq><r xmlns='urn:xmpp:sm:2'/>
+<!-- OUT -->
+<a h="8" xmlns="urn:xmpp:sm:2"/>
