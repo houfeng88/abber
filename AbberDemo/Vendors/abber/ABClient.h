@@ -10,12 +10,21 @@
 #include <strophe/strophe.h>
 #import <strophe/hash.h>
 
+typedef enum {
+  ABClientStateDisconnected = 0,
+  ABClientStateConnecting   = 1,
+  ABClientStateConnected    = 2
+} ABClientState;
 
 @interface ABClient : NSObject<
     TKObserving
 > {
   NSString *_server;
   NSString *_port;
+  NSString *_account;
+  NSString *_password;
+  
+  NSMutableArray *_observers;
   
   xmpp_ctx_t *_ctx;
   xmpp_conn_t *_conn;
@@ -23,16 +32,16 @@
 
 @property (nonatomic, copy) NSString *server;
 @property (nonatomic, copy) NSString *port;
-
-+ (void)saveObject:(ABClient *)object;
+@property (nonatomic, copy, readonly) NSString *account;
+@property (nonatomic, copy, readonly) NSString *password;
 
 + (ABClient *)sharedObject;
 
-- (BOOL)connectWithPassport:(NSString *)pspt password:(NSString *)pswd;
+
+- (BOOL)connectWithAccount:(NSString *)acnt password:(NSString *)pswd;
+
 - (void)disconnect;
 
-- (NSString *)passport;
-
-- (NSString *)password;
+- (ABClientState)state;
 
 @end

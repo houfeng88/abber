@@ -18,9 +18,6 @@
   
   _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   
-  ABClient *client = [[ABClient alloc] init];
-  [ABClient saveObject:client];
-  
   UIButton *button = [[UIButton alloc] init];
   button.normalTitle = @"Start";
   button.normalTitleColor = [UIColor blackColor];
@@ -54,9 +51,9 @@
 
 - (void)start:(id)sender
 {
-  NSString *pspt = @"tktony@is-a-furry.org";
+  NSString *acnt = @"tktony@is-a-furry.org";
   NSString *pswd = @"12345678";
-  [[ABClient sharedObject] connectWithPassport:pspt password:pswd];
+  [[ABClient sharedObject] connectWithAccount:acnt password:pswd];
 }
 
 - (void)stop:(id)sender

@@ -7,6 +7,7 @@
 //
 
 #import "ABClient.h"
+#include <strophe/common.h>
 #import "internal/logger.h"
 
 int handle_reply(xmpp_conn_t * const conn,
@@ -81,6 +82,8 @@ void conn_handler(xmpp_conn_t * const conn, const xmpp_conn_event_t status,
   }
 }
 
+
+
 @implementation ABClient
 
 #pragma mark - Memory management
@@ -100,31 +103,34 @@ void conn_handler(xmpp_conn_t * const conn, const xmpp_conn_event_t status,
 }
 
 
-#pragma mark -
 
-static ABClient *Client = nil;
-
-+ (void)saveObject:(ABClient *)object
-{
-  Client = object;
-}
+#pragma mark - Public methods
 
 + (ABClient *)sharedObject
 {
+  static ABClient *Client = nil;
+  static dispatch_once_t Token;
+  dispatch_once(&Token, ^{
+    Client = [[self alloc] init];
+  });
   return Client;
 }
 
 
-
-- (BOOL)connectWithPassport:(NSString *)pspt password:(NSString *)pswd
+- (BOOL)connectWithAccount:(NSString *)acnt password:(NSString *)pswd
 {
-  if ( [pspt length]<=0 ) {
+  if ( [self state]!=ABClientStateDisconnected ) {
+    return YES;
+  }
+  
+  if ( [acnt length]<=0 ) {
     return NO;
   }
   
   if ( [pswd length]<=0 ) {
     return NO;
   }
+  
   
   const char *svr = NULL;
   if ( [_server length]>0 ) {
@@ -147,7 +153,7 @@ static ABClient *Client = nil;
     return NO;
   }
   
-  xmpp_conn_set_jid(_conn, [pspt UTF8String]);
+  xmpp_conn_set_jid(_conn, [acnt UTF8String]);
   
   xmpp_conn_set_pass(_conn, [pswd UTF8String]);
   
@@ -161,6 +167,11 @@ static ABClient *Client = nil;
              withObject:nil
           waitUntilDone:NO];
   
+  
+  _account = [acnt copy];
+  
+  _password = [pswd copy];
+  
   return YES;
 }
 
@@ -170,23 +181,19 @@ static ABClient *Client = nil;
   DDLogDebug(@"[client] Launch disconnect");
 }
 
-
-- (NSString *)passport
+- (ABClientState)state
 {
-  const char *pspt = xmpp_conn_get_jid(_conn);
-  if ( pspt ) {
-    return [[NSString alloc] initWithUTF8String:pspt];
+  if ( _conn ) {
+    if ( _conn->state==XMPP_STATE_DISCONNECTED ) {
+      return ABClientStateDisconnected;
+    } else if ( _conn->state==XMPP_STATE_CONNECTING ) {
+      return ABClientStateConnecting;
+    } else if ( _conn->state==XMPP_STATE_CONNECTED ) {
+      return ABClientStateConnected;
+    }
   }
-  return nil;
-}
-
-- (NSString *)password
-{
-  const char *pswd = xmpp_conn_get_pass(_conn);
-  if ( pswd ) {
-    return [[NSString alloc] initWithUTF8String:pswd];
-  }
-  return nil;
+  
+  return ABClientStateDisconnected;
 }
 
 
@@ -239,6 +246,34 @@ static ABClient *Client = nil;
       [[NSRunLoop currentRunLoop] run];
     }
   }
+}
+
+
+#pragma mark - TKObserving
+
+- (NSArray *)observers
+{
+  if ( !_observers ) {
+    _observers = [[NSMutableArray alloc] init];
+  }
+  return _observers;
+}
+
+- (id)addObserver:(id)observer
+{
+  NSMutableArray *observerAry = (NSMutableArray *)[self observers];
+  return [observerAry addUnidenticalObjectIfNotNil:observer];
+}
+
+- (void)removeObserver:(id)observer
+{
+  NSMutableArray *observerAry = (NSMutableArray *)[self observers];
+  [observerAry removeObjectIdenticalTo:observer];
+}
+
+- (void)removeAllObservers
+{
+  _observers = nil;
 }
 
 @end

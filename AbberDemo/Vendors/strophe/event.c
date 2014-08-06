@@ -346,6 +346,7 @@ void xmpp_stop(xmpp_ctx_t *ctx)
 {
     xmpp_debug(ctx, "event", "Stopping event loop.");
 
-    if (ctx->loop_status == XMPP_LOOP_RUNNING)
-	ctx->loop_status = XMPP_LOOP_QUIT;
+  if (ctx->loop_status == XMPP_LOOP_RUNNING) {
+    ctx->loop_status = XMPP_LOOP_QUIT;
+  }
 }
