@@ -177,8 +177,10 @@ void conn_handler(xmpp_conn_t * const conn, const xmpp_conn_event_t status,
 
 - (void)disconnect
 {
-  xmpp_disconnect(_conn);
-  DDLogDebug(@"[client] Launch disconnect");
+  if ( [self state]!=ABClientStateDisconnected ) {
+    xmpp_disconnect(_conn);
+    DDLogDebug(@"[client] Launch disconnect");
+  }
 }
 
 - (ABClientState)state

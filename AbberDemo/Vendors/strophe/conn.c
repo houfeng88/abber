@@ -80,13 +80,15 @@ xmpp_conn_t *xmpp_conn_new(xmpp_ctx_t * const ctx)
 	conn->ctx = ctx;
 
 	conn->type = XMPP_UNKNOWN;
-        conn->state = XMPP_STATE_DISCONNECTED;
+  conn->state = XMPP_STATE_DISCONNECTED;
 	conn->sock = -1;
 	conn->tls = NULL;
 	conn->timeout_stamp = 0;
 	conn->error = 0;
 	conn->stream_error = NULL;
 
+  xmpp_debug(ctx, "conn", "Connection state XMPP_STATE_DISCONNECTED");
+      
 	/* default send parameters */
 	conn->blocking_send = 0;
 	conn->send_queue_max = DEFAULT_SEND_QUEUE_MAX;
@@ -436,6 +438,7 @@ int xmpp_connect_client(xmpp_conn_t * const conn,
      * from within the event loop */
 
     conn->state = XMPP_STATE_CONNECTING;
+    xmpp_debug(conn->ctx, "conn", "Connection state XMPP_STATE_CONNECTING");
     conn->timeout_stamp = time_stamp();
     xmpp_debug(conn->ctx, "xmpp", "attempting to connect to %s", connectdomain);
 
@@ -466,6 +469,7 @@ void conn_disconnect(xmpp_conn_t * const conn)
 {
     xmpp_debug(conn->ctx, "xmpp", "Closing socket.");
     conn->state = XMPP_STATE_DISCONNECTED;
+    xmpp_debug(conn->ctx, "conn", "Connection state XMPP_STATE_DISCONNECTED");
     if (conn->tls) {
 	tls_stop(conn->tls);
 	tls_free(conn->tls);
