@@ -7,8 +7,22 @@
 //
 
 #import <Foundation/Foundation.h>
+#include <strophe/strophe.h>
 
-@interface ABClient : NSObject {
+@interface ABClient : NSObject<
+    TKObserving
+> {
+  xmpp_ctx_t *_ctx;
+  xmpp_conn_t *_conn;
 }
+
++ (void)saveObject:(ABClient *)object;
+
++ (ABClient *)sharedObject;
+
+- (BOOL)connectWithPassport:(NSString *)pspt password:(NSString *)pswd server:(NSString *)svr port:(NSString *)prt;
+
+- (NSString *)passport;
+- (NSString *)password;
 
 @end

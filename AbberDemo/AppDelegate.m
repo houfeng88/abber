@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "roster.h"
+#import <abber/abber.h>
 
 @implementation AppDelegate
 
@@ -15,17 +15,25 @@
 {
   [self addLoggers];
   
-  roster();
-  
   _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-  
-  NSArray *ary = @[ @"A", @"B" ];
-  NSLog(@"%@", [ary objectOrNilAtIndex:0]);
   
   //NSObject *object = [[NSObject alloc] init];
   //[object string];
   
   DDLogError(@"abc");
+  
+  ABClient *client = [[ABClient alloc] init];
+  [ABClient saveObject:client];
+  
+  NSString *jid = @"tktony@is-a-furry.org";
+  NSString *pass = @"12345678";
+  
+  [[ABClient sharedObject] connectWithPassport:jid
+                                      password:pass
+                                        server:nil
+                                          port:nil];
+  
+  
   
   _window.backgroundColor = [UIColor whiteColor];
   [_window makeKeyAndVisible];
