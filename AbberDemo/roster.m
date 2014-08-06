@@ -91,12 +91,8 @@ void roster_conn_handler(xmpp_conn_t * const conn, const xmpp_conn_event_t statu
 
 void roster()
 {
-//  char *jid = "kevin@balee.com";
-//  char *pass = "123456";
-//  char *host = "192.168.7.215";
-  
-  char *jid = "tslily@is-a-furry.org";
-  char *pass = "Kevi5579";
+  char *jid = "tktony@is-a-furry.org";
+  char *pass = "12345678";
   char *host = "is-a-furry.org";
   
   
