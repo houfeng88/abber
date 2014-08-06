@@ -328,7 +328,7 @@ void xmpp_run(xmpp_ctx_t *ctx)
 
     ctx->loop_status = XMPP_LOOP_RUNNING;
     while (ctx->loop_status == XMPP_LOOP_RUNNING) {
-	xmpp_run_once(ctx, DEFAULT_TIMEOUT);
+      xmpp_run_once(ctx, DEFAULT_TIMEOUT);
     }
 
     xmpp_debug(ctx, "event", "Event loop completed.");

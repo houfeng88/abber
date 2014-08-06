@@ -89,23 +89,13 @@ void conn_handler(xmpp_conn_t * const conn, const xmpp_conn_event_t status,
 {
   self = [super init];
   if (self) {
-    
     xmpp_initialize();
-    
-    _ctx = xmpp_ctx_new(NULL, &ab_default_logger);
-    
-    _conn = xmpp_conn_new(_ctx);
-    
   }
   return self;
 }
 
 - (void)dealloc
 {
-  xmpp_conn_release(_conn);
-  
-  xmpp_ctx_free(_ctx);
-  
   xmpp_shutdown();
 }
 
@@ -145,11 +135,24 @@ static ABClient *Client = nil;
   prt = [_port intValue];
   
   
+  _ctx = xmpp_ctx_new(NULL, &ab_default_logger);
+  if ( !_ctx ) {
+    return NO;
+  }
+  
+  _conn = xmpp_conn_new(_ctx);
+  if ( !_conn ) {
+    xmpp_ctx_free(_ctx);
+    _ctx = NULL;
+    return NO;
+  }
+  
   xmpp_conn_set_jid(_conn, [pspt UTF8String]);
   
   xmpp_conn_set_pass(_conn, [pswd UTF8String]);
   
   if ( xmpp_connect_client(_conn, svr, prt, conn_handler, _ctx)!=0 ) {
+    [self clearConnection];
     return NO;
   }
   
@@ -160,6 +163,13 @@ static ABClient *Client = nil;
   
   return YES;
 }
+
+- (void)disconnect
+{
+  xmpp_disconnect(_conn);
+  DDLogDebug(@"[client] Launch disconnect");
+}
+
 
 - (NSString *)passport
 {
@@ -179,40 +189,6 @@ static ABClient *Client = nil;
   return nil;
 }
 
-- (void)launch1
-{
-  NSLog(@"HERE1");
-  [self performSelector:@selector(doit1)
-               onThread:[[self class] workingThread]
-             withObject:nil
-          waitUntilDone:NO];
-}
-
-- (void)launch2
-{
-  NSLog(@"HERE2");
-  [self performSelector:@selector(doit2)
-               onThread:[[self class] workingThread]
-             withObject:nil
-          waitUntilDone:NO];
-}
-
-- (void)doit1
-{
-  while (1) {
-    NSLog(@"doit1");
-    [NSThread sleepForTimeInterval:0.5];
-  }
-}
-
-- (void)doit2
-{
-  while (1) {
-    NSLog(@"doit2");
-    [NSThread sleepForTimeInterval:0.5];
-  }
-}
-
 
 
 #pragma mark - Private methods
@@ -220,6 +196,23 @@ static ABClient *Client = nil;
 - (void)startRunning
 {
   xmpp_run(_ctx);
+  DDLogDebug(@"[client] Run loop did end");
+  
+  [self clearConnection];
+}
+
+- (void)clearConnection
+{
+  DDLogDebug(@"[client] Clear connection");
+  if ( _conn ) {
+    xmpp_conn_release(_conn);
+    _conn = NULL;
+  }
+  
+  if ( _ctx ) {
+    xmpp_ctx_free(_ctx);
+    _ctx = NULL;
+  }
 }
 
 

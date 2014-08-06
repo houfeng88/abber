@@ -8,14 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #include <strophe/strophe.h>
+#import <strophe/hash.h>
+
 
 @interface ABClient : NSObject<
     TKObserving
 > {
   NSString *_server;
   NSString *_port;
-  
-  NSThread *_thread;
   
   xmpp_ctx_t *_ctx;
   xmpp_conn_t *_conn;
@@ -29,6 +29,7 @@
 + (ABClient *)sharedObject;
 
 - (BOOL)connectWithPassport:(NSString *)pspt password:(NSString *)pswd;
+- (void)disconnect;
 
 - (NSString *)passport;
 

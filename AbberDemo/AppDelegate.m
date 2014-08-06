@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import <abber/abber.h>
 
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -17,26 +18,24 @@
   
   _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   
-  //NSObject *object = [[NSObject alloc] init];
-  //[object string];
-  
-  DDLogError(@"abc");
-  
   ABClient *client = [[ABClient alloc] init];
   [ABClient saveObject:client];
   
-  [client performSelector:@selector(launch2) withObject:nil afterDelay:1.0];
-  [client performSelector:@selector(launch1) withObject:nil afterDelay:3.0];
+  UIButton *button = [[UIButton alloc] init];
+  button.normalTitle = @"Start";
+  button.normalTitleColor = [UIColor blackColor];
+  button.highlightedTitleColor = [UIColor redColor];
+  [button addTarget:self action:@selector(start:) forControlEvents:UIControlEventTouchUpInside];
+  [_window addSubview:button];
+  button.frame = CGRectMake(10.0, 30.0, 300.0, 40.0);
   
-//  NSString *jid = @"tktony@is-a-furry.org";
-//  NSString *pass = @"12345678";
-  
-//  [[ABClient sharedObject] connectWithPassport:jid
-//                                      password:pass
-//                                        server:nil
-//                                          port:nil];
-  
-  
+  button = [[UIButton alloc] init];
+  button.normalTitle = @"Stop";
+  button.normalTitleColor = [UIColor blackColor];
+  button.highlightedTitleColor = [UIColor redColor];
+  [button addTarget:self action:@selector(stop:) forControlEvents:UIControlEventTouchUpInside];
+  [_window addSubview:button];
+  button.frame = CGRectMake(10.0, 80.0, 300.0, 40.0);
   
   _window.backgroundColor = [UIColor whiteColor];
   [_window makeKeyAndVisible];
@@ -50,6 +49,19 @@
   DDFileLogger *fileLogger = [[DDFileLogger alloc] init];
   fileLogger.rollingFrequency = 24*60*60;
   [DDLog addLogger:fileLogger];
+}
+
+
+- (void)start:(id)sender
+{
+  NSString *pspt = @"tktony@is-a-furry.org";
+  NSString *pswd = @"12345678";
+  [[ABClient sharedObject] connectWithPassport:pspt password:pswd];
+}
+
+- (void)stop:(id)sender
+{
+  [[ABClient sharedObject] disconnect];
 }
 
 @end
