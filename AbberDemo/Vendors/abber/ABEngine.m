@@ -166,6 +166,34 @@
   }
 }
 
+- (void)updateVcard
+{
+//  <vCard xmlns='vcard-temp'>
+//  <FN>RealName</FN>
+//  <NICKNAME>EvilTwins</NICKNAME>
+//  <URL>http://kevin.com/</URL>
+//  <BDAY>1988-06-15</BDAY>
+//  <JABBERID>stpeter@jabber.org</JABBERID>
+//  <DESC>HHHHHHHHHH</DESC>
+//  <N><FAMILY/><GIVEN/><MIDDLE/></N>
+//  <ORG><ORGNAME/><ORGUNIT/></ORG>
+//  <TITLE/>
+//  <ROLE/>
+//  <TEL><WORK/><VOICE/><NUMBER/></TEL>
+//  <TEL><WORK/><FAX/><NUMBER/></TEL>
+//  <TEL><WORK/><MSG/><NUMBER/></TEL>
+//  <ADR><WORK/><EXTADD/><STREET/><LOCALITY/><REGION/><PCODE/><CTRY/></ADR>
+//  <TEL><HOME/><VOICE/><NUMBER/></TEL>
+//  <TEL><HOME/><FAX/><NUMBER/></TEL>
+//  <TEL><HOME/><MSG/><NUMBER/></TEL>
+//  <ADR><HOME/><EXTADD/><STREET/><LOCALITY/><REGION/><PCODE/><CTRY/></ADR>
+//  <EMAIL><INTERNET/><PREF/><USERID/></EMAIL>
+//  </vCard>
+  
+  char *xml = "<iq id='abcde' type='set'><vCard xmlns='vcard-temp'><FN>RealName</FN><NICKNAME>EvilTwins</NICKNAME><URL>http://kevin.com/</URL><BDAY>1988-06-15</BDAY><JABBERID>tskevin@is-a-furry.org</JABBERID><DESC>HHHHHHHHHH</DESC><N><FAMILY/><GIVEN/><MIDDLE/></N><ORG><ORGNAME/><ORGUNIT/></ORG><TITLE/><ROLE/><TEL><WORK/><VOICE/><NUMBER/></TEL><TEL><WORK/><FAX/><NUMBER/></TEL><TEL><WORK/><MSG/><NUMBER/></TEL><ADR><WORK/><EXTADD/><STREET/><LOCALITY/><REGION/><PCODE/><CTRY/></ADR><TEL><HOME/><VOICE/><NUMBER/></TEL><TEL><HOME/><FAX/><NUMBER/></TEL><TEL><HOME/><MSG/><NUMBER/></TEL><ADR><HOME/><EXTADD/><STREET/><LOCALITY/><REGION/><PCODE/><CTRY/></ADR><EMAIL><INTERNET/><PREF/><USERID/></EMAIL></vCard></iq>";
+  [self sendRaw:xml length:strlen(xml)];
+}
+
 
 - (void)requestRoster
 {

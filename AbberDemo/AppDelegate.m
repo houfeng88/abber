@@ -58,14 +58,16 @@
 
 - (void)start:(id)sender
 {
-  NSString *acnt = @"tktony@is-a-furry.org";
-  NSString *pswd = @"12345678";
+//  NSString *acnt = @"tktony@is-a-furry.org";
+//  NSString *pswd = @"12345678";
+  NSString *acnt = @"tskevin@is-a-furry.org";
+  NSString *pswd = @"Kevi5579";
   [[ABEngine sharedObject] connectWithAccount:acnt password:pswd];
 }
 
 - (void)stop:(id)sender
 {
-  [[ABEngine sharedObject] requestRoster];
+  [[ABEngine sharedObject] requestVcard:nil completion:NULL];
 }
 
 @end
