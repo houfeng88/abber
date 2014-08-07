@@ -160,7 +160,9 @@
     [self sendStanza:iq];
     xmpp_stanza_release(iq);
     
-    free(identifier);
+    if ( identifier ) {
+      free(identifier);
+    }
   }
 }
 
@@ -174,13 +176,15 @@
 //  </iq>
   
   if ( [self isConnected] ) {
-    xmpp_id_handler_add(_conn, ab_roster_handler, "roster", _ctx);
+    char *identifier = ab_create_rand_identifier("roster");
+    
+    xmpp_id_handler_add(_conn, ab_roster_handler, identifier, _ctx);
     
     
     xmpp_stanza_t *iq = xmpp_stanza_new(_ctx);
     xmpp_stanza_set_name(iq, "iq");
     xmpp_stanza_set_attribute(iq, "from", _conn->bound_jid);
-    xmpp_stanza_set_attribute(iq, "id", "roster");
+    xmpp_stanza_set_attribute(iq, "id", identifier);
     xmpp_stanza_set_attribute(iq, "type", "get");
     
     xmpp_stanza_t *query = xmpp_stanza_new(_ctx);
@@ -191,6 +195,10 @@
     
     [self sendStanza:iq];
     xmpp_stanza_release(iq);
+    
+    if ( identifier ) {
+      free(identifier);
+    }
   }
 }
 
