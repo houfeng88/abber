@@ -25,7 +25,8 @@ extern "C" {
 
 #include <stdio.h>
 
-/* namespace defines */
+#pragma mark - namespace defines
+
 /** @def XMPP_NS_CLIENT
  *  Namespace definition for 'jabber:client'.
  */
@@ -75,7 +76,11 @@ extern "C" {
  */
 #define XMPP_NS_ROSTER "jabber:iq:roster"
 
-/* error defines */
+
+
+
+#pragma mark - error defines
+
 /** @def XMPP_EOK
  *  Success error code.
  */
@@ -102,11 +107,7 @@ extern "C" {
 
 
 
-typedef struct _xmpp_stanza_t xmpp_stanza_t;
-
-
-
-/* initialization and shutdown */
+#pragma mark - initialization and shutdown
 
   void xmpp_initialize(void);
   void xmpp_shutdown(void);
@@ -114,14 +115,14 @@ typedef struct _xmpp_stanza_t xmpp_stanza_t;
 
 
 
-/* version */
+#pragma mark - version
 
   int xmpp_version_check(int major, int minor);
 
 
 
 
-/* logger */
+#pragma mark - logger
 
 typedef enum {
   XMPP_LEVEL_DEBUG,
@@ -144,11 +145,11 @@ typedef struct _xmpp_log_t xmpp_log_t;
 
 
   xmpp_log_t *xmpp_get_default_logger(xmpp_log_level_t level);
-  
 
 
 
-/* run-time contexts */
+
+#pragma mark - run-time contexts
 
 struct _xmpp_mem_t {
   void *(*alloc)(const size_t size, void * const userdata);
@@ -171,7 +172,70 @@ typedef struct _xmpp_ctx_t xmpp_ctx_t;
 
 
 
-/* connection */
+#pragma mark - stanzas
+
+typedef struct _xmpp_stanza_t xmpp_stanza_t;
+
+
+  xmpp_stanza_t *xmpp_stanza_new(xmpp_ctx_t *ctx);
+  xmpp_stanza_t *xmpp_stanza_clone(xmpp_stanza_t * const stanza);
+  xmpp_stanza_t *xmpp_stanza_copy(const xmpp_stanza_t * const stanza);
+  int            xmpp_stanza_release(xmpp_stanza_t * const stanza);
+
+
+  int xmpp_stanza_is_text(xmpp_stanza_t * const stanza);
+  int xmpp_stanza_is_tag(xmpp_stanza_t * const stanza);
+
+
+  char *xmpp_stanza_get_id(xmpp_stanza_t * const stanza);
+  int   xmpp_stanza_set_id(xmpp_stanza_t * const stanza, const char * const id);
+
+  char *xmpp_stanza_get_type(xmpp_stanza_t * const stanza);
+  int   xmpp_stanza_set_type(xmpp_stanza_t * const stanza, const char * const type);
+
+  char *xmpp_stanza_get_name(xmpp_stanza_t * const stanza);
+  int   xmpp_stanza_set_name(xmpp_stanza_t *stanza, const char * const name);
+
+  char *xmpp_stanza_get_ns(xmpp_stanza_t * const stanza);
+  int   xmpp_stanza_set_ns(xmpp_stanza_t * const stanza, const char * const ns);
+
+  char *xmpp_stanza_get_attribute(xmpp_stanza_t * const stanza, const char * const name);
+  int   xmpp_stanza_set_attribute(xmpp_stanza_t * const stanza, const char * const key, const char * const value);
+
+
+  char *xmpp_stanza_get_text(xmpp_stanza_t * const stanza);
+  char *xmpp_stanza_get_text_ptr(xmpp_stanza_t * const stanza);
+  int   xmpp_stanza_set_text(xmpp_stanza_t *stanza, const char * const text);
+  int   xmpp_stanza_set_text_with_size(xmpp_stanza_t *stanza, const char * const text, const size_t size);
+
+
+  int xmpp_stanza_add_child(xmpp_stanza_t *stanza, xmpp_stanza_t *child);
+  xmpp_stanza_t *xmpp_stanza_get_children(xmpp_stanza_t * const stanza);
+  xmpp_stanza_t *xmpp_stanza_get_child_by_name(xmpp_stanza_t * const stanza, const char * const name);
+  xmpp_stanza_t *xmpp_stanza_get_child_by_ns(xmpp_stanza_t * const stanza, const char * const ns);
+  xmpp_stanza_t *xmpp_stanza_get_next(xmpp_stanza_t * const stanza);
+
+
+  int xmpp_stanza_to_text(xmpp_stanza_t *stanza, char ** const buf, size_t * const buflen); // UNCLEAR
+
+
+// allocate and initialize a stanza in reply to another
+  //xmpp_stanza_t *xmpp_stanza_reply(const xmpp_stanza_t *stanza);
+
+
+// stanza subclasses
+  //void xmpp_message_new();
+  //void xmpp_message_get_body();
+  //void xmpp_message_set_body();
+
+  //void xmpp_iq_new();
+
+  //void xmpp_presence_new();
+
+
+
+
+#pragma mark - connection
 
 typedef struct _xmpp_conn_t xmpp_conn_t;
 
@@ -260,7 +324,7 @@ typedef void (*xmpp_conn_handler)(xmpp_conn_t * const conn,
 
 
 
-/* handlers */
+#pragma mark - handlers
 
 typedef int (*xmpp_timed_handler)(xmpp_conn_t * const conn, void * const userdata);
 
@@ -283,67 +347,7 @@ typedef int (*xmpp_handler)(xmpp_conn_t * const conn, xmpp_stanza_t * const stan
 
 
 
-/** stanzas **/
-
-  xmpp_stanza_t *xmpp_stanza_new(xmpp_ctx_t *ctx);
-  xmpp_stanza_t *xmpp_stanza_clone(xmpp_stanza_t * const stanza);
-  xmpp_stanza_t *xmpp_stanza_copy(const xmpp_stanza_t * const stanza);
-  int            xmpp_stanza_release(xmpp_stanza_t * const stanza);
-
-
-  int xmpp_stanza_is_text(xmpp_stanza_t * const stanza);
-  int xmpp_stanza_is_tag(xmpp_stanza_t * const stanza);
-
-
-  char *xmpp_stanza_get_id(xmpp_stanza_t * const stanza);
-  int   xmpp_stanza_set_id(xmpp_stanza_t * const stanza, const char * const id);
-
-  char *xmpp_stanza_get_type(xmpp_stanza_t * const stanza);
-  int   xmpp_stanza_set_type(xmpp_stanza_t * const stanza, const char * const type);
-
-  char *xmpp_stanza_get_name(xmpp_stanza_t * const stanza);
-  int   xmpp_stanza_set_name(xmpp_stanza_t *stanza, const char * const name);
-
-  char *xmpp_stanza_get_ns(xmpp_stanza_t * const stanza);
-  int   xmpp_stanza_set_ns(xmpp_stanza_t * const stanza, const char * const ns);
-
-  char *xmpp_stanza_get_attribute(xmpp_stanza_t * const stanza, const char * const name);
-  int   xmpp_stanza_set_attribute(xmpp_stanza_t * const stanza, const char * const key, const char * const value);
-
-
-  char *xmpp_stanza_get_text(xmpp_stanza_t * const stanza);
-  char *xmpp_stanza_get_text_ptr(xmpp_stanza_t * const stanza);
-  int   xmpp_stanza_set_text(xmpp_stanza_t *stanza, const char * const text);
-  int   xmpp_stanza_set_text_with_size(xmpp_stanza_t *stanza, const char * const text, const size_t size);
-
-
-  int xmpp_stanza_add_child(xmpp_stanza_t *stanza, xmpp_stanza_t *child);
-  xmpp_stanza_t *xmpp_stanza_get_children(xmpp_stanza_t * const stanza);
-  xmpp_stanza_t *xmpp_stanza_get_child_by_name(xmpp_stanza_t * const stanza, const char * const name);
-  xmpp_stanza_t *xmpp_stanza_get_child_by_ns(xmpp_stanza_t * const stanza, const char * const ns);
-  xmpp_stanza_t *xmpp_stanza_get_next(xmpp_stanza_t * const stanza);
-
-
-  int xmpp_stanza_to_text(xmpp_stanza_t *stanza, char ** const buf, size_t * const buflen); // UNCLEAR
-
-
-// allocate and initialize a stanza in reply to another
-  //xmpp_stanza_t *xmpp_stanza_reply(const xmpp_stanza_t *stanza);
-
-
-// stanza subclasses
-  //void xmpp_message_new();
-  //void xmpp_message_get_body();
-  //void xmpp_message_set_body();
-
-  //void xmpp_iq_new();
-
-  //void xmpp_presence_new();
-
-
-
-
-/** event loop **/
+#pragma mark - event loop
 
   void xmpp_run_once(xmpp_ctx_t *ctx, const unsigned long  timeout);
   void xmpp_run(xmpp_ctx_t *ctx);
