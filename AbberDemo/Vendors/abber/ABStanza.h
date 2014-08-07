@@ -27,4 +27,7 @@
 - (NSString *)valueForAttribute:(NSString *)attr;
 - (void)setValue:(NSString *)value forAttribute:(NSString *)attr;
 
+- (NSString *)textValue;
+- (void)setTextValue:(NSString *)text;
+
 @end

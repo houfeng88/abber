@@ -7,6 +7,7 @@
 //
 
 #import "ABStanza.h"
+#include "internal/abcommon.h"
 
 @implementation ABStanza
 
@@ -74,7 +75,7 @@
 {
   NSString *value = nil;
   if ( [attr length]>0 ) {
-    value = [[NSString alloc] initWithUTF8String:xmpp_stanza_get_attribute(_cstanza, [attr UTF8String])];
+    value = [[NSString alloc] initWithUTF8String:xmpp_stanza_get_attribute(_cstanza, AB_CSTR(attr))];
   }
   return value;
 }
@@ -82,8 +83,17 @@
 - (void)setValue:(NSString *)value forAttribute:(NSString *)attr
 {
   if ( [attr length]>0 ) {
-    xmpp_stanza_set_attribute(_cstanza, [attr UTF8String], [value UTF8String]);
+    xmpp_stanza_set_attribute(_cstanza, AB_CSTR(attr), AB_CSTR(value));
   }
+}
+
+- (NSString *)textValue
+{
+  return nil;
+}
+
+- (void)setTextValue:(NSString *)text
+{
 }
 
 @end

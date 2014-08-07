@@ -166,32 +166,79 @@
   }
 }
 
-- (void)updateVcard
+- (void)updateVcard:(NSString *)nickname desc:(NSString *)desc
 {
-//  <vCard xmlns='vcard-temp'>
-//  <FN>RealName</FN>
-//  <NICKNAME>EvilTwins</NICKNAME>
-//  <URL>http://kevin.com/</URL>
-//  <BDAY>1988-06-15</BDAY>
-//  <JABBERID>stpeter@jabber.org</JABBERID>
-//  <DESC>HHHHHHHHHH</DESC>
-//  <N><FAMILY/><GIVEN/><MIDDLE/></N>
-//  <ORG><ORGNAME/><ORGUNIT/></ORG>
-//  <TITLE/>
-//  <ROLE/>
-//  <TEL><WORK/><VOICE/><NUMBER/></TEL>
-//  <TEL><WORK/><FAX/><NUMBER/></TEL>
-//  <TEL><WORK/><MSG/><NUMBER/></TEL>
-//  <ADR><WORK/><EXTADD/><STREET/><LOCALITY/><REGION/><PCODE/><CTRY/></ADR>
-//  <TEL><HOME/><VOICE/><NUMBER/></TEL>
-//  <TEL><HOME/><FAX/><NUMBER/></TEL>
-//  <TEL><HOME/><MSG/><NUMBER/></TEL>
-//  <ADR><HOME/><EXTADD/><STREET/><LOCALITY/><REGION/><PCODE/><CTRY/></ADR>
-//  <EMAIL><INTERNET/><PREF/><USERID/></EMAIL>
-//  </vCard>
+//  <iq id='v2' type='set'>
+//    <vCard xmlns='vcard-temp'>
+//      <NICKNAME>nickname</NICKNAME>
+//      <DESC>desc</DESC>
+//    </vCard>
+//  </iq>
   
-  char *xml = "<iq id='abcde' type='set'><vCard xmlns='vcard-temp'><FN>RealName</FN><NICKNAME>EvilTwins</NICKNAME><URL>http://kevin.com/</URL><BDAY>1988-06-15</BDAY><JABBERID>tskevin@is-a-furry.org</JABBERID><DESC>HHHHHHHHHH</DESC><N><FAMILY/><GIVEN/><MIDDLE/></N><ORG><ORGNAME/><ORGUNIT/></ORG><TITLE/><ROLE/><TEL><WORK/><VOICE/><NUMBER/></TEL><TEL><WORK/><FAX/><NUMBER/></TEL><TEL><WORK/><MSG/><NUMBER/></TEL><ADR><WORK/><EXTADD/><STREET/><LOCALITY/><REGION/><PCODE/><CTRY/></ADR><TEL><HOME/><VOICE/><NUMBER/></TEL><TEL><HOME/><FAX/><NUMBER/></TEL><TEL><HOME/><MSG/><NUMBER/></TEL><ADR><HOME/><EXTADD/><STREET/><LOCALITY/><REGION/><PCODE/><CTRY/></ADR><EMAIL><INTERNET/><PREF/><USERID/></EMAIL></vCard></iq>";
-  [self sendRaw:xml length:strlen(xml)];
+  if ( [self isConnected] ) {
+    char *identifier = ab_create_jid_identifier("vcard", _conn->jid);
+    
+    //xmpp_id_handler_add(_conn, ab_roster_handler, identifier, _ctx);
+    
+    
+    const char *cnickname = "";
+    if ( [nickname length]>0 ) {
+      cnickname = AB_CSTR(nickname);
+    }
+    
+    const char *cdesc = "";
+    if ( [desc length]>0 ) {
+      cdesc = AB_CSTR(desc);
+    }
+    
+    
+    xmpp_stanza_t *iq = xmpp_stanza_new(_ctx);
+    xmpp_stanza_set_name(iq, "iq");
+    xmpp_stanza_set_attribute(iq, "id", identifier);
+    xmpp_stanza_set_attribute(iq, "type", "set");
+    
+    xmpp_stanza_t *vcard = xmpp_stanza_new(_ctx);
+    xmpp_stanza_set_name(vcard, "vCard");
+    xmpp_stanza_set_ns(vcard, "vcard-temp");
+    
+    
+    xmpp_stanza_t *tmp = xmpp_stanza_new(_ctx);
+    xmpp_stanza_set_name(tmp, "NICKNAME");
+    
+    xmpp_stanza_t *text = xmpp_stanza_new(_ctx);
+    text->type = XMPP_STANZA_TEXT;
+    xmpp_stanza_set_text(text, cnickname);
+    xmpp_stanza_add_child(tmp, text);
+    xmpp_stanza_release(text);
+    
+    xmpp_stanza_add_child(vcard, tmp);
+    xmpp_stanza_release(tmp);
+    
+    tmp = xmpp_stanza_new(_ctx);
+    xmpp_stanza_set_name(tmp, "DESC");
+    
+    text = xmpp_stanza_new(_ctx);
+    text->type = XMPP_STANZA_TEXT;
+    xmpp_stanza_set_text(text, cdesc);
+    xmpp_stanza_add_child(tmp, text);
+    xmpp_stanza_release(text);
+    
+    xmpp_stanza_add_child(vcard, tmp);
+    xmpp_stanza_release(tmp);
+    
+    xmpp_stanza_add_child(iq, vcard);
+    xmpp_stanza_release(vcard);
+    
+    
+    
+    
+    [self sendStanza:iq];
+    xmpp_stanza_release(iq);
+    
+    if ( identifier ) {
+      free(identifier);
+    }
+  }
 }
 
 

@@ -54,7 +54,7 @@ typedef enum {
 - (BOOL)isConnected;
 
 - (void)requestVcard:(NSString *)jid completion:(ABEngineRequestCompletionHandler)handler;
-- (void)updateVcard;
+- (void)updateVcard:(NSString *)nickname desc:(NSString *)desc;
 
 - (void)requestRoster;
 
