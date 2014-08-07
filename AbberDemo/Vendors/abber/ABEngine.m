@@ -7,59 +7,9 @@
 //
 
 #import "ABEngine.h"
-#include <strophe/common.h>
+#include "internal/handler.h"
 #include "internal/logger.h"
 #include "internal/rawdata.h"
-
-
-int ab_roster_handler(xmpp_conn_t * const conn,
-                      xmpp_stanza_t * const stanza,
-                      void * const userdata)
-{
-  xmpp_stanza_t *query, *item;
-  char *type, *name;
-  
-  type = xmpp_stanza_get_type(stanza);
-  if (strcmp(type, "error") == 0)
-    fprintf(stderr, "ERROR: query failed\n");
-  else {
-    query = xmpp_stanza_get_child_by_name(stanza, "query");
-    printf("Roster:\n");
-    for (item = xmpp_stanza_get_children(query); item;
-         item = xmpp_stanza_get_next(item))
-	    if ((name = xmpp_stanza_get_attribute(item, "name")))
-        printf("\t %s (%s) sub=%s\n",
-               name,
-               xmpp_stanza_get_attribute(item, "jid"),
-               xmpp_stanza_get_attribute(item, "subscription"));
-	    else
-        printf("\t %s sub=%s\n",
-               xmpp_stanza_get_attribute(item, "jid"),
-               xmpp_stanza_get_attribute(item, "subscription"));
-    printf("END OF LIST\n");
-  }
-  
-  return 0;
-}
-
-void ab_connection_handler(xmpp_conn_t * const conn,
-                           const xmpp_conn_event_t status,
-                           const int error,
-                           xmpp_stream_error_t * const stream_error,
-                           void * const userdata)
-{
-  //ABEngine *engine = (__bridge ABEngine *)userdata;
-  
-  if ( status==XMPP_CONN_CONNECT ) {
-    DDLogCDebug(@"[conn] Handler: connected");
-  } else if ( status==XMPP_CONN_DISCONNECT ) {
-    DDLogCDebug(@"[conn] Handler: disconnected");
-  } else if ( status==XMPP_CONN_FAIL ) {
-    DDLogCDebug(@"[conn] Handler: failed");
-  }
-}
-
-
 
 @implementation ABEngine
 
