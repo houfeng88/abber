@@ -546,39 +546,39 @@ void xmpp_disconnect(xmpp_conn_t * const conn)
 void xmpp_send_raw_string(xmpp_conn_t * const conn, 
 			  const char * const fmt, ...)
 {
-    va_list ap;
-    size_t len;
-    char buf[1024]; /* small buffer for common case */
-    char *bigbuf;
-
-    va_start(ap, fmt);
-    len = xmpp_vsnprintf(buf, 1024, fmt, ap);
-    va_end(ap);
-
-    if (len >= 1024) {
-	/* we need more space for this data, so we allocate a big 
-	 * enough buffer and print to that */
-	len++; /* account for trailing \0 */
-	bigbuf = xmpp_alloc(conn->ctx, len);
-	if (!bigbuf) {
+  va_list ap;
+  size_t len;
+  char buf[1024]; /* small buffer for common case */
+  char *bigbuf;
+  
+  va_start(ap, fmt);
+  len = xmpp_vsnprintf(buf, 1024, fmt, ap);
+  va_end(ap);
+  
+  if (len >= 1024) {
+    /* we need more space for this data, so we allocate a big
+     * enough buffer and print to that */
+    len++; /* account for trailing \0 */
+    bigbuf = xmpp_alloc(conn->ctx, len);
+    if (!bigbuf) {
 	    xmpp_debug(conn->ctx, "xmpp", "Could not allocate memory for send_raw_string");
 	    return;
-	}
-	va_start(ap, fmt);
-	xmpp_vsnprintf(bigbuf, len, fmt, ap);
-	va_end(ap);
-
-	xmpp_debug(conn->ctx, "conn", "SENT: %s", bigbuf);
-
-	/* len - 1 so we don't send trailing \0 */
-	xmpp_send_raw(conn, bigbuf, len - 1);
-
-	xmpp_free(conn->ctx, bigbuf);
-    } else {
-	xmpp_debug(conn->ctx, "conn", "SENT: %s", buf);
-
-	xmpp_send_raw(conn, buf, len);
     }
+    va_start(ap, fmt);
+    xmpp_vsnprintf(bigbuf, len, fmt, ap);
+    va_end(ap);
+    
+    xmpp_debug(conn->ctx, "conn", "SENT: %s", bigbuf);
+    
+    /* len - 1 so we don't send trailing \0 */
+    xmpp_send_raw(conn, bigbuf, len - 1);
+    
+    xmpp_free(conn->ctx, bigbuf);
+  } else {
+    xmpp_debug(conn->ctx, "conn", "SENT: %s", buf);
+    
+    xmpp_send_raw(conn, buf, len);
+  }
 }
 
 /** Send raw bytes to the XMPP server.

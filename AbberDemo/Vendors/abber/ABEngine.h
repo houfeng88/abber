@@ -1,5 +1,5 @@
 //
-//  ABClient.h
+//  ABEngine.h
 //  AbberDemo
 //
 //  Created by Kevin on 8/6/14.
@@ -8,15 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #include <strophe/strophe.h>
-#import <strophe/hash.h>
 
 typedef enum {
-  ABClientStateDisconnected = 0,
-  ABClientStateConnecting   = 1,
-  ABClientStateConnected    = 2
-} ABClientState;
+  ABEngineStateDisconnected = 0,
+  ABEngineStateConnecting   = 1,
+  ABEngineStateConnected    = 2
+} ABEngineState;
 
-@interface ABClient : NSObject<
+@interface ABEngine : NSObject<
     TKObserving
 > {
   NSString *_server;
@@ -24,7 +23,10 @@ typedef enum {
   NSString *_account;
   NSString *_password;
   
-  NSMutableArray *_observers;
+  void *_sendQueue[64];
+  NSLock *_sendQueueLock;
+  
+  NSMutableArray *_observerAry;
   
   xmpp_ctx_t *_ctx;
   xmpp_conn_t *_conn;
@@ -35,14 +37,14 @@ typedef enum {
 @property (nonatomic, copy, readonly) NSString *account;
 @property (nonatomic, copy, readonly) NSString *password;
 
-+ (ABClient *)sharedObject;
++ (ABEngine *)sharedObject;
 
 
 - (BOOL)connectWithAccount:(NSString *)acnt password:(NSString *)pswd;
 
 - (void)disconnect;
 
-- (ABClientState)state;
+- (ABEngineState)state;
 
 
 - (void)requestRoster;

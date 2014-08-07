@@ -53,12 +53,12 @@
 {
   NSString *acnt = @"tktony@is-a-furry.org";
   NSString *pswd = @"12345678";
-  [[ABClient sharedObject] connectWithAccount:acnt password:pswd];
+  [[ABEngine sharedObject] connectWithAccount:acnt password:pswd];
 }
 
 - (void)stop:(id)sender
 {
-  [[ABClient sharedObject] requestRoster];
+  [[ABEngine sharedObject] requestRoster];
 }
 
 @end

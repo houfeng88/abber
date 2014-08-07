@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Tapmob. All rights reserved.
 //
 
-#import "logger.h"
+#include "logger.h"
 
 void ab_write_log(void * const userdata, const xmpp_log_level_t level, const char * const area, const char * const msg)
 {
@@ -21,4 +21,4 @@ void ab_write_log(void * const userdata, const xmpp_log_level_t level, const cha
   }
 }
 
-xmpp_log_t ab_default_logger = {&ab_write_log, NULL};
+xmpp_log_t ab_default_logger = { &ab_write_log, NULL };

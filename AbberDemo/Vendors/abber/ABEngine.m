@@ -1,14 +1,16 @@
 //
-//  ABClient.m
+//  ABEngine.m
 //  AbberDemo
 //
 //  Created by Kevin on 8/6/14.
 //  Copyright (c) 2014 Tapmob. All rights reserved.
 //
 
-#import "ABClient.h"
+#import "ABEngine.h"
 #include <strophe/common.h>
 #import "internal/logger.h"
+#import "internal/queue.h"
+
 
 int ab_roster_handler(xmpp_conn_t * const conn,
                       xmpp_stanza_t * const stanza,
@@ -61,7 +63,7 @@ void ab_connection_handler(xmpp_conn_t * const conn,
 
 
 
-@implementation ABClient
+@implementation ABEngine
 
 #pragma mark - Memory management
 
@@ -83,9 +85,9 @@ void ab_connection_handler(xmpp_conn_t * const conn,
 
 #pragma mark - Public methods
 
-+ (ABClient *)sharedObject
++ (ABEngine *)sharedObject
 {
-  static ABClient *Client = nil;
+  static ABEngine *Client = nil;
   static dispatch_once_t Token;
   dispatch_once(&Token, ^{
     Client = [[self alloc] init];
@@ -105,7 +107,7 @@ void ab_connection_handler(xmpp_conn_t * const conn,
   }
   
   
-  if ( [self state]!=ABClientStateDisconnected ) {
+  if ( [self state]!=ABEngineStateDisconnected ) {
     return YES;
   }
   
@@ -138,25 +140,25 @@ void ab_connection_handler(xmpp_conn_t * const conn,
 
 - (void)disconnect
 {
-  if ( [self state]!=ABClientStateDisconnected ) {
+  if ( [self state]!=ABEngineStateDisconnected ) {
     xmpp_disconnect(_conn);
     DDLogDebug(@"[client] Launch disconnect");
   }
 }
 
-- (ABClientState)state
+- (ABEngineState)state
 {
   if ( _conn ) {
     if ( _conn->state==XMPP_STATE_DISCONNECTED ) {
-      return ABClientStateDisconnected;
+      return ABEngineStateDisconnected;
     } else if ( _conn->state==XMPP_STATE_CONNECTING ) {
-      return ABClientStateConnecting;
+      return ABEngineStateConnecting;
     } else if ( _conn->state==XMPP_STATE_CONNECTED ) {
-      return ABClientStateConnected;
+      return ABEngineStateConnected;
     }
   }
   
-  return ABClientStateDisconnected;
+  return ABEngineStateDisconnected;
 }
 
 
@@ -168,25 +170,55 @@ void ab_connection_handler(xmpp_conn_t * const conn,
 //    <query xmlns='jabber:iq:roster'/>
 //  </iq>
   
-  if ( [self state]==ABClientStateConnected ) {
-    xmpp_id_handler_add(_conn, ab_roster_handler, "ROSTER_1", _ctx);
-    
-    
-    xmpp_stanza_t *iq = xmpp_stanza_new(_ctx);
-    xmpp_stanza_set_name(iq, "iq");
-    xmpp_stanza_set_attribute(iq, "from", [_account UTF8String]);
-    xmpp_stanza_set_attribute(iq, "id", "ROSTER_1");
-    xmpp_stanza_set_attribute(iq, "type", "get");
-    
-    xmpp_stanza_t *query = xmpp_stanza_new(_ctx);
-    xmpp_stanza_set_name(query, "query");
-    xmpp_stanza_set_ns(query, XMPP_NS_ROSTER);
-    xmpp_stanza_add_child(iq, query);
-    xmpp_stanza_release(query);
-    
-    xmpp_send(_conn, iq);
-    xmpp_stanza_release(iq);
+//  if ( [self state]==ABEngineStateConnected ) {
+//    xmpp_id_handler_add(_conn, ab_roster_handler, "ROSTER_1", _ctx);
+//    
+//    
+//    xmpp_stanza_t *iq = xmpp_stanza_new(_ctx);
+//    xmpp_stanza_set_name(iq, "iq");
+//    xmpp_stanza_set_attribute(iq, "from", [_account UTF8String]);
+//    xmpp_stanza_set_attribute(iq, "id", "ROSTER_1");
+//    xmpp_stanza_set_attribute(iq, "type", "get");
+//    
+//    xmpp_stanza_t *query = xmpp_stanza_new(_ctx);
+//    xmpp_stanza_set_name(query, "query");
+//    xmpp_stanza_set_ns(query, XMPP_NS_ROSTER);
+//    xmpp_stanza_add_child(iq, query);
+//    xmpp_stanza_release(query);
+//    
+//    xmpp_send(_conn, iq);
+//    xmpp_stanza_release(iq);
+//  }
+  
+  
+  rawdata_t *queue = NULL;
+  
+  ab_enqueue(&queue, ab_create_rawdata("a", 1));
+  ab_enqueue(&queue, ab_create_rawdata("c", 1));
+  ab_enqueue(&queue, ab_create_rawdata("b", 1));
+  
+  rawdata_t *iter = NULL;
+  while ( (iter = ab_dequeue(&queue)) ) {
+    NSLog(@"%s", iter->data);
+    ab_destroy_rawdata(iter);
   }
+  
+  
+  ab_enqueue(&queue, ab_create_rawdata("3", 1));
+  ab_enqueue(&queue, ab_create_rawdata("1", 1));
+  ab_enqueue(&queue, ab_create_rawdata("2", 1));
+  
+  iter = NULL;
+  while ( (iter = ab_dequeue(&queue)) ) {
+    NSLog(@"%s", iter->data);
+    ab_destroy_rawdata(iter);
+  }
+//  rawdata_t *iter = queue;
+//  while ( iter ) {
+//    NSLog(@"%s", iter->data);
+//    iter = iter->next;
+//  }
+  
 }
 
 
@@ -206,6 +238,7 @@ void ab_connection_handler(xmpp_conn_t * const conn,
   [self clearConnection];
 }
 
+
 - (void)clearConnection
 {
   DDLogDebug(@"[client] Clear connection");
@@ -217,6 +250,14 @@ void ab_connection_handler(xmpp_conn_t * const conn,
   if ( _ctx ) {
     xmpp_ctx_free(_ctx);
     _ctx = NULL;
+  }
+}
+
+
+- (void)sendRawString:(const char *)string
+{
+  if ( (string) && (strlen(string)>0) ) {
+    
   }
 }
 
@@ -251,10 +292,10 @@ void ab_connection_handler(xmpp_conn_t * const conn,
 
 - (NSArray *)observers
 {
-  if ( !_observers ) {
-    _observers = [[NSMutableArray alloc] init];
+  if ( !_observerAry ) {
+    _observerAry = [[NSMutableArray alloc] init];
   }
-  return _observers;
+  return _observerAry;
 }
 
 - (id)addObserver:(id)observer
@@ -271,7 +312,7 @@ void ab_connection_handler(xmpp_conn_t * const conn,
 
 - (void)removeAllObservers
 {
-  _observers = nil;
+  _observerAry = nil;
 }
 
 @end
