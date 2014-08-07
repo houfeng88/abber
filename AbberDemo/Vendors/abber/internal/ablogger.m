@@ -1,12 +1,12 @@
 //
-//  logger.m
+//  ablogger.m
 //  AbberDemo
 //
 //  Created by Kevin on 8/5/14.
 //  Copyright (c) 2014 Tapmob. All rights reserved.
 //
 
-#include "logger.h"
+#include "ablogger.h"
 
 void ab_write_log(void * const userdata, const xmpp_log_level_t level, const char * const area, const char * const msg)
 {

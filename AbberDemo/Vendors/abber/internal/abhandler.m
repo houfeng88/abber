@@ -1,12 +1,12 @@
 //
-//  handler.m
+//  abhandler.m
 //  AbberDemo
 //
 //  Created by Kevin Wu on 8/7/14.
 //  Copyright (c) 2014 Tapmob. All rights reserved.
 //
 
-#import "handler.h"
+#include "abhandler.h"
 
 void ab_connection_handler(xmpp_conn_t * const conn,
                            const xmpp_conn_event_t status,
@@ -23,6 +23,17 @@ void ab_connection_handler(xmpp_conn_t * const conn,
   } else if ( status==XMPP_CONN_FAIL ) {
     DDLogCDebug(@"[conn] Handler: failed");
   }
+}
+
+
+
+
+int ab_vcard_handler(xmpp_conn_t * const conn,
+                     xmpp_stanza_t * const stanza,
+                     void * const userdata)
+{
+  DDLogCDebug(@"VCARD received");
+  return 0;
 }
 
 

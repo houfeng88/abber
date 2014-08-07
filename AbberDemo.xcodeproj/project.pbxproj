@@ -12,9 +12,10 @@
 		0A5BAE6919913688001EF07E /* ABPresence.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5BAE6819913688001EF07E /* ABPresence.m */; };
 		0A5BAE6D19913715001EF07E /* ABStanza.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5BAE6C19913715001EF07E /* ABStanza.m */; };
 		0A5BAE701991382E001EF07E /* ABEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5BAE6F1991382E001EF07E /* ABEngine.m */; };
-		0A692A3619910BB0008F3C74 /* logger.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A692A3519910BB0008F3C74 /* logger.m */; };
-		2328DE5619935A050042D505 /* handler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2328DE5519935A050042D505 /* handler.m */; };
-		23D77E3D199314BB008AA9BE /* rawdata.m in Sources */ = {isa = PBXBuildFile; fileRef = 23D77E3C199314BB008AA9BE /* rawdata.m */; };
+		0A692A3619910BB0008F3C74 /* ablogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A692A3519910BB0008F3C74 /* ablogger.m */; };
+		2328DE5619935A050042D505 /* abhandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2328DE5519935A050042D505 /* abhandler.m */; };
+		2328DE59199366E50042D505 /* abcommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 2328DE58199366E50042D505 /* abcommon.m */; };
+		23D77E3D199314BB008AA9BE /* abrawdata.m in Sources */ = {isa = PBXBuildFile; fileRef = 23D77E3C199314BB008AA9BE /* abrawdata.m */; };
 		23F6C0DA19909596005D2ED7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23F6C0D919909596005D2ED7 /* Foundation.framework */; };
 		23F6C0DE19909596005D2ED7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23F6C0DD19909596005D2ED7 /* UIKit.framework */; };
 		23F6C0E619909596005D2ED7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 23F6C0E519909596005D2ED7 /* main.m */; };
@@ -56,12 +57,14 @@
 		0A5BAE6C19913715001EF07E /* ABStanza.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABStanza.m; sourceTree = "<group>"; };
 		0A5BAE6E1991382E001EF07E /* ABEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEngine.h; sourceTree = "<group>"; };
 		0A5BAE6F1991382E001EF07E /* ABEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABEngine.m; sourceTree = "<group>"; };
-		0A692A3419910BB0008F3C74 /* logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = logger.h; sourceTree = "<group>"; };
-		0A692A3519910BB0008F3C74 /* logger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = logger.m; sourceTree = "<group>"; };
-		2328DE5419935A050042D505 /* handler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = handler.h; sourceTree = "<group>"; };
-		2328DE5519935A050042D505 /* handler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = handler.m; sourceTree = "<group>"; };
-		23D77E3B199314BB008AA9BE /* rawdata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rawdata.h; sourceTree = "<group>"; };
-		23D77E3C199314BB008AA9BE /* rawdata.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = rawdata.m; sourceTree = "<group>"; };
+		0A692A3419910BB0008F3C74 /* ablogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ablogger.h; sourceTree = "<group>"; };
+		0A692A3519910BB0008F3C74 /* ablogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ablogger.m; sourceTree = "<group>"; };
+		2328DE5419935A050042D505 /* abhandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = abhandler.h; sourceTree = "<group>"; };
+		2328DE5519935A050042D505 /* abhandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = abhandler.m; sourceTree = "<group>"; };
+		2328DE57199366E50042D505 /* abcommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = abcommon.h; sourceTree = "<group>"; };
+		2328DE58199366E50042D505 /* abcommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = abcommon.m; sourceTree = "<group>"; };
+		23D77E3B199314BB008AA9BE /* abrawdata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = abrawdata.h; sourceTree = "<group>"; };
+		23D77E3C199314BB008AA9BE /* abrawdata.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = abrawdata.m; sourceTree = "<group>"; };
 		23F6C0D619909596005D2ED7 /* AbberDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AbberDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		23F6C0D919909596005D2ED7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		23F6C0DD19909596005D2ED7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -221,12 +224,14 @@
 		0A692A3319910BB0008F3C74 /* internal */ = {
 			isa = PBXGroup;
 			children = (
-				2328DE5419935A050042D505 /* handler.h */,
-				2328DE5519935A050042D505 /* handler.m */,
-				0A692A3419910BB0008F3C74 /* logger.h */,
-				0A692A3519910BB0008F3C74 /* logger.m */,
-				23D77E3B199314BB008AA9BE /* rawdata.h */,
-				23D77E3C199314BB008AA9BE /* rawdata.m */,
+				2328DE57199366E50042D505 /* abcommon.h */,
+				2328DE58199366E50042D505 /* abcommon.m */,
+				2328DE5419935A050042D505 /* abhandler.h */,
+				2328DE5519935A050042D505 /* abhandler.m */,
+				0A692A3419910BB0008F3C74 /* ablogger.h */,
+				0A692A3519910BB0008F3C74 /* ablogger.m */,
+				23D77E3B199314BB008AA9BE /* abrawdata.h */,
+				23D77E3C199314BB008AA9BE /* abrawdata.m */,
 			);
 			path = internal;
 			sourceTree = "<group>";
@@ -519,7 +524,7 @@
 			files = (
 				23F6C1D31990A993005D2ED7 /* sha1.c in Sources */,
 				23F6C1D11990A993005D2ED7 /* parser.c in Sources */,
-				2328DE5619935A050042D505 /* handler.m in Sources */,
+				2328DE5619935A050042D505 /* abhandler.m in Sources */,
 				23F6C1D91990A993005D2ED7 /* util.c in Sources */,
 				23F6C1D01990A993005D2ED7 /* oostanza.cpp in Sources */,
 				0A5BAE701991382E001EF07E /* ABEngine.m in Sources */,
@@ -528,7 +533,7 @@
 				23F6C1D71990A993005D2ED7 /* thread.c in Sources */,
 				23F6C0EA19909596005D2ED7 /* AppDelegate.m in Sources */,
 				0A5BAE6919913688001EF07E /* ABPresence.m in Sources */,
-				0A692A3619910BB0008F3C74 /* logger.m in Sources */,
+				0A692A3619910BB0008F3C74 /* ablogger.m in Sources */,
 				0A5BAE661991367B001EF07E /* ABMessage.m in Sources */,
 				23F6C1CF1990A993005D2ED7 /* oocontext.cpp in Sources */,
 				23F6C1DE1990AD7E005D2ED7 /* ABJid.m in Sources */,
@@ -542,9 +547,10 @@
 				23F6C1D51990A993005D2ED7 /* sock.c in Sources */,
 				23F6C1CE1990A993005D2ED7 /* md5.c in Sources */,
 				0A5BAE6319913665001EF07E /* ABIq.m in Sources */,
+				2328DE59199366E50042D505 /* abcommon.m in Sources */,
 				23F6C1CD1990A993005D2ED7 /* jid.c in Sources */,
 				23F6C1C71990A993005D2ED7 /* auth.c in Sources */,
-				23D77E3D199314BB008AA9BE /* rawdata.m in Sources */,
+				23D77E3D199314BB008AA9BE /* abrawdata.m in Sources */,
 				23F6C1C91990A993005D2ED7 /* ctx.c in Sources */,
 				23F6C1D41990A993005D2ED7 /* snprintf.c in Sources */,
 			);

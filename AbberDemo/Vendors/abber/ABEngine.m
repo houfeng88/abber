@@ -7,9 +7,10 @@
 //
 
 #import "ABEngine.h"
-#include "internal/handler.h"
-#include "internal/logger.h"
-#include "internal/rawdata.h"
+#include "internal/abcommon.h"
+#include "internal/abhandler.h"
+#include "internal/ablogger.h"
+#include "internal/abrawdata.h"
 
 @implementation ABEngine
 
@@ -128,6 +129,46 @@
 }
 
 
+- (void)requestVcard:(NSString *)jid completion:(ABEngineRequestCompletionHandler)handler
+{
+//  <iq id="32cb7637-8bdc-4a53-afb7-d6f30f2a841d"
+//      type="get">
+//    <vCard xmlns="vcard-temp"/>
+//  </iq>
+  
+  if ( [self isConnected] ) {
+    
+    char *identifier = ab_create_identifier("vcard", _conn->jid);
+    
+    xmpp_id_handler_add(_conn, ab_vcard_handler, identifier, NULL);
+    
+    
+    xmpp_stanza_t *iq = xmpp_stanza_new(_ctx);
+    xmpp_stanza_set_name(iq, "iq");
+    xmpp_stanza_set_attribute(iq, "from", _conn->bound_jid);
+    xmpp_stanza_set_attribute(iq, "id", identifier);
+    xmpp_stanza_set_attribute(iq, "type", "get");
+    
+    if ( [jid length]>0 ) {
+      xmpp_stanza_set_attribute(iq, "to", [jid UTF8String]);
+    } else {
+      xmpp_stanza_set_attribute(iq, "to", [_account UTF8String]);
+    }
+    
+    xmpp_stanza_t *query = xmpp_stanza_new(_ctx);
+    xmpp_stanza_set_name(query, "vCard");
+    xmpp_stanza_set_ns(query, "vcard-temp");
+    xmpp_stanza_add_child(iq, query);
+    xmpp_stanza_release(query);
+    
+    [self sendStanza:iq];
+    xmpp_stanza_release(iq);
+    
+    free(identifier);
+  }
+}
+
+
 - (void)requestRoster
 {
 //  <iq from='juliet@example.com/balcony'
@@ -142,7 +183,7 @@
     
     xmpp_stanza_t *iq = xmpp_stanza_new(_ctx);
     xmpp_stanza_set_name(iq, "iq");
-    xmpp_stanza_set_attribute(iq, "from", [_account UTF8String]);
+    xmpp_stanza_set_attribute(iq, "from", _conn->bound_jid);
     xmpp_stanza_set_attribute(iq, "id", "ROSTER_1");
     xmpp_stanza_set_attribute(iq, "type", "get");
     

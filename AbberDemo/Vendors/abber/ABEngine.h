@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #include <strophe/strophe.h>
 
+typedef void (^ABEngineRequestCompletionHandler)(id result, NSError *error);
+
 typedef enum {
   ABEngineStateDisconnected = 0,
   ABEngineStateConnecting   = 1,
@@ -50,6 +52,8 @@ typedef enum {
 - (BOOL)isDisconnected;
 - (BOOL)isConnecting;
 - (BOOL)isConnected;
+
+- (void)requestVcard:(NSString *)jid completion:(ABEngineRequestCompletionHandler)handler;
 
 - (void)requestRoster;
 

@@ -1,5 +1,5 @@
 //
-//  handler.h
+//  abhandler.h
 //  AbberDemo
 //
 //  Created by Kevin Wu on 8/7/14.
@@ -19,6 +19,13 @@ void ab_connection_handler(xmpp_conn_t * const conn,
                            const int error,
                            xmpp_stream_error_t * const stream_error,
                            void * const userdata);
+
+
+/* Vcard */
+
+int ab_vcard_handler(xmpp_conn_t * const conn,
+                      xmpp_stanza_t * const stanza,
+                      void * const userdata);
 
 
 /* Roster */

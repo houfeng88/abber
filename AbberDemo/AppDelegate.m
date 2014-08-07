@@ -16,6 +16,13 @@
 {
   [self addLoggers];
   
+  char *buf = "";
+  if ( strlen(buf)>0 ) {
+    NSLog(@"AA");
+  } else {
+    NSLog(@"BB");
+  }
+  
   _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   
   UIButton *button = [[UIButton alloc] init];
@@ -58,7 +65,7 @@
 
 - (void)stop:(id)sender
 {
-  [[ABEngine sharedObject] requestRoster];
+  [[ABEngine sharedObject] requestVcard:nil completion:NULL];
 }
 
 @end
