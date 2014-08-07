@@ -8,8 +8,8 @@
 
 #import "ABEngine.h"
 #include <strophe/common.h>
-#import "internal/logger.h"
-#import "internal/queue.h"
+#include "internal/logger.h"
+#include "internal/rawdata.h"
 
 
 int ab_roster_handler(xmpp_conn_t * const conn,
@@ -107,7 +107,7 @@ void ab_connection_handler(xmpp_conn_t * const conn,
   }
   
   
-  if ( [self state]!=ABEngineStateDisconnected ) {
+  if ( [self isConnecting] || [self isConnected] ) {
     return YES;
   }
   
@@ -140,8 +140,11 @@ void ab_connection_handler(xmpp_conn_t * const conn,
 
 - (void)disconnect
 {
-  if ( [self state]!=ABEngineStateDisconnected ) {
-    xmpp_disconnect(_conn);
+  if ( [self isConnecting] || [self isConnected] ) {
+    
+    char *cmd = "</stream:stream>";
+    [self sendRaw:cmd length:strlen(cmd)];
+    
     DDLogDebug(@"[client] Launch disconnect");
   }
 }
@@ -161,6 +164,21 @@ void ab_connection_handler(xmpp_conn_t * const conn,
   return ABEngineStateDisconnected;
 }
 
+- (BOOL)isDisconnected
+{
+  return ( (_conn) && (_conn->state==XMPP_STATE_DISCONNECTED) );
+}
+
+- (BOOL)isConnecting
+{
+  return ( (_conn) && (_conn->state==XMPP_STATE_CONNECTING) );
+}
+
+- (BOOL)isConnected
+{
+  return ( (_conn) && (_conn->state==XMPP_STATE_CONNECTED) );
+}
+
 
 - (void)requestRoster
 {
@@ -170,55 +188,25 @@ void ab_connection_handler(xmpp_conn_t * const conn,
 //    <query xmlns='jabber:iq:roster'/>
 //  </iq>
   
-//  if ( [self state]==ABEngineStateConnected ) {
-//    xmpp_id_handler_add(_conn, ab_roster_handler, "ROSTER_1", _ctx);
-//    
-//    
-//    xmpp_stanza_t *iq = xmpp_stanza_new(_ctx);
-//    xmpp_stanza_set_name(iq, "iq");
-//    xmpp_stanza_set_attribute(iq, "from", [_account UTF8String]);
-//    xmpp_stanza_set_attribute(iq, "id", "ROSTER_1");
-//    xmpp_stanza_set_attribute(iq, "type", "get");
-//    
-//    xmpp_stanza_t *query = xmpp_stanza_new(_ctx);
-//    xmpp_stanza_set_name(query, "query");
-//    xmpp_stanza_set_ns(query, XMPP_NS_ROSTER);
-//    xmpp_stanza_add_child(iq, query);
-//    xmpp_stanza_release(query);
-//    
-//    xmpp_send(_conn, iq);
-//    xmpp_stanza_release(iq);
-//  }
-  
-  
-  rawdata_t *queue = NULL;
-  
-  ab_enqueue(&queue, ab_create_rawdata("a", 1));
-  ab_enqueue(&queue, ab_create_rawdata("c", 1));
-  ab_enqueue(&queue, ab_create_rawdata("b", 1));
-  
-  rawdata_t *iter = NULL;
-  while ( (iter = ab_dequeue(&queue)) ) {
-    NSLog(@"%s", iter->data);
-    ab_destroy_rawdata(iter);
+  if ( [self isConnected] ) {
+    xmpp_id_handler_add(_conn, ab_roster_handler, "ROSTER_1", _ctx);
+    
+    
+    xmpp_stanza_t *iq = xmpp_stanza_new(_ctx);
+    xmpp_stanza_set_name(iq, "iq");
+    xmpp_stanza_set_attribute(iq, "from", [_account UTF8String]);
+    xmpp_stanza_set_attribute(iq, "id", "ROSTER_1");
+    xmpp_stanza_set_attribute(iq, "type", "get");
+    
+    xmpp_stanza_t *query = xmpp_stanza_new(_ctx);
+    xmpp_stanza_set_name(query, "query");
+    xmpp_stanza_set_ns(query, XMPP_NS_ROSTER);
+    xmpp_stanza_add_child(iq, query);
+    xmpp_stanza_release(query);
+    
+    [self sendStanza:iq];
+    xmpp_stanza_release(iq);
   }
-  
-  
-  ab_enqueue(&queue, ab_create_rawdata("3", 1));
-  ab_enqueue(&queue, ab_create_rawdata("1", 1));
-  ab_enqueue(&queue, ab_create_rawdata("2", 1));
-  
-  iter = NULL;
-  while ( (iter = ab_dequeue(&queue)) ) {
-    NSLog(@"%s", iter->data);
-    ab_destroy_rawdata(iter);
-  }
-//  rawdata_t *iter = queue;
-//  while ( iter ) {
-//    NSLog(@"%s", iter->data);
-//    iter = iter->next;
-//  }
-  
 }
 
 
@@ -226,13 +214,34 @@ void ab_connection_handler(xmpp_conn_t * const conn,
 
 - (void)connectAndRun
 {
-  const char *server = [_server UTF8String];
-  
-  unsigned short port = [_port intValue];
-  
-  if ( xmpp_connect_client(_conn, server, port, ab_connection_handler, _ctx)==0 ) {
-    xmpp_run(_ctx);
-    DDLogDebug(@"[client] Run loop did end");
+  if ( xmpp_connect_client(_conn, [_server UTF8String], [_port intValue], ab_connection_handler, _ctx)==0 ) {
+    
+    if ( _ctx->loop_status==XMPP_LOOP_NOTSTARTED ) {
+      
+      _ctx->loop_status = XMPP_LOOP_RUNNING;
+      
+      while ( _ctx->loop_status==XMPP_LOOP_RUNNING ) {
+        
+        xmpp_run_once(_ctx, 1);
+        
+        [_sendQueueLock lock];
+        rawdata_t *head = (rawdata_t *)_sendQueue;
+        _sendQueue = NULL;
+        while ( head ) {
+          rawdata_t *next = head->next;
+          
+          xmpp_send_raw(_conn, head->data, head->length);
+          xmpp_debug(_ctx, "conn", "SENT: %s", head->data);
+          ab_destroy_rawdata(head);
+          
+          head = next;
+        }
+        [_sendQueueLock unlock];
+      }
+      
+      xmpp_debug(_ctx, "event", "Event loop completed.");
+    }
+    
   }
   
   [self clearConnection];
@@ -254,10 +263,27 @@ void ab_connection_handler(xmpp_conn_t * const conn,
 }
 
 
-- (void)sendRawString:(const char *)string
+- (void)sendStanza:(xmpp_stanza_t *)stanza
 {
-  if ( (string) && (strlen(string)>0) ) {
-    
+  if ( [self isConnected] ) {
+    char *buffer;
+    size_t length;
+    if ( xmpp_stanza_to_text(stanza, &buffer, &length)==0 ) {
+      [self sendRaw:buffer length:length];
+      xmpp_free(_ctx, buffer);
+    }
+  }
+}
+
+- (void)sendRaw:(const char *)data length:(size_t)length
+{
+  if ( [self isConnected] ) {
+    if ( !_sendQueueLock ) {
+      _sendQueueLock = [[NSLock alloc] init];
+    }
+    [_sendQueueLock lock];
+    ab_enqueue((rawdata_t **)(&_sendQueue), ab_create_rawdata(data, length));
+    [_sendQueueLock unlock];
   }
 }
 

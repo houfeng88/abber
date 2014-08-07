@@ -23,10 +23,12 @@ typedef enum {
   NSString *_account;
   NSString *_password;
   
-  void *_sendQueue[64];
-  NSLock *_sendQueueLock;
   
   NSMutableArray *_observerAry;
+  
+  
+  void *_sendQueue;
+  NSLock *_sendQueueLock;
   
   xmpp_ctx_t *_ctx;
   xmpp_conn_t *_conn;
@@ -45,7 +47,9 @@ typedef enum {
 - (void)disconnect;
 
 - (ABEngineState)state;
-
+- (BOOL)isDisconnected;
+- (BOOL)isConnecting;
+- (BOOL)isConnected;
 
 - (void)requestRoster;
 

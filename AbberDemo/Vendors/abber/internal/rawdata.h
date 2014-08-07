@@ -13,7 +13,7 @@
 
 struct _rawdata_t {
   const char *data;
-  size_t len;
+  size_t length;
   struct _rawdata_t *next;
 };
 typedef struct _rawdata_t rawdata_t;
@@ -25,8 +25,10 @@ rawdata_t *ab_enqueue(rawdata_queue_t queue, rawdata_t *rawdata);
 
 rawdata_t *ab_dequeue(rawdata_queue_t queue);
 
+void ab_destroy_queue(rawdata_queue_t queue);
 
-rawdata_t *ab_create_rawdata(const char *data, const size_t len);
+
+rawdata_t *ab_create_rawdata(const char *data, const size_t length);
 
 void ab_destroy_rawdata(rawdata_t *rawdata);
 
