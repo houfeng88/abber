@@ -47,13 +47,9 @@
 
 - (BOOL)connectWithAccount:(NSString *)acnt password:(NSString *)pswd
 {
-  if ( [acnt length]<=0 ) {
-    return NO;
-  }
+  if ( [acnt length]<=0 ) return NO;
   
-  if ( [pswd length]<=0 ) {
-    return NO;
-  }
+  if ( [pswd length]<=0 ) return NO;
   
   
   if ( [self isConnecting] || [self isConnected] ) {
@@ -73,10 +69,10 @@
     return NO;
   }
   
-  xmpp_conn_set_jid(_conn, [acnt UTF8String]);
+  xmpp_conn_set_jid(_conn, AB_CSTR(acnt));
   _account = [acnt copy];
   
-  xmpp_conn_set_pass(_conn, [pswd UTF8String]);
+  xmpp_conn_set_pass(_conn, AB_CSTR(pswd));
   _password = [pswd copy];
   
   [self performSelector:@selector(connectAndRun)
@@ -138,7 +134,7 @@
   
   if ( [self isConnected] ) {
     
-    char *identifier = ab_create_identifier("vcard", _conn->jid);
+    char *identifier = ab_create_jid_identifier("vcard", _conn->jid);
     
     xmpp_id_handler_add(_conn, ab_vcard_handler, identifier, NULL);
     
@@ -150,9 +146,9 @@
     xmpp_stanza_set_attribute(iq, "type", "get");
     
     if ( [jid length]>0 ) {
-      xmpp_stanza_set_attribute(iq, "to", [jid UTF8String]);
+      xmpp_stanza_set_attribute(iq, "to", AB_CSTR(jid));
     } else {
-      xmpp_stanza_set_attribute(iq, "to", [_account UTF8String]);
+      xmpp_stanza_set_attribute(iq, "to", AB_CSTR(_account));
     }
     
     xmpp_stanza_t *query = xmpp_stanza_new(_ctx);
@@ -178,13 +174,13 @@
 //  </iq>
   
   if ( [self isConnected] ) {
-    xmpp_id_handler_add(_conn, ab_roster_handler, "ROSTER_1", _ctx);
+    xmpp_id_handler_add(_conn, ab_roster_handler, "roster", _ctx);
     
     
     xmpp_stanza_t *iq = xmpp_stanza_new(_ctx);
     xmpp_stanza_set_name(iq, "iq");
     xmpp_stanza_set_attribute(iq, "from", _conn->bound_jid);
-    xmpp_stanza_set_attribute(iq, "id", "ROSTER_1");
+    xmpp_stanza_set_attribute(iq, "id", "roster");
     xmpp_stanza_set_attribute(iq, "type", "get");
     
     xmpp_stanza_t *query = xmpp_stanza_new(_ctx);
@@ -203,7 +199,7 @@
 
 - (void)connectAndRun
 {
-  if ( xmpp_connect_client(_conn, [_server UTF8String], [_port intValue], ab_connection_handler, (__bridge void *)self)==0 ) {
+  if ( xmpp_connect_client(_conn, AB_CSTR(_server), [_port intValue], ab_connection_handler, (__bridge void *)self)==0 ) {
     
     if ( _ctx->loop_status==XMPP_LOOP_NOTSTARTED ) {
       
