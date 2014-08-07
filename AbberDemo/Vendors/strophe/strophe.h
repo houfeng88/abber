@@ -109,7 +109,7 @@ extern "C" {
 
 #pragma mark - initialization and shutdown
 
-  void xmpp_initialize(void);
+  void xmpp_initialize(void); // NOTE: 这两函数是否应该在 connect 和 disconnect 中调用？
   void xmpp_shutdown(void);
 
 
@@ -203,20 +203,20 @@ typedef struct _xmpp_stanza_t xmpp_stanza_t;
   int   xmpp_stanza_set_attribute(xmpp_stanza_t * const stanza, const char * const key, const char * const value);
 
 
-  char *xmpp_stanza_get_text(xmpp_stanza_t * const stanza);
+  char *xmpp_stanza_get_text(xmpp_stanza_t * const stanza); // NOTE: Caller should free return value
   char *xmpp_stanza_get_text_ptr(xmpp_stanza_t * const stanza);
   int   xmpp_stanza_set_text(xmpp_stanza_t *stanza, const char * const text);
   int   xmpp_stanza_set_text_with_size(xmpp_stanza_t *stanza, const char * const text, const size_t size);
 
 
-  int xmpp_stanza_add_child(xmpp_stanza_t *stanza, xmpp_stanza_t *child);
+  int xmpp_stanza_add_child(xmpp_stanza_t *stanza, xmpp_stanza_t *child); // NOTE: Child will be copied
   xmpp_stanza_t *xmpp_stanza_get_children(xmpp_stanza_t * const stanza);
   xmpp_stanza_t *xmpp_stanza_get_child_by_name(xmpp_stanza_t * const stanza, const char * const name);
   xmpp_stanza_t *xmpp_stanza_get_child_by_ns(xmpp_stanza_t * const stanza, const char * const ns);
   xmpp_stanza_t *xmpp_stanza_get_next(xmpp_stanza_t * const stanza);
 
 
-  int xmpp_stanza_to_text(xmpp_stanza_t *stanza, char ** const buf, size_t * const buflen); // UNCLEAR
+  int xmpp_stanza_to_text(xmpp_stanza_t *stanza, char ** const buf, size_t * const buflen); // NOTE: ...
 
 
 // allocate and initialize a stanza in reply to another
@@ -319,11 +319,11 @@ typedef void (*xmpp_conn_handler)(xmpp_conn_t * const conn,
   xmpp_ctx_t* xmpp_conn_get_context(xmpp_conn_t * const conn);
 
 
-  void xmpp_conn_disable_tls(xmpp_conn_t * const conn); // UNCLEAR
+  void xmpp_conn_disable_tls(xmpp_conn_t * const conn); // NOTE: ...
 
 
 
-
+// NOTE: handler 如何工作？
 #pragma mark - handlers
 
 typedef int (*xmpp_timed_handler)(xmpp_conn_t * const conn, void * const userdata);
