@@ -58,8 +58,8 @@ rawdata_t *ab_create_rawdata(const char *data, const size_t length)
     rawdata = malloc(sizeof(rawdata_t));
     memset(rawdata, 0, sizeof(rawdata_t));
     
-    char *buffer = malloc(length);
-    memset(buffer, 0, length);
+    char *buffer = malloc(length+1);
+    memset(buffer, 0, length+1);
     memcpy(buffer, data, length);
     rawdata->data = buffer;
     

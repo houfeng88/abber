@@ -1,0 +1,317 @@
+<!-- OUT -->
+<?xml version="1.0"?>
+<stream:stream xmlns="jabber:client" 
+							 xmlns:stream="http://etherx.jabber.org/streams" 
+							 to="is-a-furry.org" 
+							 version="1.0">
+<!-- IN -->
+<?xml version='1.0'?>
+<stream:stream xmlns:stream='http://etherx.jabber.org/streams' 
+							 version='1.0' 
+							 from='is-a-furry.org' 
+							 id='5f74799b-381f-4a0a-b1e0-9d6383a6743d' 
+							 xml:lang='en' 
+							 xmlns='jabber:client'>
+  <stream:features>
+		<register xmlns='http://jabber.org/features/iq-register'/>
+		<starttls xmlns='urn:ietf:params:xml:ns:xmpp-tls'><required/></starttls>
+	</stream:features>
+
+
+
+// 开始 TLS
+<!-- OUT -->
+<starttls xmlns="urn:ietf:params:xml:ns:xmpp-tls"/>
+<!-- IN -->
+<proceed xmlns='urn:ietf:params:xml:ns:xmpp-tls'/>
+
+<!-- OUT -->
+<?xml version="1.0"?>
+<stream:stream xmlns="jabber:client" 
+							 xmlns:stream="http://etherx.jabber.org/streams" 
+							 to="is-a-furry.org" 
+							 version="1.0">
+<!-- IN -->
+<?xml version='1.0'?>
+<stream:stream xmlns:stream='http://etherx.jabber.org/streams' 
+							 version='1.0' 
+							 from='is-a-furry.org' 
+							 id='07507c74-bacc-4bf2-858a-e706f1a3079d' 
+							 xml:lang='en' 
+							 xmlns='jabber:client'>
+	<stream:features>
+		<register xmlns='http://jabber.org/features/iq-register'/>
+		<mechanisms xmlns='urn:ietf:params:xml:ns:xmpp-sasl'>
+			<mechanism>SCRAM-SHA-1</mechanism>
+			<mechanism>PLAIN</mechanism>
+		</mechanisms>
+		<auth xmlns='http://jabber.org/features/iq-auth'/>
+	</stream:features>
+
+<!-- OUT -->
+<auth xmlns="urn:ietf:params:xml:ns:xmpp-sasl" mechanism="SCRAM-SHA-1">
+	biwsbj10c2 ... VhYzlhZmUy
+</auth>
+<!-- IN -->
+<challenge xmlns='urn:ietf:params:xml:ns:xmpp-sasl'>
+	cj1kY2IyZD ... 0saT00MDk2
+</challenge>
+
+<!-- OUT -->
+<response xmlns="urn:ietf:params:xml:ns:xmpp-sasl">
+	Yz1iaXdzLH ... h0ZkFrPQ==
+</response>
+<!-- IN -->
+<success xmlns='urn:ietf:params:xml:ns:xmpp-sasl'>
+	dj13WlRRdjZkRzUxRjk4WDF2UEQ3SjBhbTR6cUk9
+</success>
+
+
+
+// 用 TLS 交流
+<!-- OUT -->
+<?xml version="1.0"?>
+<stream:stream xmlns="jabber:client" 
+							 xmlns:stream="http://etherx.jabber.org/streams" 
+							 to="is-a-furry.org" 
+							 version="1.0">
+<!-- IN -->
+<?xml version='1.0'?>
+<stream:stream xmlns:stream='http://etherx.jabber.org/streams' 
+							 version='1.0' 
+							 from='is-a-furry.org' 
+							 id='575a313c-439c-443b-a86f-38b6f284b72c' 
+							 xml:lang='en' 
+							 xmlns='jabber:client'>
+  <stream:features>
+  	<compression xmlns='http://jabber.org/features/compress'>
+  		<method>zlib</method>
+  	</compression>
+  	<ver xmlns='urn:xmpp:features:rosterver'/>
+  	<sm xmlns='urn:xmpp:sm:2'><optional/></sm>
+  	<sm xmlns='urn:xmpp:sm:3'><optional/></sm>
+  	<c hash='sha-1' 
+  		 ver='O8I2YTghBXfP1v4WNjYb7iuIkxE=' 
+  		 node='http://prosody.im' 
+  		 xmlns='http://jabber.org/protocol/caps'/>
+  	<bind xmlns='urn:ietf:params:xml:ns:xmpp-bind'><required/></bind>
+  	<session xmlns='urn:ietf:params:xml:ns:xmpp-session'><optional/></session>
+  </stream:features>
+
+
+
+// 修改压缩方式
+<!-- OUT -->
+<compress xmlns='http://jabber.org/protocol/compress'>
+	<method>zlib</method>
+</compress>
+<!-- IN -->
+<compressed xmlns='http://jabber.org/protocol/compress'/>
+
+
+
+// 用 zlib 交流
+<!-- OUT -->
+<?xml version="1.0"?>
+<stream:stream xmlns="jabber:client" 
+							 xmlns:stream="http://etherx.jabber.org/streams" 
+							 to="is-a-furry.org" 
+							 version="1.0">
+<!-- IN -->
+<?xml version='1.0'?>
+<stream:stream xmlns:stream='http://etherx.jabber.org/streams' 
+							 version='1.0' 
+							 from='is-a-furry.org' 
+							 id='f84dd343-ae5e-436f-99aa-f33c237fddfb' 
+							 xml:lang='en' 
+							 xmlns='jabber:client'>
+	<stream:features>
+		<ver xmlns='urn:xmpp:features:rosterver'/>
+		<sm xmlns='urn:xmpp:sm:2'><optional/></sm>
+		<sm xmlns='urn:xmpp:sm:3'><optional/></sm>
+		<c hash='sha-1' 
+			 ver='O8I2YTghBXfP1v4WNjYb7iuIkxE=' 
+			 node='http://prosody.im' 
+			 xmlns='http://jabber.org/protocol/caps'/>
+		<bind xmlns='urn:ietf:params:xml:ns:xmpp-bind'><required/></bind>
+		<session xmlns='urn:ietf:params:xml:ns:xmpp-session'><optional/></session>
+	</stream:features>
+
+
+
+// 资源绑定
+<!-- OUT -->
+<iq id="session-bind" type="set">
+	<bind xmlns="urn:ietf:params:xml:ns:xmpp-bind"/>
+</iq>
+<!-- IN -->
+<iq id='session-bind' type='result'>
+	<bind xmlns='urn:ietf:params:xml:ns:xmpp-bind'>
+		<jid>tskevin@is-a-furry.org/f46ddca2-26c2-41b7-a5c8-c81c1abcb3a7</jid>
+	</bind>
+</iq>
+
+
+
+
+<!-- OUT -->
+<enable xmlns="urn:xmpp:sm:2"/>
+<!-- IN -->
+<enabled xmlns='urn:xmpp:sm:2'/>
+
+
+
+
+<!-- OUT -->
+<iq id="session-start" type="set">
+	<session xmlns="urn:ietf:params:xml:ns:xmpp-session"/>
+</iq>
+<!-- IN -->
+<iq id='session-start' type='result' to='tskevin@is-a-furry.org/f46ddca2-26c2-41b7-a5c8-c81c1abcb3a7'/>
+<r xmlns='urn:xmpp:sm:2'/>
+
+
+
+// 获取 vCard
+<!-- OUT -->
+<iq id="32cb7637-8bdc-4a53-afb7-d6f30f2a841d" type="get">
+	<vCard xmlns="vcard-temp"/>
+</iq>
+
+// 获取 bookmarks
+<!-- OUT -->
+<iq id="d0a6ec05-53a0-484a-a4d8-0e15967d12bf" type="get">
+	<query xmlns="jabber:iq:private">
+		<storage xmlns="storage:bookmarks"/>
+	</query>
+</iq>
+
+// 获取 roster
+<!-- OUT -->
+<iq id="70b2cd3f-4039-414c-94ca-28ebc386d7c7" type="get">
+	<query ver="6" xmlns="jabber:iq:roster"/>
+</iq>
+
+// 查询服务
+<!-- OUT -->
+<iq id="e281c0e6-004f-4df2-a3a6-6dc847964976" to="is-a-furry.org" type="get">
+	<query xmlns="http://jabber.org/protocol/disco#info"/>
+</iq>
+
+// 不知道
+<!-- OUT -->
+<presence>
+	<status></status>
+	<c hash="sha-1" 
+		 node="http://swift.im" 
+		 ver="rs/tl9NCfXBpKoOYUy+JdBbPGDg=" 
+		 xmlns="http://jabber.org/protocol/caps"/>
+</presence>
+
+<!-- OUT -->
+<a h="1" xmlns="urn:xmpp:sm:2"/>
+
+
+
+// vCard 结果
+<!-- IN -->
+<iq id='32cb7637-8bdc-4a53-afb7-d6f30f2a841d' 
+		type='error' 
+		to='tskevin@is-a-furry.org/f46ddca2-26c2-41b7-a5c8-c81c1abcb3a7'>
+	<error type='cancel'>
+		<item-not-found xmlns='urn:ietf:params:xml:ns:xmpp-stanzas'/>
+	</error>
+</iq>
+
+// bookmarks 结果
+<!-- IN -->
+<iq id='d0a6ec05-53a0-484a-a4d8-0e15967d12bf' 
+		type='result' 
+		to='tskevin@is-a-furry.org/f46ddca2-26c2-41b7-a5c8-c81c1abcb3a7'>
+	<query xmlns='jabber:iq:private'>
+		<storage xmlns='storage:bookmarks'/>
+	</query>
+</iq>
+
+// roster 结果
+<iq id='70b2cd3f-4039-414c-94ca-28ebc386d7c7' 
+		type='result' 
+		to='tskevin@is-a-furry.org/f46ddca2-26c2-41b7-a5c8-c81c1abcb3a7'/>
+
+// 查询结果
+<iq id='e281c0e6-004f-4df2-a3a6-6dc847964976' 
+		type='result' 
+		to='tskevin@is-a-furry.org/f46ddca2-26c2-41b7-a5c8-c81c1abcb3a7' 
+		from='is-a-furry.org'>
+	<query xmlns='http://jabber.org/protocol/disco#info'>
+		<identity type='pep' name='Prosody' category='pubsub'/>
+		<identity type='im' name='Prosody' category='server'/>
+		<feature var='http://jabber.org/protocol/commands'/>
+		<feature var='http://jabber.org/protocol/pubsub#publish'/>
+		<feature var='msgoffline'/>
+		<feature var='jabber:iq:privacy'/>
+		<feature var='jabber:iq:register'/>
+		<feature var='jabber:iq:roster'/>
+		<feature var='urn:xmpp:time'/>
+		<feature var='jabber:iq:time'/>
+		<feature var='jabber:iq:private'/>
+		<feature var='jabber:iq:search'/>
+		<feature var='urn:xmpp:ping'/>
+		<feature var='http://jabber.org/protocol/disco#info'/>
+		<feature var='http://jabber.org/protocol/disco#items'/>
+		<feature var='jabber:iq:version'/>
+		<feature var='vcard-temp'/>
+		<feature var='jabber:iq:last'/>
+		<feature var='jabber:iq:auth'/>
+	</query>
+</iq>
+
+// 不知道
+<presence from='tskevin@is-a-furry.org/f46ddca2-26c2-41b7-a5c8-c81c1abcb3a7'>
+	<status/>
+	<c hash='sha-1' 
+		 ver='rs/tl9NCfXBpKoOYUy+JdBbPGDg=' 
+		 node='http://swift.im' 
+		 xmlns='http://jabber.org/protocol/caps'/>
+</presence>
+
+
+
+
+<presence type='unavailable' 
+					to='tskevin@is-a-furry.org/f46ddca2-26c2-41b7-a5c8-c81c1abcb3a7' 
+					from='tslily@is-a-furry.org'/>
+
+<presence type='unavailable' 
+					to='tskevin@is-a-furry.org/f46ddca2-26c2-41b7-a5c8-c81c1abcb3a7' 
+					from='arsimael@im.it-native.de'/>
+
+
+<!-- OUT -->
+<iq id="6f06ce15-4fc9-4c6e-81c3-3e659d96299d" 
+		to="is-a-furry.org" 
+		type="get">
+	<query node="http://jabber.org/protocol/commands" 
+				 xmlns="http://jabber.org/protocol/disco#items"/>
+</iq>
+<!-- IN -->
+<iq id='6f06ce15-4fc9-4c6e-81c3-3e659d96299d' 
+		type='result' 
+		to='tskevin@is-a-furry.org/f46ddca2-26c2-41b7-a5c8-c81c1abcb3a7' 
+		from='is-a-furry.org'>
+	<query node='http://jabber.org/protocol/commands' xmlns='http://jabber.org/protocol/disco#items'>
+		<item jid='is-a-furry.org' name='Search settings' node='vjudsetup'/>
+		<item jid='is-a-furry.org' name='Ping' node='ping'/>
+		<item jid='is-a-furry.org' name='Get uptime' node='uptime'/>
+	</query>
+</iq>
+
+<r xmlns='urn:xmpp:sm:2'/>
+
+<!-- OUT -->
+<a h="9" xmlns="urn:xmpp:sm:2"/>
+<!-- OUT -->
+<a h="9" xmlns="urn:xmpp:sm:2"/>
+
+<!-- OUT -->
+</stream:stream>

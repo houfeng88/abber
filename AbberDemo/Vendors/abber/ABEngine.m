@@ -39,9 +39,6 @@ int ab_roster_handler(xmpp_conn_t * const conn,
     printf("END OF LIST\n");
   }
   
-  /* disconnect */
-  //xmpp_disconnect(conn);
-  
   return 0;
 }
 
@@ -51,13 +48,14 @@ void ab_connection_handler(xmpp_conn_t * const conn,
                            xmpp_stream_error_t * const stream_error,
                            void * const userdata)
 {
-  xmpp_ctx_t *ctx = (xmpp_ctx_t *)userdata;
+  //ABEngine *engine = (__bridge ABEngine *)userdata;
   
-  if (status == XMPP_CONN_CONNECT) {
-    fprintf(stderr, "DEBUG: connected\n");
-  } else {
-    fprintf(stderr, "DEBUG: disconnected\n");
-    xmpp_stop(ctx);
+  if ( status==XMPP_CONN_CONNECT ) {
+    DDLogCDebug(@"[conn] Handler: connected");
+  } else if ( status==XMPP_CONN_DISCONNECT ) {
+    DDLogCDebug(@"[conn] Handler: disconnected");
+  } else if ( status==XMPP_CONN_FAIL ) {
+    DDLogCDebug(@"[conn] Handler: failed");
   }
 }
 
@@ -214,7 +212,7 @@ void ab_connection_handler(xmpp_conn_t * const conn,
 
 - (void)connectAndRun
 {
-  if ( xmpp_connect_client(_conn, [_server UTF8String], [_port intValue], ab_connection_handler, _ctx)==0 ) {
+  if ( xmpp_connect_client(_conn, [_server UTF8String], [_port intValue], ab_connection_handler, (__bridge void *)self)==0 ) {
     
     if ( _ctx->loop_status==XMPP_LOOP_NOTSTARTED ) {
       
