@@ -16,14 +16,22 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
                          xmpp_stream_error_t * const stream_error,
                          void * const userdata)
 {
-  //ABEngine *engine = (__bridge ABEngine *)userdata;
+  ABEngine *engine = (__bridge ABEngine *)userdata;
   
   if ( status==XMPP_CONN_CONNECT ) {
+    
     DDLogCDebug(@"[conn] Handler: connected");
+    
   } else if ( status==XMPP_CONN_DISCONNECT ) {
+    
     DDLogCDebug(@"[conn] Handler: disconnected");
+    [engine stopLoop];
+    
   } else if ( status==XMPP_CONN_FAIL ) {
+    
     DDLogCDebug(@"[conn] Handler: failed");
+    [engine stopLoop];
+    
   }
 }
 
@@ -37,7 +45,7 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
   ABRaw **sendQueue = [object[@"sendQueue"] pointerValue];
   NSLock *sendQueueLock = object[@"sendQueueLock"];
   
-  int ret = xmpp_connect_client(conn, ABJabberHost, ABJabberPort, ABConnectionHandler, NULL);
+  int ret = xmpp_connect_client(conn, ABJabberHost, ABJabberPort, ABConnectionHandler, (__bridge void *)self);
   
   if ( ret==XMPP_EOK ) {
     

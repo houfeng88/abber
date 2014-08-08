@@ -99,6 +99,11 @@
   [_sendQueueLock unlock];
 }
 
+- (void)stopLoop
+{
+  xmpp_stop(_conn->ctx);
+}
+
 - (void)cleanup
 {
   DDLogDebug(@"[engine] Cleanup context");
