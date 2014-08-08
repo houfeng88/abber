@@ -13,6 +13,8 @@
 		23C5472B1994B4FC00B4C0F7 /* ABHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C5472A1994B4FC00B4C0F7 /* ABHandler.m */; };
 		23C5472E1994B52600B4C0F7 /* ABLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C5472D1994B52600B4C0F7 /* ABLogger.m */; };
 		23C547311994B56D00B4C0F7 /* ABRaw.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C547301994B56D00B4C0F7 /* ABRaw.m */; };
+		23C547341994BDE900B4C0F7 /* ABEngineRoster.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C547331994BDE900B4C0F7 /* ABEngineRoster.m */; };
+		23C547371994BE2600B4C0F7 /* ABEngineVcard.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C547361994BE2600B4C0F7 /* ABEngineVcard.m */; };
 		23F6C0DA19909596005D2ED7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23F6C0D919909596005D2ED7 /* Foundation.framework */; };
 		23F6C0DE19909596005D2ED7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23F6C0DD19909596005D2ED7 /* UIKit.framework */; };
 		23F6C0E619909596005D2ED7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 23F6C0E519909596005D2ED7 /* main.m */; };
@@ -55,6 +57,11 @@
 		23C5472D1994B52600B4C0F7 /* ABLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABLogger.m; sourceTree = "<group>"; };
 		23C5472F1994B56D00B4C0F7 /* ABRaw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABRaw.h; sourceTree = "<group>"; };
 		23C547301994B56D00B4C0F7 /* ABRaw.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABRaw.m; sourceTree = "<group>"; };
+		23C547321994BDE900B4C0F7 /* ABEngineRoster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEngineRoster.h; sourceTree = "<group>"; };
+		23C547331994BDE900B4C0F7 /* ABEngineRoster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABEngineRoster.m; sourceTree = "<group>"; };
+		23C547351994BE2600B4C0F7 /* ABEngineVcard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEngineVcard.h; sourceTree = "<group>"; };
+		23C547361994BE2600B4C0F7 /* ABEngineVcard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABEngineVcard.m; sourceTree = "<group>"; };
+		23C547381994BFF300B4C0F7 /* abber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = abber.h; sourceTree = "<group>"; };
 		23F6C0D619909596005D2ED7 /* AbberDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AbberDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		23F6C0D919909596005D2ED7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		23F6C0DD19909596005D2ED7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -372,8 +379,13 @@
 		23F6C1DA1990AC3E005D2ED7 /* abber */ = {
 			isa = PBXGroup;
 			children = (
+				23C547381994BFF300B4C0F7 /* abber.h */,
 				0A5BAE6E1991382E001EF07E /* ABEngine.h */,
 				0A5BAE6F1991382E001EF07E /* ABEngine.m */,
+				23C547321994BDE900B4C0F7 /* ABEngineRoster.h */,
+				23C547331994BDE900B4C0F7 /* ABEngineRoster.m */,
+				23C547351994BE2600B4C0F7 /* ABEngineVcard.h */,
+				23C547361994BE2600B4C0F7 /* ABEngineVcard.m */,
 				0A5BAE6B19913715001EF07E /* ABStanza.h */,
 				0A5BAE6C19913715001EF07E /* ABStanza.m */,
 				23F6C1DB1990AC3E005D2ED7 /* ABConfig.h */,
@@ -486,6 +498,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23C547371994BE2600B4C0F7 /* ABEngineVcard.m in Sources */,
 				23F6C1D31990A993005D2ED7 /* sha1.c in Sources */,
 				23F6C1D11990A993005D2ED7 /* parser.c in Sources */,
 				23F6C1D91990A993005D2ED7 /* util.c in Sources */,
@@ -497,6 +510,7 @@
 				23C547281994B4B300B4C0F7 /* ABCommon.m in Sources */,
 				23F6C0EA19909596005D2ED7 /* AppDelegate.m in Sources */,
 				23F6C1CF1990A993005D2ED7 /* oocontext.cpp in Sources */,
+				23C547341994BDE900B4C0F7 /* ABEngineRoster.m in Sources */,
 				23F6C1D61990A993005D2ED7 /* stanza.c in Sources */,
 				23F6C1CB1990A993005D2ED7 /* handler.c in Sources */,
 				23F6C1D21990A993005D2ED7 /* sasl.c in Sources */,

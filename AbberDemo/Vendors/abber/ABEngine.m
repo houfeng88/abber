@@ -153,108 +153,12 @@
 }
 
 
-- (void)requestVcard:(NSString *)jid completion:(ABEngineRequestCompletionHandler)handler
+- (NSString *)boundJid
 {
-//  <iq id="32cb7637-8bdc-4a53-afb7-d6f30f2a841d"
-//      type="get">
-//    <vCard xmlns="vcard-temp"/>
-//  </iq>
-  
-  if ( [self isConnected] ) {
-    NSString *iden = [self makeIdentifier:@"vcard_request" suffix:_account];
-    
-    xmpp_id_handler_add(_conn, ABVcardRequestHandler, ABCString(iden), NULL);
-    
-    ABStanza *iq = [self makeStanza];
-    [iq setNodeName:@"iq"];
-    [iq setValue:iden forAttribute:@"id"];
-    [iq setValue:@"get" forAttribute:@"type"];
-    [iq setValue:ABOString(_conn->bound_jid) forAttribute:@"from"];
-    [iq setValue:ABOStringOrLater(jid, _account) forAttribute:@"to"];
-    
-    ABStanza *vcard = [self makeStanza];
-    [vcard setNodeName:@"vCard"];
-    [vcard setValue:@"vcard-temp" forAttribute:@"xmlns"];
-    [iq addChild:vcard];
-    
-    NSData *raw = [iq raw];
-    [self sendRaw:[raw bytes] length:[raw length]];
+  if ( _conn ) {
+    return ABOString(_conn->bound_jid);
   }
-}
-
-- (void)updateVcard:(NSString *)nickname desc:(NSString *)desc
-{
-//  <iq id='v2'
-//      type='set'>
-//    <vCard xmlns='vcard-temp'>
-//      <NICKNAME>nickname</NICKNAME>
-//      <DESC>desc</DESC>
-//    </vCard>
-//  </iq>
-  
-  if ( [self isConnected] ) {
-    NSString *iden = [self makeIdentifier:@"vcard_update" suffix:_account];
-    
-    xmpp_id_handler_add(_conn, ABVcardUpdateHandler, ABCString(iden), NULL);
-    
-    ABStanza *iq = [self makeStanza];
-    [iq setNodeName:@"iq"];
-    [iq setValue:iden forAttribute:@"id"];
-    [iq setValue:@"set" forAttribute:@"type"];
-    [iq setValue:ABOString(_conn->bound_jid) forAttribute:@"from"];
-    
-    ABStanza *vcard = [self makeStanza];
-    [vcard setNodeName:@"vCard"];
-    [vcard setValue:@"vcard-temp" forAttribute:@"xmlns"];
-    [iq addChild:vcard];
-    
-    ABStanza *nm = [self makeStanza];
-    [nm setNodeName:@"NICKNAME"];
-    [vcard addChild:nm];
-    ABStanza *nmbody = [self makeStanza];
-    [nmbody setTextValue:ABOStringOrLater(nickname, @"")];
-    [nm addChild:nmbody];
-    
-    ABStanza *ds = [self makeStanza];
-    [ds setNodeName:@"DESC"];
-    [vcard addChild:ds];
-    ABStanza *dsbody = [self makeStanza];
-    [dsbody setTextValue:ABOStringOrLater(desc, @"")];
-    [ds addChild:dsbody];
-    
-    NSData *raw = [iq raw];
-    [self sendRaw:[raw bytes] length:[raw length]];
-  }
-}
-
-
-- (void)requestRosterWithCompletion:(ABEngineRequestCompletionHandler)handler
-{
-//  <iq id='bv1bs71f'
-//      type='get'
-//      from='juliet@example.com/balcony'>
-//    <query xmlns='jabber:iq:roster'/>
-//  </iq>
-  
-  if ( [self isConnected] ) {
-    NSString *iden = [self makeIdentifier:@"roster_request" suffix:_account];
-    
-    xmpp_id_handler_add(_conn, ABRosterRequestHandler, ABCString(iden), NULL);
-    
-    ABStanza *iq = [self makeStanza];
-    [iq setNodeName:@"iq"];
-    [iq setValue:iden forAttribute:@"id"];
-    [iq setValue:@"get" forAttribute:@"type"];
-    [iq setValue:ABOString(_conn->bound_jid) forAttribute:@"from"];
-    
-    ABStanza *query = [self makeStanza];
-    [query setNodeName:@"query"];
-    [query setValue:@"jabber:iq:roster" forAttribute:@"xmlns"];
-    [iq addChild:query];
-    
-    NSData *raw = [iq raw];
-    [self sendRaw:[raw bytes] length:[raw length]];
-  }
+  return nil;
 }
 
 
@@ -267,6 +171,24 @@
   }
   return node;
 }
+
+- (void)sendStanza:(ABStanza *)stanza
+{
+  if ( stanza ) {
+    NSData *raw = [stanza raw];
+    [self sendRaw:[raw bytes] length:[raw length]];
+  }
+}
+
+- (void)sendRaw:(const char *)data length:(size_t)length
+{
+  if ( [self isConnected] ) {
+    [_sendQueueLock lock];
+    ABRawQueueAdd((ABRaw **)(&_sendQueue), ABRawCreate(data, length));
+    [_sendQueueLock unlock];
+  }
+}
+
 
 - (NSString *)makeIdentifier:(NSString *)domain suffix:(NSString *)suffix
 {
@@ -300,7 +222,9 @@
   }
 }
 
-#pragma mark - Private methods
+
+
+#pragma mark - Working
 
 - (void)connectAndRun:(id)object
 {
@@ -341,16 +265,6 @@
   }
   
   [self cleanup];
-}
-
-
-- (void)sendRaw:(const char *)data length:(size_t)length
-{
-  if ( [self isConnected] ) {
-    [_sendQueueLock lock];
-    ABRawQueueAdd((ABRaw **)(&_sendQueue), ABRawCreate(data, length));
-    [_sendQueueLock unlock];
-  }
 }
 
 

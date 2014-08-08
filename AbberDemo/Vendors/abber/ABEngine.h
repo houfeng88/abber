@@ -48,13 +48,11 @@ typedef enum {
 - (BOOL)isConnecting;
 - (BOOL)isConnected;
 
-- (void)requestVcard:(NSString *)jid completion:(ABEngineRequestCompletionHandler)handler;
-- (void)updateVcard:(NSString *)nickname desc:(NSString *)desc;
-
-- (void)requestRosterWithCompletion:(ABEngineRequestCompletionHandler)handler;
-
+- (NSString *)boundJid;
 
 - (ABStanza *)makeStanza;
+- (void)sendStanza:(ABStanza *)stanza;
+- (void)sendRaw:(const char *)data length:(size_t)length;
 
 - (NSString *)makeIdentifier:(NSString *)prefix suffix:(NSString *)suffix;
 

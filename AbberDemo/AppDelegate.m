@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import <abber/ABEngine.h>
+#import <abber/abber.h>
 
 @implementation AppDelegate
 

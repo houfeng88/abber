@@ -18,22 +18,3 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
                          xmpp_stream_error_t * const stream_error,
                          void * const userdata);
 
-
-/* Vcard */
-
-int ABVcardRequestHandler(xmpp_conn_t * const conn,
-                          xmpp_stanza_t * const stanza,
-                          void * const userdata);
-int ABVcardUpdateHandler(xmpp_conn_t * const conn,
-                         xmpp_stanza_t * const stanza,
-                         void * const userdata);
-
-
-/* Roster */
-
-int ABRosterRequestHandler(xmpp_conn_t * const conn,
-                           xmpp_stanza_t * const stanza,
-                           void * const userdata);
-int ABRosterUpdateHandler(xmpp_conn_t * const conn,
-                          xmpp_stanza_t * const stanza,
-                          void * const userdata);
