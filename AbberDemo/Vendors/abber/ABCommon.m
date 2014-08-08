@@ -19,7 +19,10 @@ char *ABIdentifierCreate(const char *domain, const char *rand)
     memset(suffix, 0, 33);
     ABMD5Hash(suffix, rand, strlen(rand));
     
-    identifier = malloc(strlen(domain)+1+strlen(suffix)+1);
+    size_t length = strlen(domain) + 1 + strlen(suffix) + 1;
+    identifier = malloc(length);
+    memset(identifier, 0, length);
+    
     strcat(identifier, domain);
     strcat(identifier, "-");
     strcat(identifier, suffix);

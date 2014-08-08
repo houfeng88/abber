@@ -205,6 +205,7 @@
     char *string = ABIdentifierCreate(ABCString(domain), ABCString(rand));
     if ( ABCNonempty(string) ) {
       identifier = [[NSString alloc] initWithUTF8String:string];
+      free(string);
     }
   }
   return identifier;
