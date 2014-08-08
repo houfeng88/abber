@@ -29,6 +29,7 @@
 
 - (void)prepare
 {
+  DDLogDebug(@"[engine] Prepare context");
   if ( [self isDisconnected] ) {
     xmpp_initialize();
     
@@ -44,6 +45,7 @@
 
 - (BOOL)connectWithAccount:(NSString *)acnt password:(NSString *)pswd
 {
+  DDLogDebug(@"[engine] Launch connect");
   if ( [self isConnecting] || [self isConnected] ) {
     return YES;
   }
@@ -84,7 +86,7 @@
 
 - (void)disconnect
 {
-  DDLogDebug(@"[client] Launch disconnect");
+  DDLogDebug(@"[engine] Launch disconnect");
   [_sendQueueLock lock];
   while ( _sendQueue ) {
     [_sendQueueLock unlock];
@@ -98,7 +100,7 @@
 
 - (void)cleanup
 {
-  DDLogDebug(@"[client] Cleanup");
+  DDLogDebug(@"[engine] Cleanup context");
   xmpp_shutdown();
   
   xmpp_ctx_t *ctx = NULL;
