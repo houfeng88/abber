@@ -84,14 +84,16 @@
 
 - (void)disconnect
 {
-  // TODO: ... 清除保存的帐号等信息
-  if ( [self isConnecting] || [self isConnected] ) {
-    
-    char *cmd = "</stream:stream>";
-    [self sendRaw:cmd length:strlen(cmd)];
-    
-    DDLogDebug(@"[client] Launch disconnect");
+  DDLogDebug(@"[client] Launch disconnect");
+  [_sendQueueLock lock];
+  while ( _sendQueue ) {
+    [_sendQueueLock unlock];
+    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode
+                             beforeDate:[NSDate dateWithTimeIntervalSinceNow:2.0]];
+    [_sendQueueLock lock];
   }
+  xmpp_disconnect(_conn);
+  [_sendQueueLock unlock];
 }
 
 - (void)cleanup
