@@ -7,9 +7,28 @@
 //
 
 #import "ABStanza.h"
+#include <strophe/common.h>
 #include "internal/abcommon.h"
 
 @implementation ABStanza
+
+#pragma mark - Accessors
+
+- (xmpp_stanza_t *)stanza
+{ return _stanza; }
+
+- (void)setStanza:(xmpp_stanza_t *)stanza
+{
+  if ( _stanza ) {
+    xmpp_stanza_release(_stanza);
+    _stanza = NULL;
+  }
+  
+  if ( stanza ) {
+    _stanza = xmpp_stanza_clone(stanza);
+  }
+}
+
 
 - (NSString *)to
 { return [self valueForAttribute:@"to"]; }
@@ -47,53 +66,155 @@
 
 
 
-+ (ABStanza *)stanzaWithObject:(xmpp_stanza_t *)object
+#pragma mark - Memory management
+
+- (void)dealloc
 {
-  if ( !object ) {
-    return nil;
+  if ( _stanza ) {
+    xmpp_stanza_release(_stanza);
+    _stanza = NULL;
   }
-  
-  ABStanza *stanza = [[self alloc] init];
-  xmpp_stanza_release(stanza->_cstanza);
-  stanza->_cstanza = object;
-  
-  return stanza;
 }
 
-- (id)init
+
+
+#pragma mark - Public methods
+
+- (NSData *)raw
 {
-  self = [super init];
-  if (self) {
-    _cstanza = xmpp_stanza_new(NULL);
+  NSData *data = nil;
+  if ( _stanza ) {
+    char *buffer = NULL;
+    size_t length = 0;
+    int ret = xmpp_stanza_to_text(_stanza, &buffer, &length);
+    if ( ret==XMPP_EOK ) {
+      if ( length>0 ) {
+        data = [[NSData alloc] initWithBytes:buffer length:length];
+      }
+      xmpp_free(_stanza->ctx, buffer);
+    }
   }
-  return self;
+  return data;
 }
 
+
+- (ABStanza *)firstChild
+{
+  ABStanza *node = nil;
+  if ( _stanza ) {
+    xmpp_stanza_t *stanza = xmpp_stanza_get_children(_stanza);
+    if ( stanza ) {
+      node = [[ABStanza alloc] init];
+      [node setStanza:stanza];
+    }
+  }
+  return node;
+}
+
+- (ABStanza *)nextSibling
+{
+  ABStanza *node = nil;
+  if ( _stanza ) {
+    xmpp_stanza_t *stanza = xmpp_stanza_get_next(_stanza);
+    if ( stanza ) {
+      node = [[ABStanza alloc] init];
+      [node setStanza:stanza];
+    }
+  }
+  return node;
+}
+
+- (ABStanza *)childByName:(NSString *)name
+{
+  ABStanza *node = nil;
+  if ( _stanza ) {
+    if ( [name length]>0 ) {
+      xmpp_stanza_t *stanza = xmpp_stanza_get_child_by_name(_stanza, ABCString(name));
+      if ( stanza ) {
+        node = [[ABStanza alloc] init];
+        [node setStanza:stanza];
+      }
+    }
+  }
+  return node;
+}
+
+- (ABStanza *)addChild:(ABStanza *)child
+{
+  if ( (child) && (child.stanza) ) {
+    if ( _stanza ) {
+      xmpp_stanza_add_child(_stanza, child.stanza);
+    }
+  }
+  return nil;
+}
+
+
+- (NSString *)nodeName
+{
+  NSString *name = nil;
+  if ( _stanza ) {
+    char *string = xmpp_stanza_get_name(_stanza);
+    if ( string ) {
+      name = [[NSString alloc] initWithUTF8String:string];
+    }
+  }
+  return name;
+}
+
+- (void)setNodeName:(NSString *)name
+{
+  if ( _stanza ) {
+    if ( [name length]>0 ) {
+      xmpp_stanza_set_name(_stanza, ABCString(name));
+    }
+  }
+}
+
+
+- (NSString *)textValue
+{
+  NSString *text = nil;
+  if ( _stanza ) {
+    char *string = xmpp_stanza_get_text_ptr(_stanza);
+    if ( string ) {
+      text = [[NSString alloc] initWithUTF8String:string];
+    }
+  }
+  return text;
+}
+
+- (void)setTextValue:(NSString *)text
+{
+  if ( _stanza ) {
+    if ( text ) {
+      xmpp_stanza_set_text(_stanza, ABCString(text));
+    }
+  }
+}
 
 
 - (NSString *)valueForAttribute:(NSString *)attr
 {
   NSString *value = nil;
-  if ( [attr length]>0 ) {
-    value = [[NSString alloc] initWithUTF8String:xmpp_stanza_get_attribute(_cstanza, AB_CSTR(attr))];
+  if ( _stanza ) {
+    if ( [attr length]>0 ) {
+      char *string = xmpp_stanza_get_attribute(_stanza, ABCString(attr));
+      if ( string ) {
+        value = [[NSString alloc] initWithUTF8String:string];
+      }
+    }
   }
   return value;
 }
 
 - (void)setValue:(NSString *)value forAttribute:(NSString *)attr
 {
-  if ( [attr length]>0 ) {
-    xmpp_stanza_set_attribute(_cstanza, AB_CSTR(attr), AB_CSTR(value));
+  if ( _stanza ) {
+    if ( (value) && ([attr length]>0) ) {
+      xmpp_stanza_set_attribute(_stanza, ABCString(attr), ABCString(value));
+    }
   }
-}
-
-- (NSString *)textValue
-{
-  return nil;
-}
-
-- (void)setTextValue:(NSString *)text
-{
 }
 
 @end

@@ -69,10 +69,10 @@
     return NO;
   }
   
-  xmpp_conn_set_jid(_conn, AB_CSTR(acnt));
+  xmpp_conn_set_jid(_conn, ABCString(acnt));
   _account = [acnt copy];
   
-  xmpp_conn_set_pass(_conn, AB_CSTR(pswd));
+  xmpp_conn_set_pass(_conn, ABCString(pswd));
   _password = [pswd copy];
   
   [self performSelector:@selector(connectAndRun)
@@ -85,6 +85,7 @@
 
 - (void)disconnect
 {
+  // TODO: ... 清除保存的帐号等信息
   if ( [self isConnecting] || [self isConnected] ) {
     
     char *cmd = "</stream:stream>";
@@ -133,36 +134,24 @@
 //  </iq>
   
   if ( [self isConnected] ) {
+    NSString *iden = [self makeIdentifier:@"vcard_request" suffix:_account];
     
-    char *identifier = ab_create_jid_identifier("vcard", _conn->jid);
+    xmpp_id_handler_add(_conn, ab_vcard_request_handler, ABCString(iden), NULL);
     
-    xmpp_id_handler_add(_conn, ab_vcard_handler, identifier, NULL);
+    ABStanza *iq = [self makeStanza];
+    [iq setNodeName:@"iq"];
+    [iq setValue:iden forAttribute:@"id"];
+    [iq setValue:@"get" forAttribute:@"type"];
+    [iq setValue:ABOString(_conn->bound_jid) forAttribute:@"from"];
+    [iq setValue:(([jid length]>0)?jid:_account) forAttribute:@"to"];
     
+    ABStanza *vcard = [self makeStanza];
+    [vcard setNodeName:@"vCard"];
+    [vcard setValue:@"vcard-temp" forAttribute:@"xmlns"];
+    [iq addChild:vcard];
     
-    xmpp_stanza_t *iq = xmpp_stanza_new(_ctx);
-    xmpp_stanza_set_name(iq, "iq");
-    xmpp_stanza_set_attribute(iq, "from", _conn->bound_jid);
-    xmpp_stanza_set_attribute(iq, "id", identifier);
-    xmpp_stanza_set_attribute(iq, "type", "get");
-    
-    if ( [jid length]>0 ) {
-      xmpp_stanza_set_attribute(iq, "to", AB_CSTR(jid));
-    } else {
-      xmpp_stanza_set_attribute(iq, "to", AB_CSTR(_account));
-    }
-    
-    xmpp_stanza_t *query = xmpp_stanza_new(_ctx);
-    xmpp_stanza_set_name(query, "vCard");
-    xmpp_stanza_set_ns(query, "vcard-temp");
-    xmpp_stanza_add_child(iq, query);
-    xmpp_stanza_release(query);
-    
-    [self sendStanza:iq];
-    xmpp_stanza_release(iq);
-    
-    if ( identifier ) {
-      free(identifier);
-    }
+    NSData *raw = [iq raw];
+    [self sendRaw:[raw bytes] length:[raw length]];
   }
 }
 
@@ -176,68 +165,37 @@
 //  </iq>
   
   if ( [self isConnected] ) {
-    char *identifier = ab_create_jid_identifier("vcard", _conn->jid);
+    NSString *iden = [self makeIdentifier:@"vcard_update" suffix:_account];
     
-    //xmpp_id_handler_add(_conn, ab_roster_handler, identifier, _ctx);
+    xmpp_id_handler_add(_conn, ab_vcard_update_handler, ABCString(iden), NULL);
     
+    ABStanza *iq = [self makeStanza];
+    [iq setNodeName:@"iq"];
+    [iq setValue:iden forAttribute:@"id"];
+    [iq setValue:@"set" forAttribute:@"type"];
+    [iq setValue:ABOString(_conn->bound_jid) forAttribute:@"from"];
     
-    const char *cnickname = "";
-    if ( [nickname length]>0 ) {
-      cnickname = AB_CSTR(nickname);
-    }
+    ABStanza *vcard = [self makeStanza];
+    [vcard setNodeName:@"vCard"];
+    [vcard setValue:@"vcard-temp" forAttribute:@"xmlns"];
+    [iq addChild:vcard];
     
-    const char *cdesc = "";
-    if ( [desc length]>0 ) {
-      cdesc = AB_CSTR(desc);
-    }
+    ABStanza *nm = [self makeStanza];
+    [nm setNodeName:@"NICKNAME"];
+    [vcard addChild:nm];
+    ABStanza *nmbody = [self makeStanza];
+    [nmbody setTextValue:ABOStringOrLater(nickname, @"")];
+    [nm addChild:nmbody];
     
+    ABStanza *ds = [self makeStanza];
+    [ds setNodeName:@"DESC"];
+    [vcard addChild:ds];
+    ABStanza *dsbody = [self makeStanza];
+    [dsbody setTextValue:ABOStringOrLater(desc, @"")];
+    [ds addChild:dsbody];
     
-    xmpp_stanza_t *iq = xmpp_stanza_new(_ctx);
-    xmpp_stanza_set_name(iq, "iq");
-    xmpp_stanza_set_attribute(iq, "id", identifier);
-    xmpp_stanza_set_attribute(iq, "type", "set");
-    
-    xmpp_stanza_t *vcard = xmpp_stanza_new(_ctx);
-    xmpp_stanza_set_name(vcard, "vCard");
-    xmpp_stanza_set_ns(vcard, "vcard-temp");
-    
-    
-    xmpp_stanza_t *tmp = xmpp_stanza_new(_ctx);
-    xmpp_stanza_set_name(tmp, "NICKNAME");
-    
-    xmpp_stanza_t *text = xmpp_stanza_new(_ctx);
-    text->type = XMPP_STANZA_TEXT;
-    xmpp_stanza_set_text(text, cnickname);
-    xmpp_stanza_add_child(tmp, text);
-    xmpp_stanza_release(text);
-    
-    xmpp_stanza_add_child(vcard, tmp);
-    xmpp_stanza_release(tmp);
-    
-    tmp = xmpp_stanza_new(_ctx);
-    xmpp_stanza_set_name(tmp, "DESC");
-    
-    text = xmpp_stanza_new(_ctx);
-    text->type = XMPP_STANZA_TEXT;
-    xmpp_stanza_set_text(text, cdesc);
-    xmpp_stanza_add_child(tmp, text);
-    xmpp_stanza_release(text);
-    
-    xmpp_stanza_add_child(vcard, tmp);
-    xmpp_stanza_release(tmp);
-    
-    xmpp_stanza_add_child(iq, vcard);
-    xmpp_stanza_release(vcard);
-    
-    
-    
-    
-    [self sendStanza:iq];
-    xmpp_stanza_release(iq);
-    
-    if ( identifier ) {
-      free(identifier);
-    }
+    NSData *raw = [iq raw];
+    [self sendRaw:[raw bytes] length:[raw length]];
   }
 }
 
@@ -250,39 +208,68 @@
 //    <query xmlns='jabber:iq:roster'/>
 //  </iq>
   
-  if ( [self isConnected] ) {
-    char *identifier = ab_create_rand_identifier("roster");
+//  if ( [self isConnected] ) {
+//    char *identifier = ab_create_rand_identifier("roster");
+//    
+//    xmpp_id_handler_add(_conn, ab_roster_handler, identifier, _ctx);
+//    
+//    
+//    xmpp_stanza_t *iq = xmpp_stanza_new(_ctx);
+//    xmpp_stanza_set_name(iq, "iq");
+//    xmpp_stanza_set_attribute(iq, "from", _conn->bound_jid);
+//    xmpp_stanza_set_attribute(iq, "id", identifier);
+//    xmpp_stanza_set_attribute(iq, "type", "get");
+//    
+//    xmpp_stanza_t *query = xmpp_stanza_new(_ctx);
+//    xmpp_stanza_set_name(query, "query");
+//    xmpp_stanza_set_ns(query, XMPP_NS_ROSTER);
+//    xmpp_stanza_add_child(iq, query);
+//    xmpp_stanza_release(query);
+//    
+//    [self sendStanza:iq];
+//    xmpp_stanza_release(iq);
+//    
+//    if ( identifier ) {
+//      free(identifier);
+//    }
+//  }
+}
+
+
+- (ABStanza *)makeStanza
+{
+  ABStanza *node = nil;
+  if ( _ctx ) {
+    node = [[ABStanza alloc] init];
+    node.stanza = xmpp_stanza_new(_ctx);
+  }
+  return node;
+}
+
+- (NSString *)makeIdentifier:(NSString *)domain suffix:(NSString *)suffix
+{
+  NSString *identifier = nil;
+  if ( [domain length]>0 ) {
     
-    xmpp_id_handler_add(_conn, ab_roster_handler, identifier, _ctx);
+    NSMutableString *rand = [[NSMutableString alloc] init];
+    if ( [suffix length]>0 ) [rand appendString:suffix];
+    [rand appendString:[NSString UUIDString]];
     
-    
-    xmpp_stanza_t *iq = xmpp_stanza_new(_ctx);
-    xmpp_stanza_set_name(iq, "iq");
-    xmpp_stanza_set_attribute(iq, "from", _conn->bound_jid);
-    xmpp_stanza_set_attribute(iq, "id", identifier);
-    xmpp_stanza_set_attribute(iq, "type", "get");
-    
-    xmpp_stanza_t *query = xmpp_stanza_new(_ctx);
-    xmpp_stanza_set_name(query, "query");
-    xmpp_stanza_set_ns(query, XMPP_NS_ROSTER);
-    xmpp_stanza_add_child(iq, query);
-    xmpp_stanza_release(query);
-    
-    [self sendStanza:iq];
-    xmpp_stanza_release(iq);
-    
-    if ( identifier ) {
-      free(identifier);
+    char *string = ab_identifier_create(ABCString(domain), ABCString(rand));
+    if ( ABCNonempty(string) ) {
+      identifier = [[NSString alloc] initWithUTF8String:string];
     }
   }
+  return identifier;
 }
+
 
 
 #pragma mark - Private methods
 
 - (void)connectAndRun
 {
-  if ( xmpp_connect_client(_conn, AB_CSTR(_server), [_port intValue], ab_connection_handler, (__bridge void *)self)==0 ) {
+  if ( xmpp_connect_client(_conn, ABCString(_server), [_port intValue], ab_connection_handler, (__bridge void *)self)==0 ) {
     
     if ( _ctx->loop_status==XMPP_LOOP_NOTSTARTED ) {
       
@@ -330,18 +317,6 @@
   }
 }
 
-
-- (void)sendStanza:(xmpp_stanza_t *)stanza
-{
-  if ( [self isConnected] ) {
-    char *buffer;
-    size_t length;
-    if ( xmpp_stanza_to_text(stanza, &buffer, &length)==0 ) {
-      [self sendRaw:buffer length:length];
-      xmpp_free(_ctx, buffer);
-    }
-  }
-}
 
 - (void)sendRaw:(const char *)data length:(size_t)length
 {

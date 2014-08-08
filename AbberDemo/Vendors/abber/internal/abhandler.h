@@ -23,9 +23,12 @@ void ab_connection_handler(xmpp_conn_t * const conn,
 
 /* Vcard */
 
-int ab_vcard_handler(xmpp_conn_t * const conn,
-                      xmpp_stanza_t * const stanza,
-                      void * const userdata);
+int ab_vcard_request_handler(xmpp_conn_t * const conn,
+                             xmpp_stanza_t * const stanza,
+                             void * const userdata);
+int ab_vcard_update_handler(xmpp_conn_t * const conn,
+                            xmpp_stanza_t * const stanza,
+                            void * const userdata);
 
 
 /* Roster */

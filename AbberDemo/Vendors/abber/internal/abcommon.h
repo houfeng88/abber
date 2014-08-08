@@ -11,18 +11,18 @@
 #ifndef AB_COMMON_H
 #define AB_COMMON_H
 
-#define AB_NONEMPTY(_val_) ((_val_!=NULL) && (strlen(_val_)>0))
+#define ABCNonempty(_s_) (((_s_)!=NULL) && (strlen(_s_)>0))
 
-#define AB_CSTR(_val_)    [_val_ UTF8String]
-#define AB_OBJCSTR(_val_) [[NSString alloc] initWithUTF8String:_val_]
+#define ABCStringOrLater(_s_) (((_s_)!=NULL)?(_s_):"")
+#define ABOStringOrLater(_a_, _b_) (([(_a_) length]>0)?(_a_):(_b_))
+
+#define ABCString(_s_) [(_s_) UTF8String]
+#define ABOString(_s_) [[NSString alloc] initWithUTF8String:(_s_)]
 
 
+char *ab_identifier_create(const char *domain, const char *rand);
 
-char *ab_create_jid_identifier(const char *prefix, const char *jid);
-
-char *ab_create_rand_identifier(const char *prefix);
-
-char *ab_create_merge_string(const char *prefix, const char *separator, const char *suffix);
+int ab_identifier_seed();
 
 
 void ab_md5_hash(char *dest, const char *source, size_t length);

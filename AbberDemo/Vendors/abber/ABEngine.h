@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #include <strophe/strophe.h>
+#import "ABStanza.h"
 
 typedef void (^ABEngineRequestCompletionHandler)(id result, NSError *error);
 
@@ -57,5 +58,10 @@ typedef enum {
 - (void)updateVcard:(NSString *)nickname desc:(NSString *)desc;
 
 - (void)requestRoster;
+
+
+- (ABStanza *)makeStanza;
+
+- (NSString *)makeIdentifier:(NSString *)prefix suffix:(NSString *)suffix;
 
 @end

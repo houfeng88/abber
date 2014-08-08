@@ -10,8 +10,10 @@
 #include <strophe/strophe.h>
 
 @interface ABStanza : NSObject {
-  xmpp_stanza_t *_cstanza;
+  xmpp_stanza_t *_stanza;
 }
+
+@property (nonatomic, assign) xmpp_stanza_t *stanza;
 
 @property (nonatomic, copy) NSString *to;
 @property (nonatomic, copy) NSString *from;
@@ -19,15 +21,20 @@
 @property (nonatomic, copy) NSString *type;
 @property (nonatomic, copy) NSString *language;
 
-+ (ABStanza *)stanzaWithObject:(xmpp_stanza_t *)stanza;
+- (NSData *)raw;
 
-- (id)init;
+- (ABStanza *)firstChild;
+- (ABStanza *)nextSibling;
+- (ABStanza *)childByName:(NSString *)name;
+- (ABStanza *)addChild:(ABStanza *)child;
 
-
-- (NSString *)valueForAttribute:(NSString *)attr;
-- (void)setValue:(NSString *)value forAttribute:(NSString *)attr;
+- (NSString *)nodeName;
+- (void)setNodeName:(NSString *)name;
 
 - (NSString *)textValue;
 - (void)setTextValue:(NSString *)text;
+
+- (NSString *)valueForAttribute:(NSString *)attr;
+- (void)setValue:(NSString *)value forAttribute:(NSString *)attr;
 
 @end

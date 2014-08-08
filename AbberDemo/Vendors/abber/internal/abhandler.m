@@ -28,11 +28,19 @@ void ab_connection_handler(xmpp_conn_t * const conn,
 
 
 
-int ab_vcard_handler(xmpp_conn_t * const conn,
-                     xmpp_stanza_t * const stanza,
-                     void * const userdata)
+int ab_vcard_request_handler(xmpp_conn_t * const conn,
+                             xmpp_stanza_t * const stanza,
+                             void * const userdata)
 {
-  DDLogCDebug(@"VCARD received");
+  DDLogCDebug(@"vCard request complete");
+  return 0;
+}
+
+int ab_vcard_update_handler(xmpp_conn_t * const conn,
+                            xmpp_stanza_t * const stanza,
+                            void * const userdata)
+{
+  DDLogCDebug(@"vCard update complete");
   return 0;
 }
 
