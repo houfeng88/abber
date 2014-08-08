@@ -33,8 +33,11 @@ int ab_vcard_update_handler(xmpp_conn_t * const conn,
 
 /* Roster */
 
-int ab_roster_handler(xmpp_conn_t * const conn,
-                      xmpp_stanza_t * const stanza,
-                      void * const userdata);
+int ab_roster_request_handler(xmpp_conn_t * const conn,
+                              xmpp_stanza_t * const stanza,
+                              void * const userdata);
+int ab_roster_update_handler(xmpp_conn_t * const conn,
+                             xmpp_stanza_t * const stanza,
+                             void * const userdata);
 
 #endif /* AB_HANDLER_H */

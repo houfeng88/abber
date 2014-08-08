@@ -12,6 +12,7 @@
 #define AB_COMMON_H
 
 #define ABCNonempty(_s_) (((_s_)!=NULL) && (strlen(_s_)>0))
+#define ABONonempty(_s_) (((_s_)!=nil) && ([(_s_) length]>0))
 
 #define ABCStringOrLater(_s_) (((_s_)!=NULL)?(_s_):"")
 #define ABOStringOrLater(_a_, _b_) (([(_a_) length]>0)?(_a_):(_b_))

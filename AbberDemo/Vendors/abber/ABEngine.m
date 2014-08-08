@@ -14,24 +14,6 @@
 
 @implementation ABEngine
 
-#pragma mark - Memory management
-
-- (id)init
-{
-  self = [super init];
-  if (self) {
-    xmpp_initialize();
-  }
-  return self;
-}
-
-- (void)dealloc
-{
-  xmpp_shutdown();
-}
-
-
-
 #pragma mark - Public methods
 
 + (ABEngine *)sharedObject
@@ -45,42 +27,59 @@
 }
 
 
+- (void)prepare
+{
+  if ( [self isDisconnected] ) {
+    xmpp_initialize();
+    
+    //_conn = NULL;
+    
+    //_account = nil;
+    //_password = nil;
+    
+    //ab_destroy_queue((ab_rawdata_t **)(&_sendQueue));
+    _sendQueueLock = [[NSLock alloc] init];
+  }
+}
+
 - (BOOL)connectWithAccount:(NSString *)acnt password:(NSString *)pswd
 {
-  if ( [acnt length]<=0 ) return NO;
-  
-  if ( [pswd length]<=0 ) return NO;
-  
-  
   if ( [self isConnecting] || [self isConnected] ) {
     return YES;
   }
   
-  
-  _ctx = xmpp_ctx_new(NULL, &ab_default_logger);
-  if ( !_ctx ) {
-    return NO;
+  if ( ABONonempty(acnt) && ABONonempty(pswd) ) {
+    xmpp_ctx_t *ctx = xmpp_ctx_new(NULL, &ab_default_logger);
+    if ( !ctx ) {
+      return NO;
+    }
+    
+    _conn = xmpp_conn_new(ctx);
+    if ( !_conn ) {
+      xmpp_ctx_free(ctx);
+      return NO;
+    }
+    
+    xmpp_conn_set_jid(_conn, ABCString(acnt));
+    _account = [acnt copy];
+    
+    xmpp_conn_set_pass(_conn, ABCString(pswd));
+    _password = [pswd copy];
+    
+    NSMutableDictionary *map = [[NSMutableDictionary alloc] init];
+    [map setObject:[NSValue valueWithPointer:_conn] forKey:@"conn"];
+    [map setObject:[NSValue valueWithPointer:&_sendQueue] forKey:@"sendQueue"];
+    [map setObject:_sendQueueLock forKey:@"sendQueueLock"];
+    
+    [self performSelector:@selector(connectAndRun:)
+                 onThread:[[self class] workingThread]
+               withObject:map
+            waitUntilDone:NO];
+    
+    return YES;
   }
   
-  _conn = xmpp_conn_new(_ctx);
-  if ( !_conn ) {
-    xmpp_ctx_free(_ctx);
-    _ctx = NULL;
-    return NO;
-  }
-  
-  xmpp_conn_set_jid(_conn, ABCString(acnt));
-  _account = [acnt copy];
-  
-  xmpp_conn_set_pass(_conn, ABCString(pswd));
-  _password = [pswd copy];
-  
-  [self performSelector:@selector(connectAndRun)
-               onThread:[[self class] workingThread]
-             withObject:nil
-          waitUntilDone:NO];
-  
-  return YES;
+  return NO;
 }
 
 - (void)disconnect
@@ -95,14 +94,38 @@
   }
 }
 
+- (void)cleanup
+{
+  DDLogDebug(@"[client] Cleanup");
+  xmpp_shutdown();
+  
+  xmpp_ctx_t *ctx = NULL;
+  if ( _conn ) {
+    ctx = _conn->ctx;
+    xmpp_conn_release(_conn);
+    _conn = NULL;
+  }
+  if ( ctx ) {
+    xmpp_ctx_free(ctx);
+  }
+  
+  _account = nil;
+  _password = nil;
+  
+  ab_destroy_queue((ab_rawdata_t **)(&_sendQueue));
+  _sendQueueLock = nil;
+}
+
+
 - (ABEngineState)state
 {
   if ( _conn ) {
-    if ( _conn->state==XMPP_STATE_DISCONNECTED ) {
+    xmpp_conn_state_t state = _conn->state;
+    if ( state==XMPP_STATE_DISCONNECTED ) {
       return ABEngineStateDisconnected;
-    } else if ( _conn->state==XMPP_STATE_CONNECTING ) {
+    } else if ( state==XMPP_STATE_CONNECTING ) {
       return ABEngineStateConnecting;
-    } else if ( _conn->state==XMPP_STATE_CONNECTED ) {
+    } else if ( state==XMPP_STATE_CONNECTED ) {
       return ABEngineStateConnected;
     }
   }
@@ -112,7 +135,7 @@
 
 - (BOOL)isDisconnected
 {
-  return ( (_conn) && (_conn->state==XMPP_STATE_DISCONNECTED) );
+  return ( (_conn==NULL) || (_conn->state==XMPP_STATE_DISCONNECTED) );
 }
 
 - (BOOL)isConnecting
@@ -143,7 +166,7 @@
     [iq setValue:iden forAttribute:@"id"];
     [iq setValue:@"get" forAttribute:@"type"];
     [iq setValue:ABOString(_conn->bound_jid) forAttribute:@"from"];
-    [iq setValue:(([jid length]>0)?jid:_account) forAttribute:@"to"];
+    [iq setValue:ABOStringOrLater(jid, _account) forAttribute:@"to"];
     
     ABStanza *vcard = [self makeStanza];
     [vcard setNodeName:@"vCard"];
@@ -157,7 +180,8 @@
 
 - (void)updateVcard:(NSString *)nickname desc:(NSString *)desc
 {
-//  <iq id='v2' type='set'>
+//  <iq id='v2'
+//      type='set'>
 //    <vCard xmlns='vcard-temp'>
 //      <NICKNAME>nickname</NICKNAME>
 //      <DESC>desc</DESC>
@@ -202,46 +226,40 @@
 
 - (void)requestRoster
 {
-//  <iq from='juliet@example.com/balcony'
-//      id='bv1bs71f'
-//      type='get'>
+//  <iq id='bv1bs71f'
+//      type='get'
+//      from='juliet@example.com/balcony'>
 //    <query xmlns='jabber:iq:roster'/>
 //  </iq>
   
-//  if ( [self isConnected] ) {
-//    char *identifier = ab_create_rand_identifier("roster");
-//    
-//    xmpp_id_handler_add(_conn, ab_roster_handler, identifier, _ctx);
-//    
-//    
-//    xmpp_stanza_t *iq = xmpp_stanza_new(_ctx);
-//    xmpp_stanza_set_name(iq, "iq");
-//    xmpp_stanza_set_attribute(iq, "from", _conn->bound_jid);
-//    xmpp_stanza_set_attribute(iq, "id", identifier);
-//    xmpp_stanza_set_attribute(iq, "type", "get");
-//    
-//    xmpp_stanza_t *query = xmpp_stanza_new(_ctx);
-//    xmpp_stanza_set_name(query, "query");
-//    xmpp_stanza_set_ns(query, XMPP_NS_ROSTER);
-//    xmpp_stanza_add_child(iq, query);
-//    xmpp_stanza_release(query);
-//    
-//    [self sendStanza:iq];
-//    xmpp_stanza_release(iq);
-//    
-//    if ( identifier ) {
-//      free(identifier);
-//    }
-//  }
+  if ( [self isConnected] ) {
+    NSString *iden = [self makeIdentifier:@"roster_request" suffix:_account];
+    
+    xmpp_id_handler_add(_conn, ab_roster_request_handler, ABCString(iden), NULL);
+    
+    ABStanza *iq = [self makeStanza];
+    [iq setNodeName:@"iq"];
+    [iq setValue:iden forAttribute:@"id"];
+    [iq setValue:@"get" forAttribute:@"type"];
+    [iq setValue:ABOString(_conn->bound_jid) forAttribute:@"from"];
+    
+    ABStanza *query = [self makeStanza];
+    [query setNodeName:@"query"];
+    [query setValue:@"jabber:iq:roster" forAttribute:@"xmlns"];
+    [iq addChild:query];
+    
+    NSData *raw = [iq raw];
+    [self sendRaw:[raw bytes] length:[raw length]];
+  }
 }
 
 
 - (ABStanza *)makeStanza
 {
   ABStanza *node = nil;
-  if ( _ctx ) {
+  if ( _conn->ctx ) {
     node = [[ABStanza alloc] init];
-    node.stanza = xmpp_stanza_new(_ctx);
+    node.stanza = xmpp_stanza_new(_conn->ctx);
   }
   return node;
 }
@@ -249,10 +267,12 @@
 - (NSString *)makeIdentifier:(NSString *)domain suffix:(NSString *)suffix
 {
   NSString *identifier = nil;
-  if ( [domain length]>0 ) {
+  if ( ABONonempty(domain) ) {
     
     NSMutableString *rand = [[NSMutableString alloc] init];
-    if ( [suffix length]>0 ) [rand appendString:suffix];
+    if ( ABONonempty(suffix) ) {
+      [rand appendString:suffix];
+    }
     [rand appendString:[NSString UUIDString]];
     
     char *string = ab_identifier_create(ABCString(domain), ABCString(rand));
@@ -267,65 +287,52 @@
 
 #pragma mark - Private methods
 
-- (void)connectAndRun
+- (void)connectAndRun:(id)object
 {
-  if ( xmpp_connect_client(_conn, ABCString(_server), [_port intValue], ab_connection_handler, (__bridge void *)self)==0 ) {
+  xmpp_conn_t *conn = [[object objectForKey:@"conn"] pointerValue];
+  
+  ab_rawdata_t **sendQueue = [[object objectForKey:@"sendQueue"] pointerValue];
+  NSLock *sendQueueLock = [object objectForKey:@"sendQueueLock"];
+  
+  if ( xmpp_connect_client(conn, ABJabberHost, ABJabberPort, ab_connection_handler, NULL)==0 ) {
     
-    if ( _ctx->loop_status==XMPP_LOOP_NOTSTARTED ) {
+    if ( conn->ctx->loop_status==XMPP_LOOP_NOTSTARTED ) {
       
-      _ctx->loop_status = XMPP_LOOP_RUNNING;
+      conn->ctx->loop_status = XMPP_LOOP_RUNNING;
       
-      while ( _ctx->loop_status==XMPP_LOOP_RUNNING ) {
+      while ( conn->ctx->loop_status==XMPP_LOOP_RUNNING ) {
         
-        xmpp_run_once(_ctx, 1);
+        xmpp_run_once(conn->ctx, 1);
         
-        [_sendQueueLock lock];
-        rawdata_t *head = (rawdata_t *)_sendQueue;
-        _sendQueue = NULL;
+        [sendQueueLock lock];
+        ab_rawdata_t *head = *sendQueue;
         while ( head ) {
-          rawdata_t *next = head->next;
+          ab_rawdata_t *next = head->next;
           
-          xmpp_send_raw(_conn, head->data, head->length);
-          xmpp_debug(_ctx, "conn", "SENT: %s", head->data);
+          xmpp_send_raw(conn, head->data, head->length);
+          xmpp_debug(conn->ctx, "conn", "SENT: %s", head->data);
           ab_destroy_rawdata(head);
           
           head = next;
         }
-        [_sendQueueLock unlock];
+        *sendQueue = NULL;
+        [sendQueueLock unlock];
       }
       
-      xmpp_debug(_ctx, "event", "Event loop completed.");
+      xmpp_debug(conn->ctx, "event", "Event loop completed.");
     }
     
   }
   
-  [self clearConnection];
-}
-
-
-- (void)clearConnection
-{
-  DDLogDebug(@"[client] Clear connection");
-  if ( _conn ) {
-    xmpp_conn_release(_conn);
-    _conn = NULL;
-  }
-  
-  if ( _ctx ) {
-    xmpp_ctx_free(_ctx);
-    _ctx = NULL;
-  }
+  [self cleanup];
 }
 
 
 - (void)sendRaw:(const char *)data length:(size_t)length
 {
   if ( [self isConnected] ) {
-    if ( !_sendQueueLock ) {
-      _sendQueueLock = [[NSLock alloc] init];
-    }
     [_sendQueueLock lock];
-    ab_enqueue((rawdata_t **)(&_sendQueue), ab_create_rawdata(data, length));
+    ab_enqueue((ab_rawdata_t **)(&_sendQueue), ab_create_rawdata(data, length));
     [_sendQueueLock unlock];
   }
 }

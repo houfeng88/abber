@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import <abber/abber.h>
+#import <abber/ABEngine.h>
 
 @implementation AppDelegate
 
@@ -69,10 +69,7 @@
   
   NSString *acnt = @"tkjohn@blah.im";
   NSString *pswd = @"12345678";
-  NSString *host = @"jabber.blah.im";
-  NSString *port = @"5222";
-  [[ABEngine sharedObject] setServer:host];
-  [[ABEngine sharedObject] setPort:port];
+  [[ABEngine sharedObject] prepare];
   [[ABEngine sharedObject] connectWithAccount:acnt password:pswd];
 }
 

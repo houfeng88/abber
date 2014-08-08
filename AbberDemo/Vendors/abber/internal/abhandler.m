@@ -46,34 +46,41 @@ int ab_vcard_update_handler(xmpp_conn_t * const conn,
 
 
 
-
-int ab_roster_handler(xmpp_conn_t * const conn,
-                      xmpp_stanza_t * const stanza,
-                      void * const userdata)
+int ab_roster_request_handler(xmpp_conn_t * const conn,
+                              xmpp_stanza_t * const stanza,
+                              void * const userdata)
 {
-  xmpp_stanza_t *query, *item;
-  char *type, *name;
-  
-  type = xmpp_stanza_get_type(stanza);
-  if (strcmp(type, "error") == 0)
-    fprintf(stderr, "ERROR: query failed\n");
-  else {
-    query = xmpp_stanza_get_child_by_name(stanza, "query");
-    printf("Roster:\n");
-    for (item = xmpp_stanza_get_children(query); item;
-         item = xmpp_stanza_get_next(item))
-	    if ((name = xmpp_stanza_get_attribute(item, "name")))
-        printf("\t %s (%s) sub=%s\n",
-               name,
-               xmpp_stanza_get_attribute(item, "jid"),
-               xmpp_stanza_get_attribute(item, "subscription"));
-	    else
-        printf("\t %s sub=%s\n",
-               xmpp_stanza_get_attribute(item, "jid"),
-               xmpp_stanza_get_attribute(item, "subscription"));
-    printf("END OF LIST\n");
-  }
-  
+  DDLogCDebug(@"Roster request complete");
+  return 0;
+}
+
+int ab_roster_update_handler(xmpp_conn_t * const conn,
+                             xmpp_stanza_t * const stanza,
+                             void * const userdata)
+{
+  DDLogCDebug(@"Roster update complete");
+//  xmpp_stanza_t *query, *item;
+//  char *type, *name;
+//  
+//  type = xmpp_stanza_get_type(stanza);
+//  if (strcmp(type, "error") == 0)
+//    fprintf(stderr, "ERROR: query failed\n");
+//  else {
+//    query = xmpp_stanza_get_child_by_name(stanza, "query");
+//    printf("Roster:\n");
+//    for (item = xmpp_stanza_get_children(query); item;
+//         item = xmpp_stanza_get_next(item))
+//	    if ((name = xmpp_stanza_get_attribute(item, "name")))
+//        printf("\t %s (%s) sub=%s\n",
+//               name,
+//               xmpp_stanza_get_attribute(item, "jid"),
+//               xmpp_stanza_get_attribute(item, "subscription"));
+//	    else
+//        printf("\t %s sub=%s\n",
+//               xmpp_stanza_get_attribute(item, "jid"),
+//               xmpp_stanza_get_attribute(item, "subscription"));
+//    printf("END OF LIST\n");
+//  }
   return 0;
 }
 

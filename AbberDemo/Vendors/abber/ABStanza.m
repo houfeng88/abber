@@ -128,7 +128,7 @@
 {
   ABStanza *node = nil;
   if ( _stanza ) {
-    if ( [name length]>0 ) {
+    if ( ABONonempty(name) ) {
       xmpp_stanza_t *stanza = xmpp_stanza_get_child_by_name(_stanza, ABCString(name));
       if ( stanza ) {
         node = [[ABStanza alloc] init];
@@ -165,7 +165,7 @@
 - (void)setNodeName:(NSString *)name
 {
   if ( _stanza ) {
-    if ( [name length]>0 ) {
+    if ( ABONonempty(name) ) {
       xmpp_stanza_set_name(_stanza, ABCString(name));
     }
   }
@@ -198,7 +198,7 @@
 {
   NSString *value = nil;
   if ( _stanza ) {
-    if ( [attr length]>0 ) {
+    if ( ABONonempty(attr) ) {
       char *string = xmpp_stanza_get_attribute(_stanza, ABCString(attr));
       if ( string ) {
         value = [[NSString alloc] initWithUTF8String:string];
@@ -211,7 +211,7 @@
 - (void)setValue:(NSString *)value forAttribute:(NSString *)attr
 {
   if ( _stanza ) {
-    if ( (value) && ([attr length]>0) ) {
+    if ( (value) && ABONonempty(attr) ) {
       xmpp_stanza_set_attribute(_stanza, ABCString(attr), ABCString(value));
     }
   }

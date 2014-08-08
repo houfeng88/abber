@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #include <strophe/strophe.h>
 #import "ABStanza.h"
+#import "ABConfig.h"
 
 typedef void (^ABEngineRequestCompletionHandler)(id result, NSError *error);
 
@@ -21,33 +22,26 @@ typedef enum {
 @interface ABEngine : NSObject<
     TKObserving
 > {
-  NSString *_server;
-  NSString *_port;
+  xmpp_conn_t *_conn;
+  
   NSString *_account;
   NSString *_password;
-  
-  
-  NSMutableArray *_observerAry;
-  
   
   void *_sendQueue;
   NSLock *_sendQueueLock;
   
-  xmpp_ctx_t *_ctx;
-  xmpp_conn_t *_conn;
+  NSMutableArray *_observerAry;
 }
 
-@property (nonatomic, copy) NSString *server;
-@property (nonatomic, copy) NSString *port;
 @property (nonatomic, copy, readonly) NSString *account;
 @property (nonatomic, copy, readonly) NSString *password;
 
 + (ABEngine *)sharedObject;
 
-
+- (void)prepare;
 - (BOOL)connectWithAccount:(NSString *)acnt password:(NSString *)pswd;
-
 - (void)disconnect;
+- (void)cleanup;
 
 - (ABEngineState)state;
 - (BOOL)isDisconnected;
