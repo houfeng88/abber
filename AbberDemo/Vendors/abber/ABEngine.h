@@ -51,11 +51,20 @@ typedef enum {
 - (void)requestVcard:(NSString *)jid completion:(ABEngineRequestCompletionHandler)handler;
 - (void)updateVcard:(NSString *)nickname desc:(NSString *)desc;
 
-- (void)requestRoster;
+- (void)requestRosterWithCompletion:(ABEngineRequestCompletionHandler)handler;
 
 
 - (ABStanza *)makeStanza;
 
 - (NSString *)makeIdentifier:(NSString *)prefix suffix:(NSString *)suffix;
+
+@end
+
+
+@protocol ABEngineDelegate <NSObject>
+@optional
+
+// { @"jid":@"__", @"name":@"__", @"subscription":@"__" }
+- (void)engine:(ABEngine *)engine didReceiveRoster:(NSArray *)roster;
 
 @end

@@ -228,7 +228,7 @@
 }
 
 
-- (void)requestRoster
+- (void)requestRosterWithCompletion:(ABEngineRequestCompletionHandler)handler
 {
 //  <iq id='bv1bs71f'
 //      type='get'
@@ -288,6 +288,17 @@
 }
 
 
+
+#pragma mark - Notify methods
+
+- (void)didReceiveRoster:(NSArray *)roster
+{
+  NSArray *observerAry = [self observers];
+  for ( NSUInteger i=0; i<[observerAry count]; ++i ) {
+    id<ABEngineDelegate> delegate = [observerAry objectAtIndex:i];
+    [delegate engine:self didReceiveRoster:roster];
+  }
+}
 
 #pragma mark - Private methods
 
