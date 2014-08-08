@@ -61,14 +61,10 @@
 {
 //  NSString *acnt = @"tkjohn@is-a-furry.org";
 //  NSString *pswd = @"12345678";
-//  NSString *host = @"is-a-furry.org";
-//  NSString *port = @"5222";
-//  [[ABEngine sharedObject] setServer:host];
-//  [[ABEngine sharedObject] setPort:port];
-//  [[ABEngine sharedObject] connectWithAccount:acnt password:pswd];
   
   NSString *acnt = @"tkjohn@blah.im";
   NSString *pswd = @"12345678";
+  
   [[ABEngine sharedObject] prepare];
   [[ABEngine sharedObject] connectWithAccount:acnt password:pswd];
 }
