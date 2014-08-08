@@ -257,7 +257,7 @@
 - (ABStanza *)makeStanza
 {
   ABStanza *node = nil;
-  if ( _conn->ctx ) {
+  if ( (_conn) && (_conn->ctx) ) {
     node = [[ABStanza alloc] init];
     node.stanza = xmpp_stanza_new(_conn->ctx);
   }
