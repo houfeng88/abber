@@ -6,10 +6,8 @@
 //  Copyright (c) 2014 Tapmob. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
 #include <strophe/strophe.h>
-
-#ifndef AB_COMMON_H
-#define AB_COMMON_H
 
 #define ABCNonempty(_s_) (((_s_)!=NULL) && (strlen(_s_)>0))
 #define ABONonempty(_s_) (((_s_)!=nil) && ([(_s_) length]>0))
@@ -21,11 +19,9 @@
 #define ABOString(_s_) [[NSString alloc] initWithUTF8String:(_s_)]
 
 
-char *ab_identifier_create(const char *domain, const char *rand);
+char *ABIdentifierCreate(const char *domain, const char *rand);
 
-int ab_identifier_seed();
+int   ABIdentifierSeed();
 
 
-void ab_md5_hash(char *dest, const char *source, size_t length);
-
-#endif /* AB_COMMON_H */
+void ABMD5Hash(char *dest, const char *source, size_t length);

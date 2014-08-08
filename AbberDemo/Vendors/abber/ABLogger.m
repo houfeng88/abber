@@ -8,10 +8,10 @@
 
 #import "ABLogger.h"
 
-void ab_write_log(void * const userdata,
-                  const xmpp_log_level_t level,
-                  const char * const area,
-                  const char * const msg)
+void ABWriteLog(void * const userdata,
+                const xmpp_log_level_t level,
+                const char * const area,
+                const char * const msg)
 {
   if ( level==XMPP_LEVEL_DEBUG ) {
     DDLogCDebug(@"[%s] %s", area, msg);
@@ -24,4 +24,4 @@ void ab_write_log(void * const userdata,
   }
 }
 
-xmpp_log_t ab_default_logger = { &ab_write_log, NULL };
+xmpp_log_t ABDefaultLogger = { &ABWriteLog, NULL };

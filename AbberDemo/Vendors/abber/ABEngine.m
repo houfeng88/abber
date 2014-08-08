@@ -7,10 +7,10 @@
 //
 
 #import "ABEngine.h"
-#include "internal/abcommon.h"
-#include "internal/abhandler.h"
-#include "internal/ablogger.h"
-#include "internal/abrawdata.h"
+#import "ABCommon.h"
+#import "ABHandler.h"
+#import "ABLogger.h"
+#import "ABRaw.h"
 
 @implementation ABEngine
 
@@ -51,7 +51,7 @@
   }
   
   if ( ABONonempty(acnt) && ABONonempty(pswd) ) {
-    xmpp_ctx_t *ctx = xmpp_ctx_new(NULL, &ab_default_logger);
+    xmpp_ctx_t *ctx = xmpp_ctx_new(NULL, &ABDefaultLogger);
     if ( !ctx ) {
       return NO;
     }
@@ -116,7 +116,7 @@
   _account = nil;
   _password = nil;
   
-  ab_destroy_queue((ab_rawdata_t **)(&_sendQueue));
+  ABRawQueueDestroy((ABRaw **)(&_sendQueue));
   _sendQueueLock = nil;
 }
 
@@ -163,7 +163,7 @@
   if ( [self isConnected] ) {
     NSString *iden = [self makeIdentifier:@"vcard_request" suffix:_account];
     
-    xmpp_id_handler_add(_conn, ab_vcard_request_handler, ABCString(iden), NULL);
+    xmpp_id_handler_add(_conn, ABVcardRequestHandler, ABCString(iden), NULL);
     
     ABStanza *iq = [self makeStanza];
     [iq setNodeName:@"iq"];
@@ -195,7 +195,7 @@
   if ( [self isConnected] ) {
     NSString *iden = [self makeIdentifier:@"vcard_update" suffix:_account];
     
-    xmpp_id_handler_add(_conn, ab_vcard_update_handler, ABCString(iden), NULL);
+    xmpp_id_handler_add(_conn, ABVcardUpdateHandler, ABCString(iden), NULL);
     
     ABStanza *iq = [self makeStanza];
     [iq setNodeName:@"iq"];
@@ -239,7 +239,7 @@
   if ( [self isConnected] ) {
     NSString *iden = [self makeIdentifier:@"roster_request" suffix:_account];
     
-    xmpp_id_handler_add(_conn, ab_roster_request_handler, ABCString(iden), NULL);
+    xmpp_id_handler_add(_conn, ABRosterRequestHandler, ABCString(iden), NULL);
     
     ABStanza *iq = [self makeStanza];
     [iq setNodeName:@"iq"];
@@ -279,7 +279,7 @@
     }
     [rand appendString:[NSString UUIDString]];
     
-    char *string = ab_identifier_create(ABCString(domain), ABCString(rand));
+    char *string = ABIdentifierCreate(ABCString(domain), ABCString(rand));
     if ( ABCNonempty(string) ) {
       identifier = [[NSString alloc] initWithUTF8String:string];
     }
@@ -305,10 +305,10 @@
 - (void)connectAndRun:(id)object
 {
   xmpp_conn_t *conn = [object[@"conn"] pointerValue];
-  ab_rawdata_t **sendQueue = [object[@"sendQueue"] pointerValue];
+  ABRaw **sendQueue = [object[@"sendQueue"] pointerValue];
   NSLock *sendQueueLock = object[@"sendQueueLock"];
   
-  int ret = xmpp_connect_client(conn, ABJabberHost, ABJabberPort, ab_connection_handler, NULL);
+  int ret = xmpp_connect_client(conn, ABJabberHost, ABJabberPort, ABConnectionHandler, NULL);
   
   if ( ret==XMPP_EOK ) {
     
@@ -323,12 +323,12 @@
         
         // Send
         [sendQueueLock lock];
-        ab_rawdata_t *head = *sendQueue;
+        ABRaw *head = *sendQueue;
         while ( head ) {
-          ab_rawdata_t *next = head->next;
+          ABRaw *next = head->next;
           xmpp_send_raw(conn, head->data, head->length);
           xmpp_debug(conn->ctx, "conn", "SENT: %s", head->data);
-          ab_destroy_rawdata(head);
+          ABRawDestroy(head);
           head = next;
         }
         *sendQueue = NULL;
@@ -348,7 +348,7 @@
 {
   if ( [self isConnected] ) {
     [_sendQueueLock lock];
-    ab_enqueue((ab_rawdata_t **)(&_sendQueue), ab_create_rawdata(data, length));
+    ABRawQueueAdd((ABRaw **)(&_sendQueue), ABRawCreate(data, length));
     [_sendQueueLock unlock];
   }
 }

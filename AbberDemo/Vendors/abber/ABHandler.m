@@ -8,11 +8,11 @@
 
 #import "ABHandler.h"
 
-void ab_connection_handler(xmpp_conn_t * const conn,
-                           const xmpp_conn_event_t status,
-                           const int error,
-                           xmpp_stream_error_t * const stream_error,
-                           void * const userdata)
+void ABConnectionHandler(xmpp_conn_t * const conn,
+                         const xmpp_conn_event_t status,
+                         const int error,
+                         xmpp_stream_error_t * const stream_error,
+                         void * const userdata)
 {
   //ABEngine *engine = (__bridge ABEngine *)userdata;
   
@@ -28,17 +28,17 @@ void ab_connection_handler(xmpp_conn_t * const conn,
 
 
 
-int ab_vcard_request_handler(xmpp_conn_t * const conn,
-                             xmpp_stanza_t * const stanza,
-                             void * const userdata)
+int ABVcardRequestHandler(xmpp_conn_t * const conn,
+                          xmpp_stanza_t * const stanza,
+                          void * const userdata)
 {
   DDLogCDebug(@"vCard request complete");
   return 0;
 }
 
-int ab_vcard_update_handler(xmpp_conn_t * const conn,
-                            xmpp_stanza_t * const stanza,
-                            void * const userdata)
+int ABVcardUpdateHandler(xmpp_conn_t * const conn,
+                         xmpp_stanza_t * const stanza,
+                         void * const userdata)
 {
   DDLogCDebug(@"vCard update complete");
   return 0;
@@ -46,17 +46,17 @@ int ab_vcard_update_handler(xmpp_conn_t * const conn,
 
 
 
-int ab_roster_request_handler(xmpp_conn_t * const conn,
-                              xmpp_stanza_t * const stanza,
-                              void * const userdata)
+int ABRosterRequestHandler(xmpp_conn_t * const conn,
+                           xmpp_stanza_t * const stanza,
+                           void * const userdata)
 {
   DDLogCDebug(@"Roster request complete");
   return 0;
 }
 
-int ab_roster_update_handler(xmpp_conn_t * const conn,
-                             xmpp_stanza_t * const stanza,
-                             void * const userdata)
+int ABRosterUpdateHandler(xmpp_conn_t * const conn,
+                          xmpp_stanza_t * const stanza,
+                          void * const userdata)
 {
   DDLogCDebug(@"Roster update complete");
   //  xmpp_stanza_t *query, *item;

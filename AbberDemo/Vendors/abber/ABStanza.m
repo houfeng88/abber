@@ -8,7 +8,7 @@
 
 #import "ABStanza.h"
 #include <strophe/common.h>
-#include "internal/abcommon.h"
+#import "ABCommon.h"
 
 @implementation ABStanza
 

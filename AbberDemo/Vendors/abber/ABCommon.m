@@ -9,7 +9,7 @@
 #import "ABCommon.h"
 #import <CommonCrypto/CommonDigest.h>
 
-char *ab_identifier_create(const char *domain, const char *rand)
+char *ABIdentifierCreate(const char *domain, const char *rand)
 {
   char *identifier = NULL;
   
@@ -17,7 +17,7 @@ char *ab_identifier_create(const char *domain, const char *rand)
     
     char suffix[33];
     memset(suffix, 0, 33);
-    ab_md5_hash(suffix, rand, strlen(rand));
+    ABMD5Hash(suffix, rand, strlen(rand));
     
     identifier = malloc(strlen(domain)+1+strlen(suffix)+1);
     strcat(identifier, domain);
@@ -28,14 +28,14 @@ char *ab_identifier_create(const char *domain, const char *rand)
   return identifier;
 }
 
-int ab_identifier_seed()
+int   ABIdentifierSeed()
 {
   // 1000 ... 1999
   return arc4random() % 1000 + 1000;
 }
 
 
-void ab_md5_hash(char *dest, const char *source, size_t length)
+void ABMD5Hash(char *dest, const char *source, size_t length)
 {
   if ( !dest ) return;
   if ( !source ) return;

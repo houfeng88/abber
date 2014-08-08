@@ -8,6 +8,21 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ABRaw : NSObject
+struct _ABRaw {
+  const char *data;
+  size_t length;
+  struct _ABRaw *next;
+};
+typedef struct _ABRaw ABRaw;
 
-@end
+
+ABRaw *ABRawQueueAdd(ABRaw **queue, ABRaw *raw);
+
+ABRaw *ABRawQueueRemove(ABRaw **queue);
+
+void   ABRawQueueDestroy(ABRaw **queue);
+
+
+ABRaw *ABRawCreate(const char *data, const size_t length);
+
+void   ABRawDestroy(ABRaw *raw);

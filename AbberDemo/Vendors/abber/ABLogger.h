@@ -9,9 +9,4 @@
 #import <Foundation/Foundation.h>
 #include <strophe/strophe.h>
 
-#ifndef AB_LOGGER_H
-#define AB_LOGGER_H
-
-extern xmpp_log_t ab_default_logger;
-
-#endif /* AB_LOGGER_H */
+extern xmpp_log_t ABDefaultLogger;
