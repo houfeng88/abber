@@ -62,7 +62,7 @@
 //  NSString *acnt = @"tkjohn@is-a-furry.org";
 //  NSString *pswd = @"12345678";
   
-  NSString *acnt = @"tkjohn@blah.im";
+  NSString *acnt = @"tkjohn@blah.im/teemo";
   NSString *pswd = @"12345678";
   
   [[ABEngine sharedObject] prepare];
