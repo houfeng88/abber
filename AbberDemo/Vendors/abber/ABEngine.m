@@ -37,7 +37,7 @@
     //_account = nil;
     //_password = nil;
     
-    //ab_destroy_queue((ab_rawdata_t **)(&_sendQueue));
+    //_sendQueue = NULL;
     _sendQueueLock = [[NSLock alloc] init];
   }
 }
@@ -289,12 +289,13 @@
 
 - (void)connectAndRun:(id)object
 {
-  xmpp_conn_t *conn = [[object objectForKey:@"conn"] pointerValue];
+  xmpp_conn_t *conn = [object[@"conn"] pointerValue];
+  ab_rawdata_t **sendQueue = [object[@"sendQueue"] pointerValue];
+  NSLock *sendQueueLock = object[@"sendQueueLock"];
   
-  ab_rawdata_t **sendQueue = [[object objectForKey:@"sendQueue"] pointerValue];
-  NSLock *sendQueueLock = [object objectForKey:@"sendQueueLock"];
+  int ret = xmpp_connect_client(conn, ABJabberHost, ABJabberPort, ab_connection_handler, NULL);
   
-  if ( xmpp_connect_client(conn, ABJabberHost, ABJabberPort, ab_connection_handler, NULL)==0 ) {
+  if ( ret==XMPP_EOK ) {
     
     if ( conn->ctx->loop_status==XMPP_LOOP_NOTSTARTED ) {
       
@@ -302,17 +303,17 @@
       
       while ( conn->ctx->loop_status==XMPP_LOOP_RUNNING ) {
         
+        // Run
         xmpp_run_once(conn->ctx, 1);
         
+        // Send
         [sendQueueLock lock];
         ab_rawdata_t *head = *sendQueue;
         while ( head ) {
           ab_rawdata_t *next = head->next;
-          
           xmpp_send_raw(conn, head->data, head->length);
           xmpp_debug(conn->ctx, "conn", "SENT: %s", head->data);
           ab_destroy_rawdata(head);
-          
           head = next;
         }
         *sendQueue = NULL;
