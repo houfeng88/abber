@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#include <strophe/strophe.h>
+#import "ABCommon.h"
 
 @interface ABStanza : NSObject {
   xmpp_stanza_t *_stanza;

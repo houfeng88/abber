@@ -7,7 +7,6 @@
 //
 
 #import "ABEngineRoster.h"
-#import "ABCommon.h"
 
 int ABRosterRequestHandler(xmpp_conn_t * const conn,
                            xmpp_stanza_t * const stanza,
@@ -76,6 +75,19 @@ int ABRosterUpdateHandler(xmpp_conn_t * const conn,
     [iq addChild:query];
     
     [self sendStanza:iq];
+  }
+}
+
+
+
+#pragma mark - Notify methods
+
+- (void)didReceiveRoster:(NSArray *)roster
+{
+  NSArray *observerAry = [self observers];
+  for ( NSUInteger i=0; i<[observerAry count]; ++i ) {
+    id<ABEngineDelegate> delegate = [observerAry objectAtIndex:i];
+    [delegate engine:self didReceiveRoster:roster];
   }
 }
 

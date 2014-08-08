@@ -7,10 +7,11 @@
 //
 
 #import "ABEngine.h"
-#import "ABCommon.h"
-#import "ABHandler.h"
 #import "ABLogger.h"
 #import "ABRaw.h"
+
+#import "ABEngineConnection.h"
+
 
 @implementation ABEngine
 
@@ -207,64 +208,6 @@
     }
   }
   return identifier;
-}
-
-
-
-#pragma mark - Notify methods
-
-- (void)didReceiveRoster:(NSArray *)roster
-{
-  NSArray *observerAry = [self observers];
-  for ( NSUInteger i=0; i<[observerAry count]; ++i ) {
-    id<ABEngineDelegate> delegate = [observerAry objectAtIndex:i];
-    [delegate engine:self didReceiveRoster:roster];
-  }
-}
-
-
-
-#pragma mark - Working
-
-- (void)connectAndRun:(id)object
-{
-  xmpp_conn_t *conn = [object[@"conn"] pointerValue];
-  ABRaw **sendQueue = [object[@"sendQueue"] pointerValue];
-  NSLock *sendQueueLock = object[@"sendQueueLock"];
-  
-  int ret = xmpp_connect_client(conn, ABJabberHost, ABJabberPort, ABConnectionHandler, NULL);
-  
-  if ( ret==XMPP_EOK ) {
-    
-    if ( conn->ctx->loop_status==XMPP_LOOP_NOTSTARTED ) {
-      
-      conn->ctx->loop_status = XMPP_LOOP_RUNNING;
-      
-      while ( conn->ctx->loop_status==XMPP_LOOP_RUNNING ) {
-        
-        // Run
-        xmpp_run_once(conn->ctx, 1);
-        
-        // Send
-        [sendQueueLock lock];
-        ABRaw *head = *sendQueue;
-        while ( head ) {
-          ABRaw *next = head->next;
-          xmpp_send_raw(conn, head->data, head->length);
-          xmpp_debug(conn->ctx, "conn", "SENT: %s", head->data);
-          ABRawDestroy(head);
-          head = next;
-        }
-        *sendQueue = NULL;
-        [sendQueueLock unlock];
-      }
-      
-      xmpp_debug(conn->ctx, "event", "Event loop completed.");
-    }
-    
-  }
-  
-  [self cleanup];
 }
 
 

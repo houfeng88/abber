@@ -7,9 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#include <strophe/strophe.h>
+#import "ABCommon.h"
 #import "ABStanza.h"
-#import "ABConfig.h"
 
 typedef void (^ABEngineRequestCompletionHandler)(id result, NSError *error);
 

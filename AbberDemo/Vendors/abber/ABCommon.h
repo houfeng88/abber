@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #include <strophe/strophe.h>
+#include <strophe/common.h>
 
 #define ABCNonempty(_s_) (((_s_)!=NULL) && (strlen(_s_)>0))
 #define ABONonempty(_s_) (((_s_)!=nil) && ([(_s_) length]>0))

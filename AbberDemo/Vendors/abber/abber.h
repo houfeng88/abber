@@ -7,5 +7,8 @@
 //
 
 #import "ABEngine.h"
+#import "ABEngineConnection.h"
 #import "ABEngineRoster.h"
 #import "ABEngineVcard.h"
+
+#import "ABStanza.h"

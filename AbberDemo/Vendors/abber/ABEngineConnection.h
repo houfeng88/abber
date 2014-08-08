@@ -1,5 +1,5 @@
 //
-//  ABEngineRoster.h
+//  ABEngineConnection.h
 //  AbberDemo
 //
 //  Created by Kevin Wu on 8/8/14.
@@ -10,8 +10,8 @@
 #import "ABEngine.h"
 #import "ABCommon.h"
 
-@interface ABEngine (Roster)
+@interface ABEngine (Connection)
 
-- (void)requestRosterWithCompletion:(ABEngineRequestCompletionHandler)handler;
+- (void)connectAndRun:(id)object;
 
 @end

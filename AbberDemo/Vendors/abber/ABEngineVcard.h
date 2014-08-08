@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "ABEngine.h"
+#import "ABCommon.h"
 
 @interface ABEngine (Vcard)
 

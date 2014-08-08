@@ -76,7 +76,7 @@
 
 - (void)request:(id)sender
 {
-  [[ABEngine sharedObject] disconnect];
+  [[ABEngine sharedObject] requestVcard:nil completion:NULL];
 }
 
 @end

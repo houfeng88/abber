@@ -7,7 +7,6 @@
 //
 
 #import "ABEngineVcard.h"
-#import "ABCommon.h"
 
 int ABVcardRequestHandler(xmpp_conn_t * const conn,
                           xmpp_stanza_t * const stanza,
