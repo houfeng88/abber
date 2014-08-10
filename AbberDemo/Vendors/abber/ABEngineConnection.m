@@ -10,20 +10,22 @@
 #import "ABRaw.h"
 #import "ABConfig.h"
 
+#import "ABObject.h"
+
 void ABConnectionHandler(xmpp_conn_t * const conn,
                          const xmpp_conn_event_t status,
                          const int error,
                          xmpp_stream_error_t * const stream_error,
                          void * const userdata)
 {
-  NSValue *engineValue = CFDictionaryGetValue(userdata, CFSTR("Engine"));
-  ABEngine *engine = [engineValue nonretainedObjectValue];
-  
-  NSString *string = CFDictionaryGetValue(userdata, CFSTR("String"));
-  
-  NSLog(@"[BBC] userdata: %p", userdata);
-  NSLog(@"[BBC] engine: %p", engine);
-  NSLog(@"[BBC] string: %p %@", string, string);
+//  NSDictionary *context = CFBridgingRelease(userdata);
+//  ABEngine *engine = [context objectForKey:@"Engine"];
+//  
+//  NSString *string = [context objectForKey:@"String"];
+//  
+//  NSLog(@"[BBC] userdata: %p", userdata);
+//  NSLog(@"[BBC] engine: %p", engine);
+//  NSLog(@"[BBC] string: %p %@", string, string);
   
   //ABEngine *engine = CFDictionaryGetValue(userdata, "Engine");
   
@@ -35,15 +37,15 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
     
     DDLogCDebug(@"[conn] Handler: disconnected");
     //[engine stopLoop];
-    
+    xmpp_stop(conn->ctx);
   } else if ( status==XMPP_CONN_FAIL ) {
     
     DDLogCDebug(@"[conn] Handler: failed");
     //[engine stopLoop];
-    
+    xmpp_stop(conn->ctx);
   }
   
-  CFRelease(userdata);
+  //CFRelease(userdata);
 }
 
 
@@ -52,27 +54,26 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
 
 - (void)connectAndRun:(id)object
 {
+  //ABObject *obj = [[ABObject alloc] init];
+  
   xmpp_conn_t *connection = [[object objectForKey:@"Connection"] pointerValue];
   ABRaw **sendQueue = [[object objectForKey:@"SendQueue"] pointerValue];
   NSLock *sendQueueLock = [object objectForKey:@"SendQueueLock"];
   
-  NSMutableDictionary *context = [[NSMutableDictionary alloc] init];
-  [context setObject:[NSValue valueWithNonretainedObject:self] forKey:@"Engine"];
-  
-  [context setObject:@"ABC" forKey:@"String"];
-  
-  void *ctx = (void *)CFBridgingRetain(context);
-  
-  NSLog(@"[ABC] context: %p", context);
-  NSLog(@"[ABC] engine: %p", self);
-  NSLog(@"[ABC] ctx: %p", ctx);
+//  NSMutableDictionary *context = [[NSMutableDictionary alloc] init];
+//  [context setObject:self forKey:@"Engine"];
+//  
+//  [context setObject:@"ABC" forKey:@"String"];
+//  
+//  NSLog(@"[ABC] context: %p", context);
+//  NSLog(@"[ABC] engine: %p", self);
   
   int ret = xmpp_connect_client(connection,
                                 ABJabberHost,
                                 ABJabberPort,
                                 ABConnectionHandler,
-                                (void *)CFBridgingRetain(context));
-  
+                                NULL);
+
   if ( ret==XMPP_EOK ) {
     
     if ( connection->ctx->loop_status==XMPP_LOOP_NOTSTARTED ) {

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A06B7B81997BC6900767DEC /* ABObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A06B7B71997BC6900767DEC /* ABObject.m */; };
 		0A5BAE6D19913715001EF07E /* ABStanza.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5BAE6C19913715001EF07E /* ABStanza.m */; };
 		0A5BAE701991382E001EF07E /* ABEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5BAE6F1991382E001EF07E /* ABEngine.m */; };
 		23C547281994B4B300B4C0F7 /* ABCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C547271994B4B300B4C0F7 /* ABCommon.m */; };
@@ -45,6 +46,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A06B7B61997BC6900767DEC /* ABObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABObject.h; sourceTree = "<group>"; };
+		0A06B7B71997BC6900767DEC /* ABObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABObject.m; sourceTree = "<group>"; };
 		0A5BAE6B19913715001EF07E /* ABStanza.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABStanza.h; sourceTree = "<group>"; };
 		0A5BAE6C19913715001EF07E /* ABStanza.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABStanza.m; sourceTree = "<group>"; };
 		0A5BAE6E1991382E001EF07E /* ABEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEngine.h; sourceTree = "<group>"; };
@@ -385,6 +388,8 @@
 				23F6C1DB1990AC3E005D2ED7 /* ABConfig.h */,
 				23C5473B1994C0E900B4C0F7 /* ABEngineConnection.h */,
 				23C5473C1994C0E900B4C0F7 /* ABEngineConnection.m */,
+				0A06B7B61997BC6900767DEC /* ABObject.h */,
+				0A06B7B71997BC6900767DEC /* ABObject.m */,
 				23C547321994BDE900B4C0F7 /* ABEngineRoster.h */,
 				23C547331994BDE900B4C0F7 /* ABEngineRoster.m */,
 				23C547351994BE2600B4C0F7 /* ABEngineVcard.h */,
@@ -515,6 +520,7 @@
 				23F6C1D61990A993005D2ED7 /* stanza.c in Sources */,
 				23F6C1CB1990A993005D2ED7 /* handler.c in Sources */,
 				23F6C1D21990A993005D2ED7 /* sasl.c in Sources */,
+				0A06B7B81997BC6900767DEC /* ABObject.m in Sources */,
 				23F6C1CC1990A993005D2ED7 /* hash.c in Sources */,
 				23F6C1C81990A993005D2ED7 /* conn.c in Sources */,
 				23F6C0E619909596005D2ED7 /* main.m in Sources */,
