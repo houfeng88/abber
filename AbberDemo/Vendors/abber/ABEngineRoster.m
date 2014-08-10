@@ -61,7 +61,7 @@ int ABRosterUpdateHandler(xmpp_conn_t * const conn,
   if ( [self isConnected] ) {
     NSString *iden = [self makeIdentifier:@"roster_request" suffix:_account];
     
-    xmpp_id_handler_add(_conn, ABRosterRequestHandler, ABCString(iden), NULL);
+    xmpp_id_handler_add(_connection, ABRosterRequestHandler, ABCString(iden), NULL);
     
     ABStanza *iq = [self makeStanza];
     [iq setNodeName:@"iq"];

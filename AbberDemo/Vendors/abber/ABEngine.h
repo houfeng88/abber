@@ -21,7 +21,7 @@ typedef enum {
 @interface ABEngine : NSObject<
     TKObserving
 > {
-  xmpp_conn_t *_conn;
+  xmpp_conn_t *_connection;
   
   NSString *_account;
   NSString *_password;

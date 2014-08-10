@@ -16,7 +16,16 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
                          xmpp_stream_error_t * const stream_error,
                          void * const userdata)
 {
-  ABEngine *engine = (__bridge ABEngine *)userdata;
+  NSValue *engineValue = CFDictionaryGetValue(userdata, CFSTR("Engine"));
+  ABEngine *engine = [engineValue nonretainedObjectValue];
+  
+  NSString *string = CFDictionaryGetValue(userdata, CFSTR("String"));
+  
+  NSLog(@"[BBC] userdata: %p", userdata);
+  NSLog(@"[BBC] engine: %p", engine);
+  NSLog(@"[BBC] string: %p %@", string, string);
+  
+  //ABEngine *engine = CFDictionaryGetValue(userdata, "Engine");
   
   if ( status==XMPP_CONN_CONNECT ) {
     
@@ -25,14 +34,16 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
   } else if ( status==XMPP_CONN_DISCONNECT ) {
     
     DDLogCDebug(@"[conn] Handler: disconnected");
-    [engine stopLoop];
+    //[engine stopLoop];
     
   } else if ( status==XMPP_CONN_FAIL ) {
     
     DDLogCDebug(@"[conn] Handler: failed");
-    [engine stopLoop];
+    //[engine stopLoop];
     
   }
+  
+  CFRelease(userdata);
 }
 
 
@@ -41,30 +52,45 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
 
 - (void)connectAndRun:(id)object
 {
-  xmpp_conn_t *conn = [object[@"conn"] pointerValue];
-  ABRaw **sendQueue = [object[@"sendQueue"] pointerValue];
-  NSLock *sendQueueLock = object[@"sendQueueLock"];
+  xmpp_conn_t *connection = [[object objectForKey:@"Connection"] pointerValue];
+  ABRaw **sendQueue = [[object objectForKey:@"SendQueue"] pointerValue];
+  NSLock *sendQueueLock = [object objectForKey:@"SendQueueLock"];
   
-  int ret = xmpp_connect_client(conn, ABJabberHost, ABJabberPort, ABConnectionHandler, (__bridge void *)self);
+  NSMutableDictionary *context = [[NSMutableDictionary alloc] init];
+  [context setObject:[NSValue valueWithNonretainedObject:self] forKey:@"Engine"];
+  
+  [context setObject:@"ABC" forKey:@"String"];
+  
+  void *ctx = (void *)CFBridgingRetain(context);
+  
+  NSLog(@"[ABC] context: %p", context);
+  NSLog(@"[ABC] engine: %p", self);
+  NSLog(@"[ABC] ctx: %p", ctx);
+  
+  int ret = xmpp_connect_client(connection,
+                                ABJabberHost,
+                                ABJabberPort,
+                                ABConnectionHandler,
+                                (void *)CFBridgingRetain(context));
   
   if ( ret==XMPP_EOK ) {
     
-    if ( conn->ctx->loop_status==XMPP_LOOP_NOTSTARTED ) {
+    if ( connection->ctx->loop_status==XMPP_LOOP_NOTSTARTED ) {
       
-      conn->ctx->loop_status = XMPP_LOOP_RUNNING;
+      connection->ctx->loop_status = XMPP_LOOP_RUNNING;
       
-      while ( conn->ctx->loop_status==XMPP_LOOP_RUNNING ) {
+      while ( connection->ctx->loop_status==XMPP_LOOP_RUNNING ) {
         
         // Run
-        xmpp_run_once(conn->ctx, 1);
+        xmpp_run_once(connection->ctx, 1);
         
         // Send
         [sendQueueLock lock];
         ABRaw *head = *sendQueue;
         while ( head ) {
           ABRaw *next = head->next;
-          xmpp_send_raw(conn, head->data, head->length);
-          xmpp_debug(conn->ctx, "conn", "SENT: %s", head->data);
+          xmpp_send_raw(connection, head->data, head->length);
+          xmpp_debug(connection->ctx, "conn", "SENT: %s", head->data);
           ABRawDestroy(head);
           head = next;
         }
@@ -72,7 +98,7 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
         [sendQueueLock unlock];
       }
       
-      xmpp_debug(conn->ctx, "event", "Event loop completed.");
+      xmpp_debug(connection->ctx, "event", "Event loop completed.");
     }
     
   }

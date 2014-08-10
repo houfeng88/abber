@@ -34,7 +34,7 @@
   if ( [self isDisconnected] ) {
     xmpp_initialize();
     
-    //_conn = NULL;
+    //_connection = NULL;
     
     //_account = nil;
     //_password = nil;
@@ -57,26 +57,26 @@
       return NO;
     }
     
-    _conn = xmpp_conn_new(ctx);
-    if ( !_conn ) {
+    _connection = xmpp_conn_new(ctx);
+    if ( !_connection ) {
       xmpp_ctx_free(ctx);
       return NO;
     }
     
-    xmpp_conn_set_jid(_conn, ABCString(acnt));
+    xmpp_conn_set_jid(_connection, ABCString(acnt));
     _account = [acnt copy];
     
-    xmpp_conn_set_pass(_conn, ABCString(pswd));
+    xmpp_conn_set_pass(_connection, ABCString(pswd));
     _password = [pswd copy];
     
-    NSMutableDictionary *map = [[NSMutableDictionary alloc] init];
-    [map setObject:[NSValue valueWithPointer:_conn] forKey:@"conn"];
-    [map setObject:[NSValue valueWithPointer:&_sendQueue] forKey:@"sendQueue"];
-    [map setObject:_sendQueueLock forKey:@"sendQueueLock"];
+    NSMutableDictionary *context = [[NSMutableDictionary alloc] init];
+    [context setObject:[NSValue valueWithPointer:_connection] forKey:@"Connection"];
+    [context setObject:[NSValue valueWithPointer:&_sendQueue] forKey:@"SendQueue"];
+    [context setObject:_sendQueueLock forKey:@"SendQueueLock"];
     
     [self performSelector:@selector(connectAndRun:)
                  onThread:[[self class] workingThread]
-               withObject:map
+               withObject:context
             waitUntilDone:NO];
     
     return YES;
@@ -95,13 +95,14 @@
                              beforeDate:[NSDate dateWithTimeIntervalSinceNow:2.0]];
     [_sendQueueLock lock];
   }
-  xmpp_disconnect(_conn);
+  DDLogDebug(@"[engine] Did launch disconnect");
+  xmpp_disconnect(_connection);
   [_sendQueueLock unlock];
 }
 
 - (void)stopLoop
 {
-  xmpp_stop(_conn->ctx);
+  xmpp_stop(_connection->ctx);
 }
 
 - (void)cleanup
@@ -110,10 +111,10 @@
   xmpp_shutdown();
   
   xmpp_ctx_t *ctx = NULL;
-  if ( _conn ) {
-    ctx = _conn->ctx;
-    xmpp_conn_release(_conn);
-    _conn = NULL;
+  if ( _connection ) {
+    ctx = _connection->ctx;
+    xmpp_conn_release(_connection);
+    _connection = NULL;
   }
   if ( ctx ) {
     xmpp_ctx_free(ctx);
@@ -129,8 +130,8 @@
 
 - (ABEngineState)state
 {
-  if ( _conn ) {
-    xmpp_conn_state_t state = _conn->state;
+  if ( _connection ) {
+    xmpp_conn_state_t state = _connection->state;
     if ( state==XMPP_STATE_DISCONNECTED ) {
       return ABEngineStateDisconnected;
     } else if ( state==XMPP_STATE_CONNECTING ) {
@@ -145,24 +146,24 @@
 
 - (BOOL)isDisconnected
 {
-  return ( (_conn==NULL) || (_conn->state==XMPP_STATE_DISCONNECTED) );
+  return ( (_connection==NULL) || (_connection->state==XMPP_STATE_DISCONNECTED) );
 }
 
 - (BOOL)isConnecting
 {
-  return ( (_conn) && (_conn->state==XMPP_STATE_CONNECTING) );
+  return ( (_connection) && (_connection->state==XMPP_STATE_CONNECTING) );
 }
 
 - (BOOL)isConnected
 {
-  return ( (_conn) && (_conn->state==XMPP_STATE_CONNECTED) );
+  return ( (_connection) && (_connection->state==XMPP_STATE_CONNECTED) );
 }
 
 
 - (NSString *)boundJid
 {
-  if ( _conn ) {
-    return ABOString(_conn->bound_jid);
+  if ( _connection ) {
+    return ABOString(_connection->bound_jid);
   }
   return nil;
 }
@@ -171,9 +172,9 @@
 - (ABStanza *)makeStanza
 {
   ABStanza *node = nil;
-  if ( (_conn) && (_conn->ctx) ) {
+  if ( (_connection) && (_connection->ctx) ) {
     node = [[ABStanza alloc] init];
-    node.stanza = xmpp_stanza_new(_conn->ctx);
+    node.stanza = xmpp_stanza_new(_connection->ctx);
   }
   return node;
 }

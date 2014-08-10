@@ -15,7 +15,6 @@
 {
   [self addLoggers];
   
-  
   _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   
   UIButton *button = [[UIButton alloc] init];
@@ -76,9 +75,10 @@
 
 - (void)request:(id)sender
 {
-  [[ABEngine sharedObject] requestVcard:nil completion:^(id result, NSError *error) {
-    NSLog(@"here");
-  }];
+//  [[ABEngine sharedObject] requestVcard:nil completion:^(id result, NSError *error) {
+//    NSLog(@"here");
+//  }];
+  [[ABEngine sharedObject] disconnect];
 }
 
 @end

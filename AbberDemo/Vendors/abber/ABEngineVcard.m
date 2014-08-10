@@ -8,21 +8,6 @@
 
 #import "ABEngineVcard.h"
 
-@implementation ABObject
-- (instancetype)init
-{
-  self = [super init];
-  if (self) {
-    NSLog(@"[obj] init ...");
-  }
-  return self;
-}
-- (void)dealloc
-{ NSLog(@"[obj] dealloc ..."); }
-- (NSString *)description
-{ return @"an object"; }
-@end
-
 int ABVcardRequestHandler(xmpp_conn_t * const conn,
                           xmpp_stanza_t * const stanza,
                           void * const userdata)
@@ -63,10 +48,10 @@ int ABVcardUpdateHandler(xmpp_conn_t * const conn,
   if ( [self isConnected] ) {
     NSString *iden = [self makeIdentifier:@"vcard_request" suffix:_account];
     
-    ABObject *obj = [[ABObject alloc] init];
+//    ABObject *obj = [[ABObject alloc] init];
     
-    void *pointer = CFBridgingRetain(obj);
-    xmpp_id_handler_add(_conn, ABVcardRequestHandler, ABCString(iden), pointer);
+//    void *pointer = CFBridgingRetain(obj);
+//    xmpp_id_handler_add(_conn, ABVcardRequestHandler, ABCString(iden), pointer);
     
     ABStanza *iq = [self makeStanza];
     [iq setNodeName:@"iq"];
@@ -97,7 +82,7 @@ int ABVcardUpdateHandler(xmpp_conn_t * const conn,
   if ( [self isConnected] ) {
     NSString *iden = [self makeIdentifier:@"vcard_update" suffix:_account];
     
-    xmpp_id_handler_add(_conn, ABVcardUpdateHandler, ABCString(iden), NULL);
+    xmpp_id_handler_add(_connection, ABVcardUpdateHandler, ABCString(iden), NULL);
     
     ABStanza *iq = [self makeStanza];
     [iq setNodeName:@"iq"];

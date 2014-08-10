@@ -17,7 +17,3 @@
 - (void)updateVcard:(NSString *)nickname desc:(NSString *)desc;
 
 @end
-
-@interface ABObject : NSObject {
-}
-@end
