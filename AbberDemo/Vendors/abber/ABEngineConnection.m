@@ -18,7 +18,7 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
                          xmpp_stream_error_t * const stream_error,
                          void * const userdata)
 {
-//  NSDictionary *context = CFBridgingRelease(userdata);
+  NSDictionary *context = CFBridgingRelease(userdata);
 //  ABEngine *engine = [context objectForKey:@"Engine"];
 //  
 //  NSString *string = [context objectForKey:@"String"];
@@ -60,7 +60,7 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
   ABRaw **sendQueue = [[object objectForKey:@"SendQueue"] pointerValue];
   NSLock *sendQueueLock = [object objectForKey:@"SendQueueLock"];
   
-//  NSMutableDictionary *context = [[NSMutableDictionary alloc] init];
+  NSMutableDictionary *context = [[NSMutableDictionary alloc] init];
 //  [context setObject:self forKey:@"Engine"];
 //  
 //  [context setObject:@"ABC" forKey:@"String"];
@@ -72,7 +72,7 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
                                 ABJabberHost,
                                 ABJabberPort,
                                 ABConnectionHandler,
-                                NULL);
+                                CFBridgingRetain(context));
 
   if ( ret==XMPP_EOK ) {
     
