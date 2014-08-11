@@ -57,6 +57,11 @@ typedef enum {
 @protocol ABEngineDelegate <NSObject>
 @optional
 
+- (void)engineDidStartConnecting:(ABEngine *)engine;
+- (void)engine:(ABEngine *)engine didReceiveConnectStatus:(BOOL)status;
+- (void)engineDidDisconnected:(ABEngine *)engine;
+
+
 // { @"jid":@"__", @"name":@"__", @"subscription":@"__" }
 - (void)engine:(ABEngine *)engine didReceiveRoster:(NSArray *)roster;
 

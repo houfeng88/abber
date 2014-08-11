@@ -64,6 +64,8 @@
   NSString *acnt = @"tkjohn@blah.im/teemo";
   NSString *pswd = @"12345678";
   
+  [[ABEngine sharedObject] addObserver:self];
+  
   [[ABEngine sharedObject] prepare];
   [[ABEngine sharedObject] connectWithAccount:acnt password:pswd];
 }
@@ -79,6 +81,22 @@
 //    NSLog(@"here");
 //  }];
   [[ABEngine sharedObject] disconnect];
+}
+
+
+- (void)engineDidStartConnecting:(ABEngine *)engine
+{
+  NSLog(@"HERE: %s", __func__);
+}
+
+- (void)engine:(ABEngine *)engine didReceiveConnectStatus:(BOOL)status
+{
+  NSLog(@"HERE: %s %d", __func__, status);
+}
+
+- (void)engineDidDisconnected:(ABEngine *)engine
+{
+  NSLog(@"HERE: %s", __func__);
 }
 
 @end
