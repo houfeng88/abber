@@ -34,13 +34,11 @@
   if ( [self isDisconnected] ) {
     xmpp_initialize();
     
-    //_connection = NULL;
-    
     //_account = nil;
     //_password = nil;
     
-    //_sendQueue = NULL;
-    _sendQueueLock = [[NSLock alloc] init];
+    //_connection = NULL;
+    _runLoopQueue = dispatch_queue_create("RunLoopQueue", DISPATCH_QUEUE_CONCURRENT);
   }
 }
 
@@ -69,15 +67,9 @@
     xmpp_conn_set_pass(_connection, ABCString(pswd));
     _password = [pswd copy];
     
-    NSMutableDictionary *context = [[NSMutableDictionary alloc] init];
-    [context setObject:[NSValue valueWithPointer:_connection] forKey:@"Connection"];
-    [context setObject:[NSValue valueWithPointer:&_sendQueue] forKey:@"SendQueue"];
-    [context setObject:_sendQueueLock forKey:@"SendQueueLock"];
-    
-    [self performSelector:@selector(connectAndRun:)
-                 onThread:[[self class] workingThread]
-               withObject:context
-            waitUntilDone:NO];
+    dispatch_async(_runLoopQueue, ^{
+      [self connectAndRun:_connection];
+    });
     
     return YES;
   }
@@ -88,19 +80,12 @@
 - (void)disconnect
 {
   DDLogDebug(@"[engine] Launch disconnect");
-  [_sendQueueLock lock];
-  while ( _sendQueue ) {
-    [_sendQueueLock unlock];
-    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode
-                             beforeDate:[NSDate dateWithTimeIntervalSinceNow:2.0]];
-    [_sendQueueLock lock];
-  }
-  DDLogDebug(@"[engine] Did launch disconnect");
-  xmpp_disconnect(_connection);
-  [_sendQueueLock unlock];
+  dispatch_sync(_runLoopQueue, ^{
+    xmpp_disconnect(_connection);
+  });
 }
 
-- (void)stopLoop
+- (void)stopRunLoop
 {
   xmpp_stop(_connection->ctx);
 }
@@ -108,8 +93,8 @@
 - (void)cleanup
 {
   DDLogDebug(@"[engine] Cleanup context");
-  xmpp_shutdown();
   
+  _runLoopQueue = nil;
   xmpp_ctx_t *ctx = NULL;
   if ( _connection ) {
     ctx = _connection->ctx;
@@ -120,11 +105,10 @@
     xmpp_ctx_free(ctx);
   }
   
-  _account = nil;
   _password = nil;
+  _account = nil;
   
-  ABRawQueueDestroy((ABRaw **)(&_sendQueue));
-  _sendQueueLock = nil;
+  xmpp_shutdown();
 }
 
 
@@ -189,10 +173,13 @@
 
 - (void)sendRaw:(const char *)data length:(size_t)length
 {
-  if ( [self isConnected] ) {
-    [_sendQueueLock lock];
-    ABRawQueueAdd((ABRaw **)(&_sendQueue), ABRawCreate(data, length));
-    [_sendQueueLock unlock];
+  if ( (data) && (length>0) ) {
+    if ( [self isConnected] ) {
+      dispatch_sync(_runLoopQueue, ^{
+        xmpp_send_raw(_connection, data, length);
+        xmpp_debug(_connection->ctx, "conn", "SENT: %s", data);
+      });
+    }
   }
 }
 
@@ -217,31 +204,6 @@
   return identifier;
 }
 
-
-
-#pragma mark - Working thread
-
-+ (NSThread *)workingThread
-{
-  static NSThread *WorkingThread = nil;
-  static dispatch_once_t Token;
-  dispatch_once(&Token, ^{
-    WorkingThread = [[NSThread alloc] initWithTarget:self
-                                            selector:@selector(threadBody:)
-                                              object:nil];
-    [WorkingThread start];
-  });
-  return WorkingThread;
-}
-
-+ (void)threadBody:(id)object
-{
-  while ( YES ) {
-    @autoreleasepool {
-      [[NSRunLoop currentRunLoop] run];
-    }
-  }
-}
 
 
 #pragma mark - TKObserving

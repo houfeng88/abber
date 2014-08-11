@@ -12,6 +12,6 @@
 
 @interface ABEngine (Connection)
 
-- (void)connectAndRun:(id)object;
+- (void)connectAndRun:(xmpp_conn_t *)connection;
 
 @end

@@ -21,13 +21,11 @@ typedef enum {
 @interface ABEngine : NSObject<
     TKObserving
 > {
-  xmpp_conn_t *_connection;
-  
   NSString *_account;
   NSString *_password;
   
-  void *_sendQueue;
-  NSLock *_sendQueueLock;
+  xmpp_conn_t *_connection;
+  dispatch_queue_t _runLoopQueue;
   
   NSMutableArray *_observerAry;
 }
@@ -40,7 +38,7 @@ typedef enum {
 - (void)prepare;
 - (BOOL)connectWithAccount:(NSString *)acnt password:(NSString *)pswd;
 - (void)disconnect;
-- (void)stopLoop;
+- (void)stopRunLoop;
 - (void)cleanup;
 
 - (ABEngineState)state;

@@ -52,59 +52,73 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
 
 @implementation ABEngine (Connection)
 
-- (void)connectAndRun:(id)object
+- (void)connectAndRun:(xmpp_conn_t *)connection
 {
-  //ABObject *obj = [[ABObject alloc] init];
-  
-  xmpp_conn_t *connection = [[object objectForKey:@"Connection"] pointerValue];
-  ABRaw **sendQueue = [[object objectForKey:@"SendQueue"] pointerValue];
-  NSLock *sendQueueLock = [object objectForKey:@"SendQueueLock"];
-  
-  NSMutableDictionary *context = [[NSMutableDictionary alloc] init];
-//  [context setObject:self forKey:@"Engine"];
-//  
-//  [context setObject:@"ABC" forKey:@"String"];
-//  
-//  NSLog(@"[ABC] context: %p", context);
-//  NSLog(@"[ABC] engine: %p", self);
-  
   int ret = xmpp_connect_client(connection,
                                 ABJabberHost,
                                 ABJabberPort,
                                 ABConnectionHandler,
-                                CFBridgingRetain(context));
-
-  if ( ret==XMPP_EOK ) {
-    
-    if ( connection->ctx->loop_status==XMPP_LOOP_NOTSTARTED ) {
-      
-      connection->ctx->loop_status = XMPP_LOOP_RUNNING;
-      
-      while ( connection->ctx->loop_status==XMPP_LOOP_RUNNING ) {
-        
-        // Run
-        xmpp_run_once(connection->ctx, 1);
-        
-        // Send
-        [sendQueueLock lock];
-        ABRaw *head = *sendQueue;
-        while ( head ) {
-          ABRaw *next = head->next;
-          xmpp_send_raw(connection, head->data, head->length);
-          xmpp_debug(connection->ctx, "conn", "SENT: %s", head->data);
-          ABRawDestroy(head);
-          head = next;
-        }
-        *sendQueue = NULL;
-        [sendQueueLock unlock];
-      }
-      
-      xmpp_debug(connection->ctx, "event", "Event loop completed.");
-    }
-    
-  }
+                                NULL);
   
-  [self cleanup];
+  if ( ret==XMPP_EOK ) {
+    xmpp_run(connection->ctx);
+    [self cleanup];
+  }
 }
+
+//- (void)connectAndRun:(id)object
+//{
+//  //ABObject *obj = [[ABObject alloc] init];
+//  
+//  xmpp_conn_t *connection = [[object objectForKey:@"Connection"] pointerValue];
+//  ABRaw **sendQueue = [[object objectForKey:@"SendQueue"] pointerValue];
+//  NSLock *sendQueueLock = [object objectForKey:@"SendQueueLock"];
+//  
+//  NSMutableDictionary *context = [[NSMutableDictionary alloc] init];
+////  [context setObject:self forKey:@"Engine"];
+////  
+////  [context setObject:@"ABC" forKey:@"String"];
+////  
+////  NSLog(@"[ABC] context: %p", context);
+////  NSLog(@"[ABC] engine: %p", self);
+//  
+//  int ret = xmpp_connect_client(connection,
+//                                ABJabberHost,
+//                                ABJabberPort,
+//                                ABConnectionHandler,
+//                                CFBridgingRetain(context));
+//
+//  if ( ret==XMPP_EOK ) {
+//    
+//    if ( connection->ctx->loop_status==XMPP_LOOP_NOTSTARTED ) {
+//      
+//      connection->ctx->loop_status = XMPP_LOOP_RUNNING;
+//      
+//      while ( connection->ctx->loop_status==XMPP_LOOP_RUNNING ) {
+//        
+//        // Run
+//        xmpp_run_once(connection->ctx, 1);
+//        
+//        // Send
+//        [sendQueueLock lock];
+//        ABRaw *head = *sendQueue;
+//        while ( head ) {
+//          ABRaw *next = head->next;
+//          xmpp_send_raw(connection, head->data, head->length);
+//          xmpp_debug(connection->ctx, "conn", "SENT: %s", head->data);
+//          ABRawDestroy(head);
+//          head = next;
+//        }
+//        *sendQueue = NULL;
+//        [sendQueueLock unlock];
+//      }
+//      
+//      xmpp_debug(connection->ctx, "event", "Event loop completed.");
+//    }
+//    
+//  }
+//  
+//  [self cleanup];
+//}
 
 @end
