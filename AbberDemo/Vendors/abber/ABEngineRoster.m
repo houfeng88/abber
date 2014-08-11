@@ -59,7 +59,7 @@ int ABRosterUpdateHandler(xmpp_conn_t * const conn,
   //  </iq>
   
   if ( [self isConnected] ) {
-    NSString *iden = [self makeIdentifier:@"roster_request" suffix:_account];
+    NSString *iden = [self makeIdentifier:@"roster_request" suffix:[self account]];
     
     xmpp_id_handler_add(_connection, ABRosterRequestHandler, ABCString(iden), NULL);
     

@@ -46,7 +46,7 @@ int ABVcardUpdateHandler(xmpp_conn_t * const conn,
   //  </iq>
   
   if ( [self isConnected] ) {
-    NSString *iden = [self makeIdentifier:@"vcard_request" suffix:_account];
+    NSString *iden = [self makeIdentifier:@"vcard_request" suffix:[self account]];
     
 //    ABObject *obj = [[ABObject alloc] init];
     
@@ -58,7 +58,7 @@ int ABVcardUpdateHandler(xmpp_conn_t * const conn,
     [iq setValue:iden forAttribute:@"id"];
     [iq setValue:@"get" forAttribute:@"type"];
     [iq setValue:ABOStringOrLater([self boundJid], @"") forAttribute:@"from"];
-    [iq setValue:ABOStringOrLater(jid, _account) forAttribute:@"to"];
+    [iq setValue:ABOStringOrLater(jid, [self account]) forAttribute:@"to"];
     
     ABStanza *vcard = [self makeStanza];
     [vcard setNodeName:@"vCard"];
@@ -80,7 +80,7 @@ int ABVcardUpdateHandler(xmpp_conn_t * const conn,
   //  </iq>
   
   if ( [self isConnected] ) {
-    NSString *iden = [self makeIdentifier:@"vcard_update" suffix:_account];
+    NSString *iden = [self makeIdentifier:@"vcard_update" suffix:[self account]];
     
     xmpp_id_handler_add(_connection, ABVcardUpdateHandler, ABCString(iden), NULL);
     

@@ -21,17 +21,11 @@ typedef enum {
 @interface ABEngine : NSObject<
     TKObserving
 > {
-  NSString *_account;
-  NSString *_password;
-  
   xmpp_conn_t *_connection;
   dispatch_queue_t _runLoopQueue;
   
   NSMutableArray *_observerAry;
 }
-
-@property (nonatomic, copy, readonly) NSString *account;
-@property (nonatomic, copy, readonly) NSString *password;
 
 + (ABEngine *)sharedObject;
 
@@ -41,12 +35,15 @@ typedef enum {
 - (void)stopRunLoop;
 - (void)cleanup;
 
+- (NSString *)account;
+- (NSString *)password;
+- (NSString *)boundJid;
+
 - (ABEngineState)state;
 - (BOOL)isDisconnected;
 - (BOOL)isConnecting;
 - (BOOL)isConnected;
 
-- (NSString *)boundJid;
 
 - (ABStanza *)makeStanza;
 - (void)sendStanza:(ABStanza *)stanza;

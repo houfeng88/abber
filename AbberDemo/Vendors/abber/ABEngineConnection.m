@@ -18,7 +18,7 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
                          xmpp_stream_error_t * const stream_error,
                          void * const userdata)
 {
-  NSDictionary *context = CFBridgingRelease(userdata);
+//  NSDictionary *context = CFBridgingRelease(userdata);
 //  ABEngine *engine = [context objectForKey:@"Engine"];
 //  
 //  NSString *string = [context objectForKey:@"String"];
@@ -36,12 +36,12 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
   } else if ( status==XMPP_CONN_DISCONNECT ) {
     
     DDLogCDebug(@"[conn] Handler: disconnected");
-    //[engine stopLoop];
+    
     xmpp_stop(conn->ctx);
   } else if ( status==XMPP_CONN_FAIL ) {
     
     DDLogCDebug(@"[conn] Handler: failed");
-    //[engine stopLoop];
+    
     xmpp_stop(conn->ctx);
   }
   

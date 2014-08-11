@@ -12,7 +12,6 @@
 
 #import "ABEngineConnection.h"
 
-
 @implementation ABEngine
 
 #pragma mark - Public methods
@@ -34,10 +33,9 @@
   if ( [self isDisconnected] ) {
     xmpp_initialize();
     
-    //_account = nil;
-    //_password = nil;
     
     //_connection = NULL;
+    
     _runLoopQueue = dispatch_queue_create("RunLoopQueue", DISPATCH_QUEUE_CONCURRENT);
   }
 }
@@ -62,10 +60,8 @@
     }
     
     xmpp_conn_set_jid(_connection, ABCString(acnt));
-    _account = [acnt copy];
     
     xmpp_conn_set_pass(_connection, ABCString(pswd));
-    _password = [pswd copy];
     
     dispatch_async(_runLoopQueue, ^{
       [self connectAndRun:_connection];
@@ -95,20 +91,43 @@
   DDLogDebug(@"[engine] Cleanup context");
   
   _runLoopQueue = nil;
-  xmpp_ctx_t *ctx = NULL;
+  
   if ( _connection ) {
-    ctx = _connection->ctx;
+    xmpp_ctx_t *ctx = _connection->ctx;
     xmpp_conn_release(_connection);
     _connection = NULL;
-  }
-  if ( ctx ) {
-    xmpp_ctx_free(ctx);
+    if ( ctx ) {
+      xmpp_ctx_free(ctx);
+    }
   }
   
-  _password = nil;
-  _account = nil;
   
   xmpp_shutdown();
+}
+
+
+- (NSString *)account
+{
+  if ( _connection ) {
+    return ABOString(_connection->jid);
+  }
+  return nil;
+}
+
+- (NSString *)password
+{
+  if ( _connection ) {
+    return ABOString(_connection->pass);
+  }
+  return nil;
+}
+
+- (NSString *)boundJid
+{
+  if ( _connection ) {
+    return ABOString(_connection->bound_jid);
+  }
+  return nil;
 }
 
 
@@ -143,14 +162,6 @@
   return ( (_connection) && (_connection->state==XMPP_STATE_CONNECTED) );
 }
 
-
-- (NSString *)boundJid
-{
-  if ( _connection ) {
-    return ABOString(_connection->bound_jid);
-  }
-  return nil;
-}
 
 
 - (ABStanza *)makeStanza
