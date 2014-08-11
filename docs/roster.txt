@@ -2,33 +2,214 @@
 1 添加离线
 
 1.1 添加
-1.1.1 Lily 添加 Jack
-1.1.2 Lily 下线再上线
+1.1.1 Amy 添加 Tom
+<!-- OUT -->
+<iq id="9105c11e-f3f0-44fd-9a5d-26a86c84f3c7" type="set">
+  <query xmlns="jabber:iq:roster">
+    <item jid="tktom@blah.im" name="Tom" subscription="none"/>
+  </query>
+</iq>
+<presence to="tktom@blah.im" type="subscribe"/>
+<!-- IN -->
+<iq id='9105c11e-f3f0-44fd-9a5d-26a86c84f3c7' 
+    type='result' 
+    to='tkamy@blah.im/df7c2984-ceb9-4c42-a492-f865697ae59c'/>
+
+<iq id='lx3463' type='set'>
+  <query ver='1' xmlns='jabber:iq:roster'>
+    <item jid='tktom@blah.im' subscription='none' name='Tom'/>
+  </query>
+</iq>
+<iq id="lx3463" type="result"/>
+
+<iq id='lx3464' type='set'>
+  <query ver='2' xmlns='jabber:iq:roster'>
+    <item jid='tktom@blah.im' ask='subscribe' subscription='none' name='Tom'/>
+  </query>
+</iq>
+<presence type='unavailable' to='tkamy@blah.im' from='tktom@blah.im'/>
+<iq id="lx3464" type="result"/>
+
+1.1.2 Amy 下线再上线
+<!-- OUT -->
+<iq id="f105af82-9765-4b07-8e34-a00c27d1910b" type="get">
+  <query ver="2" xmlns="jabber:iq:roster"/>
+</iq>
+<!-- IN -->
+<iq id='f105af82-9765-4b07-8e34-a00c27d1910b' 
+    type='result' 
+    to='tkamy@blah.im/df7c2984-ceb9-4c42-a492-f865697ae59c'/>
+
+<iq id='lx3475' type='set'>
+  <query ver='2' xmlns='jabber:iq:roster'>
+    <item jid='tktom@blah.im' ask='subscribe' subscription='none' name='Tom'/>
+  </query>
+</iq>
+<presence type='unavailable' to='tkamy@blah.im' from='tktom@blah.im'/>
+<iq id="lx3475" type="result"/>
 
 1.2 上线
-1.2.1 Jack 上线
-1.2.2 Jack 下线再上线
+1.2.1 Tom 上线
+<!-- OUT -->
+<iq id="22da1223-5cf1-4b8f-8e78-a84d5212e756" type="get">
+  <query ver="" xmlns="jabber:iq:roster"/>
+</iq>
+<!-- IN -->
+<iq id='22da1223-5cf1-4b8f-8e78-a84d5212e756' 
+    type='result' 
+    to='tktom@blah.im/6f81ddad-b3e8-4934-9280-f9183c72ab71'>
+  <query ver='1' xmlns='jabber:iq:roster'/>
+</iq>
+
+// 应该是添加请求
+<presence from='tkamy@blah.im' type='subscribe'/>
+
+1.2.2 Tom 下线再上线
+<!-- OUT -->
+<iq id="8be70201-df80-4a13-bb31-2ffdf340cd5b" type="get">
+  <query ver="1" xmlns="jabber:iq:roster"/>
+</iq>
+<!-- IN -->
+<iq id='8be70201-df80-4a13-bb31-2ffdf340cd5b' 
+    type='result' 
+    to='tktom@blah.im/6f81ddad-b3e8-4934-9280-f9183c72ab71'/>
+
+// 应该是添加请求
+<presence from='tkamy@blah.im' type='subscribe'/>
 
 1.3 拒绝
-1.3.1 Jack 上线后拒绝
-1.3.2 Jack 下线再上线
+1.3.1 Tom 上线后拒绝
+<!-- OUT -->
+<presence to="tkamy@blah.im" type="unsubscribed"/>
+
+1.3.2 Tom 下线再上线
+<!-- OUT -->
+<iq id="fcddefee-79a5-4597-8ff1-8b0cb2f0744f" type="get">
+  <query ver="1" xmlns="jabber:iq:roster"/>
+</iq>
+<!-- IN -->
+<iq id='fcddefee-79a5-4597-8ff1-8b0cb2f0744f' 
+    type='result' 
+    to='tktom@blah.im/6f81ddad-b3e8-4934-9280-f9183c72ab71'>
+  <query ver='2' xmlns='jabber:iq:roster'/>
+</iq>
 
 1.4 查看
-1.4.1 Lily 上线
-1.4.2 Lily 下线再上线
+1.4.1 Amy 上线
+<!-- OUT -->
+<iq id="2742bf53-9a12-4b31-95ca-aa84f8159e82" type="get">
+  <query ver="2" xmlns="jabber:iq:roster"/>
+</iq>
+<!-- IN -->
+<iq id='2742bf53-9a12-4b31-95ca-aa84f8159e82' 
+    type='result' 
+    to='tkamy@blah.im/cedaedb0-3137-455d-8d26-ad2bb8d14399'>
+  <query ver='3' xmlns='jabber:iq:roster'>
+    <item jid='tktom@blah.im' subscription='none' name='Tom'/>
+  </query>
+</iq>
+
+1.4.2 Amy 下线再上线
+<!-- OUT -->
+<iq id="ee6f28d6-d3cb-446b-a020-df3bf7638861" type="get">
+  <query ver="3" xmlns="jabber:iq:roster"/>
+</iq>
+<!-- IN -->
+<iq id='ee6f28d6-d3cb-446b-a020-df3bf7638861' 
+    type='result' 
+    to='tkamy@blah.im/cedaedb0-3137-455d-8d26-ad2bb8d14399'/>
 
 1.5 同意
-1.5.1 Jack 上线后同意
-1.5.2 Jack 下线再上线
+1.5.1 Tom 上线后同意
+<!-- OUT -->
+// 应该是同意
+<presence to="tklucy@blah.im" type="subscribed"/>
+// 应该是申请添加对方
+<presence to="tklucy@blah.im" type="subscribe"/>
+
+<iq id='lx3512' type='set'>
+  <query ver='2' xmlns='jabber:iq:roster'>
+    <item jid='tklucy@blah.im' subscription='from'/>
+  </query>
+</iq>
+<iq id="lx3512" type="result"/>
+
+<!-- IN -->
+<iq id='lx3513' type='set'>
+  <query ver='3' xmlns='jabber:iq:roster'>
+    <item jid='tklucy@blah.im' ask='subscribe' subscription='from'/>
+  </query>
+</iq>
+<presence type='unavailable' to='tksam@blah.im' from='tklucy@blah.im'/>
+<iq id="lx3513" type="result"/>
+
+1.5.2 Tom 下线再上线
+<!-- OUT -->
+<iq id="3d257d25-3024-4ce4-9f40-c2bac1a99108" type="get">
+  <query ver="3" xmlns="jabber:iq:roster"/>
+</iq>
+<!-- IN -->
+<iq id='3d257d25-3024-4ce4-9f40-c2bac1a99108' 
+    type='result' 
+    to='tksam@blah.im/0a289216-4025-4193-8e2d-717e6bdb1250'/>
+<iq id='lx3539' type='set'>
+  <query ver='3' xmlns='jabber:iq:roster'>
+    <item jid='tklucy@blah.im' ask='subscribe' subscription='from'/>
+  </query>
+</iq>
+<presence type='unavailable' to='tksam@blah.im' from='tklucy@blah.im'/>
+<iq id="lx3539" type="result"/>
 
 1.6 查看
-1.6.1 Lily 上线
-1.6.2 Lily 下线再上线
+1.6.1 Amy 上线
+<!-- OUT -->
+<iq id="318f9160-76f2-42c1-96b2-b5021de5f355" type="get"><query ver="2" xmlns="jabber:iq:roster"/></iq>
+<!-- IN -->
+<iq id='318f9160-76f2-42c1-96b2-b5021de5f355' type='result' to='tklucy@blah.im/47da7f3d-327f-44ec-ab94-3f64ce99b23a'>
+  <query ver='4' xmlns='jabber:iq:roster'>
+    <item jid='tksam@blah.im' subscription='to' name='Sam'/>
+  </query>
+</iq>
 
-
+<presence type='unavailable' to='tklucy@blah.im/47da7f3d-327f-44ec-ab94-3f64ce99b23a' from='tksam@blah.im'/>
+<presence from='tksam@blah.im' type='subscribe'/>
+
+<!-- OUT -->
+<presence to="tksam@blah.im" type="subscribed"/>
+
+<!-- IN -->
+<iq id='lx3549' type='set'>
+  <query ver='5' xmlns='jabber:iq:roster'>
+    <item jid='tksam@blah.im' subscription='both' name='Sam'/>
+  </query>
+</iq>
+<!-- OUT -->
+<iq id="lx3549" type="result"/>
+
+1.6.2 Amy 下线再上线
+<!-- OUT -->
+<iq id="9218f656-aba0-4399-a01d-056cd97b1a22" type="get">
+  <query ver="5" xmlns="jabber:iq:roster"/>
+</iq>
+<!-- IN -->
+<iq id='9218f656-aba0-4399-a01d-056cd97b1a22' type='result' to='tklucy@blah.im/47da7f3d-327f-44ec-ab94-3f64ce99b23a'/>
+<presence type='unavailable' to='tklucy@blah.im/47da7f3d-327f-44ec-ab94-3f64ce99b23a' from='tksam@blah.im'/>
+
+// 重来
+<!-- OUT -->
+<iq id="c2d88a13-66b0-4fde-a1f0-3a4adf6ded9f" type="get">
+  <query ver="" xmlns="jabber:iq:roster"/>
+</iq>
+<!-- IN -->
+<iq id='c2d88a13-66b0-4fde-a1f0-3a4adf6ded9f' type='result' to='tklucy@blah.im/62608b56-f436-494d-a3f6-3685fdedccf8'>
+  <query ver='5' xmlns='jabber:iq:roster'>
+    <item jid='tksam@blah.im' subscription='both' name='Sam'/>
+  </query>
+</iq>
+
 
 2 添加在线
 
 2.1 添加
-2.1.1 Lily 添加 Jack
-2.1.2 Lily 下线再上线
+2.1.1 Amy 添加 Tom
+2.1.2 Amy 下线再上线
