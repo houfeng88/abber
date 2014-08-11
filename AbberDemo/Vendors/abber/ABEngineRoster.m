@@ -52,25 +52,23 @@ int ABRosterUpdateHandler(xmpp_conn_t * const conn,
 
 - (void)requestRosterWithCompletion:(ABEngineRequestCompletionHandler)handler
 {
-  //  <iq id='bv1bs71f'
-  //      type='get'
-  //      from='juliet@example.com/balcony'>
-  //    <query xmlns='jabber:iq:roster'/>
-  //  </iq>
+//  <iq id='bv1bs71f'
+//      type='get'
+//      from='juliet@example.com/balcony'>
+//    <query xmlns='jabber:iq:roster'/>
+//  </iq>
   
   if ( [self isConnected] ) {
     NSString *iden = [self makeIdentifier:@"roster_request" suffix:[self account]];
     
     xmpp_id_handler_add(_connection, ABRosterRequestHandler, ABCString(iden), NULL);
     
-    ABStanza *iq = [self makeStanza];
-    [iq setNodeName:@"iq"];
+    ABStanza *iq = [self makeStanzaWithName:@"iq"];
     [iq setValue:iden forAttribute:@"id"];
     [iq setValue:@"get" forAttribute:@"type"];
     [iq setValue:ABOStringOrLater([self boundJid], @"") forAttribute:@"from"];
     
-    ABStanza *query = [self makeStanza];
-    [query setNodeName:@"query"];
+    ABStanza *query = [self makeStanzaWithName:@"query"];
     [query setValue:@"jabber:iq:roster" forAttribute:@"xmlns"];
     [iq addChild:query];
     
@@ -79,16 +77,15 @@ int ABRosterUpdateHandler(xmpp_conn_t * const conn,
 }
 
 
-
-#pragma mark - Notify methods
-
 - (void)didReceiveRoster:(NSArray *)roster
 {
-  NSArray *observerAry = [self observers];
-  for ( NSUInteger i=0; i<[observerAry count]; ++i ) {
-    id<ABEngineDelegate> delegate = [observerAry objectAtIndex:i];
-    [delegate engine:self didReceiveRoster:roster];
-  }
+  dispatch_sync(dispatch_get_main_queue(), ^{
+    NSArray *observerAry = [self observers];
+    for ( NSUInteger i=0; i<[observerAry count]; ++i ) {
+      id<ABEngineDelegate> delegate = [observerAry objectAtIndex:i];
+      [delegate engine:self didReceiveRoster:roster];
+    }
+  });
 }
 
 @end

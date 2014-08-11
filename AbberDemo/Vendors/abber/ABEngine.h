@@ -45,7 +45,7 @@ typedef enum {
 - (BOOL)isConnected;
 
 
-- (ABStanza *)makeStanza;
+- (ABStanza *)makeStanzaWithName:(NSString *)name;
 - (void)sendStanza:(ABStanza *)stanza;
 - (void)sendRaw:(const char *)data length:(size_t)length;
 

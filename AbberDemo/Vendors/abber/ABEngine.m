@@ -163,12 +163,13 @@
 
 
 
-- (ABStanza *)makeStanza
+- (ABStanza *)makeStanzaWithName:(NSString *)name
 {
   ABStanza *node = nil;
   if ( (_connection) && (_connection->ctx) ) {
     node = [[ABStanza alloc] init];
     node.stanza = xmpp_stanza_new(_connection->ctx);
+    [node setNodeName:name];
   }
   return node;
 }
