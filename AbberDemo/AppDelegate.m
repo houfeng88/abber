@@ -9,6 +9,8 @@
 #import "AppDelegate.h"
 #import <abber/abber.h>
 
+#import <abber/ABObject.h>
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -72,14 +74,14 @@
 
 - (void)update:(id)sender
 {
-  [[ABEngine sharedObject] updateVcard:@"Kevin" desc:@"It's me."];
+  [[ABEngine sharedObject] requestRosterWithCompletion:^(id result, NSError *error) {
+    ABObject *object = [[ABObject alloc] init];
+    NSLog(@"here");
+  }];
 }
 
 - (void)request:(id)sender
 {
-//  [[ABEngine sharedObject] requestVcard:nil completion:^(id result, NSError *error) {
-//    NSLog(@"here");
-//  }];
   [[ABEngine sharedObject] disconnect];
 }
 

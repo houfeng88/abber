@@ -13,6 +13,24 @@ int ABRosterRequestHandler(xmpp_conn_t * const conn,
                            void * const userdata)
 {
   DDLogCDebug(@"Roster request complete");
+  
+  if ( userdata ) {
+    CFDictionaryRef context = userdata;
+    
+    NSValue *engineValue = CFDictionaryGetValue(context, CFSTR("Engine"));
+    ABEngine *engine = [engineValue nonretainedObjectValue];
+    
+    ABEngineRequestCompletionHandler handler = CFDictionaryGetValue(context, CFSTR("Handler"));
+    
+    
+    if ( handler ) {
+      handler(nil, nil);
+    }
+    
+    
+    CFRelease(context);
+  }
+  
   return 0;
 }
 
@@ -61,7 +79,10 @@ int ABRosterUpdateHandler(xmpp_conn_t * const conn,
   if ( [self isConnected] ) {
     NSString *iden = [self makeIdentifier:@"roster_request" suffix:[self account]];
     
-    xmpp_id_handler_add(_connection, ABRosterRequestHandler, ABCString(iden), NULL);
+    NSMutableDictionary *context = [[NSMutableDictionary alloc] init];
+    [context setObject:[NSValue valueWithNonretainedObject:self] forKey:@"Engine"];
+    [context setObject:[handler copy] forKeyIfNotNil:@"Handler"];
+    xmpp_id_handler_add(_connection, ABRosterRequestHandler, ABCString(iden), CFBridgingRetain(context));
     
     ABStanza *iq = [self makeStanzaWithName:@"iq"];
     [iq setValue:iden forAttribute:@"id"];

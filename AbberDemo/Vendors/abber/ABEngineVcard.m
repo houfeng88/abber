@@ -53,15 +53,13 @@ int ABVcardUpdateHandler(xmpp_conn_t * const conn,
 //    void *pointer = CFBridgingRetain(obj);
 //    xmpp_id_handler_add(_conn, ABVcardRequestHandler, ABCString(iden), pointer);
     
-    ABStanza *iq = [self makeStanza];
-    [iq setNodeName:@"iq"];
+    ABStanza *iq = [self makeStanzaWithName:@"iq"];
     [iq setValue:iden forAttribute:@"id"];
     [iq setValue:@"get" forAttribute:@"type"];
     [iq setValue:ABOStringOrLater([self boundJid], @"") forAttribute:@"from"];
     [iq setValue:ABOStringOrLater(jid, [self account]) forAttribute:@"to"];
     
-    ABStanza *vcard = [self makeStanza];
-    [vcard setNodeName:@"vCard"];
+    ABStanza *vcard = [self makeStanzaWithName:@"vCard"];
     [vcard setValue:@"vcard-temp" forAttribute:@"xmlns"];
     [iq addChild:vcard];
     
@@ -84,28 +82,24 @@ int ABVcardUpdateHandler(xmpp_conn_t * const conn,
     
     xmpp_id_handler_add(_connection, ABVcardUpdateHandler, ABCString(iden), NULL);
     
-    ABStanza *iq = [self makeStanza];
-    [iq setNodeName:@"iq"];
+    ABStanza *iq = [self makeStanzaWithName:@"iq"];
     [iq setValue:iden forAttribute:@"id"];
     [iq setValue:@"set" forAttribute:@"type"];
     [iq setValue:ABOStringOrLater([self boundJid], @"") forAttribute:@"from"];
     
-    ABStanza *vcard = [self makeStanza];
-    [vcard setNodeName:@"vCard"];
+    ABStanza *vcard = [self makeStanzaWithName:@"vCard"];
     [vcard setValue:@"vcard-temp" forAttribute:@"xmlns"];
     [iq addChild:vcard];
     
-    ABStanza *nm = [self makeStanza];
-    [nm setNodeName:@"NICKNAME"];
+    ABStanza *nm = [self makeStanzaWithName:@"NICKNAME"];
     [vcard addChild:nm];
-    ABStanza *nmbody = [self makeStanza];
+    ABStanza *nmbody = [self makeStanzaWithName:nil];
     [nmbody setTextValue:ABOStringOrLater(nickname, @"")];
     [nm addChild:nmbody];
     
-    ABStanza *ds = [self makeStanza];
-    [ds setNodeName:@"DESC"];
+    ABStanza *ds = [self makeStanzaWithName:@"DESC"];
     [vcard addChild:ds];
-    ABStanza *dsbody = [self makeStanza];
+    ABStanza *dsbody = [self makeStanzaWithName:nil];
     [dsbody setTextValue:ABOStringOrLater(desc, @"")];
     [ds addChild:dsbody];
     
