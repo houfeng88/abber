@@ -54,6 +54,8 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
   if ( ret==XMPP_EOK ) {
     xmpp_run(connection->ctx);
     [self cleanup];
+  } else {
+    [self didReceiveConnectStatus:NO];
   }
 }
 
