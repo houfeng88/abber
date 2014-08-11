@@ -232,8 +232,7 @@ void xmpp_run_once(xmpp_ctx_t *ctx, const unsigned long timeout)
     /* select errored */
     if (ret < 0) {
 	if (!sock_is_recoverable(sock_error()))
-	    xmpp_error(ctx, "xmpp", "event watcher internal error %d", 
-		       sock_error());
+	    xmpp_error(ctx, "xmpp", "Event watcher internal error %d.", sock_error());
 	return;
     }
     
@@ -253,14 +252,14 @@ void xmpp_run_once(xmpp_ctx_t *ctx, const unsigned long timeout)
 		/* check for error */
 		if (sock_connect_error(conn->sock) != 0) {
 		    /* connection failed */
-		    xmpp_debug(ctx, "xmpp", "connection failed");
+		    xmpp_debug(ctx, "xmpp", "Connection failed.");
 		    conn_disconnect(conn);
 		    break;
 		}
 
 		conn->state = XMPP_STATE_CONNECTED;
-		xmpp_debug(ctx, "xmpp", "connection successful");
-    xmpp_debug(ctx, "conn", "Connection state XMPP_STATE_CONNECTED");
+		xmpp_debug(ctx, "xmpp", "Connection successful.");
+    xmpp_debug(ctx, "conn", "Connection state XMPP_STATE_CONNECTED.");
 
 		
 		/* send stream init */
@@ -281,7 +280,7 @@ void xmpp_run_once(xmpp_ctx_t *ctx, const unsigned long timeout)
 		    if (!ret) {
 			/* parse error, we need to shut down */
 			/* FIXME */
-			xmpp_debug(ctx, "xmpp", "parse error, disconnecting");
+			xmpp_debug(ctx, "xmpp", "Parse error, disconnecting.");
 			conn_disconnect(conn);
 		    }
 		} else {

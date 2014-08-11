@@ -66,7 +66,7 @@ static void _start_element(void *userdata,
 	if (!parser->stanza && parser->depth != 1) {
 	    /* something terrible happened */
 	    /* FIXME: we should probably trigger a disconnect */
-	    xmpp_error(parser->ctx, "parser", "oops, where did our stanza go?");
+	    xmpp_error(parser->ctx, "parser", "Oops, where did our stanza go?");
 	} else if (!parser->stanza) {
 	    /* starting a new toplevel stanza */
 	    parser->stanza = xmpp_stanza_new(parser->ctx);

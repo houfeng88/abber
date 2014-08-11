@@ -266,7 +266,7 @@ void xmpp_log(const xmpp_ctx_t * const ctx,
 	oldret = ret;
 	ret = xmpp_vsnprintf(buf, ret + 1, fmt, copy);
 	if (ret > oldret) {
-	    xmpp_error(ctx, "log", "Unexpected error");
+	    xmpp_error(ctx, "log", "Unexpected error.");
 	    return;
 	}
     } else {

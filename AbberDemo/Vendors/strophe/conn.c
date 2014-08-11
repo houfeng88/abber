@@ -87,7 +87,7 @@ xmpp_conn_t *xmpp_conn_new(xmpp_ctx_t * const ctx)
 	conn->error = 0;
 	conn->stream_error = NULL;
 
-  xmpp_debug(ctx, "conn", "Connection state XMPP_STATE_DISCONNECTED");
+  xmpp_debug(ctx, "conn", "Connection state XMPP_STATE_DISCONNECTED.");
       
 	/* default send parameters */
 	conn->blocking_send = 0;
@@ -144,7 +144,7 @@ xmpp_conn_t *xmpp_conn_new(xmpp_ctx_t * const ctx)
 
 	item = xmpp_alloc(conn->ctx, sizeof(xmpp_connlist_t));
 	if (!item) {
-	    xmpp_error(conn->ctx, "xmpp", "failed to allocate memory");
+	    xmpp_error(conn->ctx, "xmpp", "Failed to allocate memory.");
 	    xmpp_free(conn->ctx, conn->lang);
             parser_free(conn->parser);
 	    xmpp_free(conn->ctx, conn);
@@ -214,7 +214,7 @@ int xmpp_conn_release(xmpp_conn_t * const conn)
 	    }
 
 	    if (!item) {
-		xmpp_error(ctx, "xmpp", "Connection not in context's list\n");
+		xmpp_error(ctx, "xmpp", "Connection not in context's list.");
 	    } else {
 		prev->next = item->next;
 		xmpp_free(ctx, item);
@@ -418,14 +418,12 @@ int xmpp_connect_client(xmpp_conn_t * const conn,
 		    domain = conn->domain;
 	    else
 		    domain = altdomain;
-	    xmpp_debug(conn->ctx, "xmpp", "Using alternate domain %s, port %d",
-                   altdomain, altport);
+	    xmpp_debug(conn->ctx, "xmpp", "Using alternate domain %s, port %d.", altdomain, altport);
 	    strcpy(connectdomain, domain);
 	    connectport = altport ? altport : 5222;
     }
     conn->sock = sock_connect(connectdomain, connectport);
-    xmpp_debug(conn->ctx, "xmpp", "sock_connect to %s:%d returned %d",
-               connectdomain, connectport, conn->sock);
+    xmpp_debug(conn->ctx, "xmpp", "Sock connect to %s:%d returned %d.", connectdomain, connectport, conn->sock);
     if (conn->sock == -1) return -1;
 
     /* setup handler */
@@ -438,9 +436,9 @@ int xmpp_connect_client(xmpp_conn_t * const conn,
      * from within the event loop */
 
     conn->state = XMPP_STATE_CONNECTING;
-    xmpp_debug(conn->ctx, "conn", "Connection state XMPP_STATE_CONNECTING");
+    xmpp_debug(conn->ctx, "conn", "Connection state XMPP_STATE_CONNECTING.");
     conn->timeout_stamp = time_stamp();
-    xmpp_debug(conn->ctx, "xmpp", "attempting to connect to %s", connectdomain);
+    xmpp_debug(conn->ctx, "xmpp", "Attempting to connect to %s.", connectdomain);
 
     return 0;
 }
@@ -469,7 +467,7 @@ void conn_disconnect(xmpp_conn_t * const conn)
 {
     xmpp_debug(conn->ctx, "xmpp", "Closing socket.");
     conn->state = XMPP_STATE_DISCONNECTED;
-    xmpp_debug(conn->ctx, "conn", "Connection state XMPP_STATE_DISCONNECTED");
+    xmpp_debug(conn->ctx, "conn", "Connection state XMPP_STATE_DISCONNECTED.");
     if (conn->tls) {
 	tls_stop(conn->tls);
 	tls_free(conn->tls);
@@ -501,8 +499,7 @@ void conn_parser_reset(xmpp_conn_t * const conn)
 static int _disconnect_cleanup(xmpp_conn_t * const conn, 
 			       void * const userdata)
 {
-    xmpp_debug(conn->ctx, "xmpp",
-	       "disconnection forced by cleanup timeout");
+    xmpp_debug(conn->ctx, "xmpp", "Disconnection forced by cleanup timeout.");
 
     conn_disconnect(conn);
 
@@ -561,7 +558,7 @@ void xmpp_send_raw_string(xmpp_conn_t * const conn,
     len++; /* account for trailing \0 */
     bigbuf = xmpp_alloc(conn->ctx, len);
     if (!bigbuf) {
-	    xmpp_debug(conn->ctx, "xmpp", "Could not allocate memory for send_raw_string");
+	    xmpp_debug(conn->ctx, "xmpp", "Could not allocate memory for send_raw_string.");
 	    return;
     }
     va_start(ap, fmt);

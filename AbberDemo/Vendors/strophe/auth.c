@@ -187,7 +187,7 @@ static int _handle_error(xmpp_conn_t * const conn,
 static int _handle_missing_features(xmpp_conn_t * const conn,
 				    void * const userdata)
 {
-    xmpp_debug(conn->ctx, "xmpp", "didn't get stream features");
+    xmpp_debug(conn->ctx, "xmpp", "Didn't get stream features.");
 
     /* legacy auth will be attempted */
     _auth(conn);
@@ -263,17 +263,16 @@ static int _handle_proceedtls_default(xmpp_conn_t * const conn,
 {
     char *name;
     name = xmpp_stanza_get_name(stanza);
-    xmpp_debug(conn->ctx, "xmpp", 
-	"handle proceedtls called for %s", name);
+    xmpp_debug(conn->ctx, "xmpp", "Handle proceedtls called for %s.", name);
 
     if (strcmp(name, "proceed") == 0) {
-        xmpp_debug(conn->ctx, "xmpp", "proceeding with TLS");
+        xmpp_debug(conn->ctx, "xmpp", "Proceeding with TLS.");
 
 	conn->tls = tls_new(conn->ctx, conn->sock);
 
 	if (!tls_start(conn->tls))
 	{
-	    xmpp_debug(conn->ctx, "xmpp", "Couldn't start TLS! error %d", tls_error(conn->tls));
+	    xmpp_debug(conn->ctx, "xmpp", "Couldn't start TLS, error %d.", tls_error(conn->tls));
 	    tls_free(conn->tls);
 	    conn->tls = NULL;
 	    conn->tls_failed = 1;
@@ -303,15 +302,13 @@ static int _handle_sasl_result(xmpp_conn_t * const conn,
 
     /* the server should send a <success> or <failure> stanza */
     if (strcmp(name, "failure") == 0) {
-	xmpp_debug(conn->ctx, "xmpp", "SASL %s auth failed", 
-		   (char *)userdata);
+	xmpp_debug(conn->ctx, "xmpp", "SASL %s auth failed.", (char *)userdata);
 	
 	/* fall back to next auth method */
 	_auth(conn);
     } else if (strcmp(name, "success") == 0) {
 	/* SASL PLAIN auth successful, we need to restart the stream */
-	xmpp_debug(conn->ctx, "xmpp", "SASL %s auth successful", 
-		   (char *)userdata);
+	xmpp_debug(conn->ctx, "xmpp", "SASL %s auth successful.", (char *)userdata);
 
 	/* reset parser */
 	conn_prepare_reset(conn, _handle_open_sasl);
@@ -320,8 +317,7 @@ static int _handle_sasl_result(xmpp_conn_t * const conn,
 	conn_open_stream(conn);
     } else {
 	/* got unexpected reply */
-	xmpp_error(conn->ctx, "xmpp", "Got unexpected reply to SASL %s"\
-		   "authentication.", (char *)userdata);
+	xmpp_error(conn->ctx, "xmpp", "Got unexpected reply to SASL %s authentication.", (char *)userdata);
 	xmpp_disconnect(conn);
     }
 
@@ -339,8 +335,7 @@ static int _handle_digestmd5_challenge(xmpp_conn_t * const conn,
     char *name;
 
     name = xmpp_stanza_get_name(stanza);
-    xmpp_debug(conn->ctx, "xmpp",\
-	"handle digest-md5 (challenge) called for %s", name);
+    xmpp_debug(conn->ctx, "xmpp", "Handle digest-md5 (challenge) called for %s.", name);
 
     if (strcmp(name, "challenge") == 0) {
 	text = xmpp_stanza_get_text(stanza);
@@ -394,8 +389,7 @@ static int _handle_digestmd5_rspauth(xmpp_conn_t * const conn,
     char *name;
 
     name = xmpp_stanza_get_name(stanza);
-    xmpp_debug(conn->ctx, "xmpp",
-	"handle digest-md5 (rspauth) called for %s", name);
+    xmpp_debug(conn->ctx, "xmpp", "Handle digest-md5 (rspauth) called for %s.", name);
 
 
     if (strcmp(name, "challenge") == 0) {
@@ -514,8 +508,7 @@ static void _auth(xmpp_conn_t * const conn)
 	/* SASL ANONYMOUS was tried, unset flag */
 	conn->sasl_support &= ~SASL_MASK_ANONYMOUS;
     } else if (anonjid) {
-	xmpp_error(conn->ctx, "auth", 
-		   "No node in JID, and SASL ANONYMOUS unsupported.");
+	xmpp_error(conn->ctx, "auth", "No node in JID, and SASL ANONYMOUS unsupported.");
 	xmpp_disconnect(conn);
     } else if (conn->sasl_support & SASL_MASK_DIGESTMD5) {
 	auth = _make_sasl_auth(conn, "DIGEST-MD5");
@@ -656,8 +649,7 @@ static void _auth(xmpp_conn_t * const conn)
 	} else {
 	    xmpp_stanza_release(authdata);
 	    xmpp_stanza_release(iq);
-	    xmpp_error(conn->ctx, "auth", 
-		       "Cannot authenticate without resource");
+	    xmpp_error(conn->ctx, "auth", "Cannot authenticate without resource.");
 	    xmpp_disconnect(conn);
 	    return;
 	}
@@ -806,8 +798,7 @@ static int _handle_features_sasl(xmpp_conn_t * const conn,
 	xmpp_stanza_release(iq);
     } else {
 	/* can't bind, disconnect */
-	xmpp_error(conn->ctx, "xmpp", "Stream features does not allow "\
-		   "resource bind.");
+	xmpp_error(conn->ctx, "xmpp", "Stream features does not allow resource bind.");
 	xmpp_disconnect(conn);
     }
 
@@ -817,8 +808,7 @@ static int _handle_features_sasl(xmpp_conn_t * const conn,
 static int _handle_missing_features_sasl(xmpp_conn_t * const conn,
 					 void * const userdata)
 {
-    xmpp_error(conn->ctx, "xmpp", "Did not receive stream features "\
-	       "after SASL authentication.");
+    xmpp_error(conn->ctx, "xmpp", "Did not receive stream features after SASL authentication.");
     xmpp_disconnect(conn);
     return 0;
 }
@@ -956,8 +946,7 @@ static int _handle_legacy(xmpp_conn_t * const conn,
     type = xmpp_stanza_get_type(stanza);
     name = xmpp_stanza_get_name(stanza);
     if (!type || strcmp(name, "iq") != 0) {
-	xmpp_error(conn->ctx, "xmpp", "Server sent us an unexpected response "\
-		   "to legacy authentication request.");
+	xmpp_error(conn->ctx, "xmpp", "Server sent us an unexpected response to legacy authentication request.");
 	xmpp_disconnect(conn);
     } else if (strcmp(type, "error") == 0) {
 	/* legacy client auth failed, no more fallbacks */
@@ -970,8 +959,7 @@ static int _handle_legacy(xmpp_conn_t * const conn,
 	conn->authenticated = 1;
 	conn->conn_handler(conn, XMPP_CONN_CONNECT, 0, NULL, conn->userdata);
     } else {
-	xmpp_error(conn->ctx, "xmpp", "Server sent us a legacy authentication "\
-		   "response with a bad type.");
+	xmpp_error(conn->ctx, "xmpp", "Server sent us a legacy authentication response with a bad type.");
 	xmpp_disconnect(conn);
     }
 
@@ -981,8 +969,7 @@ static int _handle_legacy(xmpp_conn_t * const conn,
 static int _handle_missing_legacy(xmpp_conn_t * const conn,
 				  void * const userdata)
 {
-    xmpp_error(conn->ctx, "xmpp", "Server did not reply to legacy "\
-	       "authentication request.");
+    xmpp_error(conn->ctx, "xmpp", "Server did not reply to legacy authentication request.");
     xmpp_disconnect(conn);
     return 0;
 }
