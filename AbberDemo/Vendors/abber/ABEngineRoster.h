@@ -12,6 +12,16 @@
 
 @interface ABEngine (Roster)
 
-- (void)requestRosterWithCompletion:(ABEngineRequestCompletionHandler)handler;
+- (BOOL)requestRosterWithCompletion:(ABEngineRequestCompletionHandler)handler;
+
+- (BOOL)addContact:(NSString *)jid
+              name:(NSString *)name
+        completion:(ABEngineRequestCompletionHandler)handler;
+
+//- (void)removeContact:(NSString *)jid completion:(ABEngineRequestCompletionHandler)handler;
+//- (void)updateContact:(NSString *)jid memo:(NSString *)memo completion:(ABEngineRequestCompletionHandler)handler;
+
+
+- (void)didReceiveRoster:(NSArray *)roster;
 
 @end

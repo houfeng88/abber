@@ -63,7 +63,7 @@
 //  NSString *acnt = @"tkjohn@is-a-furry.org";
 //  NSString *pswd = @"12345678";
   
-  NSString *acnt = @"tkjohn@blah.im/teemo";
+  NSString *acnt = @"tkjack@blah.im/teemo";
   NSString *pswd = @"12345678";
   
   [[ABEngine sharedObject] addObserver:self];
@@ -74,10 +74,7 @@
 
 - (void)update:(id)sender
 {
-  [[ABEngine sharedObject] requestRosterWithCompletion:^(id result, NSError *error) {
-    ABObject *object = [[ABObject alloc] init];
-    NSLog(@"here");
-  }];
+  [[ABEngine sharedObject] addContact:@"tkjack@blah.im" name:@"Jack" completion:NULL];
 }
 
 - (void)request:(id)sender
@@ -99,6 +96,12 @@
 - (void)engineDidDisconnected:(ABEngine *)engine
 {
   NSLog(@"HERE: %s", __func__);
+}
+
+
+- (void)engine:(ABEngine *)engine didReceiveRoster:(NSArray *)roster
+{
+  NSLog(@"HERE: %s %@", __func__, roster);
 }
 
 @end

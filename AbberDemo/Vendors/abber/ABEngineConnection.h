@@ -14,6 +14,7 @@
 
 - (void)connectAndRun:(xmpp_conn_t *)connection;
 
+
 - (void)didStartConnecting;
 - (void)didReceiveConnectStatus:(BOOL)status;
 - (void)didDisconnected;

@@ -23,8 +23,35 @@ int ABRosterRequestHandler(xmpp_conn_t * const conn,
     ABEngineRequestCompletionHandler handler = CFDictionaryGetValue(context, CFSTR("Handler"));
     
     
+    NSMutableArray *roster = [[NSMutableArray alloc] init];
+    
+    if ( stanza ) {
+      
+      char *type = xmpp_stanza_get_type(stanza);
+      if ( strcmp(type, "error")!=0 ) {
+        xmpp_stanza_t *query = xmpp_stanza_get_child_by_name(stanza, "query");
+        xmpp_stanza_t *item = xmpp_stanza_get_children(query);
+        while ( item ) {
+          char *jid = xmpp_stanza_get_attribute(stanza, "jid");
+          char *name = xmpp_stanza_get_attribute(stanza, "name");
+          char *subscription = xmpp_stanza_get_attribute(stanza, "subscription");
+          if ( ABCNonempty(jid) && ABCNonempty(name) && ABCNonempty(subscription) ) {
+            NSDictionary *map = @{@"jid":ABOString(jid), @"name":ABOString(name), @"subscription":ABOString(subscription)};
+            [roster addObject:map];
+          }
+          item = xmpp_stanza_get_next(item);
+        }
+        
+      }
+      
+    }
+    
     if ( handler ) {
-      handler(nil, nil);
+      dispatch_sync(dispatch_get_main_queue(), ^{
+        handler(roster, nil);
+      });
+    } else {
+      [engine didReceiveRoster:roster];
     }
     
     
@@ -39,28 +66,7 @@ int ABRosterUpdateHandler(xmpp_conn_t * const conn,
                           void * const userdata)
 {
   DDLogCDebug(@"Roster update complete");
-  //  xmpp_stanza_t *query, *item;
-  //  char *type, *name;
-  //
-  //  type = xmpp_stanza_get_type(stanza);
-  //  if (strcmp(type, "error") == 0)
-  //    fprintf(stderr, "ERROR: query failed\n");
-  //  else {
-  //    query = xmpp_stanza_get_child_by_name(stanza, "query");
-  //    printf("Roster:\n");
-  //    for (item = xmpp_stanza_get_children(query); item;
-  //         item = xmpp_stanza_get_next(item))
-  //	    if ((name = xmpp_stanza_get_attribute(item, "name")))
-  //        printf("\t %s (%s) sub=%s\n",
-  //               name,
-  //               xmpp_stanza_get_attribute(item, "jid"),
-  //               xmpp_stanza_get_attribute(item, "subscription"));
-  //	    else
-  //        printf("\t %s sub=%s\n",
-  //               xmpp_stanza_get_attribute(item, "jid"),
-  //               xmpp_stanza_get_attribute(item, "subscription"));
-  //    printf("END OF LIST\n");
-  //  }
+  
   return 0;
 }
 
@@ -68,14 +74,13 @@ int ABRosterUpdateHandler(xmpp_conn_t * const conn,
 
 @implementation ABEngine (Roster)
 
-- (void)requestRosterWithCompletion:(ABEngineRequestCompletionHandler)handler
+- (BOOL)requestRosterWithCompletion:(ABEngineRequestCompletionHandler)handler
 {
 //  <iq id='bv1bs71f'
 //      type='get'
 //      from='juliet@example.com/balcony'>
 //    <query xmlns='jabber:iq:roster'/>
 //  </iq>
-  
   if ( [self isConnected] ) {
     NSString *iden = [self makeIdentifier:@"roster_request" suffix:[self account]];
     
@@ -94,8 +99,65 @@ int ABRosterUpdateHandler(xmpp_conn_t * const conn,
     [iq addChild:query];
     
     [self sendStanza:iq];
+    
+    return YES;
   }
+  return NO;
 }
+
+
+- (BOOL)addContact:(NSString *)jid
+              name:(NSString *)name
+        completion:(ABEngineRequestCompletionHandler)handler
+{
+//  <iq from='juliet@example.com/balcony'
+//      id='ph1xaz53'
+//      type='set'>
+//    <query xmlns='jabber:iq:roster'>
+//      <item jid='nurse@example.com' name='Nurse'>
+//        <group>Servants</group>
+//      </item>
+//    </query>
+//  </iq>
+  if ( ABONonempty(jid) && ABONonempty(name) ) {
+    if ( [self isConnected] ) {
+      NSString *iden = [self makeIdentifier:@"roster_add" suffix:[self account]];
+      
+      NSMutableDictionary *context = [[NSMutableDictionary alloc] init];
+      [context setObject:[NSValue valueWithNonretainedObject:self] forKey:@"Engine"];
+      [context setObject:[handler copy] forKeyIfNotNil:@"Handler"];
+      xmpp_id_handler_add(_connection, ABRosterUpdateHandler, ABCString(iden), CFBridgingRetain(context));
+      
+      ABStanza *iq = [self makeStanzaWithName:@"iq"];
+      [iq setValue:iden forAttribute:@"id"];
+      [iq setValue:@"set" forAttribute:@"type"];
+      [iq setValue:ABOStringOrLater([self boundJid], @"") forAttribute:@"from"];
+      
+      ABStanza *query = [self makeStanzaWithName:@"query"];
+      [query setValue:@"jabber:iq:roster" forAttribute:@"xmlns"];
+      [iq addChild:query];
+      
+      ABStanza *item = [self makeStanzaWithName:@"item"];
+      [item setValue:jid forAttribute:@"jid"];
+      [item setValue:name forAttribute:@"name"];
+      [query addChild:item];
+      
+      [self sendStanza:iq];
+      
+      return YES;
+    }
+  }
+  return NO;
+}
+
+//- (void)removeContact:(NSString *)jid completion:(ABEngineRequestCompletionHandler)handler
+//{
+//}
+//
+//- (void)updateContact:(NSString *)jid name:(NSString *)name completion:(ABEngineRequestCompletionHandler)handler
+//{
+//}
+
 
 
 - (void)didReceiveRoster:(NSArray *)roster
