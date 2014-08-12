@@ -733,7 +733,7 @@ static int _handle_features_sasl(xmpp_conn_t * const conn,
 	/* bind resource */
 	
 	/* setup response handlers */
-	handler_add_id(conn, _handle_bind, "_xmpp_bind1", NULL);
+	handler_add_id(conn, _handle_bind, "bind_resource", NULL);
 	handler_add_timed(conn, _handle_missing_bind,
 			  BIND_TIMEOUT, NULL);
 
@@ -746,7 +746,7 @@ static int _handle_features_sasl(xmpp_conn_t * const conn,
 
 	xmpp_stanza_set_name(iq, "iq");
 	xmpp_stanza_set_type(iq, "set");
-	xmpp_stanza_set_id(iq, "_xmpp_bind1");
+	xmpp_stanza_set_id(iq, "bind_resource");
 
 	bind = xmpp_stanza_copy(bind);
 	if (!bind) {
@@ -843,7 +843,7 @@ static int _handle_bind(xmpp_conn_t * const conn,
 	/* establish a session if required */
 	if (conn->session_required) {
 	    /* setup response handlers */
-	    handler_add_id(conn, _handle_session, "_xmpp_session1", NULL);
+	    handler_add_id(conn, _handle_session, "start_session", NULL);
 	    handler_add_timed(conn, _handle_missing_session, 
 			      SESSION_TIMEOUT, NULL);
 
@@ -856,7 +856,7 @@ static int _handle_bind(xmpp_conn_t * const conn,
 
 	    xmpp_stanza_set_name(iq, "iq");
 	    xmpp_stanza_set_type(iq, "set");
-	    xmpp_stanza_set_id(iq, "_xmpp_session1");
+	    xmpp_stanza_set_id(iq, "start_session");
 
 	    session = xmpp_stanza_new(conn->ctx);
 	    if (!session) {
