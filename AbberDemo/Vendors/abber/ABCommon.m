@@ -13,7 +13,7 @@ char *ABIdentifierCreate(const char *domain, const char *rand)
 {
   char *identifier = NULL;
   
-  if ( ABCNonempty(domain) && ABCNonempty(rand) ) {
+  if ( ABCSNonempty(domain) && ABCSNonempty(rand) ) {
     
     char suffix[33];
     memset(suffix, 0, 33);

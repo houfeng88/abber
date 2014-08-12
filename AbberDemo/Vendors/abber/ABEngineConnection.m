@@ -19,18 +19,18 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
   
   if ( status==XMPP_CONN_CONNECT ) {
     
-    DDLogCDebug(@"[conn] Handler: connected");
+    DDLogCDebug(@"[conn] Handler: connected.");
     [engine didReceiveConnectStatus:YES];
     
   } else if ( status==XMPP_CONN_FAIL ) {
     
-    DDLogCDebug(@"[conn] Handler: failed");
+    DDLogCDebug(@"[conn] Handler: failed.");
     xmpp_stop(conn->ctx);
     [engine didReceiveConnectStatus:NO];
     
   } else if ( status==XMPP_CONN_DISCONNECT ) {
     
-    DDLogCDebug(@"[conn] Handler: disconnected");
+    DDLogCDebug(@"[conn] Handler: disconnected.");
     xmpp_stop(conn->ctx);
     [engine didDisconnected];
     

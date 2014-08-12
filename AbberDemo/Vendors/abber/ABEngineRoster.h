@@ -21,6 +21,10 @@
               name:(NSString *)name
         completion:(ABEngineRequestCompletionHandler)handler;
 
+- (BOOL)updateContact:(NSString *)jid
+                 name:(NSString *)name
+           completion:(ABEngineRequestCompletionHandler)handler;
+
 - (BOOL)removeContact:(NSString *)jid
            completion:(ABEngineRequestCompletionHandler)handler;
 

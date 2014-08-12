@@ -12,7 +12,7 @@ int ABVcardRequestHandler(xmpp_conn_t * const conn,
                           xmpp_stanza_t * const stanza,
                           void * const userdata)
 {
-  DDLogCDebug(@"vCard request complete");
+  DDLogCDebug(@"vCard request complete.");
 //  NSDictionary *map = CFBridgingRelease(userdata);
 //  //ABEngineRequestCompletionHandler handler = [map objectForKey:@"handler"];
 //  //ABEngine *engine = [map objectForKey:@"engine"];
@@ -30,7 +30,7 @@ int ABVcardUpdateHandler(xmpp_conn_t * const conn,
                          xmpp_stanza_t * const stanza,
                          void * const userdata)
 {
-  DDLogCDebug(@"vCard update complete");
+  DDLogCDebug(@"vCard update complete.");
   return 0;
 }
 

@@ -46,7 +46,7 @@
     return YES;
   }
   
-  if ( ABONonempty(acnt) && ABONonempty(pswd) ) {
+  if ( ABOSNonempty(acnt) && ABOSNonempty(pswd) ) {
     xmpp_ctx_t *ctx = xmpp_ctx_new(NULL, &ABDefaultLogger);
     if ( !ctx ) {
       return NO;
@@ -202,16 +202,16 @@
 - (NSString *)makeIdentifier:(NSString *)domain suffix:(NSString *)suffix
 {
   NSString *identifier = nil;
-  if ( ABONonempty(domain) ) {
+  if ( ABOSNonempty(domain) ) {
     
     NSMutableString *rand = [[NSMutableString alloc] init];
-    if ( ABONonempty(suffix) ) {
+    if ( ABOSNonempty(suffix) ) {
       [rand appendString:suffix];
     }
     [rand appendString:[NSString UUIDString]];
     
     char *string = ABIdentifierCreate(ABCString(domain), ABCString(rand));
-    if ( ABCNonempty(string) ) {
+    if ( ABCSNonempty(string) ) {
       identifier = [[NSString alloc] initWithUTF8String:string];
       free(string);
     }

@@ -10,15 +10,16 @@
 #include <strophe/strophe.h>
 #include <strophe/common.h>
 
-#define ABCNonempty(_s_) (((_s_)!=NULL) && (strlen(_s_)>0))
-#define ABONonempty(_s_) (((_s_)!=nil) && ([(_s_) length]>0))
+#define ABCString(_s_) [(_s_) UTF8String]
+#define ABOString(_s_) [[NSString alloc] initWithUTF8String:(_s_)]
+
+#define ABCSNonempty(_s_) (((_s_)!=NULL) && (strlen(_s_)>0))
+#define ABOSNonempty(_s_) (((_s_)!=nil) && ([(_s_) length]>0))
 
 #define ABCStringOrLater(_s_) (((_s_)!=NULL)?(_s_):"")
 #define ABOStringOrLater(_a_, _b_) (([(_a_) length]>0)?(_a_):(_b_))
 
-#define ABCString(_s_) [(_s_) UTF8String]
-#define ABOString(_s_) [[NSString alloc] initWithUTF8String:(_s_)]
-
+#define ABCStringHasPrefix(_sa_,_sb_) (strncmp(_sa_, _sb_, strlen(_sb_))==0)
 
 char *ABIdentifierCreate(const char *domain, const char *rand);
 

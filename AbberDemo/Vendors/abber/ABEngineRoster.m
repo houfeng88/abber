@@ -37,7 +37,7 @@ int ABRosterRequestHandler(xmpp_conn_t * const conn,
                            xmpp_stanza_t * const stanza,
                            void * const userdata)
 {
-  DDLogCDebug(@"Roster request complete");
+  DDLogCDebug(@"Roster request complete.");
   
   if ( userdata ) {
     CFDictionaryRef context = userdata;
@@ -60,7 +60,7 @@ int ABRosterRequestHandler(xmpp_conn_t * const conn,
           char *jid = xmpp_stanza_get_attribute(stanza, "jid");
           char *name = xmpp_stanza_get_attribute(stanza, "name");
           char *subscription = xmpp_stanza_get_attribute(stanza, "subscription");
-          if ( ABCNonempty(jid) && ABCNonempty(name) && ABCNonempty(subscription) ) {
+          if ( ABCSNonempty(jid) && ABCSNonempty(name) && ABCSNonempty(subscription) ) {
             NSDictionary *map = @{@"jid":ABOString(jid), @"name":ABOString(name), @"subscription":ABOString(subscription)};
             [roster addObject:map];
           }
@@ -86,11 +86,24 @@ int ABRosterRequestHandler(xmpp_conn_t * const conn,
   return 0;
 }
 
-int ABRosterUpdateHandler(xmpp_conn_t * const conn,
+int ABRosterChangeHandler(xmpp_conn_t * const conn,
                           xmpp_stanza_t * const stanza,
                           void * const userdata)
 {
-  DDLogCDebug(@"Roster update complete");
+  DDLogCDebug(@"Roster update complete.");
+  
+  if ( userdata ) {
+    char *iden = xmpp_stanza_get_attribute(stanza, "id");
+    
+    if ( ABCStringHasPrefix(iden, "roster_add") ) {
+      NSLog(@"ROSTER_ADD");
+    } else if ( ABCStringHasPrefix(iden, "roster_update") ) {
+      NSLog(@"ROSTER_UPDATE");
+    } else if ( ABCStringHasPrefix(iden, "roster_remove") ) {
+      NSLog(@"ROSTER_REMOVE");
+    }
+    
+  }
   
   return 0;
 }
@@ -150,14 +163,14 @@ int ABRosterUpdateHandler(xmpp_conn_t * const conn,
 //    </query>
 //  </iq>
 //  <presence to="tktom@blah.im" type="subscribe"/>
-  if ( ABONonempty(jid) && ABONonempty(name) ) {
+  if ( ABOSNonempty(jid) && ABOSNonempty(name) ) {
     if ( [self isConnected] ) {
       NSString *iden = [self makeIdentifier:@"roster_add" suffix:[self account]];
       
       NSMutableDictionary *context = [[NSMutableDictionary alloc] init];
       [context setObject:[NSValue valueWithNonretainedObject:self] forKey:@"Engine"];
       [context setObject:[handler copy] forKeyIfNotNil:@"Handler"];
-      xmpp_id_handler_add(_connection, ABRosterUpdateHandler, ABCString(iden), (void *)CFBridgingRetain(context));
+      xmpp_id_handler_add(_connection, ABRosterChangeHandler, ABCString(iden), (void *)CFBridgingRetain(context));
       
       
       ABStanza *iq = [self makeStanzaWithName:@"iq"];
@@ -188,6 +201,46 @@ int ABRosterUpdateHandler(xmpp_conn_t * const conn,
   return NO;
 }
 
+- (BOOL)updateContact:(NSString *)jid
+                 name:(NSString *)name
+           completion:(ABEngineRequestCompletionHandler)handler
+{
+//  <iq id='ph1xaz53' type='set'>
+//    <query xmlns='jabber:iq:roster'>
+//      <item jid='nurse@example.com' name='Nurse' />
+//    </query>
+//  </iq>
+  if ( ABOSNonempty(jid) && ABOSNonempty(name) ) {
+    if ( [self isConnected] ) {
+      NSString *iden = [self makeIdentifier:@"roster_update" suffix:[self account]];
+      
+      NSMutableDictionary *context = [[NSMutableDictionary alloc] init];
+      [context setObject:[NSValue valueWithNonretainedObject:self] forKey:@"Engine"];
+      [context setObject:[handler copy] forKeyIfNotNil:@"Handler"];
+      xmpp_id_handler_add(_connection, ABRosterChangeHandler, ABCString(iden), (void *)CFBridgingRetain(context));
+      
+      
+      ABStanza *iq = [self makeStanzaWithName:@"iq"];
+      [iq setValue:iden forAttribute:@"id"];
+      [iq setValue:@"set" forAttribute:@"type"];
+      
+      ABStanza *query = [self makeStanzaWithName:@"query"];
+      [query setValue:@"jabber:iq:roster" forAttribute:@"xmlns"];
+      [iq addChild:query];
+      
+      ABStanza *item = [self makeStanzaWithName:@"item"];
+      [item setValue:jid forAttribute:@"jid"];
+      [item setValue:name forAttribute:@"name"];
+      [query addChild:item];
+      
+      [self sendData:[iq raw]];
+      
+      return YES;
+    }
+  }
+  return NO;
+}
+
 - (BOOL)removeContact:(NSString *)jid
            completion:(ABEngineRequestCompletionHandler)handler
 {
@@ -197,14 +250,14 @@ int ABRosterUpdateHandler(xmpp_conn_t * const conn,
 //      <item jid='nurse@example.com' subscription='remove'/>
 //    </query>
 //  </iq>
-  if ( ABONonempty(jid) ) {
+  if ( ABOSNonempty(jid) ) {
     if ( [self isConnected] ) {
       NSString *iden = [self makeIdentifier:@"roster_remove" suffix:[self account]];
       
       NSMutableDictionary *context = [[NSMutableDictionary alloc] init];
       [context setObject:[NSValue valueWithNonretainedObject:self] forKey:@"Engine"];
       [context setObject:[handler copy] forKeyIfNotNil:@"Handler"];
-      xmpp_id_handler_add(_connection, ABRosterUpdateHandler, ABCString(iden), (void *)CFBridgingRetain(context));
+      xmpp_id_handler_add(_connection, ABRosterChangeHandler, ABCString(iden), (void *)CFBridgingRetain(context));
       
       
       ABStanza *iq = [self makeStanzaWithName:@"iq"];
