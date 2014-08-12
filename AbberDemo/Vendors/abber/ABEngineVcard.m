@@ -63,7 +63,7 @@ int ABVcardUpdateHandler(xmpp_conn_t * const conn,
     [vcard setValue:@"vcard-temp" forAttribute:@"xmlns"];
     [iq addChild:vcard];
     
-    [self sendStanza:iq];
+    [self sendData:[iq raw]];
   }
 }
 
@@ -103,7 +103,7 @@ int ABVcardUpdateHandler(xmpp_conn_t * const conn,
     [dsbody setTextValue:ABOStringOrLater(desc, @"")];
     [ds addChild:dsbody];
     
-    [self sendStanza:iq];
+    [self sendData:[iq raw]];
   }
 }
 

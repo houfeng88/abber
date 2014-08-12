@@ -1,21 +1,16 @@
-host: is-a-furry.org
-port: 5222
-tktony@is-a-furry.org 12345678
-tkrose@is-a-furry.org 12345678
-tklily@is-a-furry.org 12345678
-tkjack@is-a-furry.org 12345678
-tkjohn@is-a-furry.org 12345678
-
 host: jabber.blah.im
 port: 5222
-tktony@blah.im 12345678
-tkrose@blah.im 12345678
-tklily@blah.im 12345678
-tkjack@blah.im 12345678
-tkjohn@blah.im 12345678
 
-tkamy@blah.im 12345678
-tktom@blah.im 12345678
-tksam@blah.im 12345678
-tklucy@blah.im 12345678
-tkalice@blah.im 12345678
+tkandy 123456
+
+tkcara 123456
+tkbill 123456
+
+tkiris 123456
+tkeric 123456
+
+tklisa 123456
+tkdave 123456
+
+tkmary 123456
+tkmatt 123456

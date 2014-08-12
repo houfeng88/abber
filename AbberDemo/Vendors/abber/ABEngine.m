@@ -174,21 +174,25 @@
   return node;
 }
 
-- (void)sendStanza:(ABStanza *)stanza
+- (void)sendData:(NSData *)data
 {
-  if ( stanza ) {
-    NSData *raw = [stanza raw];
-    [self sendRaw:[raw bytes] length:[raw length]];
+  if ( [self isConnected] ) {
+    if ( [data length]>0 ) {
+      dispatch_sync(_runLoopQueue, ^{
+        xmpp_send_raw(_connection, [data bytes], [data length]);
+        xmpp_debug(_connection->ctx, "conn", "SENT: %s", [data bytes]);
+      });
+    }
   }
 }
 
-- (void)sendRaw:(const char *)data length:(size_t)length
+- (void)sendString:(NSString *)string
 {
-  if ( (data) && (length>0) ) {
-    if ( [self isConnected] ) {
+  if ( [self isConnected] ) {
+    if ( [string length]>0 ) {
       dispatch_sync(_runLoopQueue, ^{
-        xmpp_send_raw(_connection, data, length);
-        xmpp_debug(_connection->ctx, "conn", "SENT: %s", data);
+        xmpp_send_raw(_connection, [string UTF8String], [string lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);
+        xmpp_debug(_connection->ctx, "conn", "SENT: %s", [string UTF8String]);
       });
     }
   }

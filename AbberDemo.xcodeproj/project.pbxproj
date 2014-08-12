@@ -10,6 +10,7 @@
 		0A06B7B81997BC6900767DEC /* ABObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A06B7B71997BC6900767DEC /* ABObject.m */; };
 		0A5BAE6D19913715001EF07E /* ABStanza.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5BAE6C19913715001EF07E /* ABStanza.m */; };
 		0A5BAE701991382E001EF07E /* ABEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5BAE6F1991382E001EF07E /* ABEngine.m */; };
+		232CF7021999D9A0004A5AA2 /* ABEnginePresence.m in Sources */ = {isa = PBXBuildFile; fileRef = 232CF7011999D9A0004A5AA2 /* ABEnginePresence.m */; };
 		23C547281994B4B300B4C0F7 /* ABCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C547271994B4B300B4C0F7 /* ABCommon.m */; };
 		23C5472E1994B52600B4C0F7 /* ABLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C5472D1994B52600B4C0F7 /* ABLogger.m */; };
 		23C547311994B56D00B4C0F7 /* ABRaw.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C547301994B56D00B4C0F7 /* ABRaw.m */; };
@@ -52,6 +53,8 @@
 		0A5BAE6C19913715001EF07E /* ABStanza.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABStanza.m; sourceTree = "<group>"; };
 		0A5BAE6E1991382E001EF07E /* ABEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEngine.h; sourceTree = "<group>"; };
 		0A5BAE6F1991382E001EF07E /* ABEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABEngine.m; sourceTree = "<group>"; };
+		232CF7001999D9A0004A5AA2 /* ABEnginePresence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEnginePresence.h; sourceTree = "<group>"; };
+		232CF7011999D9A0004A5AA2 /* ABEnginePresence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABEnginePresence.m; sourceTree = "<group>"; };
 		23C547261994B4B300B4C0F7 /* ABCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABCommon.h; sourceTree = "<group>"; };
 		23C547271994B4B300B4C0F7 /* ABCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABCommon.m; sourceTree = "<group>"; };
 		23C5472C1994B52600B4C0F7 /* ABLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABLogger.h; sourceTree = "<group>"; };
@@ -388,6 +391,8 @@
 				23F6C1DB1990AC3E005D2ED7 /* ABConfig.h */,
 				23C5473B1994C0E900B4C0F7 /* ABEngineConnection.h */,
 				23C5473C1994C0E900B4C0F7 /* ABEngineConnection.m */,
+				232CF7001999D9A0004A5AA2 /* ABEnginePresence.h */,
+				232CF7011999D9A0004A5AA2 /* ABEnginePresence.m */,
 				23C547321994BDE900B4C0F7 /* ABEngineRoster.h */,
 				23C547331994BDE900B4C0F7 /* ABEngineRoster.m */,
 				23C547351994BE2600B4C0F7 /* ABEngineVcard.h */,
@@ -525,6 +530,7 @@
 				23F6C1C81990A993005D2ED7 /* conn.c in Sources */,
 				23F6C0E619909596005D2ED7 /* main.m in Sources */,
 				23F6C1D81990A993005D2ED7 /* tls.c in Sources */,
+				232CF7021999D9A0004A5AA2 /* ABEnginePresence.m in Sources */,
 				23F6C1D51990A993005D2ED7 /* sock.c in Sources */,
 				23F6C1CE1990A993005D2ED7 /* md5.c in Sources */,
 				23C5472E1994B52600B4C0F7 /* ABLogger.m in Sources */,

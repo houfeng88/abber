@@ -98,7 +98,7 @@ int ABRosterUpdateHandler(xmpp_conn_t * const conn,
     [query setValue:@"jabber:iq:roster" forAttribute:@"xmlns"];
     [iq addChild:query];
     
-    [self sendStanza:iq];
+    [self sendData:[iq raw]];
     
     return YES;
   }
@@ -142,7 +142,7 @@ int ABRosterUpdateHandler(xmpp_conn_t * const conn,
       [item setValue:name forAttribute:@"name"];
       [query addChild:item];
       
-      [self sendStanza:iq];
+      [self sendData:[iq raw]];
       
       return YES;
     }
