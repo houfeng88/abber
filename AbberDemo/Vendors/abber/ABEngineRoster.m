@@ -92,7 +92,6 @@ int ABRosterUpdateHandler(xmpp_conn_t * const conn,
     ABStanza *iq = [self makeStanzaWithName:@"iq"];
     [iq setValue:iden forAttribute:@"id"];
     [iq setValue:@"get" forAttribute:@"type"];
-    [iq setValue:ABOStringOrLater([self boundJid], @"") forAttribute:@"from"];
     
     ABStanza *query = [self makeStanzaWithName:@"query"];
     [query setValue:@"jabber:iq:roster" forAttribute:@"xmlns"];

@@ -63,10 +63,10 @@
 //  NSString *acnt = @"tkjohn@is-a-furry.org";
 //  NSString *pswd = @"12345678";
   
-  NSString *acnt = @"tkcara@blah.im/teemo";
+  NSString *acnt = @"tkiris@blah.im/teemo";
   NSString *pswd = @"123456";
   
-  [[ABEngine sharedObject] addObserver:self];
+  //[[ABEngine sharedObject] addObserver:self];
   
   [[ABEngine sharedObject] prepare];
   [[ABEngine sharedObject] connectWithAccount:acnt password:pswd];
@@ -74,18 +74,21 @@
 
 - (void)update:(id)sender
 {
+  [[ABEngine sharedObject] requestRosterWithCompletion:NULL];
+  
   //[[ABEngine sharedObject] addContact:@"tkjack@blah.im" name:@"Jack" completion:NULL];
   
-  static ABPresenceType type = ABPresenceTypeAvailable;
-  [[ABEngine sharedObject] updatePresence:type];
-  type++;
-  if ( type>5 ) {
-    type=0;
-  }
+//  static ABPresenceType type = ABPresenceTypeAvailable;
+//  [[ABEngine sharedObject] updatePresence:type];
+//  type++;
+//  if ( type>5 ) {
+//    type=0;
+//  }
 }
 
 - (void)request:(id)sender
 {
+  [[ABEngine sharedObject] updatePresence:ABPresenceTypeAvailable];
 }
 
 
