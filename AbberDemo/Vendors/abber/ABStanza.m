@@ -13,7 +13,9 @@
 #pragma mark - Accessors
 
 - (xmpp_stanza_t *)stanza
-{ return _stanza; }
+{
+  return _stanza;
+}
 
 - (void)setStanza:(xmpp_stanza_t *)stanza
 {
@@ -26,41 +28,6 @@
     _stanza = xmpp_stanza_clone(stanza);
   }
 }
-
-
-- (NSString *)to
-{ return [self valueForAttribute:@"to"]; }
-
-- (void)setTo:(NSString *)value
-{ [self setValue:value forAttribute:@"to"]; }
-
-
-- (NSString *)from
-{ return [self valueForAttribute:@"from"]; }
-
-- (void)setFrom:(NSString *)value
-{ [self setValue:value forAttribute:@"from"]; }
-
-
-- (NSString *)identifier
-{ return [self valueForAttribute:@"id"]; }
-
-- (void)setIdentifier:(NSString *)value
-{ [self setValue:value forAttribute:@"id"]; }
-
-
-- (NSString *)type
-{ return [self valueForAttribute:@"type"]; }
-
-- (void)setType:(NSString *)value
-{ [self setValue:value forAttribute:@"type"]; }
-
-
-- (NSString *)language
-{ return [self valueForAttribute:@"xml:lang"]; }
-
-- (void)setLanguage:(NSString *)value
-{ [self setValue:value forAttribute:@"xml:lang"]; }
 
 
 
