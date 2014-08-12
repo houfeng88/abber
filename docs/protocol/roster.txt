@@ -1,16 +1,26 @@
-1 加载
 
-1.1 请求 roster
+
+1 简介
+
+1.1 Roster Set
+名录设置操作包括创建、更新和删除联系人条目，语法上是一个从客户端发送到服务器的 IQ 节点，节点类型为 set，必须且只包含一个 item 节点，此 item 节点不应该包含 subscription 属性，除非 subscription 的值为 remove。
+
+1.2 Roster Push
+名录推送与名录设置类似，当创建、更新或删除联系人条目时由服务器发送到客户端。收到名录推送的时候应该发送给服务器一个类型为 result 或 error 的回复。
+
+2 加载 Roster
+
+// 请求 roster
 <iq from='juliet@example.com/balcony'
     id='bv1bs71f'
     type='get'>
   <query xmlns='jabber:iq:roster'/>
 </iq>
 
-1.2 请求 roster 成功
+// 请求成功
 <iq id='bv1bs71f'
-	to='juliet@example.com/balcony'
-	type='result'>
+    to='juliet@example.com/balcony'
+    type='result'>
   <query xmlns='jabber:iq:roster' ver='ver11'>
     <item jid='romeo@example.net' name='Romeo' subscription='both'>
       <group>Friends</group>
@@ -20,26 +30,26 @@
   </query>
 </iq>
 
-1.3 如果 roster 里没有联系人
+// roster 为空
 <iq id='bv1bs71f'
-	to='juliet@example.com/chamber'
-	type='result'>
+    to='juliet@example.com/chamber'
+    type='result'>
   <query xmlns='jabber:iq:roster' ver='ver7'/>
 </iq>
 
-1.4 如果 roster 不存在，服务器必须返回节错误，这个节错误应该是 <item-not-found/>
+// roster 不存在
 <iq id='bv1bs71f'
-	to='juliet@example.com/chamber'
-	type='error'>
+    to='juliet@example.com/chamber'
+    type='error'>
   <error type='cancel'>
-	<item-not-found xmlns='urn:ietf:params:xml:ns:xmpp-stanzas'/>
+    <item-not-found xmlns='urn:ietf:params:xml:ns:xmpp-stanzas'/>
   </error>
 </iq>
 
 
-2 添加
+3 添加
 
-2.1 添加请求
+// 请求添加
 <iq from='juliet@example.com/balcony'
     id='ph1xaz53'
     type='set'>
@@ -50,17 +60,17 @@
   </query>
 </iq>
 
-2.2 添加成功
-先返回成功
+// 添加成功
 <iq id='ph1xaz53'
     to='juliet@example.com/balcony'
     type='result'/>
-再返回新的 item
+
+// 成功后会收到 Roster Push
 <iq to='juliet@example.com/balcony'
     id='a78b4q6ha463'
     type='set'>
   <query xmlns='jabber:iq:roster' ver='ver13'>
-	<item jid='nurse@example.com' name='Nurse' subscription='none'>
+    <item jid='nurse@example.com' name='Nurse' subscription='none'>
       <group>Servants</group>
     </item>
   </query>
@@ -75,7 +85,8 @@
     </item>
   </query>
 </iq>
-建议在收到 roster push 时作相应回复
+
+// 建议在收到 Roster Push 时作相应回复
 <iq from='juliet@example.com/balcony'
     id='a78b4q6ha463'
     type='result'/>
@@ -84,15 +95,21 @@
     id='x81g3bdy4n19'
     type='result'/>
 
-2.3 添加失败
+// 添加失败时，服务器一定会返回节错误，类型有很多
+<iq id='ix7s53v2'
+    to='juliet@example.com/balcony'
+    type='error'>
+  <error type='auth'>
+    <forbidden xmlns='urn:ietf:params:xml:ns:xmpp-stanzas'/>
+  </error>
+</iq>
 
+4 更新
+更新操作与添加操作完全一样。
 
-3 更新
+5 删除
 
-
-4 删除
-
-4.1 删除请求
+// 请求删除
 <iq from='juliet@example.com/balcony'
     id='hm4hs97y'
     type='set'>
@@ -101,12 +118,30 @@
   </query>
 </iq>
 
-4.2 删除成功
-发送一个 subscription 为 remove 的 roster push
-服务器还会生成一些 presence 节点
+// 删除成功
+<iq id="hm4hs97y" 
+    to="tklisa@blah.im/teemo" 
+    type="result"/>
+
+// 成功后会收到 Roster Push
+<iq id="lx4314" 
+    type="set">
+  <query xmlns="jabber:iq:roster" ver="53">
+    <item jid="tkdave@blah.im" subscription="remove"/>
+  </query>
+</iq>
+
+// 建议在收到 Roster Push 时作相应回复
+<iq from='juliet@example.com/balcony'
+    id='lx4314'
+    type='result'/>
+
+// 删除失败时，服务器一定会返回节错误，类型不清楚
+
+删除联系人条目时服务器还会生成一些订阅相关的 presence 节点
   1 如果 subscribe，则发送 unsubscribe，用来取消订阅用户
   2 如果 subscribed，则发送 ubsubscribed，用来取消用户对自己的订阅
   3 如果 both，则发送两者
 
-4.3 删除失败
+
 
