@@ -1,0 +1,10 @@
+// 好友离线
+<presence to="tkcara@blah.im" 
+          type="unavailable" 
+          from="tkandy@blah.im/monal">
+  <status>Disconnected: closed</status>
+</presence>
+
+// 好友上线
+
+// 好友修改状态
