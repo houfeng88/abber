@@ -109,15 +109,12 @@ int ABRosterUpdateHandler(xmpp_conn_t * const conn,
               name:(NSString *)name
         completion:(ABEngineRequestCompletionHandler)handler
 {
-//  <iq from='juliet@example.com/balcony'
-//      id='ph1xaz53'
-//      type='set'>
+//  <iq id='ph1xaz53' type='set'>
 //    <query xmlns='jabber:iq:roster'>
-//      <item jid='nurse@example.com' name='Nurse'>
-//        <group>Servants</group>
-//      </item>
+//      <item jid='nurse@example.com' name='Nurse' />
 //    </query>
 //  </iq>
+//  <presence to="tktom@blah.im" type="subscribe"/>
   if ( ABONonempty(jid) && ABONonempty(name) ) {
     if ( [self isConnected] ) {
       NSString *iden = [self makeIdentifier:@"roster_add" suffix:[self account]];
@@ -127,10 +124,10 @@ int ABRosterUpdateHandler(xmpp_conn_t * const conn,
       [context setObject:[handler copy] forKeyIfNotNil:@"Handler"];
       xmpp_id_handler_add(_connection, ABRosterUpdateHandler, ABCString(iden), CFBridgingRetain(context));
       
+      
       ABStanza *iq = [self makeStanzaWithName:@"iq"];
       [iq setValue:iden forAttribute:@"id"];
       [iq setValue:@"set" forAttribute:@"type"];
-      [iq setValue:ABOStringOrLater([self boundJid], @"") forAttribute:@"from"];
       
       ABStanza *query = [self makeStanzaWithName:@"query"];
       [query setValue:@"jabber:iq:roster" forAttribute:@"xmlns"];
@@ -142,6 +139,13 @@ int ABRosterUpdateHandler(xmpp_conn_t * const conn,
       [query addChild:item];
       
       [self sendData:[iq raw]];
+      
+      
+      ABStanza *presence = [self makeStanzaWithName:@"presence"];
+      [presence setValue:@"subscribe" forKey:@"type"];
+      [presence setValue:jid forKey:@"to"];
+      
+      [self sendData:[presence raw]];
       
       return YES;
     }
