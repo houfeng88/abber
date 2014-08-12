@@ -323,7 +323,7 @@ typedef void (*xmpp_conn_handler)(xmpp_conn_t * const conn,
 
 
 
-// NOTE: handler 如何工作？
+
 #pragma mark - handlers
 
 typedef int (*xmpp_timed_handler)(xmpp_conn_t * const conn, void * const userdata);

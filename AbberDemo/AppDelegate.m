@@ -28,20 +28,28 @@
   button.frame = CGRectMake(10.0, 30.0, 300.0, 40.0);
   
   button = [[UIButton alloc] init];
-  button.normalTitle = @"Update";
+  button.normalTitle = @"Roster";
   button.normalTitleColor = [UIColor blackColor];
   button.highlightedTitleColor = [UIColor redColor];
-  [button addTarget:self action:@selector(update:) forControlEvents:UIControlEventTouchUpInside];
+  [button addTarget:self action:@selector(roster:) forControlEvents:UIControlEventTouchUpInside];
   [_window addSubview:button];
   button.frame = CGRectMake(10.0, 80.0, 300.0, 40.0);
   
   button = [[UIButton alloc] init];
-  button.normalTitle = @"Request";
+  button.normalTitle = @"Presence";
   button.normalTitleColor = [UIColor blackColor];
   button.highlightedTitleColor = [UIColor redColor];
-  [button addTarget:self action:@selector(request:) forControlEvents:UIControlEventTouchUpInside];
+  [button addTarget:self action:@selector(presence:) forControlEvents:UIControlEventTouchUpInside];
   [_window addSubview:button];
   button.frame = CGRectMake(10.0, 130.0, 300.0, 40.0);
+  
+  button = [[UIButton alloc] init];
+  button.normalTitle = @"doit";
+  button.normalTitleColor = [UIColor blackColor];
+  button.highlightedTitleColor = [UIColor redColor];
+  [button addTarget:self action:@selector(doit:) forControlEvents:UIControlEventTouchUpInside];
+  [_window addSubview:button];
+  button.frame = CGRectMake(10.0, 180.0, 300.0, 40.0);
   
   _window.backgroundColor = [UIColor whiteColor];
   [_window makeKeyAndVisible];
@@ -63,32 +71,39 @@
 //  NSString *acnt = @"tkjohn@is-a-furry.org";
 //  NSString *pswd = @"12345678";
   
-  NSString *acnt = @"tkiris@blah.im/teemo";
+  NSString *acnt = @"tklisa@blah.im/teemo";
   NSString *pswd = @"123456";
-  
-  //[[ABEngine sharedObject] addObserver:self];
   
   [[ABEngine sharedObject] prepare];
   [[ABEngine sharedObject] connectWithAccount:acnt password:pswd];
+  [[ABEngine sharedObject] prepareForRosterPush];
 }
 
-- (void)update:(id)sender
+- (void)roster:(id)sender
 {
   [[ABEngine sharedObject] requestRosterWithCompletion:NULL];
-  
-  //[[ABEngine sharedObject] addContact:@"tkjack@blah.im" name:@"Jack" completion:NULL];
-  
-//  static ABPresenceType type = ABPresenceTypeAvailable;
-//  [[ABEngine sharedObject] updatePresence:type];
-//  type++;
-//  if ( type>5 ) {
-//    type=0;
-//  }
 }
 
-- (void)request:(id)sender
+- (void)presence:(id)sender
 {
   [[ABEngine sharedObject] updatePresence:ABPresenceTypeAvailable];
+}
+
+- (void)doit:(id)sender
+{
+  static int i=0;
+  
+  i++;
+  
+  if ( i==1 ) {
+    [[ABEngine sharedObject] addContact:@"tkdave@blah.im"
+                                   name:@"Dave"
+                             completion:NULL];
+  } else if ( i==2 ) {
+    [[ABEngine sharedObject] removeContact:@"tkdave@blah.im"
+                                completion:NULL];
+  }
+  
 }
 
 

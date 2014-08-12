@@ -16,7 +16,9 @@
 
 
 - (void)didStartConnecting;
+
 - (void)didReceiveConnectStatus:(BOOL)status;
+
 - (void)didDisconnected;
 
 @end
