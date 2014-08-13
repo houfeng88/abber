@@ -12,7 +12,7 @@ int ABRosterPushHandler(xmpp_conn_t * const conn,
                         xmpp_stanza_t * const stanza,
                         void * const userdata)
 {
-  DDLogCDebug(@"Roster push received.");
+  DDLogCDebug(@"[roster] Push received.");
   
   if ( userdata ) {
 //    <iq id="lx3464" type="result"/>
@@ -37,36 +37,35 @@ int ABRosterRequestHandler(xmpp_conn_t * const conn,
                            xmpp_stanza_t * const stanza,
                            void * const userdata)
 {
-  DDLogCDebug(@"Roster request complete.");
+  DDLogCDebug(@"[roster] Request complete.");
   
   if ( userdata ) {
     CFDictionaryRef context = userdata;
-    
     NSValue *engineValue = CFDictionaryGetValue(context, CFSTR("Engine"));
     ABEngine *engine = [engineValue nonretainedObjectValue];
-    
     ABEngineRequestCompletionHandler handler = CFDictionaryGetValue(context, CFSTR("Handler"));
     
     
     NSMutableArray *roster = [[NSMutableArray alloc] init];
     
-    if ( stanza ) {
-      
-      char *type = xmpp_stanza_get_type(stanza);
-      if ( strcmp(type, "error")!=0 ) {
-        xmpp_stanza_t *query = xmpp_stanza_get_child_by_name(stanza, "query");
-        xmpp_stanza_t *item = xmpp_stanza_get_children(query);
-        while ( item ) {
-          char *jid = xmpp_stanza_get_attribute(stanza, "jid");
-          char *name = xmpp_stanza_get_attribute(stanza, "name");
-          char *subscription = xmpp_stanza_get_attribute(stanza, "subscription");
-          if ( ABCSNonempty(jid) && ABCSNonempty(name) && ABCSNonempty(subscription) ) {
-            NSDictionary *map = @{@"jid":ABOString(jid), @"name":ABOString(name), @"subscription":ABOString(subscription)};
-            [roster addObject:map];
-          }
-          item = xmpp_stanza_get_next(item);
+    char *type = xmpp_stanza_get_attribute(stanza, "type");
+    if ( strcmp(type, "error")!=0 ) {
+      xmpp_stanza_t *query = xmpp_stanza_get_child_by_name(stanza, "query");
+      xmpp_stanza_t *item = xmpp_stanza_get_children(query);
+      while ( item ) {
+        char *jid = xmpp_stanza_get_attribute(stanza, "jid");
+        char *name = xmpp_stanza_get_attribute(stanza, "name");
+        char *ask = xmpp_stanza_get_attribute(stanza, "ask");
+        char *subscription = xmpp_stanza_get_attribute(stanza, "subscription");
+        if ( ABCSNonempty(jid) && ABCSNonempty(name) && ABCSNonempty(subscription) ) {
+          NSMutableDictionary *item = [[NSMutableDictionary alloc] init];
+          [item setObject:ABOString(jid) forKeyIfNotNil:@"jid"];
+          [item setObject:ABOString(name) forKeyIfNotNil:@"name"];
+          [item setObject:ABOString(ask) forKeyIfNotNil:@"ask"];
+          [item setObject:ABOString(subscription) forKeyIfNotNil:@"subscription"];
+          [roster addObject:item];
         }
-        
+        item = xmpp_stanza_get_next(item);
       }
       
     }
@@ -90,19 +89,23 @@ int ABRosterChangeHandler(xmpp_conn_t * const conn,
                           xmpp_stanza_t * const stanza,
                           void * const userdata)
 {
-  DDLogCDebug(@"Roster update complete.");
+  DDLogCDebug(@"[roster] Change complete.");
   
   if ( userdata ) {
-    char *iden = xmpp_stanza_get_attribute(stanza, "id");
+    CFDictionaryRef context = userdata;
+    NSValue *engineValue = CFDictionaryGetValue(context, CFSTR("Engine"));
+    ABEngine *engine = [engineValue nonretainedObjectValue];
+    ABEngineRequestCompletionHandler handler = CFDictionaryGetValue(context, CFSTR("Handler"));
     
-    if ( ABCStringHasPrefix(iden, "roster_add") ) {
-      NSLog(@"ROSTER_ADD");
-    } else if ( ABCStringHasPrefix(iden, "roster_update") ) {
-      NSLog(@"ROSTER_UPDATE");
-    } else if ( ABCStringHasPrefix(iden, "roster_remove") ) {
-      NSLog(@"ROSTER_REMOVE");
-    }
     
+    char *to = xmpp_stanza_get_attribute(stanza, "to");
+    
+    char *type = xmpp_stanza_get_attribute(stanza, "type");
+    
+    
+    
+    
+    CFRelease(context);
   }
   
   return 0;
@@ -278,7 +281,22 @@ int ABRosterChangeHandler(xmpp_conn_t * const conn,
     NSArray *observerAry = [self observers];
     for ( NSUInteger i=0; i<[observerAry count]; ++i ) {
       id<ABEngineDelegate> delegate = [observerAry objectAtIndex:i];
-      [delegate engine:self didReceiveRoster:roster];
+      if ( [delegate respondsToSelector:@selector(engine:didReceiveRoster:)] ) {
+        [delegate engine:self didReceiveRoster:roster];
+      }
+    }
+  });
+}
+
+- (void)didChangeRoster:(NSString *)jid
+{
+  dispatch_sync(dispatch_get_main_queue(), ^{
+    NSArray *observerAry = [self observers];
+    for ( NSUInteger i=0; i<[observerAry count]; ++i ) {
+      id<ABEngineDelegate> delegate = [observerAry objectAtIndex:i];
+      if ( [delegate respondsToSelector:@selector(engine:didChangeRoster:)] ) {
+        [delegate engine:self didChangeRoster:jid];
+      }
     }
   });
 }

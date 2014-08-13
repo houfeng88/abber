@@ -2,9 +2,7 @@
 1 加载名录
 
 // 名录请求
-<iq from='juliet@example.com/balcony'
-    id='bv1bs71f'
-    type='get'>
+<iq from='juliet@example.com/balcony' id='bv1bs71f' type='get'>
   <query xmlns='jabber:iq:roster'/>
 </iq>
 
@@ -73,9 +71,6 @@
   </query>
 </iq>
 
-// 建议客户端在收到名录推送时作相应回复
-<iq from='juliet@example.com/balcony' id='a78b4q6ha463' type='result'/>
-
 3 更新好友
 
 更新操作与添加操作完全一样。
@@ -104,6 +99,3 @@
     <item jid="tkdave@blah.im" subscription="remove"/>
   </query>
 </iq>
-
-// 建议客户端在收到名录推送时作相应回复
-<iq from='juliet@example.com/balcony' id='lx4314' type='result'/>
