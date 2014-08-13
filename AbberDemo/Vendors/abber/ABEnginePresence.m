@@ -10,6 +10,11 @@
 
 @implementation ABEngine (Presence)
 
+- (void)prepareForPresenceUpdate
+{
+}
+
+
 - (BOOL)updatePresence:(ABPresenceType)type
 {
   if ( [self isConnected] ) {
@@ -40,7 +45,6 @@
     if ( ABOSNonempty(jid) ) {
       
       ABStanza *presence = [self makeStanzaWithName:@"presence"];
-      [presence setValue:@"bbc" forAttribute:@"abc"];
       [presence setValue:jid forAttribute:@"to"];
       [presence setValue:@"subscribe" forAttribute:@"type"];
       

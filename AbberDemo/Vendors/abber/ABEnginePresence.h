@@ -21,6 +21,9 @@ typedef enum {
 
 @interface ABEngine (Presence)
 
+- (void)prepareForPresenceUpdate;
+
+
 - (BOOL)updatePresence:(ABPresenceType)type;
 
 

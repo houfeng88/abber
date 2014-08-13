@@ -125,9 +125,7 @@ int ABRosterChangeHandler(xmpp_conn_t * const conn,
 
 - (BOOL)requestRosterWithCompletion:(ABEngineRequestCompletionHandler)handler
 {
-//  <iq id='bv1bs71f'
-//      type='get'
-//      from='juliet@example.com/balcony'>
+//  <iq id='bv1bs71f' type='get' from='juliet@example.com/balcony'>
 //    <query xmlns='jabber:iq:roster'/>
 //  </iq>
   if ( [self isConnected] ) {
@@ -237,8 +235,7 @@ int ABRosterChangeHandler(xmpp_conn_t * const conn,
 - (BOOL)removeContact:(NSString *)jid
            completion:(ABEngineRequestCompletionHandler)handler
 {
-//  <iq id='hm4hs97y'
-//      type='set'>
+//  <iq id='hm4hs97y' type='set'>
 //    <query xmlns='jabber:iq:roster'>
 //      <item jid='nurse@example.com' subscription='remove'/>
 //    </query>
@@ -267,7 +264,6 @@ int ABRosterChangeHandler(xmpp_conn_t * const conn,
       [query addChild:item];
       
       [self sendData:[iq raw]];
-      
       
       return YES;
     }

@@ -2,10 +2,7 @@
 1 订阅请求
 
 // 订阅请求，这里要使用纯 jid
-<presence id='xk3h1v69'
-          to='juliet@example.com'
-          type='subscribe'/>
-
+<presence id='xk3h1v69' to='juliet@example.com' type='subscribe'/>
 
 // 如果服务器不能处理订阅请求，服务器一定会给用户发送节错误
 <presence from='juliet@example.com'
@@ -42,21 +39,16 @@
 </iq>
 
 服务器在处理订阅请求的时候有如下规则：
-1 服务器在收到订阅请求时，可能会给用户发送类型为 unavailable 的 presence，但这并不能表示好友当前的状态；
-2 服务器在收到订阅请求时，如果好友没有激活资源，则服务器会存储这个请求，并在好友每次上线后发送出去，直到好友作出决定；
-3 客户端可以多次发送订阅请求，但服务器只应存储一个。
-
-
-
+  a 服务器在收到订阅请求时，可能会给用户发送类型为 unavailable 的 presence，但这并不能表示好友当前的状态；
+  b 服务器在收到订阅请求时，如果好友没有激活资源，则服务器会存储这个请求，并在好友每次上线后发送出去，直到好友作出决定；
+  c 客户端可以多次发送订阅请求，但服务器只应存储一个。
 
 2 同意订阅
 
 // 好友同意订阅
-<presence id='h4v1c4kj'
-          to='romeo@example.net'
-          type='subscribed'/>
+<presence id='h4v1c4kj' to='romeo@example.net' type='subscribed'/>
 
-// 服务器检查好友在用户名录中的状态，如果是 “None + Pending Out” 或 “From + Pending Out”
+// 服务器检查好友在用户名录中的状态，如果是 "None + Pending Out" 或 "From + Pending Out"
 // 服务器会给用户发送同意回调(实测时用户在线能收到此消息，不在线则收不到)
 <presence from='juliet@example.com'
           id='h4v1c4kj'
@@ -81,23 +73,40 @@
   </query>
 </iq>
 
-
-
-
-
 3 拒绝订阅
 
-// 联系人拒绝订阅
-<presence id='ij5b1v7g'
+// 好友拒绝订阅
+<presence id='ij5b1v7g' to='romeo@example.net' type='unsubscribed'/>
+
+// 如果用户在好友的名录中状态为 to 或 both，服务器给用户发送
+<presence from='juliet@example.com'
+          id='ij5b1v7g'
           to='romeo@example.net'
           type='unsubscribed'/>
+
+// 服务器给好友发送类型为 none 或 to 的名录推送
+<iq id='pw3f2v175b34'
+    to='juliet@example.com/balcony'
+    type='set'>
+  <query xmlns='jabber:iq:roster'>
+    <item jid='romeo@example.net' subscription='none'/>
+  </query>
+</iq>
+
+// 服务器给用户发送类型为 none 或 from 的名录推送
+<iq id='h37h3u1bv400'
+    to='romeo@example.net/foo'
+    type='set'>
+  <query xmlns='jabber:iq:roster'>
+    <item jid='juliet@example.com' subscription='none'/>
+  </query>
+</iq>
+
 
 4 删除订阅
 
 // 用户删除订阅
-<presence id='ul4bs71n'
-          to='juliet@example.com'
-          type='unsubscribe'/>
+<presence id='ul4bs71n' to='juliet@example.com' type='unsubscribe'/>
 
 // 如果用户在好友的名录中状态为 from 或 both，服务器给好友发送
 <presence from='romeo@example.net'
@@ -122,9 +131,3 @@
     <item jid='romeo@example.net' subscription='none'/>
   </query>
 </iq>
-
-// 服务器生成一个类型为 unavailable 的 presence 节点
-<presence from='juliet@example.com/balcony'
-          id='o5v91w49'
-          to='romeo@example.net'
-          type='unavailable'/>

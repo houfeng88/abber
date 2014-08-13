@@ -89,20 +89,13 @@
 - (void)doit:(id)sender
 {
   static int i=0;
-  
   i++;
   
   if ( i==1 ) {
-    [[ABEngine sharedObject] addContact:@"tkdave@blah.im"
-                                   name:@"Dave"
-                             completion:NULL];
     [[ABEngine sharedObject] subscribeContact:@"tkdave@blah.im"];
   } else if ( i==2 ) {
     [[ABEngine sharedObject] removeContact:@"tkdave@blah.im"
                                 completion:NULL];
-//    [[ABEngine sharedObject] updateContact:@"tkdave@blah.im"
-//                                      name:@"abc"
-//                                completion:NULL];
   }
   
 }
