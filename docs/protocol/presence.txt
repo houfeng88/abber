@@ -1,0 +1,74 @@
+
+1 订阅请求
+
+// 订阅请求，这里 jid 不应该包含 resource
+<presence id='xk3h1v69'
+          to='juliet@example.com'
+          type='subscribe'/>
+
+// 服务器成功处理这个请求时，一定会发送 Roster Push
+<iq id='b89c5r7ib574'
+    to='romeo@example.net/foo'
+    type='set'>
+  <query xmlns='jabber:iq:roster'>
+    <item ask='subscribe' 
+          jid='juliet@example.com' 
+          subscription='none'/>
+  </query>
+</iq>
+
+// 服务器不能处理这个请求时，一定会发送节错误
+<presence from='juliet@example.com'
+          id='xk3h1v69'
+          to='romeo@example.net'
+          type='error'>
+  <error type='modify'>
+    <remote-server-not-found xmlns='urn:ietf:params:xml:ns:xmpp-stanzas'/>
+  </error>
+</presence>
+
+// 服务器如果检查到用户已经订阅联系人，则会自动回复类型为 subscribed 的 presence 节点
+<presence from='juliet@example.com'
+          id='xk3h1v69'
+          to='romeo@example.net'
+          type='subscribed'/>
+
+服务器在处理订阅请求的时候有如下规则：
+1 服务器在收到订阅请求后可能会回复一个 unavailable 类型的 presence，但这并不能表示联系人当前的状态；
+2 服务器在收到订阅请求的时候，如果联系人没有活动的资源，则服务器会存储这个请求，并在联系人每次上线后发送出去，直到联系人作出决定；
+3 客户端可以多次发送订阅请求，但服务器只应存储一个。
+
+2 同意订阅
+
+// 联系人同意请求
+<presence id='h4v1c4kj'
+          to='romeo@example.net'
+          type='subscribed'/>
+
+// 服务器必须给用户发送同意回调
+<presence from='juliet@example.com'
+          id='h4v1c4kj'
+          to='romeo@example.net'
+          type='subscribed'/>
+
+// 服务器会给联系人发送 Roster Push，订阅类型为 from，如果联系人已经订阅用户，则此 Roster Push 的订阅类型为 both
+<iq id='a78b4q6ha463'
+    to='juliet@example.com/balcony'
+    type='set'>
+  <query xmlns='jabber:iq:roster'>
+    <item jid='romeo@example.net' subscription='from'/>
+  </query>
+</iq>
+
+// 服务器会给用户发送 Roster Push，类型视情况而定
+<iq id='b89c5r7ib576'
+    to='romeo@example.net/foo'
+    type='set'>
+  <query xmlns='jabber:iq:roster'>
+    <item jid='juliet@example.com' subscription='to'/>
+  </query>
+</iq>
+
+3 拒绝订阅
+
+4 删除订阅

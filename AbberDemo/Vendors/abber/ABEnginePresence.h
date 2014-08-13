@@ -28,4 +28,9 @@ typedef enum {
 
 - (BOOL)unsubscribeContact:(NSString *)jid;
 
+
+- (BOOL)acceptContact:(NSString *)jid;
+
+- (BOOL)declineContact:(NSString *)jid;
+
 @end

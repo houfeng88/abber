@@ -68,10 +68,7 @@
 
 - (void)start:(id)sender
 {
-//  NSString *acnt = @"tkjohn@is-a-furry.org";
-//  NSString *pswd = @"12345678";
-  
-  NSString *acnt = @"tkdave@blah.im/teemo";
+  NSString *acnt = @"tklisa@blah.im/teemo";
   NSString *pswd = @"123456";
   
   [[ABEngine sharedObject] prepare];

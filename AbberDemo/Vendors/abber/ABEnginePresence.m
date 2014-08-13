@@ -34,12 +34,15 @@
 
 - (BOOL)subscribeContact:(NSString *)jid
 {
+//  <presence to="juliet@example.com"
+//            type="subscribe"/>
   if ( [self isConnected] ) {
     if ( ABOSNonempty(jid) ) {
       
       ABStanza *presence = [self makeStanzaWithName:@"presence"];
-      [presence setValue:@"subscribe" forAttribute:@"type"];
+      [presence setValue:@"bbc" forAttribute:@"abc"];
       [presence setValue:jid forAttribute:@"to"];
+      [presence setValue:@"subscribe" forAttribute:@"type"];
       
       [self sendData:[presence raw]];
       
@@ -51,9 +54,56 @@
 
 - (BOOL)unsubscribeContact:(NSString *)jid
 {
+//  <presence to="juliet@example.com"
+//            type="unsubscribe"/>
   if ( [self isConnected] ) {
     if ( ABOSNonempty(jid) ) {
-      // ...
+      
+      ABStanza *presence = [self makeStanzaWithName:@"presence"];
+      [presence setValue:jid forAttribute:@"to"];
+      [presence setValue:@"unsubscribe" forAttribute:@"type"];
+      
+      [self sendData:[presence raw]];
+      
+      return YES;
+    }
+  }
+  return NO;
+}
+
+
+- (BOOL)acceptContact:(NSString *)jid
+{
+//  <presence to="romeo@example.com"
+//            type="subscribed"/>
+  if ( [self isConnected] ) {
+    if ( ABOSNonempty(jid) ) {
+      
+      ABStanza *presence = [self makeStanzaWithName:@"presence"];
+      [presence setValue:jid forAttribute:@"to"];
+      [presence setValue:@"subscribed" forAttribute:@"type"];
+      
+      [self sendData:[presence raw]];
+      
+      return YES;
+    }
+  }
+  return NO;
+}
+
+- (BOOL)declineContact:(NSString *)jid
+{
+//  <presence to="romeo@example.net"
+//            type="unsubscribed"/>
+  if ( [self isConnected] ) {
+    if ( ABOSNonempty(jid) ) {
+      
+      ABStanza *presence = [self makeStanzaWithName:@"presence"];
+      [presence setValue:jid forAttribute:@"to"];
+      [presence setValue:@"unsubscribed" forAttribute:@"type"];
+      
+      [self sendData:[presence raw]];
+      
       return YES;
     }
   }
