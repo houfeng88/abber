@@ -28,18 +28,18 @@ int ABRosterPushHandler(xmpp_conn_t * const conn,
     xmpp_stanza_t *query = xmpp_stanza_get_child_by_name(stanza, "query");
     xmpp_stanza_t *item = xmpp_stanza_get_children(query);
     if ( item ) {
-      char *jid = xmpp_stanza_get_attribute(item, "jid");
       char *name = xmpp_stanza_get_attribute(item, "name");
       char *ask = xmpp_stanza_get_attribute(item, "ask");
+      char *jid = xmpp_stanza_get_attribute(item, "jid");
       char *subscription = xmpp_stanza_get_attribute(item, "subscription");
       
-      if ( ABCSNonempty(jid) && ABCSNonempty(name) && ABCSNonempty(subscription) ) {
+      if ( ABCSNonempty(jid) && ABCSNonempty(subscription) ) {
         NSMutableDictionary *map = [[NSMutableDictionary alloc] init];
-        [map setObject:ABOString(jid) forKey:@"jid"];
         [map setObject:ABOString(name) forKey:@"name"];
         if ( ABCSNonempty(ask) ) {
           [map setObject:ABOString(ask) forKey:@"ask"];
         }
+        [map setObject:ABOString(jid) forKey:@"jid"];
         [map setObject:ABOString(subscription) forKey:@"subscription"];
         
         [engine didReceiveRosterItem:map];
@@ -81,12 +81,12 @@ int ABRosterRequestHandler(xmpp_conn_t * const conn,
       xmpp_stanza_t *query = xmpp_stanza_get_child_by_name(stanza, "query");
       xmpp_stanza_t *item = xmpp_stanza_get_children(query);
       while ( item ) {
-        char *jid = xmpp_stanza_get_attribute(item, "jid");
         char *name = xmpp_stanza_get_attribute(item, "name");
         char *ask = xmpp_stanza_get_attribute(item, "ask");
+        char *jid = xmpp_stanza_get_attribute(item, "jid");
         char *subscription = xmpp_stanza_get_attribute(item, "subscription");
         
-        if ( ABCSNonempty(jid) && ABCSNonempty(name) && ABCSNonempty(subscription) ) {
+        if ( ABCSNonempty(name) && ABCSNonempty(jid) && ABCSNonempty(subscription) ) {
           NSMutableDictionary *map = [[NSMutableDictionary alloc] init];
           [map setObject:ABOString(jid) forKey:@"jid"];
           [map setObject:ABOString(name) forKey:@"name"];
