@@ -188,13 +188,6 @@ int ABRosterChangeHandler(xmpp_conn_t * const conn,
       
       [self sendData:[iq raw]];
       
-      
-      ABStanza *presence = [self makeStanzaWithName:@"presence"];
-      [presence setValue:@"subscribe" forAttribute:@"type"];
-      [presence setValue:jid forAttribute:@"to"];
-      
-      [self sendData:[presence raw]];
-      
       return YES;
     }
   }

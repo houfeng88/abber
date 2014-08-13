@@ -21,6 +21,11 @@ typedef enum {
 
 @interface ABEngine (Presence)
 
-- (void)updatePresence:(ABPresenceType)type;
+- (BOOL)updatePresence:(ABPresenceType)type;
+
+
+- (BOOL)subscribeContact:(NSString *)jid;
+
+- (BOOL)unsubscribeContact:(NSString *)jid;
 
 @end

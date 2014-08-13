@@ -71,7 +71,7 @@
 //  NSString *acnt = @"tkjohn@is-a-furry.org";
 //  NSString *pswd = @"12345678";
   
-  NSString *acnt = @"tklisa@blah.im/teemo";
+  NSString *acnt = @"tkdave@blah.im/teemo";
   NSString *pswd = @"123456";
   
   [[ABEngine sharedObject] prepare];
@@ -99,6 +99,7 @@
     [[ABEngine sharedObject] addContact:@"tkdave@blah.im"
                                    name:@"Dave"
                              completion:NULL];
+    [[ABEngine sharedObject] subscribeContact:@"tkdave@blah.im"];
   } else if ( i==2 ) {
     [[ABEngine sharedObject] removeContact:@"tkdave@blah.im"
                                 completion:NULL];
