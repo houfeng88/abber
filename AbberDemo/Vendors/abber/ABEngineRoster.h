@@ -10,6 +10,17 @@
 #import "ABEngine.h"
 #import "ABCommon.h"
 
+typedef enum {
+  ABSubscriptionTypeNone    = 0,
+  ABSubscriptionTypeNoneOut = 1,
+  ABSubscriptionTypeTo      = 2,
+  ABSubscriptionTypeToIn    = 3,
+  ABSubscriptionTypeFrom    = 4,
+  ABSubscriptionTypeFromOut = 5,
+  ABSubscriptionTypeBoth    = 6
+} ABSubscriptionType;
+
+
 @interface ABEngine (Roster)
 
 - (void)prepareForRosterPush;
