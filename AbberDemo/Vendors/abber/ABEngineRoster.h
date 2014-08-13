@@ -42,6 +42,8 @@ typedef enum {
 
 - (void)didReceiveRoster:(NSArray *)roster;
 
+- (void)didReceiveRosterItem:(NSDictionary *)item;
+
 - (void)didChangeRoster:(NSString *)jid;
 
 @end
