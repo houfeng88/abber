@@ -63,8 +63,8 @@ typedef enum {
 
 
 // { @"jid":@"__", @"name":@"__", @"ask":@"__", @"subscription":@"__" }
-- (void)engine:(ABEngine *)engine didReceiveRoster:(NSArray *)roster;
 - (void)engine:(ABEngine *)engine didReceiveRosterItem:(NSDictionary *)item;
-- (void)engine:(ABEngine *)engine didChangeRoster:(NSString *)jid error:(NSError *)error;
+- (void)engine:(ABEngine *)engine didReceiveRoster:(NSArray *)roster error:(NSError *)error;
+- (void)engine:(ABEngine *)engine didChangeContact:(NSString *)jid error:(NSError *)error;
 
 @end

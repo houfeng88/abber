@@ -71,9 +71,11 @@
   NSString *acnt = @"tklisa@blah.im/teemo";
   NSString *pswd = @"123456";
   
+  [[ABEngine sharedObject] addObserver:self];
   [[ABEngine sharedObject] prepare];
   [[ABEngine sharedObject] connectWithAccount:acnt password:pswd];
   [[ABEngine sharedObject] prepareForRosterPush];
+  [[ABEngine sharedObject] prepareForPresenceUpdate];
 }
 
 - (void)roster:(id)sender
@@ -92,6 +94,9 @@
   i++;
   
   if ( i==1 ) {
+    [[ABEngine sharedObject] addContact:@"tkdave@blah.im"
+                                   name:@"Dave"
+                             completion:NULL];
     [[ABEngine sharedObject] subscribeContact:@"tkdave@blah.im"];
   } else if ( i==2 ) {
     [[ABEngine sharedObject] removeContact:@"tkdave@blah.im"
@@ -101,25 +106,19 @@
 }
 
 
-- (void)engineDidStartConnecting:(ABEngine *)engine
+- (void)engine:(ABEngine *)engine didReceiveRosterItem:(NSDictionary *)item
 {
-  NSLog(@"HERE: %s", __func__);
+  NSLog(@"HERE: %s %@", __func__, item);
 }
 
-- (void)engine:(ABEngine *)engine didReceiveConnectStatus:(BOOL)status
+- (void)engine:(ABEngine *)engine didReceiveRoster:(NSArray *)roster error:(NSError *)error
 {
-  NSLog(@"HERE: %s %d", __func__, status);
+  NSLog(@"HERE: %s %@ %@", __func__, roster, error);
 }
 
-- (void)engineDidDisconnected:(ABEngine *)engine
+- (void)engine:(ABEngine *)engine didChangeContact:(NSString *)jid error:(NSError *)error
 {
-  NSLog(@"HERE: %s", __func__);
-}
-
-
-- (void)engine:(ABEngine *)engine didReceiveRoster:(NSArray *)roster
-{
-  NSLog(@"HERE: %s %@", __func__, roster);
+  NSLog(@"HERE: %s %@ %@", __func__, jid, error);
 }
 
 @end

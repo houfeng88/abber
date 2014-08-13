@@ -40,10 +40,10 @@ typedef enum {
            completion:(ABEngineRequestCompletionHandler)handler;
 
 
-- (void)didReceiveRoster:(NSArray *)roster;
-
 - (void)didReceiveRosterItem:(NSDictionary *)item;
 
-- (void)didChangeRoster:(NSString *)jid;
+- (void)didReceiveRoster:(NSArray *)roster error:(NSError *)error;
+
+- (void)didChangeContact:(NSString *)jid error:(NSError *)error;
 
 @end
