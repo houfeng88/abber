@@ -19,7 +19,7 @@
 {
   if ( [self isConnected] ) {
     if ( type==ABPresenceTypeAvailable ) {
-      [self sendString:@"<presence />"];
+      [self sendString:@"<presence/>"];
     } else if ( type==ABPresenceTypeChat ) {
       [self sendString:@"<presence><show>chat</show></presence>"];
     } else if ( type==ABPresenceTypeAway ) {
@@ -29,7 +29,7 @@
     } else if ( type==ABPresenceTypeXA ) {
       [self sendString:@"<presence><show>xa</show></presence>"];
     } else {
-      [self sendString:@"<presence type='unavailable' />"];
+      [self sendString:@"<presence type='unavailable'/>"];
     }
     return YES;
   }
@@ -39,8 +39,7 @@
 
 - (BOOL)subscribeContact:(NSString *)jid
 {
-//  <presence to="juliet@example.com"
-//            type="subscribe"/>
+//  <presence to='juliet@example.com' type='subscribe'/>
   if ( [self isConnected] ) {
     if ( ABOSNonempty(jid) ) {
       
@@ -58,8 +57,7 @@
 
 - (BOOL)unsubscribeContact:(NSString *)jid
 {
-//  <presence to="juliet@example.com"
-//            type="unsubscribe"/>
+//  <presence to='juliet@example.com' type='unsubscribe'/>
   if ( [self isConnected] ) {
     if ( ABOSNonempty(jid) ) {
       
@@ -78,8 +76,7 @@
 
 - (BOOL)acceptContact:(NSString *)jid
 {
-//  <presence to="romeo@example.com"
-//            type="subscribed"/>
+//  <presence to='romeo@example.com' type='subscribed'/>
   if ( [self isConnected] ) {
     if ( ABOSNonempty(jid) ) {
       
@@ -97,8 +94,7 @@
 
 - (BOOL)declineContact:(NSString *)jid
 {
-//  <presence to="romeo@example.net"
-//            type="unsubscribed"/>
+//  <presence to='romeo@example.net' type='unsubscribed'/>
   if ( [self isConnected] ) {
     if ( ABOSNonempty(jid) ) {
       

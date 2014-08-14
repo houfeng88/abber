@@ -2,7 +2,7 @@
 1 加载名录
 
 // 名录请求
-<iq from='juliet@example.com/balcony' id='bv1bs71f' type='get'>
+<iq id='bv1bs71f' type='get'>
   <query xmlns='jabber:iq:roster'/>
 </iq>
 
@@ -38,9 +38,7 @@
 2 添加好友
 
 // 添加请求
-<iq from='juliet@example.com/balcony'
-    id='ph1xaz53'
-    type='set'>
+<iq id='ph1xaz53' type='set'>
   <query xmlns='jabber:iq:roster'>
     <item jid='nurse@example.com' name='Nurse'>
       <group>Servants</group>
@@ -78,9 +76,7 @@
 4 删除好友
 
 // 删除请求
-<iq from='juliet@example.com/balcony'
-    id='hm4hs97y'
-    type='set'>
+<iq id='hm4hs97y' type='set'>
   <query xmlns='jabber:iq:roster'>
     <item jid='nurse@example.com' subscription='remove'/>
   </query>
@@ -94,6 +90,7 @@
 
 // 如果删除成功，服务器会给客户端发送名录推送
 <iq id="lx4314" 
+    to='juliet@example.com/balcony' 
     type="set">
   <query xmlns="jabber:iq:roster" ver="53">
     <item jid="tkdave@blah.im" subscription="remove"/>

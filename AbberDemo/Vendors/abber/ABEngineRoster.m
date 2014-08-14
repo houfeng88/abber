@@ -28,20 +28,21 @@ int ABRosterPushHandler(xmpp_conn_t * const conn,
     xmpp_stanza_t *query = xmpp_stanza_get_child_by_name(stanza, "query");
     xmpp_stanza_t *item = xmpp_stanza_get_children(query);
     if ( item ) {
-      char *name = xmpp_stanza_get_attribute(item, "name");
       char *ask = xmpp_stanza_get_attribute(item, "ask");
       char *jid = xmpp_stanza_get_attribute(item, "jid");
+      char *name = xmpp_stanza_get_attribute(item, "name");
       char *subscription = xmpp_stanza_get_attribute(item, "subscription");
       
       if ( ABCSNonempty(jid) && ABCSNonempty(subscription) ) {
         NSMutableDictionary *map = [[NSMutableDictionary alloc] init];
-        [map setObject:ABOString(name) forKey:@"name"];
         if ( ABCSNonempty(ask) ) {
           [map setObject:ABOString(ask) forKey:@"ask"];
         }
         [map setObject:ABOString(jid) forKey:@"jid"];
+        if ( ABCSNonempty(name) ) {
+          [map setObject:ABOString(name) forKey:@"name"];
+        }
         [map setObject:ABOString(subscription) forKey:@"subscription"];
-        
         [engine didReceiveRosterItem:map];
       }
     }
@@ -81,17 +82,19 @@ int ABRosterRequestHandler(xmpp_conn_t * const conn,
       xmpp_stanza_t *query = xmpp_stanza_get_child_by_name(stanza, "query");
       xmpp_stanza_t *item = xmpp_stanza_get_children(query);
       while ( item ) {
-        char *name = xmpp_stanza_get_attribute(item, "name");
         char *ask = xmpp_stanza_get_attribute(item, "ask");
         char *jid = xmpp_stanza_get_attribute(item, "jid");
+        char *name = xmpp_stanza_get_attribute(item, "name");
         char *subscription = xmpp_stanza_get_attribute(item, "subscription");
         
-        if ( ABCSNonempty(name) && ABCSNonempty(jid) && ABCSNonempty(subscription) ) {
+        if ( ABCSNonempty(jid) && ABCSNonempty(subscription) ) {
           NSMutableDictionary *map = [[NSMutableDictionary alloc] init];
-          [map setObject:ABOString(jid) forKey:@"jid"];
-          [map setObject:ABOString(name) forKey:@"name"];
           if ( ABCSNonempty(ask) ) {
             [map setObject:ABOString(ask) forKey:@"ask"];
+          }
+          [map setObject:ABOString(jid) forKey:@"jid"];
+          if ( ABCSNonempty(name) ) {
+            [map setObject:ABOString(name) forKey:@"name"];
           }
           [map setObject:ABOString(subscription) forKey:@"subscription"];
           [roster addObject:map];
@@ -135,6 +138,7 @@ int ABRosterChangeHandler(xmpp_conn_t * const conn,
     char *bareTo = xmpp_jid_bare(conn->ctx, to);
     if ( ABCSNonempty(bareTo) ) {
       jid = ABOString(bareTo);
+      xmpp_free(conn->ctx, bareTo);
     }
     
     char *type = xmpp_stanza_get_attribute(stanza, "type");
@@ -185,7 +189,7 @@ int ABRosterChangeHandler(xmpp_conn_t * const conn,
 
 - (BOOL)requestRosterWithCompletion:(ABEngineRequestCompletionHandler)handler
 {
-//  <iq id='bv1bs71f' type='get' from='juliet@example.com/balcony'>
+//  <iq id='bv1bs71f' type='get'>
 //    <query xmlns='jabber:iq:roster'/>
 //  </iq>
   if ( [self isConnected] ) {
@@ -217,10 +221,9 @@ int ABRosterChangeHandler(xmpp_conn_t * const conn,
 {
 //  <iq id='ph1xaz53' type='set'>
 //    <query xmlns='jabber:iq:roster'>
-//      <item jid='nurse@example.com' name='Nurse' />
+//      <item jid='nurse@example.com' name='Nurse'/>
 //    </query>
 //  </iq>
-//  <presence to="tktom@blah.im" type="subscribe"/>
   if ( ABOSNonempty(jid) && ABOSNonempty(name) ) {
     if ( [self isConnected] ) {
       NSString *iden = [self makeIdentifier:@"roster_add" suffix:[self account]];
@@ -258,7 +261,7 @@ int ABRosterChangeHandler(xmpp_conn_t * const conn,
 {
 //  <iq id='ph1xaz53' type='set'>
 //    <query xmlns='jabber:iq:roster'>
-//      <item jid='nurse@example.com' name='Nurse' />
+//      <item jid='nurse@example.com' name='Nurse'/>
 //    </query>
 //  </iq>
   if ( ABOSNonempty(jid) && ABOSNonempty(name) ) {
