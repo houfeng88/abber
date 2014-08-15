@@ -11,22 +11,35 @@
 
 @implementation ABRootViewController
 
-- (void)layoutViews
+- (id)init
 {
-  [super layoutViews];
-  
-  _presentedViewController.view.frame = _contentView.bounds;
-  
+  self = [super init];
+  if (self) {
+    if ( [[[UIDevice currentDevice] systemVersion] floatValue]<7.0 ) {
+      self.wantsFullScreenLayout = YES;
+    }
+  }
+  return self;
 }
 
+- (void)viewWillLayoutSubviews
+{
+  [super viewWillLayoutSubviews];
+  [self layoutViews];
+}
+
+- (void)layoutViews
+{
+  _presentedViewController.view.frame = self.view.bounds;
+}
 
 - (void)presentWithViewController:(UIViewController *)vc
 {
   if ( _presentedViewController ) {
-    [_contentView.layer addAnimation:[CATransition pushTransition] forKey:@"push"];
+    [self.view.layer addAnimation:[CATransition pushTransition] forKey:@"push"];
     [self dismissChildViewController:_presentedViewController];
   }
-  [self presentChildViewController:vc inView:_contentView];
+  [self presentChildViewController:vc inView:self.view];
   _presentedViewController = vc;
   
   [self layoutViews];
@@ -35,10 +48,10 @@
 - (void)dismissByViewController:(UIViewController *)vc
 {
   if ( _presentedViewController ) {
-    [_contentView.layer addAnimation:[CATransition popTransition] forKey:@"pop"];
+    [self.view.layer addAnimation:[CATransition popTransition] forKey:@"pop"];
     [self dismissChildViewController:_presentedViewController];
   }
-  [self presentChildViewController:vc inView:_contentView];
+  [self presentChildViewController:vc inView:self.view];
   _presentedViewController = vc;
   
   [self layoutViews];

@@ -22,9 +22,7 @@
   ABRootViewController *root = [[ABRootViewController alloc] init];
   ABSigninViewController *signin = [[ABSigninViewController alloc] init];
   [root presentWithViewController:signin];
-  UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:root];
-  nc.navigationBarHidden = YES;
-  _window.rootViewController = nc;
+  _window.rootViewController = root;
   
   _window.backgroundColor = [UIColor whiteColor];
   [_window makeKeyAndVisible];

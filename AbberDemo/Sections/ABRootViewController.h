@@ -7,9 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "General/TKViewController.h"
 
-@interface ABRootViewController : TKViewController {
+@interface ABRootViewController : UIViewController {
   UIViewController *_presentedViewController;
 }
 

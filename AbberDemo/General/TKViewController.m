@@ -49,6 +49,10 @@
   _contentView.backgroundColor = [UIColor clearColor];
   [self.view addSubview:_contentView];
   
+  // TODO: ...
+  _navigationView.backgroundImageView.image = TKCreateImage(@"navbar_bg.png");
+  _navigationView.backButton.normalBackgroundImage = TKCreateImage(@"btn_back_1.png");
+  _navigationView.backButton.highlightedBackgroundImage = TKCreateImage(@"btn_back_2.png");
 }
 
 
@@ -76,7 +80,7 @@
 - (void)layoutViews
 {
   [_navigationView sizeToFit];
-  _navigationView.frame = CGRectMake(0.0, 20.0, _navigationView.width, _navigationView.height);
+  _navigationView.frame = CGRectMake(0.0, 0.0, _navigationView.width, _navigationView.height);
   
   if ( _navigationView.hidden ) {
     _contentView.frame = CGRectMake(0.0, 20.0, self.view.width, self.view.height - 20.0);
@@ -88,18 +92,18 @@
 
 - (void)backButtonClicked:(id)sender
 {
-  TKPRINTMETHOD();
+  DDLogDebug(@"[client Back button clicked]");
   [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)leftButtonClicked:(id)sender
 {
-  TKPRINTMETHOD();
+  DDLogDebug(@"[client Left button clicked]");
 }
 
 - (void)rightButtonClicked:(id)sender
 {
-  TKPRINTMETHOD();
+  DDLogDebug(@"[client Right button clicked]");
 }
 
 @end

@@ -63,47 +63,35 @@
   
   _backgroundImageView.frame = CGRectMake(0.0, 0.0, self.width, self.height+NAVIGATION_SHADOW);
   
-  
-  CGFloat leftWidth = 0.0;
+  CGSize leftSize = CGSizeZero;
   if ( !(_backButton.hidden) ) {
-    CGSize size = [_backButton mostFitSize];
-    leftWidth = size.width;
+    leftSize = [_backButton mostFitSize];
   } else {
     if ( !(_leftButton.hidden) ) {
-      CGSize size = [_leftButton mostFitSize];
-      leftWidth = size.width;
+      leftSize = [_leftButton mostFitSize];
     }
   }
   
-  CGFloat rightWidth = 0.0;
+  CGSize rightSize = CGSizeZero;
   if ( !(_rightButton.hidden) ) {
-    CGSize size = [_rightButton mostFitSize];
-    rightWidth = size.width;
+    rightSize = [_rightButton mostFitSize];
   }
   
-  CGFloat sideWidth = MAX(leftWidth, rightWidth);
+  CGFloat sideWidth = MAX(leftSize.width, rightSize.width);
   
   
-  CGFloat y = (self.height - 44.0) / 2.0;
+  CGFloat baseline = 20.0;
   
-  if ( [[[UIDevice currentDevice] systemVersion] floatValue]>=7.0 ) {
-    y = 20.0 + ((self.height - 20.0) - 44.0) / 2.0;
-  }
-  
-  _backButton.frame = CGRectMake(5.0, y, leftWidth, 44.0);
-  _leftButton.frame = CGRectMake(5.0, y, leftWidth, 44.0);
-  _titleLabel.frame = CGRectMake(5.0+sideWidth+5.0, y, self.width-(5.0+sideWidth+5.0)*2.0, 44.0);
-  _rightButton.frame = CGRectMake(self.width-5.0-rightWidth, y, rightWidth, 44.0);
+  _backButton.frame = CGRectMake(5.0, baseline+((self.height-baseline)-leftSize.height)/2.0, leftSize.width, leftSize.height);
+  _leftButton.frame = CGRectMake(5.0, baseline+((self.height-baseline)-leftSize.height)/2.0, leftSize.width, leftSize.height);
+  _titleLabel.frame = CGRectMake(5.0+sideWidth+5.0, baseline, self.width-(5.0+sideWidth+5.0)*2.0, self.height-baseline);
+  _rightButton.frame = CGRectMake(self.width-5.0-rightSize.width, baseline+((self.height-baseline)-rightSize.height)/2.0, rightSize.width, rightSize.height);
   
 }
 
 - (CGSize)sizeThatFits:(CGSize)size
 {
-  CGFloat height = NAVIGATION_HEIGHT;
-  if ( [[[UIDevice currentDevice] systemVersion] floatValue]>=7.0 ) {
-    height += 20.0;
-  }
-  return CGSizeMake([[UIScreen mainScreen] bounds].size.width, height);
+  return CGSizeMake([[UIScreen mainScreen] bounds].size.width, NAVIGATION_HEIGHT+20.0);
 }
 
 
