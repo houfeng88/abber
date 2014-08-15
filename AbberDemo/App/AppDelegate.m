@@ -7,8 +7,8 @@
 //
 
 #import "AppDelegate.h"
-#import "ABRootViewController.h"
-#import "ABSigninViewController.h"
+#import "Sections/ABRootViewController.h"
+#import "Sections/ABSigninViewController.h"
 #import <abber/abber.h>
 
 @implementation AppDelegate

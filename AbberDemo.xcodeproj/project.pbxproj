@@ -11,13 +11,20 @@
 		0A5BAE6D19913715001EF07E /* ABStanza.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5BAE6C19913715001EF07E /* ABStanza.m */; };
 		0A5BAE701991382E001EF07E /* ABEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5BAE6F1991382E001EF07E /* ABEngine.m */; };
 		232CF7021999D9A0004A5AA2 /* ABEnginePresence.m in Sources */ = {isa = PBXBuildFile; fileRef = 232CF7011999D9A0004A5AA2 /* ABEnginePresence.m */; };
-		237F1BE5199DA41C00225920 /* ABSigninViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 237F1BE4199DA41C00225920 /* ABSigninViewController.m */; };
-		237F1BE8199DA45700225920 /* ABMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 237F1BE7199DA45700225920 /* ABMainViewController.m */; };
-		237F1BF1199DA73100225920 /* TKViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 237F1BF0199DA73100225920 /* TKViewController.m */; };
-		23C4BC4F199DADC3006E796C /* ABRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C4BC4E199DADC3006E796C /* ABRootViewController.m */; };
 		23C4BC54199DB23F006E796C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C4BC53199DB23F006E796C /* QuartzCore.framework */; };
-		23C4BC5A199DB591006E796C /* CATransitionExtentions.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C4BC59199DB591006E796C /* CATransitionExtentions.m */; };
-		23C4BC5D199DB72B006E796C /* TKNavigationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C4BC5C199DB72B006E796C /* TKNavigationView.m */; };
+		23C4BC64199DD17E006E796C /* btn_back_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C4BC60199DD17E006E796C /* btn_back_1.png */; };
+		23C4BC65199DD17E006E796C /* btn_back_1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C4BC61199DD17E006E796C /* btn_back_1@2x.png */; };
+		23C4BC66199DD17E006E796C /* btn_back_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C4BC62199DD17E006E796C /* btn_back_2.png */; };
+		23C4BC67199DD17E006E796C /* btn_back_2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C4BC63199DD17E006E796C /* btn_back_2@2x.png */; };
+		23C4BC6F199DD1B1006E796C /* CATransitionExtentions.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C4BC6A199DD1B1006E796C /* CATransitionExtentions.m */; };
+		23C4BC70199DD1B1006E796C /* TKNavigationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C4BC6C199DD1B1006E796C /* TKNavigationView.m */; };
+		23C4BC71199DD1B1006E796C /* TKViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C4BC6E199DD1B1006E796C /* TKViewController.m */; };
+		23C4BC79199DD1C8006E796C /* ABMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C4BC74199DD1C8006E796C /* ABMainViewController.m */; };
+		23C4BC7A199DD1C8006E796C /* ABRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C4BC76199DD1C8006E796C /* ABRootViewController.m */; };
+		23C4BC7B199DD1C8006E796C /* ABSigninViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C4BC78199DD1C8006E796C /* ABSigninViewController.m */; };
+		23C4BC82199DD1EF006E796C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C4BC7E199DD1EF006E796C /* AppDelegate.m */; };
+		23C4BC84199DD1EF006E796C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C4BC80199DD1EF006E796C /* main.m */; };
+		23C4BC86199DD227006E796C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23C4BC85199DD227006E796C /* Images.xcassets */; };
 		23C547281994B4B300B4C0F7 /* ABCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C547271994B4B300B4C0F7 /* ABCommon.m */; };
 		23C5472E1994B52600B4C0F7 /* ABLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C5472D1994B52600B4C0F7 /* ABLogger.m */; };
 		23C547311994B56D00B4C0F7 /* ABRaw.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C547301994B56D00B4C0F7 /* ABRaw.m */; };
@@ -26,9 +33,6 @@
 		23C5473D1994C0E900B4C0F7 /* ABEngineConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C5473C1994C0E900B4C0F7 /* ABEngineConnection.m */; };
 		23F6C0DA19909596005D2ED7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23F6C0D919909596005D2ED7 /* Foundation.framework */; };
 		23F6C0DE19909596005D2ED7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23F6C0DD19909596005D2ED7 /* UIKit.framework */; };
-		23F6C0E619909596005D2ED7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 23F6C0E519909596005D2ED7 /* main.m */; };
-		23F6C0EA19909596005D2ED7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 23F6C0E919909596005D2ED7 /* AppDelegate.m */; };
-		23F6C0EC19909596005D2ED7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23F6C0EB19909596005D2ED7 /* Images.xcassets */; };
 		23F6C1A41990A8E0005D2ED7 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 23F6C17A1990A8DF005D2ED7 /* libcrypto.a */; };
 		23F6C1A51990A8E0005D2ED7 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 23F6C17B1990A8DF005D2ED7 /* libssl.a */; };
 		23F6C1C71990A993005D2ED7 /* auth.c in Sources */ = {isa = PBXBuildFile; fileRef = 23F6C1A71990A993005D2ED7 /* auth.c */; };
@@ -62,20 +66,30 @@
 		0A5BAE6F1991382E001EF07E /* ABEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABEngine.m; sourceTree = "<group>"; };
 		232CF7001999D9A0004A5AA2 /* ABEnginePresence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEnginePresence.h; sourceTree = "<group>"; };
 		232CF7011999D9A0004A5AA2 /* ABEnginePresence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABEnginePresence.m; sourceTree = "<group>"; };
-		237F1BE3199DA41C00225920 /* ABSigninViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABSigninViewController.h; sourceTree = "<group>"; };
-		237F1BE4199DA41C00225920 /* ABSigninViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABSigninViewController.m; sourceTree = "<group>"; };
-		237F1BE6199DA45700225920 /* ABMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABMainViewController.h; sourceTree = "<group>"; };
-		237F1BE7199DA45700225920 /* ABMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABMainViewController.m; sourceTree = "<group>"; };
-		237F1BEF199DA73100225920 /* TKViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKViewController.h; sourceTree = "<group>"; };
-		237F1BF0199DA73100225920 /* TKViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKViewController.m; sourceTree = "<group>"; };
-		23C4BC4D199DADC3006E796C /* ABRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABRootViewController.h; sourceTree = "<group>"; };
-		23C4BC4E199DADC3006E796C /* ABRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABRootViewController.m; sourceTree = "<group>"; };
 		23C4BC53199DB23F006E796C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		23C4BC55199DB2B8006E796C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		23C4BC58199DB591006E796C /* CATransitionExtentions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CATransitionExtentions.h; sourceTree = "<group>"; };
-		23C4BC59199DB591006E796C /* CATransitionExtentions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CATransitionExtentions.m; sourceTree = "<group>"; };
-		23C4BC5B199DB72B006E796C /* TKNavigationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKNavigationView.h; sourceTree = "<group>"; };
-		23C4BC5C199DB72B006E796C /* TKNavigationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKNavigationView.m; sourceTree = "<group>"; };
+		23C4BC60199DD17E006E796C /* btn_back_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_back_1.png; sourceTree = "<group>"; };
+		23C4BC61199DD17E006E796C /* btn_back_1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_back_1@2x.png"; sourceTree = "<group>"; };
+		23C4BC62199DD17E006E796C /* btn_back_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_back_2.png; sourceTree = "<group>"; };
+		23C4BC63199DD17E006E796C /* btn_back_2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_back_2@2x.png"; sourceTree = "<group>"; };
+		23C4BC69199DD1B1006E796C /* CATransitionExtentions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CATransitionExtentions.h; sourceTree = "<group>"; };
+		23C4BC6A199DD1B1006E796C /* CATransitionExtentions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CATransitionExtentions.m; sourceTree = "<group>"; };
+		23C4BC6B199DD1B1006E796C /* TKNavigationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKNavigationView.h; sourceTree = "<group>"; };
+		23C4BC6C199DD1B1006E796C /* TKNavigationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKNavigationView.m; sourceTree = "<group>"; };
+		23C4BC6D199DD1B1006E796C /* TKViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKViewController.h; sourceTree = "<group>"; };
+		23C4BC6E199DD1B1006E796C /* TKViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKViewController.m; sourceTree = "<group>"; };
+		23C4BC73199DD1C8006E796C /* ABMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABMainViewController.h; sourceTree = "<group>"; };
+		23C4BC74199DD1C8006E796C /* ABMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABMainViewController.m; sourceTree = "<group>"; };
+		23C4BC75199DD1C8006E796C /* ABRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABRootViewController.h; sourceTree = "<group>"; };
+		23C4BC76199DD1C8006E796C /* ABRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABRootViewController.m; sourceTree = "<group>"; };
+		23C4BC77199DD1C8006E796C /* ABSigninViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABSigninViewController.h; sourceTree = "<group>"; };
+		23C4BC78199DD1C8006E796C /* ABSigninViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABSigninViewController.m; sourceTree = "<group>"; };
+		23C4BC7D199DD1EF006E796C /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		23C4BC7E199DD1EF006E796C /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		23C4BC7F199DD1EF006E796C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		23C4BC80199DD1EF006E796C /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		23C4BC81199DD1EF006E796C /* Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = "<group>"; };
+		23C4BC85199DD227006E796C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		23C547261994B4B300B4C0F7 /* ABCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABCommon.h; sourceTree = "<group>"; };
 		23C547271994B4B300B4C0F7 /* ABCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABCommon.m; sourceTree = "<group>"; };
 		23C5472C1994B52600B4C0F7 /* ABLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABLogger.h; sourceTree = "<group>"; };
@@ -92,12 +106,6 @@
 		23F6C0D619909596005D2ED7 /* AbberDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AbberDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		23F6C0D919909596005D2ED7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		23F6C0DD19909596005D2ED7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		23F6C0E119909596005D2ED7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		23F6C0E519909596005D2ED7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		23F6C0E719909596005D2ED7 /* Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = "<group>"; };
-		23F6C0E819909596005D2ED7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		23F6C0E919909596005D2ED7 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		23F6C0EB19909596005D2ED7 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		23F6C1571990A8DF005D2ED7 /* aes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aes.h; sourceTree = "<group>"; };
 		23F6C1581990A8DF005D2ED7 /* asn1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asn1.h; sourceTree = "<group>"; };
 		23F6C1591990A8DF005D2ED7 /* asn1_mac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asn1_mac.h; sourceTree = "<group>"; };
@@ -229,17 +237,62 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		23C4BC57199DB52E006E796C /* General */ = {
+		23C4BC5E199DD17E006E796C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				237F1BEF199DA73100225920 /* TKViewController.h */,
-				237F1BF0199DA73100225920 /* TKViewController.m */,
-				23C4BC5B199DB72B006E796C /* TKNavigationView.h */,
-				23C4BC5C199DB72B006E796C /* TKNavigationView.m */,
-				23C4BC58199DB591006E796C /* CATransitionExtentions.h */,
-				23C4BC59199DB591006E796C /* CATransitionExtentions.m */,
+				23C4BC85199DD227006E796C /* Images.xcassets */,
+				23C4BC5F199DD17E006E796C /* Images */,
 			);
-			name = General;
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		23C4BC5F199DD17E006E796C /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				23C4BC60199DD17E006E796C /* btn_back_1.png */,
+				23C4BC61199DD17E006E796C /* btn_back_1@2x.png */,
+				23C4BC62199DD17E006E796C /* btn_back_2.png */,
+				23C4BC63199DD17E006E796C /* btn_back_2@2x.png */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
+		23C4BC68199DD1B1006E796C /* General */ = {
+			isa = PBXGroup;
+			children = (
+				23C4BC6D199DD1B1006E796C /* TKViewController.h */,
+				23C4BC6E199DD1B1006E796C /* TKViewController.m */,
+				23C4BC6B199DD1B1006E796C /* TKNavigationView.h */,
+				23C4BC6C199DD1B1006E796C /* TKNavigationView.m */,
+				23C4BC69199DD1B1006E796C /* CATransitionExtentions.h */,
+				23C4BC6A199DD1B1006E796C /* CATransitionExtentions.m */,
+			);
+			path = General;
+			sourceTree = "<group>";
+		};
+		23C4BC72199DD1C8006E796C /* Sections */ = {
+			isa = PBXGroup;
+			children = (
+				23C4BC73199DD1C8006E796C /* ABMainViewController.h */,
+				23C4BC74199DD1C8006E796C /* ABMainViewController.m */,
+				23C4BC75199DD1C8006E796C /* ABRootViewController.h */,
+				23C4BC76199DD1C8006E796C /* ABRootViewController.m */,
+				23C4BC77199DD1C8006E796C /* ABSigninViewController.h */,
+				23C4BC78199DD1C8006E796C /* ABSigninViewController.m */,
+			);
+			path = Sections;
+			sourceTree = "<group>";
+		};
+		23C4BC7C199DD1EF006E796C /* App */ = {
+			isa = PBXGroup;
+			children = (
+				23C4BC7F199DD1EF006E796C /* Info.plist */,
+				23C4BC80199DD1EF006E796C /* main.m */,
+				23C4BC81199DD1EF006E796C /* Prefix.pch */,
+				23C4BC7D199DD1EF006E796C /* AppDelegate.h */,
+				23C4BC7E199DD1EF006E796C /* AppDelegate.m */,
+			);
+			path = App;
 			sourceTree = "<group>";
 		};
 		23F6C0CD19909596005D2ED7 = {
@@ -275,20 +328,11 @@
 		23F6C0DF19909596005D2ED7 /* AbberDemo */ = {
 			isa = PBXGroup;
 			children = (
-				23F6C0E119909596005D2ED7 /* Info.plist */,
-				23F6C0E519909596005D2ED7 /* main.m */,
-				23F6C0E719909596005D2ED7 /* Prefix.pch */,
-				23F6C0E819909596005D2ED7 /* AppDelegate.h */,
-				23F6C0E919909596005D2ED7 /* AppDelegate.m */,
-				23C4BC4D199DADC3006E796C /* ABRootViewController.h */,
-				23C4BC4E199DADC3006E796C /* ABRootViewController.m */,
-				237F1BE3199DA41C00225920 /* ABSigninViewController.h */,
-				237F1BE4199DA41C00225920 /* ABSigninViewController.m */,
-				237F1BE6199DA45700225920 /* ABMainViewController.h */,
-				237F1BE7199DA45700225920 /* ABMainViewController.m */,
-				23C4BC57199DB52E006E796C /* General */,
+				23C4BC7C199DD1EF006E796C /* App */,
+				23C4BC72199DD1C8006E796C /* Sections */,
+				23C4BC68199DD1B1006E796C /* General */,
 				23F6C1551990A8DF005D2ED7 /* Vendors */,
-				23F6C0EB19909596005D2ED7 /* Images.xcassets */,
+				23C4BC5E199DD17E006E796C /* Resources */,
 			);
 			path = AbberDemo;
 			sourceTree = "<group>";
@@ -508,7 +552,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				23F6C0EC19909596005D2ED7 /* Images.xcassets in Resources */,
+				23C4BC65199DD17E006E796C /* btn_back_1@2x.png in Resources */,
+				23C4BC66199DD17E006E796C /* btn_back_2.png in Resources */,
+				23C4BC86199DD227006E796C /* Images.xcassets in Resources */,
+				23C4BC64199DD17E006E796C /* btn_back_1.png in Resources */,
+				23C4BC67199DD17E006E796C /* btn_back_2@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -552,30 +600,31 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23C4BC82199DD1EF006E796C /* AppDelegate.m in Sources */,
 				23C547371994BE2600B4C0F7 /* ABEngineVcard.m in Sources */,
 				23F6C1D31990A993005D2ED7 /* sha1.c in Sources */,
 				23C5473D1994C0E900B4C0F7 /* ABEngineConnection.m in Sources */,
 				23F6C1D11990A993005D2ED7 /* parser.c in Sources */,
 				23F6C1D91990A993005D2ED7 /* util.c in Sources */,
 				23F6C1D01990A993005D2ED7 /* oostanza.cpp in Sources */,
+				23C4BC6F199DD1B1006E796C /* CATransitionExtentions.m in Sources */,
 				0A5BAE701991382E001EF07E /* ABEngine.m in Sources */,
+				23C4BC71199DD1B1006E796C /* TKViewController.m in Sources */,
 				23F6C1CA1990A993005D2ED7 /* event.c in Sources */,
 				0A5BAE6D19913715001EF07E /* ABStanza.m in Sources */,
 				23F6C1D71990A993005D2ED7 /* thread.c in Sources */,
+				23C4BC84199DD1EF006E796C /* main.m in Sources */,
 				23C547281994B4B300B4C0F7 /* ABCommon.m in Sources */,
-				237F1BE8199DA45700225920 /* ABMainViewController.m in Sources */,
-				23F6C0EA19909596005D2ED7 /* AppDelegate.m in Sources */,
+				23C4BC7B199DD1C8006E796C /* ABSigninViewController.m in Sources */,
 				23F6C1CF1990A993005D2ED7 /* oocontext.cpp in Sources */,
 				23C547341994BDE900B4C0F7 /* ABEngineRoster.m in Sources */,
-				237F1BF1199DA73100225920 /* TKViewController.m in Sources */,
 				23F6C1D61990A993005D2ED7 /* stanza.c in Sources */,
 				23F6C1CB1990A993005D2ED7 /* handler.c in Sources */,
 				23F6C1D21990A993005D2ED7 /* sasl.c in Sources */,
-				23C4BC4F199DADC3006E796C /* ABRootViewController.m in Sources */,
 				0A06B7B81997BC6900767DEC /* ABObject.m in Sources */,
+				23C4BC79199DD1C8006E796C /* ABMainViewController.m in Sources */,
 				23F6C1CC1990A993005D2ED7 /* hash.c in Sources */,
 				23F6C1C81990A993005D2ED7 /* conn.c in Sources */,
-				23F6C0E619909596005D2ED7 /* main.m in Sources */,
 				23F6C1D81990A993005D2ED7 /* tls.c in Sources */,
 				232CF7021999D9A0004A5AA2 /* ABEnginePresence.m in Sources */,
 				23F6C1D51990A993005D2ED7 /* sock.c in Sources */,
@@ -583,12 +632,11 @@
 				23C5472E1994B52600B4C0F7 /* ABLogger.m in Sources */,
 				23F6C1CD1990A993005D2ED7 /* jid.c in Sources */,
 				23F6C1C71990A993005D2ED7 /* auth.c in Sources */,
+				23C4BC70199DD1B1006E796C /* TKNavigationView.m in Sources */,
 				23C547311994B56D00B4C0F7 /* ABRaw.m in Sources */,
-				237F1BE5199DA41C00225920 /* ABSigninViewController.m in Sources */,
 				23F6C1C91990A993005D2ED7 /* ctx.c in Sources */,
-				23C4BC5D199DB72B006E796C /* TKNavigationView.m in Sources */,
+				23C4BC7A199DD1C8006E796C /* ABRootViewController.m in Sources */,
 				23F6C1D41990A993005D2ED7 /* snprintf.c in Sources */,
-				23C4BC5A199DB591006E796C /* CATransitionExtentions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -672,13 +720,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = AbberDemo/Prefix.pch;
+				GCC_PREFIX_HEADER = AbberDemo/App/Prefix.pch;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					$SRCROOT/$PRODUCT_NAME/Vendors,
 					/usr/include/libxml2,
 				);
-				INFOPLIST_FILE = AbberDemo/Info.plist;
+				INFOPLIST_FILE = AbberDemo/App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -690,6 +738,7 @@
 					"-lresolv",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = $SRCROOT/$PRODUCT_NAME;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -701,13 +750,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = AbberDemo/Prefix.pch;
+				GCC_PREFIX_HEADER = AbberDemo/App/Prefix.pch;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					$SRCROOT/$PRODUCT_NAME/Vendors,
 					/usr/include/libxml2,
 				);
-				INFOPLIST_FILE = AbberDemo/Info.plist;
+				INFOPLIST_FILE = AbberDemo/App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -719,6 +768,7 @@
 					"-lresolv",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = $SRCROOT/$PRODUCT_NAME;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
