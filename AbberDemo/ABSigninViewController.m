@@ -30,6 +30,8 @@
   button.frame = CGRectMake(10.0, 30.0, 300.0, 40.0);
   
   _navigationView.titleLabel.text = @"Sign in";
+  [_navigationView showRightButton];
+  _navigationView.rightButton.normalTitle = @"Add";
 }
 
 - (void)signin:(id)sender
