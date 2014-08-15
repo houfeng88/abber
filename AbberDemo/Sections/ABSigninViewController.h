@@ -10,6 +10,7 @@
 #import "General/TKViewController.h"
 
 @interface ABSigninViewController : TKViewController {
+  UIView *_animationView;
 }
 
 @end

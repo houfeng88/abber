@@ -28,6 +28,13 @@
   _navigationView.titleLabel.text = @"Sign in";
   [_navigationView showRightButton];
   _navigationView.rightButton.normalTitle = @"Add";
+  
+  
+  _animationView = [[UIView alloc] init];
+  _animationView.backgroundColor = [UIColor redColor];
+  _animationView.frame = CGRectMake(10.0, 50.0, 100.0, 100.0);
+  [_contentView addSubview:_animationView];
+  
 }
 
 - (void)signin:(id)sender

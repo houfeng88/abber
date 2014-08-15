@@ -9,8 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @interface ABRootViewController : UIViewController {
-  UIViewController *_presentedViewController;
+  UIImageView *_navigationView;
+  UIViewController *_bodyViewController;
 }
+
+- (id)initWithBodyViewController:(UIViewController *)vc;
+
 
 - (void)presentWithViewController:(UIViewController *)vc;
 

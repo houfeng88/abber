@@ -20,10 +20,11 @@
   
   _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   
-  ABRootViewController *root = [[ABRootViewController alloc] init];
+  
   ABSigninViewController *signin = [[ABSigninViewController alloc] init];
-  [root presentWithViewController:signin];
-  _window.rootViewController = root;
+  
+  _window.rootViewController = [[ABRootViewController alloc] initWithBodyViewController:signin];
+  
   
   _window.backgroundColor = [UIColor whiteColor];
   [_window makeKeyAndVisible];

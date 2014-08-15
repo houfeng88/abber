@@ -50,7 +50,7 @@
   [self.view addSubview:_contentView];
   
   // TODO: ...
-  _navigationView.backgroundImageView.image = TKCreateImage(@"navbar_bg.png");
+  _navigationView.backgroundImageView.image = TKCreateResizableImage(@"navbar_bg.png", UIEdgeInsetsMake(2.0, 2.0, 2.0, 2.0));
   _navigationView.titleLabel.textColor = [UIColor whiteColor];
   _navigationView.backButton.normalBackgroundImage = TKCreateImage(@"btn_back.png");
 }
