@@ -7,10 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "TKButton.h"
+#import "TKNavigationView.h"
 
-#define NAV_HEIGHT (45.0)
-#define NAV_SHADOW (0.0)
+
 
 @class TKNavigationView;
 
@@ -32,24 +31,3 @@
 - (void)rightButtonClicked:(id)sender;
 
 @end
-
-
-//@interface TKNavigationView : UIView {
-//  UIImageView *_backgroundImageView;
-//  TKButton *_backButton;
-//  TKButton *_leftButton;
-//  UILabel *_titleLabel;
-//  TKButton *_rightButton;
-//}
-//
-//@property (nonatomic, strong, readonly) UIImageView *backgroundImageView;
-//@property (nonatomic, strong, readonly) TKButton *backButton;
-//@property (nonatomic, strong, readonly) TKButton *leftButton;
-//@property (nonatomic, strong, readonly) UILabel *titleLabel;
-//@property (nonatomic, strong, readonly) TKButton *rightButton;
-//
-//- (void)showBackButton;
-//- (void)showLeftButton;
-//- (void)showRightButton;
-//
-//@end

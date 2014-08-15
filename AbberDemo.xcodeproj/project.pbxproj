@@ -14,10 +14,10 @@
 		237F1BE5199DA41C00225920 /* ABSigninViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 237F1BE4199DA41C00225920 /* ABSigninViewController.m */; };
 		237F1BE8199DA45700225920 /* ABMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 237F1BE7199DA45700225920 /* ABMainViewController.m */; };
 		237F1BF1199DA73100225920 /* TKViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 237F1BF0199DA73100225920 /* TKViewController.m */; };
-		23C4BC4C199DA9A7006E796C /* TKButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C4BC4B199DA9A7006E796C /* TKButton.m */; };
 		23C4BC4F199DADC3006E796C /* ABRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C4BC4E199DADC3006E796C /* ABRootViewController.m */; };
-		23C4BC52199DAFF6006E796C /* CATransitionExtentions.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C4BC51199DAFF6006E796C /* CATransitionExtentions.m */; };
 		23C4BC54199DB23F006E796C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C4BC53199DB23F006E796C /* QuartzCore.framework */; };
+		23C4BC5A199DB591006E796C /* CATransitionExtentions.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C4BC59199DB591006E796C /* CATransitionExtentions.m */; };
+		23C4BC5D199DB72B006E796C /* TKNavigationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C4BC5C199DB72B006E796C /* TKNavigationView.m */; };
 		23C547281994B4B300B4C0F7 /* ABCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C547271994B4B300B4C0F7 /* ABCommon.m */; };
 		23C5472E1994B52600B4C0F7 /* ABLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C5472D1994B52600B4C0F7 /* ABLogger.m */; };
 		23C547311994B56D00B4C0F7 /* ABRaw.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C547301994B56D00B4C0F7 /* ABRaw.m */; };
@@ -68,14 +68,14 @@
 		237F1BE7199DA45700225920 /* ABMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABMainViewController.m; sourceTree = "<group>"; };
 		237F1BEF199DA73100225920 /* TKViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKViewController.h; sourceTree = "<group>"; };
 		237F1BF0199DA73100225920 /* TKViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKViewController.m; sourceTree = "<group>"; };
-		23C4BC4A199DA9A7006E796C /* TKButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKButton.h; sourceTree = "<group>"; };
-		23C4BC4B199DA9A7006E796C /* TKButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKButton.m; sourceTree = "<group>"; };
 		23C4BC4D199DADC3006E796C /* ABRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABRootViewController.h; sourceTree = "<group>"; };
 		23C4BC4E199DADC3006E796C /* ABRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABRootViewController.m; sourceTree = "<group>"; };
-		23C4BC50199DAFF6006E796C /* CATransitionExtentions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CATransitionExtentions.h; sourceTree = "<group>"; };
-		23C4BC51199DAFF6006E796C /* CATransitionExtentions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CATransitionExtentions.m; sourceTree = "<group>"; };
 		23C4BC53199DB23F006E796C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		23C4BC55199DB2B8006E796C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		23C4BC58199DB591006E796C /* CATransitionExtentions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CATransitionExtentions.h; sourceTree = "<group>"; };
+		23C4BC59199DB591006E796C /* CATransitionExtentions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CATransitionExtentions.m; sourceTree = "<group>"; };
+		23C4BC5B199DB72B006E796C /* TKNavigationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKNavigationView.h; sourceTree = "<group>"; };
+		23C4BC5C199DB72B006E796C /* TKNavigationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKNavigationView.m; sourceTree = "<group>"; };
 		23C547261994B4B300B4C0F7 /* ABCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABCommon.h; sourceTree = "<group>"; };
 		23C547271994B4B300B4C0F7 /* ABCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABCommon.m; sourceTree = "<group>"; };
 		23C5472C1994B52600B4C0F7 /* ABLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABLogger.h; sourceTree = "<group>"; };
@@ -229,6 +229,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		23C4BC57199DB52E006E796C /* General */ = {
+			isa = PBXGroup;
+			children = (
+				237F1BEF199DA73100225920 /* TKViewController.h */,
+				237F1BF0199DA73100225920 /* TKViewController.m */,
+				23C4BC5B199DB72B006E796C /* TKNavigationView.h */,
+				23C4BC5C199DB72B006E796C /* TKNavigationView.m */,
+				23C4BC58199DB591006E796C /* CATransitionExtentions.h */,
+				23C4BC59199DB591006E796C /* CATransitionExtentions.m */,
+			);
+			name = General;
+			sourceTree = "<group>";
+		};
 		23F6C0CD19909596005D2ED7 = {
 			isa = PBXGroup;
 			children = (
@@ -273,12 +286,7 @@
 				237F1BE4199DA41C00225920 /* ABSigninViewController.m */,
 				237F1BE6199DA45700225920 /* ABMainViewController.h */,
 				237F1BE7199DA45700225920 /* ABMainViewController.m */,
-				237F1BEF199DA73100225920 /* TKViewController.h */,
-				237F1BF0199DA73100225920 /* TKViewController.m */,
-				23C4BC4A199DA9A7006E796C /* TKButton.h */,
-				23C4BC4B199DA9A7006E796C /* TKButton.m */,
-				23C4BC50199DAFF6006E796C /* CATransitionExtentions.h */,
-				23C4BC51199DAFF6006E796C /* CATransitionExtentions.m */,
+				23C4BC57199DB52E006E796C /* General */,
 				23F6C1551990A8DF005D2ED7 /* Vendors */,
 				23F6C0EB19909596005D2ED7 /* Images.xcassets */,
 			);
@@ -558,7 +566,6 @@
 				237F1BE8199DA45700225920 /* ABMainViewController.m in Sources */,
 				23F6C0EA19909596005D2ED7 /* AppDelegate.m in Sources */,
 				23F6C1CF1990A993005D2ED7 /* oocontext.cpp in Sources */,
-				23C4BC52199DAFF6006E796C /* CATransitionExtentions.m in Sources */,
 				23C547341994BDE900B4C0F7 /* ABEngineRoster.m in Sources */,
 				237F1BF1199DA73100225920 /* TKViewController.m in Sources */,
 				23F6C1D61990A993005D2ED7 /* stanza.c in Sources */,
@@ -566,7 +573,6 @@
 				23F6C1D21990A993005D2ED7 /* sasl.c in Sources */,
 				23C4BC4F199DADC3006E796C /* ABRootViewController.m in Sources */,
 				0A06B7B81997BC6900767DEC /* ABObject.m in Sources */,
-				23C4BC4C199DA9A7006E796C /* TKButton.m in Sources */,
 				23F6C1CC1990A993005D2ED7 /* hash.c in Sources */,
 				23F6C1C81990A993005D2ED7 /* conn.c in Sources */,
 				23F6C0E619909596005D2ED7 /* main.m in Sources */,
@@ -580,7 +586,9 @@
 				23C547311994B56D00B4C0F7 /* ABRaw.m in Sources */,
 				237F1BE5199DA41C00225920 /* ABSigninViewController.m in Sources */,
 				23F6C1C91990A993005D2ED7 /* ctx.c in Sources */,
+				23C4BC5D199DB72B006E796C /* TKNavigationView.m in Sources */,
 				23F6C1D41990A993005D2ED7 /* snprintf.c in Sources */,
+				23C4BC5A199DB591006E796C /* CATransitionExtentions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

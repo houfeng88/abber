@@ -1,9 +1,9 @@
 //
 //  CATransitionExtentions.m
-//  Teemo
+//  AbberDemo
 //
-//  Created by Wu Kevin on 11/11/13.
-//  Copyright (c) 2013 xbcx. All rights reserved.
+//  Created by Kevin Wu on 8/15/14.
+//  Copyright (c) 2014 Tapmob. All rights reserved.
 //
 
 #import "CATransitionExtentions.h"

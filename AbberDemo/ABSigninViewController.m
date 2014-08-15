@@ -26,9 +26,10 @@
   button.normalTitleColor = [UIColor blackColor];
   button.highlightedTitleColor = [UIColor redColor];
   [button addTarget:self action:@selector(signin:) forControlEvents:UIControlEventTouchUpInside];
-  [self.view addSubview:button];
+  [_contentView addSubview:button];
   button.frame = CGRectMake(10.0, 30.0, 300.0, 40.0);
   
+  _navigationView.titleLabel.text = @"Sign in";
 }
 
 - (void)signin:(id)sender
