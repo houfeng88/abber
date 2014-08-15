@@ -17,6 +17,15 @@
 {
   [self addLoggers];
   
+  [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+  
+  if ( [[[UIDevice currentDevice] systemVersion] floatValue]<7.0 ) {
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
+  } else {
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
+  }
+  
+  
   _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   
   ABRootViewController *root = [[ABRootViewController alloc] init];
