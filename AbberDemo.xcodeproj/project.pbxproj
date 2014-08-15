@@ -309,10 +309,8 @@
 		23C4BC5F199DD17E006E796C /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				23C4BCB3199DE871006E796C /* default_avatar.png */,
-				23C4BCB4199DE871006E796C /* default_avatar@2x.png */,
+				23C4BCD0199DFAD1006E796C /* misc */,
 				23C4BCCA199DF57E006E796C /* badge */,
-				23C4BCCB199DF586006E796C /* button */,
 				23C4BCC9199DF528006E796C /* inputbar */,
 				23C4BCB7199DEFE7006E796C /* tabbar */,
 				23C4BCB8199DEFFC006E796C /* navbar */,
@@ -416,13 +414,15 @@
 			name = badge;
 			sourceTree = "<group>";
 		};
-		23C4BCCB199DF586006E796C /* button */ = {
+		23C4BCD0199DFAD1006E796C /* misc */ = {
 			isa = PBXGroup;
 			children = (
+				23C4BCB3199DE871006E796C /* default_avatar.png */,
+				23C4BCB4199DE871006E796C /* default_avatar@2x.png */,
 				23C4BCC1199DF4EE006E796C /* btn_brown.png */,
 				23C4BCC2199DF4EE006E796C /* btn_brown@2x.png */,
 			);
-			name = button;
+			name = misc;
 			sourceTree = "<group>";
 		};
 		23F6C0CD19909596005D2ED7 = {
