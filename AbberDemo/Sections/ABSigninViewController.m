@@ -12,11 +12,6 @@
 
 @implementation ABSigninViewController
 
-- (void)dealloc
-{
-  DDLogDebug(@"[client] dealloc signin view controller");
-}
-
 - (void)viewDidLoad
 {
   [super viewDidLoad];

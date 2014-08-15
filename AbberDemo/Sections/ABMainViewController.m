@@ -12,11 +12,6 @@
 
 @implementation ABMainViewController
 
-- (void)dealloc
-{
-  DDLogDebug(@"[client] dealloc main view controller");
-}
-
 - (void)viewDidLoad
 {
   [super viewDidLoad];

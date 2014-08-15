@@ -51,6 +51,7 @@
   
   // TODO: ...
   _navigationView.backgroundImageView.image = TKCreateImage(@"navbar_bg.png");
+  _navigationView.titleLabel.textColor = [UIColor whiteColor];
   _navigationView.backButton.normalBackgroundImage = TKCreateImage(@"btn_back_1.png");
   _navigationView.backButton.highlightedBackgroundImage = TKCreateImage(@"btn_back_2.png");
 }
