@@ -7,9 +7,9 @@
 //
 
 #import "AppDelegate.h"
+#import "ABRootViewController.h"
+#import "ABSigninViewController.h"
 #import <abber/abber.h>
-
-#import <abber/ABObject.h>
 
 @implementation AppDelegate
 
@@ -19,37 +19,10 @@
   
   _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   
-  UIButton *button = [[UIButton alloc] init];
-  button.normalTitle = @"Start";
-  button.normalTitleColor = [UIColor blackColor];
-  button.highlightedTitleColor = [UIColor redColor];
-  [button addTarget:self action:@selector(start:) forControlEvents:UIControlEventTouchUpInside];
-  [_window addSubview:button];
-  button.frame = CGRectMake(10.0, 30.0, 300.0, 40.0);
-  
-  button = [[UIButton alloc] init];
-  button.normalTitle = @"Roster";
-  button.normalTitleColor = [UIColor blackColor];
-  button.highlightedTitleColor = [UIColor redColor];
-  [button addTarget:self action:@selector(roster:) forControlEvents:UIControlEventTouchUpInside];
-  [_window addSubview:button];
-  button.frame = CGRectMake(10.0, 80.0, 300.0, 40.0);
-  
-  button = [[UIButton alloc] init];
-  button.normalTitle = @"Presence";
-  button.normalTitleColor = [UIColor blackColor];
-  button.highlightedTitleColor = [UIColor redColor];
-  [button addTarget:self action:@selector(presence:) forControlEvents:UIControlEventTouchUpInside];
-  [_window addSubview:button];
-  button.frame = CGRectMake(10.0, 130.0, 300.0, 40.0);
-  
-  button = [[UIButton alloc] init];
-  button.normalTitle = @"doit";
-  button.normalTitleColor = [UIColor blackColor];
-  button.highlightedTitleColor = [UIColor redColor];
-  [button addTarget:self action:@selector(doit:) forControlEvents:UIControlEventTouchUpInside];
-  [_window addSubview:button];
-  button.frame = CGRectMake(10.0, 180.0, 300.0, 40.0);
+  ABRootViewController *root = [[ABRootViewController alloc] init];
+  ABSigninViewController *signin = [[ABSigninViewController alloc] init];
+  [root presentWithViewController:signin];
+  _window.rootViewController = [[UINavigationController alloc] initWithRootViewController:root];
   
   _window.backgroundColor = [UIColor whiteColor];
   [_window makeKeyAndVisible];
