@@ -16,15 +16,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   [self addLoggers];
-  
-  [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
-  
-  if ( [[[UIDevice currentDevice] systemVersion] floatValue]<7.0 ) {
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
-  } else {
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
-  }
-  
+  [self configStatusBar];
   
   _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   
@@ -45,6 +37,17 @@
   DDFileLogger *fileLogger = [[DDFileLogger alloc] init];
   fileLogger.rollingFrequency = 24*60*60;
   [DDLog addLogger:fileLogger];
+}
+
+- (void)configStatusBar
+{
+  [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+  
+  if ( [[[UIDevice currentDevice] systemVersion] floatValue]<7.0 ) {
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
+  } else {
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
+  }
 }
 
 
