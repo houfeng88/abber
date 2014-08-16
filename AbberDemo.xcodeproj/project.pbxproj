@@ -10,6 +10,7 @@
 		0A06B7B81997BC6900767DEC /* ABObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A06B7B71997BC6900767DEC /* ABObject.m */; };
 		0A5BAE6D19913715001EF07E /* ABStanza.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5BAE6C19913715001EF07E /* ABStanza.m */; };
 		0A5BAE701991382E001EF07E /* ABEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5BAE6F1991382E001EF07E /* ABEngine.m */; };
+		0A6E5500199F4A85004BD577 /* ABSigninCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6E54FF199F4A85004BD577 /* ABSigninCell.m */; };
 		232CF7021999D9A0004A5AA2 /* ABEnginePresence.m in Sources */ = {isa = PBXBuildFile; fileRef = 232CF7011999D9A0004A5AA2 /* ABEnginePresence.m */; };
 		23C4BC54199DB23F006E796C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C4BC53199DB23F006E796C /* QuartzCore.framework */; };
 		23C4BC64199DD17E006E796C /* btn_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C4BC60199DD17E006E796C /* btn_back.png */; };
@@ -94,6 +95,8 @@
 		0A5BAE6C19913715001EF07E /* ABStanza.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABStanza.m; sourceTree = "<group>"; };
 		0A5BAE6E1991382E001EF07E /* ABEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEngine.h; sourceTree = "<group>"; };
 		0A5BAE6F1991382E001EF07E /* ABEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABEngine.m; sourceTree = "<group>"; };
+		0A6E54FE199F4A85004BD577 /* ABSigninCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABSigninCell.h; sourceTree = "<group>"; };
+		0A6E54FF199F4A85004BD577 /* ABSigninCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABSigninCell.m; sourceTree = "<group>"; };
 		232CF7001999D9A0004A5AA2 /* ABEnginePresence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEnginePresence.h; sourceTree = "<group>"; };
 		232CF7011999D9A0004A5AA2 /* ABEnginePresence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABEnginePresence.m; sourceTree = "<group>"; };
 		23C4BC53199DB23F006E796C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -297,6 +300,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0A6E54FD199F4A65004BD577 /* Signin */ = {
+			isa = PBXGroup;
+			children = (
+				23C4BC77199DD1C8006E796C /* ABSigninViewController.h */,
+				23C4BC78199DD1C8006E796C /* ABSigninViewController.m */,
+				0A6E54FE199F4A85004BD577 /* ABSigninCell.h */,
+				0A6E54FF199F4A85004BD577 /* ABSigninCell.m */,
+			);
+			name = Signin;
+			sourceTree = "<group>";
+		};
 		23C4BC5E199DD17E006E796C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -336,8 +350,7 @@
 			children = (
 				23C4BC75199DD1C8006E796C /* ABRootViewController.h */,
 				23C4BC76199DD1C8006E796C /* ABRootViewController.m */,
-				23C4BC77199DD1C8006E796C /* ABSigninViewController.h */,
-				23C4BC78199DD1C8006E796C /* ABSigninViewController.m */,
+				0A6E54FD199F4A65004BD577 /* Signin */,
 				23C4BC73199DD1C8006E796C /* ABMainViewController.h */,
 				23C4BC74199DD1C8006E796C /* ABMainViewController.m */,
 			);
@@ -796,6 +809,7 @@
 				23C547311994B56D00B4C0F7 /* ABRaw.m in Sources */,
 				23F6C1C91990A993005D2ED7 /* ctx.c in Sources */,
 				23C4BC7A199DD1C8006E796C /* ABRootViewController.m in Sources */,
+				0A6E5500199F4A85004BD577 /* ABSigninCell.m in Sources */,
 				23F6C1D41990A993005D2ED7 /* snprintf.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

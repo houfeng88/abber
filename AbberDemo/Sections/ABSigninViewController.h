@@ -9,7 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "General/TKViewController.h"
 
-@interface ABSigninViewController : TKViewController {
+@interface ABSigninViewController : TKViewController<
+    UITableViewDataSource,
+    UITableViewDelegate
+> {
+  UITableView *_tableView;
 }
 
 @end
