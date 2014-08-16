@@ -10,27 +10,43 @@
 #import "ABRootViewController.h"
 #import "ABSigninViewController.h"
 
+#import "ABChatsViewController.h"
+#import "ABFriendsViewController.h"
+#import "ABFindViewController.h"
+#import "ABMoreViewController.h"
+
 @implementation ABMainViewController
 
 - (void)viewDidLoad
 {
   [super viewDidLoad];
   
-  UIButton *button = [[UIButton alloc] init];
-  button.normalTitle = @"Sign Out";
-  button.normalTitleColor = [UIColor blackColor];
-  button.highlightedTitleColor = [UIColor redColor];
-  [button addTarget:self action:@selector(signout:) forControlEvents:UIControlEventTouchUpInside];
-  [_contentView addSubview:button];
-  button.frame = CGRectMake(10.0, 30.0, 300.0, 40.0);
+  ABChatsViewController *chats = [[ABChatsViewController alloc] init];
+  ABFriendsViewController *friends = [[ABFriendsViewController alloc] init];
+  ABFindViewController *find = [[ABFindViewController alloc] init];
+  ABMoreViewController *more = [[ABMoreViewController alloc] init];
   
-}
-
-- (void)signout:(id)sender
-{
-  ABRootViewController *root = (ABRootViewController *)(self.parentViewController);
-  ABSigninViewController *vc = [[ABSigninViewController alloc] init];
-  [root dismissByViewController:vc];
+  [self setViewControllers:@[ chats, friends, find, more ] animated:NO];
+  
+  
+  UITabBarItem *item = nil;
+  
+  item = [self.tabBar.items objectAtIndex:0];
+  item.title = NSLocalizedString(@"Chats", @"");
+  item.image = TKCreateImage(@"tab_icon_chats_1.png");
+  
+  item = [self.tabBar.items objectAtIndex:1];
+  item.title = NSLocalizedString(@"Friends", @"");
+  item.image = TKCreateImage(@"tab_icon_friends_1.png");
+  
+  item = [self.tabBar.items objectAtIndex:2];
+  item.title = NSLocalizedString(@"Find", @"");
+  item.image = TKCreateImage(@"tab_icon_find_1.png");
+  
+  item = [self.tabBar.items objectAtIndex:3];
+  item.title = NSLocalizedString(@"More", @"");
+  item.image = TKCreateImage(@"tab_icon_more_1.png");
+  
 }
 
 @end

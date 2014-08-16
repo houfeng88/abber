@@ -92,18 +92,18 @@
 
 - (void)backButtonClicked:(id)sender
 {
-  DDLogDebug(@"[client Back button clicked]");
+  DDLogDebug(@"[client] Back button clicked");
   [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)leftButtonClicked:(id)sender
 {
-  DDLogDebug(@"[client Left button clicked]");
+  DDLogDebug(@"[client] Left button clicked");
 }
 
 - (void)rightButtonClicked:(id)sender
 {
-  DDLogDebug(@"[client Right button clicked]");
+  DDLogDebug(@"[client] Right button clicked");
 }
 
 @end

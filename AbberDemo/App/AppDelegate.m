@@ -16,6 +16,7 @@
 {
   [self addLoggers];
   [self configStatusBar];
+  [self configTapkit];
   
   _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   
@@ -48,6 +49,12 @@
   } else {
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
   }
+}
+
+- (void)configTapkit
+{
+  TKSettings *settings = [[TKSettings alloc] initWithName:@"AppSettings.xml"];
+  [TKSettings saveObject:settings];
 }
 
 @end

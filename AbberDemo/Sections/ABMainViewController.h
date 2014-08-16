@@ -7,9 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "General/TKViewController.h"
 
-@interface ABMainViewController : TKViewController {
+@interface ABMainViewController : UITabBarController {
 }
 
 @end

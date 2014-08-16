@@ -29,6 +29,7 @@
     
     button = [[TKButton alloc] init];
     button.normalTitleColor = [UIColor blackColor];
+    button.highlightedTitleColor = [UIColor whiteColor];
     button.titleLabel.font = [UIFont systemFontOfSize:16.0];
     button.exclusiveTouch = YES;
     button.hidden = YES;
@@ -47,6 +48,7 @@
     
     button = [[TKButton alloc] init];
     button.normalTitleColor = [UIColor blackColor];
+    button.highlightedTitleColor = [UIColor whiteColor];
     button.titleLabel.font = [UIFont systemFontOfSize:16.0];
     button.exclusiveTouch = YES;
     button.hidden = YES;

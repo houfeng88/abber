@@ -179,6 +179,10 @@
 
 - (void)signin
 {
+  [[TKSettings sharedObject] setObject:_accountField.text forKey:@"ABSavedAccountKey"];
+  [[TKSettings sharedObject] setObject:_passwordField.text forKey:@"ABSavedPasswordKey"];
+  [[TKSettings sharedObject] synchronize];
+  
   [[ABEngine sharedObject] addObserver:self];
   [[ABEngine sharedObject] prepare];
   [[ABEngine sharedObject] connectWithAccount:_accountField.text password:_passwordField.text];
