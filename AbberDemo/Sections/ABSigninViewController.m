@@ -17,7 +17,7 @@
 {
   [super viewDidLoad];
   
-  _navigationView.titleLabel.text = @"Sign in";
+  _navigationView.titleLabel.text = @"Abber";
   
   
   _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
@@ -85,32 +85,20 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
   if ( section==0 ) {
-    return 60.0;
+    return 55.0;
   }
   return 0.0;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-  UIView *header = [[UIView alloc] init];
-  
-  UILabel *titleLabel = [UILabel labelWithFont:[UIFont boldSystemFontOfSize:32.0]
-                                     textColor:[UIColor blackColor]
-                                 textAlignment:NSTextAlignmentCenter
-                                 lineBreakMode:NSLineBreakByTruncatingMiddle
-                                 numberOfLines:1
-                               backgroundColor:[UIColor clearColor]];
-  titleLabel.text = NSLocalizedString(@"Abber", @"");
-  [header addSubview:titleLabel];
-  titleLabel.frame = CGRectMake(10.0, 5.0, 300.0, 50.0);
-  
-  return header;
+  return [[UIView alloc] init];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
   if ( section==0 ) {
-    return 50.0;
+    return 55.0;
   }
   return 0.0;
 }
@@ -118,13 +106,13 @@
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
   UIView *footer = [[UIView alloc] init];
-  footer.frame = CGRectMake(0.0, 0.0, _tableView.width, 49.0);
+  footer.frame = CGRectMake(0.0, 0.0, _tableView.width, 55.0);
   
   UIButton *button = [[UIButton alloc] init];
   button.normalTitle = NSLocalizedString(@"Sign In", @"");
   button.normalBackgroundImage = TKCreateResizableImage(@"btn_brown.png", UIEdgeInsetsMake(9.0, 9.0, 9.0, 9.0));
   [button addTarget:self action:@selector(signinButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-  button.frame = CGRectMake(10.0, 2.0, 300.0, 45.0);
+  button.frame = CGRectMake(10.0, 5.0, 300.0, 45.0);
   [footer addSubview:button];
   
   return footer;

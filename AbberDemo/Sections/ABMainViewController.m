@@ -33,19 +33,19 @@
   
   item = [self.tabBar.items objectAtIndex:0];
   item.title = NSLocalizedString(@"Chats", @"");
-  item.image = TKCreateImage(@"tab_icon_chats_1.png");
+  item.image = TKCreateImage(@"tab_icon_chats.png");
   
   item = [self.tabBar.items objectAtIndex:1];
   item.title = NSLocalizedString(@"Friends", @"");
-  item.image = TKCreateImage(@"tab_icon_friends_1.png");
+  item.image = TKCreateImage(@"tab_icon_friends.png");
   
   item = [self.tabBar.items objectAtIndex:2];
   item.title = NSLocalizedString(@"Find", @"");
-  item.image = TKCreateImage(@"tab_icon_find_1.png");
+  item.image = TKCreateImage(@"tab_icon_find.png");
   
   item = [self.tabBar.items objectAtIndex:3];
   item.title = NSLocalizedString(@"More", @"");
-  item.image = TKCreateImage(@"tab_icon_more_1.png");
+  item.image = TKCreateImage(@"tab_icon_more.png");
   
 }
 
