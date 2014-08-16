@@ -65,6 +65,7 @@
   ABSigninCell *cell = (ABSigninCell *)[tableView dequeueReusableCellWithClass:[ABSigninCell class]];
   if ( indexPath.row==0 ) {
     cell.titleLabel.text = NSLocalizedString(@"Account:", @"");
+    cell.valueField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     cell.valueField.text = [[TKSettings sharedObject] objectForKey:@"ABSavedAccountKey"];
   } else if ( indexPath.row==1 ) {
     cell.titleLabel.text = NSLocalizedString(@"Password:", @"");
@@ -126,9 +127,13 @@
 
 - (void)signinButtonClicked:(id)sender
 {
-//  ABRootViewController *root = (ABRootViewController *)(self.parentViewController);
-//  ABMainViewController *vc = [[ABMainViewController alloc] init];
-//  [root presentWithViewController:vc];
+  NSString *acnt = @"tklisa@blah.im/teemo";
+  NSString *pswd = @"123456";
+  
+  [[ABEngine sharedObject] prepare];
+  [[ABEngine sharedObject] connectWithAccount:acnt password:pswd];
+  [[ABEngine sharedObject] prepareForRosterPush];
+  [[ABEngine sharedObject] prepareForPresenceUpdate];
 }
 
 @end
