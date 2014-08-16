@@ -59,25 +59,21 @@
   
   UIView *nextView = vc.view;
   
-  CABasicAnimation *fade = [self opacityAnimation:YES];
-  
   CGPoint toPoint = CGPointMake(self.view.width/2.0, self.view.height/2.0);
   CABasicAnimation *transition = [self positionAnimationFrom:nextView.center to:toPoint];
   
   CAAnimationGroup *nextViewAnimation = [CAAnimationGroup animation];
-  nextViewAnimation.animations = @[ fade, transition ];
+  nextViewAnimation.animations = @[ transition ];
   [nextView.layer addAnimation:nextViewAnimation forKey:nil];
   
   
   UIView *currentView = _bodyViewController.view;
   
-  fade = [self opacityAnimation:NO];
-  
   toPoint = CGPointMake(0.0-(self.view.width/2.0), self.view.height/2.0);
   transition = [self positionAnimationFrom:currentView.center to:toPoint];
   
   CAAnimationGroup *currentViewAnimation = [CAAnimationGroup animation];
-  currentViewAnimation.animations = @[ fade, transition ];
+  currentViewAnimation.animations = @[ transition ];
   [currentView.layer addAnimation:currentViewAnimation forKey:nil];
   
   
@@ -96,25 +92,21 @@
   
   UIView *nextView = vc.view;
   
-  CABasicAnimation *fade = [self opacityAnimation:YES];
-  
   CGPoint toPoint = CGPointMake(self.view.width/2.0, self.view.height/2.0);
   CABasicAnimation *transition = [self positionAnimationFrom:nextView.center to:toPoint];
   
   CAAnimationGroup *nextViewAnimation = [CAAnimationGroup animation];
-  nextViewAnimation.animations = @[ fade, transition ];
+  nextViewAnimation.animations = @[ transition ];
   [nextView.layer addAnimation:nextViewAnimation forKey:nil];
   
   
   UIView *currentView = _bodyViewController.view;
   
-  fade = [self opacityAnimation:NO];
-  
   toPoint = CGPointMake(self.view.width/2.0*3, self.view.height/2.0);
   transition = [self positionAnimationFrom:currentView.center to:toPoint];
   
   CAAnimationGroup *currentViewAnimation = [CAAnimationGroup animation];
-  currentViewAnimation.animations = @[ fade, transition ];
+  currentViewAnimation.animations = @[ transition ];
   [currentView.layer addAnimation:currentViewAnimation forKey:nil];
   
   
