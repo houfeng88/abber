@@ -1,13 +1,15 @@
 PODS:
-  - CocoaLumberjack (1.9.1):
+  - CocoaLumberjack (1.9.2):
     - CocoaLumberjack/Extensions
-  - CocoaLumberjack/Core (1.9.1)
-  - CocoaLumberjack/Extensions (1.9.1):
+  - CocoaLumberjack/Core (1.9.2)
+  - CocoaLumberjack/Extensions (1.9.2):
     - CocoaLumberjack/Core
+  - MBProgressHUD (0.9)
   - tapkit (1.0.0)
 
 DEPENDENCIES:
   - CocoaLumberjack (~> 1.9.0)
+  - MBProgressHUD (~> 0.8)
   - tapkit (from `https://github.com/kvmisc/tapkit.git`)
 
 EXTERNAL SOURCES:
@@ -15,7 +17,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/kvmisc/tapkit.git
 
 SPEC CHECKSUMS:
-  CocoaLumberjack: 94accd5749f5c5d15134c8d50f34a973aed8ef69
+  CocoaLumberjack: 205769c032b5fef85b92472046bcc8b7e7c8a817
+  MBProgressHUD: 2038dbcf3dce73215abed6001657043d53aa79a8
   tapkit: 62e3472171e923b970aad32f903d7ec4dfa3f128
 
 COCOAPODS: 0.33.1

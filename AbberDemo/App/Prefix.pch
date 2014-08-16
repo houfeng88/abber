@@ -26,4 +26,6 @@
     static const int ddLogLevel = LOG_LEVEL_OFF;
   #endif
 
+  #import "General/MBProgressHUDExtentions.h"
+
 #endif

@@ -12,9 +12,12 @@
 
 @interface ABSigninViewController : TKViewController<
     UITableViewDataSource,
-    UITableViewDelegate
+    UITableViewDelegate,
+    UITextFieldDelegate
 > {
   UITableView *_tableView;
+  UITextField *_accountField;
+  UITextField *_passwordField;
 }
 
 @end
