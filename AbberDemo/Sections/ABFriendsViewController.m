@@ -13,6 +13,11 @@
 - (void)viewDidLoad
 {
   [super viewDidLoad];
+  
+  _navigationView.titleLabel.text = NSLocalizedString(@"Friends", @"");
+  [_navigationView showRightButton];
+  _navigationView.rightButton.normalTitle = NSLocalizedString(@"Add", @"");
+  
 }
 
 @end

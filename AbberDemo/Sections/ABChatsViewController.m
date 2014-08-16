@@ -13,6 +13,9 @@
 - (void)viewDidLoad
 {
   [super viewDidLoad];
+  
+  _navigationView.titleLabel.text = NSLocalizedString(@"Chats", @"");
+  
 }
 
 @end

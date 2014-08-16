@@ -15,7 +15,9 @@
   [super viewDidLoad];
   
   [_navigationView showRightButton];
+  _navigationView.titleLabel.text = NSLocalizedString(@"More", @"");
   _navigationView.rightButton.normalTitle = NSLocalizedString(@"Sign Out", @"");
+  
 }
 
 @end
