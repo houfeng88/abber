@@ -72,7 +72,16 @@
 
 - (void)engine:(ABEngine *)engine didReceiveRoster:(NSArray *)roster error:(NSError *)error
 {
-  [[TKDatabase sharedObject] executeUpdate:@"DELETE FROM contact;"];
+  NSArray *jidAry = [roster valueForKeyPath:@"@unionOfObjects.jid"];
+  
+  NSArray *savedAry = [[TKDatabase sharedObject] executeQuery:@"SELECT * FROM contact;"];
+  for ( TKDatabaseRow *row in savedAry ) {
+    NSString *jid = [row stringForName:@"jid"];
+    if ( ![jidAry containsObject:jid] ) {
+      [[TKDatabase sharedObject] executeUpdate:@"DELETE FROM contact WHERE jid=?;", jid];
+    }
+  }
+  
   
   for ( NSDictionary *item in roster ) {
     
@@ -92,7 +101,12 @@
       relation = ABSubscriptionTypeBoth;
     }
     
-    [[TKDatabase sharedObject] executeUpdate:@"INSERT INTO contact(jid, nickname, relation) VALUES(?, ?, ?);", jid, nickname, @(relation)];
+    
+    if ( [[TKDatabase sharedObject] executeQuery:@"SELECT * FROM contact WHERE jid=?;", jid] ) {
+      [[TKDatabase sharedObject] executeUpdate:@"UPDATE contact SET nickname=?, relation=? WHERE jid=?;", nickname, @(relation), jid];
+    } else {
+      [[TKDatabase sharedObject] executeUpdate:@"INSERT INTO contact(jid, nickname, relation) VALUES(?, ?, ?);", jid, nickname, @(relation)];
+    }
   }
 }
 

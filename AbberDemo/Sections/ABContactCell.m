@@ -18,7 +18,7 @@
     _avatarView = [[UIImageView alloc] init];
     _avatarView.contentMode = UIViewContentModeScaleToFill;
     _avatarView.clipsToBounds = YES;
-    _avatarView.layer.cornerRadius = 2.0;
+    _avatarView.layer.cornerRadius = 3.0;
     _avatarView.image = TKCreateImage(@"default_avatar.png");
     [self.contentView addSubview:_avatarView];
     
