@@ -72,7 +72,7 @@
 
 - (void)loadContacts
 {
-  _contactAry = [[TKDatabase sharedObject] executeQuery:@"SELECT * FROM contact"];
+  _contactAry = [[TKDatabase sharedObject] executeQuery:@"SELECT * FROM contact;"];
 }
 
 - (void)refreshContacts

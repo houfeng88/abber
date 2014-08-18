@@ -17,6 +17,7 @@
   [self addLoggers];
   [self configStatusBar];
   [self configTapkit];
+  [self configEngine];
   
   _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   
@@ -55,6 +56,44 @@
 {
   TKSettings *settings = [[TKSettings alloc] initWithName:@"AppSettings.xml"];
   [TKSettings saveObject:settings];
+}
+
+- (void)configEngine
+{
+  [[ABEngine sharedObject] addObserver:self];
+}
+
+
+#pragma mark - ABEngineDelegate
+
+- (void)engine:(ABEngine *)engine didReceiveRosterItem:(NSDictionary *)item
+{
+}
+
+- (void)engine:(ABEngine *)engine didReceiveRoster:(NSArray *)roster error:(NSError *)error
+{
+  [[TKDatabase sharedObject] executeUpdate:@"DELETE FROM contact;"];
+  
+  for ( NSDictionary *item in roster ) {
+    
+    NSString *ask = [item objectForKey:@"ask"];
+    NSString *jid = [item objectForKey:@"jid"];
+    NSString *nickname = [item objectForKey:@"name"];
+    NSString *subscription = [item objectForKey:@"subscription"];
+    
+    ABSubscriptionType relation = ABSubscriptionTypeNone;
+    if ( [subscription isEqualToString:@"none"] ) {
+      relation = ((!ABOSNonempty(ask)) ? ABSubscriptionTypeNone : ABSubscriptionTypeNoneOut);
+    } else if ( [subscription isEqualToString:@"to"] ) {
+      relation = ((!ABOSNonempty(ask)) ? ABSubscriptionTypeTo : ABSubscriptionTypeToIn);
+    } else if ( [subscription isEqualToString:@"from"] ) {
+      relation = ((!ABOSNonempty(ask)) ? ABSubscriptionTypeFrom : ABSubscriptionTypeFromOut);
+    } else if ( [subscription isEqualToString:@"both"] ) {
+      relation = ABSubscriptionTypeBoth;
+    }
+    
+    [[TKDatabase sharedObject] executeUpdate:@"INSERT INTO contact(jid, nickname, relation) VALUES(?, ?, ?);", jid, nickname, @(relation)];
+  }
 }
 
 @end

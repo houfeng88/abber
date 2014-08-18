@@ -104,12 +104,12 @@ int ABRosterRequestHandler(xmpp_conn_t * const conn,
       
     }
     
+    [engine didReceiveRoster:roster error:error];
     if ( handler ) {
       dispatch_sync(dispatch_get_main_queue(), ^{
         handler(roster, error);
       });
     }
-    [engine didReceiveRoster:roster error:error];
     
     
     CFRelease(context);
@@ -156,12 +156,12 @@ int ABRosterChangeHandler(xmpp_conn_t * const conn,
       
     }
     
+    [engine didChangeContact:jid error:error];
     if ( handler ) {
       dispatch_sync(dispatch_get_main_queue(), ^{
         handler(jid, error);
       });
     }
-    [engine didChangeContact:jid error:error];
     
     
     CFRelease(context);

@@ -190,9 +190,7 @@
 {
   if ( status ) {
     
-    
     [self configDatabase:[engine account]];
-    
     
     [[ABEngine sharedObject] requestRosterWithCompletion:^(id result, NSError *error) {
       
@@ -203,33 +201,9 @@
                       completionBlock:NULL];
         [engine disconnect];
       } else {
-        
-        NSArray *roster = result;
-        
-        [[TKDatabase sharedObject] executeUpdate:@"DELETE FROM contact;"];
-        
-        for ( NSDictionary *item in roster ) {
-          
-          NSString *ask = [item objectForKey:@"ask"];
-          NSString *jid = [item objectForKey:@"jid"];
-          NSString *nickname = [item objectForKey:@"name"];
-          NSString *subscription = [item objectForKey:@"subscription"];
-          
-          ABSubscriptionType relation = ABSubscriptionTypeNone;
-          if ( [subscription isEqualToString:@"none"] ) {
-            relation = ((!ABOSNonempty(ask)) ? ABSubscriptionTypeNone : ABSubscriptionTypeNoneOut);
-          } else if ( [subscription isEqualToString:@"to"] ) {
-            relation = ((!ABOSNonempty(ask)) ? ABSubscriptionTypeTo : ABSubscriptionTypeToIn);
-          } else if ( [subscription isEqualToString:@"from"] ) {
-            relation = ((!ABOSNonempty(ask)) ? ABSubscriptionTypeFrom : ABSubscriptionTypeFromOut);
-          } else if ( [subscription isEqualToString:@"both"] ) {
-            relation = ABSubscriptionTypeBoth;
-          }
-          
-          [[TKDatabase sharedObject] executeUpdate:@"INSERT INTO contact(jid, nickname, relation) VALUES(?, ?, ?);", jid, nickname, @(relation)];
-        }
-        
         [[ABEngine sharedObject] removeObserver:self];
+        
+        [[ABEngine sharedObject] updatePresence:ABPresenceTypeAvailable];
         
         [MBProgressHUD dismissHUD:self.view
                       immediately:NO
@@ -278,9 +252,9 @@
     
     if ( ![db hasTableNamed:@"contact"] ) {
       NSString *contactSQL = @"CREATE TABLE contact(pk INTEGER PRIMARY KEY, "
-      @"jid TEXT, "
-      @"nickname TEXT, "
-      @"relation INTEGER);";
+                                                  @"jid TEXT, "
+                                                  @"nickname TEXT, "
+                                                  @"relation INTEGER);";
       [db executeUpdate:contactSQL];
     }
     
