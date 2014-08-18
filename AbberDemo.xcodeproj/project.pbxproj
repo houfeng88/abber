@@ -63,6 +63,7 @@
 		23CB415619A1EC900024120D /* TKTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CB415219A1EC900024120D /* TKTableView.m */; };
 		23CB415719A1EC900024120D /* UITableViewExtentions.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CB415419A1EC900024120D /* UITableViewExtentions.m */; };
 		23CB415B19A1EF2A0024120D /* ABContactCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CB415A19A1EF2A0024120D /* ABContactCell.m */; };
+		23CB415E19A20A7B0024120D /* TKProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CB415D19A20A7B0024120D /* TKProfileViewController.m */; };
 		23F6C0DA19909596005D2ED7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23F6C0D919909596005D2ED7 /* Foundation.framework */; };
 		23F6C0DE19909596005D2ED7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23F6C0DD19909596005D2ED7 /* UIKit.framework */; };
 		23F6C1A41990A8E0005D2ED7 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 23F6C17A1990A8DF005D2ED7 /* libcrypto.a */; };
@@ -177,6 +178,8 @@
 		23CB415419A1EC900024120D /* UITableViewExtentions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITableViewExtentions.m; sourceTree = "<group>"; };
 		23CB415919A1EF2A0024120D /* ABContactCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABContactCell.h; sourceTree = "<group>"; };
 		23CB415A19A1EF2A0024120D /* ABContactCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABContactCell.m; sourceTree = "<group>"; };
+		23CB415C19A20A7B0024120D /* TKProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKProfileViewController.h; sourceTree = "<group>"; };
+		23CB415D19A20A7B0024120D /* TKProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKProfileViewController.m; sourceTree = "<group>"; };
 		23F6C0D619909596005D2ED7 /* AbberDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AbberDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		23F6C0D919909596005D2ED7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		23F6C0DD19909596005D2ED7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -348,6 +351,8 @@
 				0A6E5508199F7A85004BD577 /* ABFriendsViewController.m */,
 				23CB415919A1EF2A0024120D /* ABContactCell.h */,
 				23CB415A19A1EF2A0024120D /* ABContactCell.m */,
+				23CB415C19A20A7B0024120D /* TKProfileViewController.h */,
+				23CB415D19A20A7B0024120D /* TKProfileViewController.m */,
 			);
 			name = Friends;
 			sourceTree = "<group>";
@@ -871,6 +876,7 @@
 				23CB415719A1EC900024120D /* UITableViewExtentions.m in Sources */,
 				23F6C1CF1990A993005D2ED7 /* oocontext.cpp in Sources */,
 				23C547341994BDE900B4C0F7 /* ABEngineRoster.m in Sources */,
+				23CB415E19A20A7B0024120D /* TKProfileViewController.m in Sources */,
 				23F6C1D61990A993005D2ED7 /* stanza.c in Sources */,
 				23F6C1CB1990A993005D2ED7 /* handler.c in Sources */,
 				23F6C1D21990A993005D2ED7 /* sasl.c in Sources */,
