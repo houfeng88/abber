@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "General/TKViewController.h"
 
 @interface ABFindViewController : TKViewController {
 }
