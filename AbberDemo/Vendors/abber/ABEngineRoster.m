@@ -108,9 +108,8 @@ int ABRosterRequestHandler(xmpp_conn_t * const conn,
       dispatch_sync(dispatch_get_main_queue(), ^{
         handler(roster, error);
       });
-    } else {
-      [engine didReceiveRoster:roster error:error];
     }
+    [engine didReceiveRoster:roster error:error];
     
     
     CFRelease(context);
@@ -161,9 +160,8 @@ int ABRosterChangeHandler(xmpp_conn_t * const conn,
       dispatch_sync(dispatch_get_main_queue(), ^{
         handler(jid, error);
       });
-    } else {
-      [engine didChangeContact:jid error:error];
     }
+    [engine didChangeContact:jid error:error];
     
     
     CFRelease(context);

@@ -190,15 +190,18 @@
 {
   if ( status ) {
     
-    [[ABEngine sharedObject] removeObserver:self];
+    [[ABEngine sharedObject] requestRosterWithCompletion:^(id result, NSError *error) {
+      [[ABEngine sharedObject] removeObserver:self];
+      
+      [MBProgressHUD dismissHUD:self.view
+                    immediately:NO
+                completionBlock:^{
+                  ABRootViewController *root = (ABRootViewController *)(self.parentViewController);
+                  ABMainViewController *vc = [[ABMainViewController alloc] init];
+                  [root presentWithViewController:vc];
+                }];
+    }];
     
-    [MBProgressHUD dismissHUD:self.view
-                  immediately:NO
-              completionBlock:^{
-                ABRootViewController *root = (ABRootViewController *)(self.parentViewController);
-                ABMainViewController *vc = [[ABMainViewController alloc] init];
-                [root presentWithViewController:vc];
-              }];
   } else {
     [MBProgressHUD presentTextHUD:self.view
                              info:NSLocalizedString(@"Sign in failed", @"")
