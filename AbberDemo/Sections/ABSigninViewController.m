@@ -205,6 +205,9 @@
       } else {
         
         NSArray *roster = result;
+        
+        [[TKDatabase sharedObject] executeUpdate:@"DELETE FROM contact;"];
+        
         for ( NSDictionary *item in roster ) {
           
           NSString *ask = [item objectForKey:@"ask"];
@@ -223,13 +226,7 @@
             relation = ABSubscriptionTypeBoth;
           }
           
-          TKDatabase *db = [TKDatabase sharedObject];
-          //[db executeUpdate:@"DELETE FROM contact;"];
-          
-          [db executeUpdate:@"INSERT INTO contact(jid, nickname, relation) VALUES(?, ?, ?);",
-                              jid,
-                              nickname,
-                              @(relation)];
+          [[TKDatabase sharedObject] executeUpdate:@"INSERT INTO contact(jid, nickname, relation) VALUES(?, ?, ?);", jid, nickname, @(relation)];
         }
         
         [[ABEngine sharedObject] removeObserver:self];

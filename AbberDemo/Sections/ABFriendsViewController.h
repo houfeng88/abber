@@ -7,8 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <abber/abber.h>
 
-@interface ABFriendsViewController : TKViewController {
+@interface ABFriendsViewController : TKViewController<
+    UITableViewDataSource,
+    UITableViewDelegate
+> {
+  TKTableView *_tableView;
+  
+  NSArray *_contactAry;
 }
 
 @end

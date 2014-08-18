@@ -26,6 +26,8 @@
     static const int ddLogLevel = LOG_LEVEL_OFF;
   #endif
 
+  #import <libextobjc/extobjc.h>
+
   #import "Helpers/Helpers.h"
 
 #endif

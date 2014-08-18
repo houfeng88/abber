@@ -8,6 +8,7 @@
 
 #import "TKViewController.h"
 #import "TKDatabase.h"
+#import "TKTableView.h"
 
 #import "CATransitionExtentions.h"
 #import "MBProgressHUDExtentions.h"
