@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0A06B7B81997BC6900767DEC /* ABObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A06B7B71997BC6900767DEC /* ABObject.m */; };
 		0A5BAE6D19913715001EF07E /* ABStanza.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5BAE6C19913715001EF07E /* ABStanza.m */; };
 		0A5BAE701991382E001EF07E /* ABEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5BAE6F1991382E001EF07E /* ABEngine.m */; };
 		0A6E5500199F4A85004BD577 /* ABSigninCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6E54FF199F4A85004BD577 /* ABSigninCell.m */; };
@@ -17,6 +16,7 @@
 		0A6E550C199F7A93004BD577 /* ABFindViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6E550B199F7A93004BD577 /* ABFindViewController.m */; };
 		0A6E550F199F7A9F004BD577 /* ABMoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6E550E199F7A9F004BD577 /* ABMoreViewController.m */; };
 		232CF7021999D9A0004A5AA2 /* ABEnginePresence.m in Sources */ = {isa = PBXBuildFile; fileRef = 232CF7011999D9A0004A5AA2 /* ABEnginePresence.m */; };
+		23A44CF319A1A05B00EC8301 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 23A44CF219A1A05B00EC8301 /* libsqlite3.dylib */; };
 		23C4BC54199DB23F006E796C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C4BC53199DB23F006E796C /* QuartzCore.framework */; };
 		23C4BC64199DD17E006E796C /* btn_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C4BC60199DD17E006E796C /* btn_back.png */; };
 		23C4BC65199DD17E006E796C /* btn_back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C4BC61199DD17E006E796C /* btn_back@2x.png */; };
@@ -55,7 +55,6 @@
 		23C4BCCF199DFA48006E796C /* inputbar_field@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C4BCCD199DFA48006E796C /* inputbar_field@2x.png */; };
 		23C547281994B4B300B4C0F7 /* ABCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C547271994B4B300B4C0F7 /* ABCommon.m */; };
 		23C5472E1994B52600B4C0F7 /* ABLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C5472D1994B52600B4C0F7 /* ABLogger.m */; };
-		23C547311994B56D00B4C0F7 /* ABRaw.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C547301994B56D00B4C0F7 /* ABRaw.m */; };
 		23C547341994BDE900B4C0F7 /* ABEngineRoster.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C547331994BDE900B4C0F7 /* ABEngineRoster.m */; };
 		23C547371994BE2600B4C0F7 /* ABEngineVcard.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C547361994BE2600B4C0F7 /* ABEngineVcard.m */; };
 		23C5473D1994C0E900B4C0F7 /* ABEngineConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C5473C1994C0E900B4C0F7 /* ABEngineConnection.m */; };
@@ -86,8 +85,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0A06B7B61997BC6900767DEC /* ABObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABObject.h; sourceTree = "<group>"; };
-		0A06B7B71997BC6900767DEC /* ABObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABObject.m; sourceTree = "<group>"; };
 		0A5BAE6B19913715001EF07E /* ABStanza.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABStanza.h; sourceTree = "<group>"; };
 		0A5BAE6C19913715001EF07E /* ABStanza.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABStanza.m; sourceTree = "<group>"; };
 		0A5BAE6E1991382E001EF07E /* ABEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEngine.h; sourceTree = "<group>"; };
@@ -106,6 +103,7 @@
 		0A6E550E199F7A9F004BD577 /* ABMoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABMoreViewController.m; sourceTree = "<group>"; };
 		232CF7001999D9A0004A5AA2 /* ABEnginePresence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEnginePresence.h; sourceTree = "<group>"; };
 		232CF7011999D9A0004A5AA2 /* ABEnginePresence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABEnginePresence.m; sourceTree = "<group>"; };
+		23A44CF219A1A05B00EC8301 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		23C4BC53199DB23F006E796C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		23C4BC55199DB2B8006E796C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		23C4BC60199DD17E006E796C /* btn_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_back.png; sourceTree = "<group>"; };
@@ -156,8 +154,6 @@
 		23C547271994B4B300B4C0F7 /* ABCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABCommon.m; sourceTree = "<group>"; };
 		23C5472C1994B52600B4C0F7 /* ABLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABLogger.h; sourceTree = "<group>"; };
 		23C5472D1994B52600B4C0F7 /* ABLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABLogger.m; sourceTree = "<group>"; };
-		23C5472F1994B56D00B4C0F7 /* ABRaw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABRaw.h; sourceTree = "<group>"; };
-		23C547301994B56D00B4C0F7 /* ABRaw.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABRaw.m; sourceTree = "<group>"; };
 		23C547321994BDE900B4C0F7 /* ABEngineRoster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEngineRoster.h; sourceTree = "<group>"; };
 		23C547331994BDE900B4C0F7 /* ABEngineRoster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABEngineRoster.m; sourceTree = "<group>"; };
 		23C547351994BE2600B4C0F7 /* ABEngineVcard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEngineVcard.h; sourceTree = "<group>"; };
@@ -287,6 +283,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23A44CF319A1A05B00EC8301 /* libsqlite3.dylib in Frameworks */,
 				23C4BC54199DB23F006E796C /* QuartzCore.framework in Frameworks */,
 				23F6C1A51990A8E0005D2ED7 /* libssl.a in Frameworks */,
 				23F6C0DE19909596005D2ED7 /* UIKit.framework in Frameworks */,
@@ -500,6 +497,7 @@
 		23F6C0D819909596005D2ED7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				23A44CF219A1A05B00EC8301 /* libsqlite3.dylib */,
 				23C4BC55199DB2B8006E796C /* CoreGraphics.framework */,
 				23C4BC53199DB23F006E796C /* QuartzCore.framework */,
 				23F6C0D919909596005D2ED7 /* Foundation.framework */,
@@ -675,10 +673,6 @@
 				23C547271994B4B300B4C0F7 /* ABCommon.m */,
 				23C5472C1994B52600B4C0F7 /* ABLogger.h */,
 				23C5472D1994B52600B4C0F7 /* ABLogger.m */,
-				0A06B7B61997BC6900767DEC /* ABObject.h */,
-				0A06B7B71997BC6900767DEC /* ABObject.m */,
-				23C5472F1994B56D00B4C0F7 /* ABRaw.h */,
-				23C547301994B56D00B4C0F7 /* ABRaw.m */,
 			);
 			path = abber;
 			sourceTree = "<group>";
@@ -828,7 +822,6 @@
 				23F6C1D61990A993005D2ED7 /* stanza.c in Sources */,
 				23F6C1CB1990A993005D2ED7 /* handler.c in Sources */,
 				23F6C1D21990A993005D2ED7 /* sasl.c in Sources */,
-				0A06B7B81997BC6900767DEC /* ABObject.m in Sources */,
 				23C4BC79199DD1C8006E796C /* ABMainViewController.m in Sources */,
 				23F6C1CC1990A993005D2ED7 /* hash.c in Sources */,
 				23F6C1C81990A993005D2ED7 /* conn.c in Sources */,
@@ -844,7 +837,6 @@
 				23F6C1CD1990A993005D2ED7 /* jid.c in Sources */,
 				23F6C1C71990A993005D2ED7 /* auth.c in Sources */,
 				23C4BC70199DD1B1006E796C /* TKNavigationView.m in Sources */,
-				23C547311994B56D00B4C0F7 /* ABRaw.m in Sources */,
 				23F6C1C91990A993005D2ED7 /* ctx.c in Sources */,
 				23C4BC7A199DD1C8006E796C /* ABRootViewController.m in Sources */,
 				0A6E5500199F4A85004BD577 /* ABSigninCell.m in Sources */,
