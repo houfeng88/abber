@@ -11,13 +11,13 @@
 #import "ABCommon.h"
 
 typedef enum {
-  ABSubscriptionTypeNone    = 0,
-  ABSubscriptionTypeNoneOut = 1,
-  ABSubscriptionTypeTo      = 2,
-  ABSubscriptionTypeToIn    = 3,
-  ABSubscriptionTypeFrom    = 4,
-  ABSubscriptionTypeFromOut = 5,
-  ABSubscriptionTypeBoth    = 6
+  ABSubscriptionTypeNone    = 0,  // 0000
+  ABSubscriptionTypeNoneOut = 1,  // 0001
+  ABSubscriptionTypeTo      = 2,  // 0010
+  ABSubscriptionTypeToIn    = 3,  // 0011
+  ABSubscriptionTypeFrom    = 4,  // 0100
+  ABSubscriptionTypeFromOut = 5,  // 0101
+  ABSubscriptionTypeBoth    = 6   // 0110
 } ABSubscriptionType;
 
 

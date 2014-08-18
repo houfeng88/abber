@@ -190,16 +190,59 @@
 {
   if ( status ) {
     
+    
+    [self configDatabase:[engine account]];
+    
+    
     [[ABEngine sharedObject] requestRosterWithCompletion:^(id result, NSError *error) {
-      [[ABEngine sharedObject] removeObserver:self];
       
-      [MBProgressHUD dismissHUD:self.view
-                    immediately:NO
-                completionBlock:^{
-                  ABRootViewController *root = (ABRootViewController *)(self.parentViewController);
-                  ABMainViewController *vc = [[ABMainViewController alloc] init];
-                  [root presentWithViewController:vc];
-                }];
+      if ( error ) {
+        [MBProgressHUD presentTextHUD:self.view
+                                 info:NSLocalizedString(@"Sign in failed", @"")
+                              offsetY:0.0
+                      completionBlock:NULL];
+        [engine disconnect];
+      } else {
+        
+        NSArray *roster = result;
+        for ( NSDictionary *item in roster ) {
+          
+          NSString *ask = [item objectForKey:@"ask"];
+          NSString *jid = [item objectForKey:@"jid"];
+          NSString *nickname = [item objectForKey:@"name"];
+          NSString *subscription = [item objectForKey:@"subscription"];
+          
+          ABSubscriptionType relation = ABSubscriptionTypeNone;
+          if ( [subscription isEqualToString:@"none"] ) {
+            relation = ((!ABOSNonempty(ask)) ? ABSubscriptionTypeNone : ABSubscriptionTypeNoneOut);
+          } else if ( [subscription isEqualToString:@"to"] ) {
+            relation = ((!ABOSNonempty(ask)) ? ABSubscriptionTypeTo : ABSubscriptionTypeToIn);
+          } else if ( [subscription isEqualToString:@"from"] ) {
+            relation = ((!ABOSNonempty(ask)) ? ABSubscriptionTypeFrom : ABSubscriptionTypeFromOut);
+          } else if ( [subscription isEqualToString:@"both"] ) {
+            relation = ABSubscriptionTypeBoth;
+          }
+          
+          TKDatabase *db = [TKDatabase sharedObject];
+          //[db executeUpdate:@"DELETE FROM contact;"];
+          
+          [db executeUpdate:@"INSERT INTO contact(jid, nickname, relation) VALUES(?, ?, ?);",
+                              jid,
+                              nickname,
+                              @(relation)];
+        }
+        
+        [[ABEngine sharedObject] removeObserver:self];
+        
+        [MBProgressHUD dismissHUD:self.view
+                      immediately:NO
+                  completionBlock:^{
+                    ABRootViewController *root = (ABRootViewController *)(self.parentViewController);
+                    ABMainViewController *vc = [[ABMainViewController alloc] init];
+                    [root presentWithViewController:vc];
+                  }];
+      }
+      
     }];
     
   } else {
@@ -216,6 +259,35 @@
                            info:NSLocalizedString(@"Sign in failed", @"")
                         offsetY:0.0
                 completionBlock:NULL];
+}
+
+- (void)configDatabase:(NSString *)jid
+{
+  if ( [jid length]>0 ) {
+    
+    NSString *path = TKPathForDocumentResource(jid);
+    if ( ![[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:NULL] ) {
+      [[NSFileManager defaultManager] createDirectoryAtPath:path
+                                withIntermediateDirectories:YES
+                                                 attributes:nil
+                                                      error:NULL];
+    }
+    
+    NSString *dbpath = [path stringByAppendingPathComponent:@"im.db"];
+    TKDatabase *db = [[TKDatabase alloc] initWithPath:dbpath];
+    [TKDatabase saveObject:db];
+    
+    [db open];
+    
+    if ( ![db hasTableNamed:@"contact"] ) {
+      NSString *contactSQL = @"CREATE TABLE contact(pk INTEGER PRIMARY KEY, "
+      @"jid TEXT, "
+      @"nickname TEXT, "
+      @"relation INTEGER);";
+      [db executeUpdate:contactSQL];
+    }
+    
+  }
 }
 
 @end
