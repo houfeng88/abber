@@ -14,6 +14,9 @@
 
 - (void)requestVcard:(NSString *)jid completion:(ABEngineRequestCompletionHandler)handler;
 
-- (void)updateVcard:(NSString *)nickname desc:(NSString *)desc;
+- (void)updateVcardWithNickname:(NSString *)nickname
+                         avatar:(NSData *)avatar
+                           desc:(NSDictionary *)desc
+                     completion:(ABEngineRequestCompletionHandler)handler;
 
 @end
