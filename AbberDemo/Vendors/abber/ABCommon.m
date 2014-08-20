@@ -56,3 +56,18 @@ void ABMD5Hash(char *dest, const char *source, size_t length)
            digest[ 8], digest[ 9], digest[10], digest[11],
            digest[12], digest[13], digest[14], digest[15]);
 }
+
+NSString *ABMakeIdentifier(NSString *domain)
+{
+  NSString *identifier = nil;
+  if ( ABOSNonempty(domain) ) {
+    identifier = [[NSMutableString alloc] init];
+    
+    [(NSMutableString *)identifier appendString:[domain uppercaseString]];
+    
+    [(NSMutableString *)identifier appendString:@"-"];
+    
+    [(NSMutableString *)identifier appendString:[[NSString UUIDString] uppercaseString]];
+  }
+  return identifier;
+}

@@ -165,14 +165,43 @@
 
 - (ABStanza *)makeStanzaWithName:(NSString *)name
 {
-  ABStanza *node = nil;
-  if ( (_connection) && (_connection->ctx) ) {
-    node = [[ABStanza alloc] init];
-    node.stanza = xmpp_stanza_new(_connection->ctx);
-    [node setNodeName:name];
-  }
-  return node;
+  return [self makeStanzaWithName:name text:nil];
 }
+
+- (ABStanza *)makeStanzaWithName:(NSString *)name text:(NSString *)text
+{
+  ABStanza *tagStanza = nil;
+  if ( (_connection) && (_connection->ctx) ) {
+    
+    xmpp_stanza_t *stanza = NULL;
+    
+    if ( ABOSNonempty(name) ) {
+      tagStanza = [[ABStanza alloc] init];
+      
+      stanza = xmpp_stanza_new(_connection->ctx);
+      tagStanza.stanza = stanza;
+      xmpp_stanza_release(stanza);
+      stanza = NULL;
+      
+      [tagStanza setNodeName:name];
+      
+      if ( text ) {
+        ABStanza *textStanza = [[ABStanza alloc] init];
+        
+        stanza = xmpp_stanza_new(_connection->ctx);
+        textStanza.stanza = stanza;
+        xmpp_stanza_release(stanza);
+        stanza = NULL;
+        
+        [textStanza setTextValue:ABOStringOrLater(text, @"")];
+        
+        [tagStanza addChild:textStanza];
+      }
+    }
+  }
+  return tagStanza;
+}
+
 
 - (void)sendData:(NSData *)data
 {
@@ -196,27 +225,6 @@
       });
     }
   }
-}
-
-
-- (NSString *)makeIdentifier:(NSString *)domain suffix:(NSString *)suffix
-{
-  NSString *identifier = nil;
-  if ( ABOSNonempty(domain) ) {
-    
-    NSMutableString *rand = [[NSMutableString alloc] init];
-    if ( ABOSNonempty(suffix) ) {
-      [rand appendString:suffix];
-    }
-    [rand appendString:[NSString UUIDString]];
-    
-    char *string = ABIdentifierCreate(ABCString(domain), ABCString(rand));
-    if ( ABCSNonempty(string) ) {
-      identifier = [[NSString alloc] initWithUTF8String:string];
-      free(string);
-    }
-  }
-  return identifier;
 }
 
 

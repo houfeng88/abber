@@ -27,3 +27,5 @@ int   ABIdentifierSeed();
 
 
 void ABMD5Hash(char *dest, const char *source, size_t length);
+
+NSString *ABMakeIdentifier(NSString *domain);

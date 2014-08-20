@@ -46,10 +46,10 @@ typedef enum {
 
 
 - (ABStanza *)makeStanzaWithName:(NSString *)name;
+- (ABStanza *)makeStanzaWithName:(NSString *)name text:(NSString *)text;
+
 - (void)sendData:(NSData *)data;
 - (void)sendString:(NSString *)string;
-
-- (NSString *)makeIdentifier:(NSString *)prefix suffix:(NSString *)suffix;
 
 @end
 
