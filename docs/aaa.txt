@@ -1,0 +1,72 @@
+
+添加
+//<iq id="9105c11e-f3f0-44fd-9a5d-26a86c84f3c7" type="set">
+//  <query xmlns="jabber:iq:roster">
+//    <item jid="tktom@blah.im" name="Tom"/>
+//  </query>
+//</iq>
+//<presence to="tktom@blah.im" type="subscribe"/>
+
+同意
+如果好友状态是none
+//<presence to="tklucy@blah.im" type="subscribed"/>
+//<presence to="tklucy@blah.im" type="subscribe"/>
+如果好友状态是to
+//<presence to="tklucy@blah.im" type="subscribe"/>
+
+拒绝
+别人加我，我可以拒绝
+//<presence to="tkamy@blah.im" type="unsubscribed"/>
+我加别人，别人同意且回加我，客户端会自动同意，不能拒绝
+
+删除
+
+1. 如果登录成功后，好友状态是none，则移除；
+2. 如果收到名录推送，好友状态是none，则移除；(错了，添加别人后会收到none的名录推送)
+3. 
+
+我添加别人
+//<iq id="9105c11e-f3f0-44fd-9a5d-26a86c84f3c7" type="set">
+//  <query xmlns="jabber:iq:roster">
+//    <item jid="tktom@blah.im" name="Tom"/>
+//  </query>
+//</iq>
+//<presence to="tktom@blah.im" type="subscribe"/>
+
+因为添加名录，好友状态变成none
+<item jid="tkbill@blah.im" subscription="none" name="Bill"/>
+因为订阅好友，好友状态变成none+out
+<item jid="tkbill@blah.im" subscription="none" name="Bill" ask="subscribe"/>
+
+
+好友接收到请求
+<presence type="subscribe" from="tkcara@blah.im"/>
+
+
+别人拒绝我
+//<presence to="tkamy@blah.im" type="unsubscribed"/>
+
+我被拒后，好像会收到消息
+<presence to="tkcara@blah.im" type="unsubscribed" from="tkbill@blah.im"/>
+我被拒后，好友状态变成none
+<item jid="tkbill@blah.im" subscription="none" name="Bill"/>
+
+别人同意我
+//<presence to="tklucy@blah.im" type="subscribed"/>
+//<presence to="tklucy@blah.im" type="subscribe"/>
+
+别人同意我后，我在别人好友列表中的状态变成from
+<item jid='tklucy@blah.im' subscription='from'/>
+别人添加我后，我在别人好友列表中的状态变成from+out
+<item jid='tklucy@blah.im' subscription='from' ask='subscribe'/>
+
+
+
+我上线后好友状态变成，这里没有ask么？
+<item jid="tkeric@blah.im" subscription="to" name="Eric"/>
+且会收到请求
+<presence from='tkeric@blah.im' type='subscribe'/>
+如果上面状态是 to，这里要回复一下，他们应该就能成为好友
+//<presence to="tksam@blah.im" type="subscribed"/>
+然后好友在我的列表中状态变成both
+<item jid='tkeric@blah.im' subscription='both' name='Eric'/>
