@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ABHandlerContext.h"
 #import "ABEngine.h"
 #import "ABCommon.h"
 
@@ -21,19 +22,15 @@ typedef enum {
 
 @interface ABEngine (Presence)
 
-- (void)prepareForPresenceUpdate;
-
+- (void)addPresenceHandler;
+- (void)removePresenceHandler;
 
 - (BOOL)updatePresence:(ABPresenceType)type;
 
-
 - (BOOL)subscribeContact:(NSString *)jid;
-
 - (BOOL)unsubscribeContact:(NSString *)jid;
 
-
 - (BOOL)acceptContact:(NSString *)jid;
-
 - (BOOL)declineContact:(NSString *)jid;
 
 @end

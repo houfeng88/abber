@@ -175,7 +175,7 @@
   [[ABEngine sharedObject] prepare];
   [[ABEngine sharedObject] connectWithAccount:_accountField.text password:_passwordField.text];
   [[ABEngine sharedObject] addRosterPushHandler];
-  [[ABEngine sharedObject] prepareForPresenceUpdate];
+  [[ABEngine sharedObject] addPresenceHandler];
 }
 
 
@@ -203,7 +203,7 @@
       } else {
         [[ABEngine sharedObject] removeObserver:self];
         
-        [[ABEngine sharedObject] updatePresence:ABPresenceTypeAvailable];
+        //[[ABEngine sharedObject] updatePresence:ABPresenceTypeAvailable];
         
         [MBProgressHUD dismissHUD:self.view
                       immediately:NO

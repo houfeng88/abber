@@ -10,7 +10,11 @@
 
 @implementation ABEngine (Presence)
 
-- (void)prepareForPresenceUpdate
+- (void)addPresenceHandler
+{
+}
+
+- (void)removePresenceHandler
 {
 }
 

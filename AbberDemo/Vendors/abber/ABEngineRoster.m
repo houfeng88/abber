@@ -12,7 +12,7 @@ int ABRosterPushHandler(xmpp_conn_t * const conn,
                         xmpp_stanza_t * const stanza,
                         void * const userdata)
 {
-  DDLogCDebug(@"[roster] Push received.");
+  DDLogCDebug(@"[roster] Roster push received.");
   
   xmpp_stanza_t *iq = xmpp_stanza_new(conn->ctx);
   xmpp_stanza_set_name(iq, "iq");
@@ -59,12 +59,16 @@ int ABRosterRequestHandler(xmpp_conn_t * const conn,
                            xmpp_stanza_t * const stanza,
                            void * const userdata)
 {
-  DDLogCDebug(@"[roster] Request complete.");
+  DDLogCDebug(@"[roster] Roster request complete.");
   
   if ( userdata ) {
     ABHandlerContext *context = (__bridge ABHandlerContext *)userdata;
     
-    [NSObject cancelPreviousPerformRequestsWithTarget:context.engine selector:@selector(rosterOperationTimeout:) object:context];
+    dispatch_sync(dispatch_get_main_queue(), ^{
+      [NSObject cancelPreviousPerformRequestsWithTarget:context.engine
+                                               selector:@selector(rosterOperationTimeout:)
+                                                 object:context];
+    });
     
     
     NSMutableArray *roster = nil;
@@ -130,12 +134,16 @@ int ABRosterAddHandler(xmpp_conn_t * const conn,
                        xmpp_stanza_t * const stanza,
                        void * const userdata)
 {
-  DDLogCDebug(@"[roster] Add complete.");
+  DDLogCDebug(@"[roster] Roster add complete.");
   
   if ( userdata ) {
     ABHandlerContext *context = (__bridge ABHandlerContext *)userdata;
     
-    [NSObject cancelPreviousPerformRequestsWithTarget:context.engine selector:@selector(rosterOperationTimeout:) object:context];
+    dispatch_sync(dispatch_get_main_queue(), ^{
+      [NSObject cancelPreviousPerformRequestsWithTarget:context.engine
+                                               selector:@selector(rosterOperationTimeout:)
+                                                 object:context];
+    });
     
     
     NSString *jid = nil;
@@ -182,12 +190,16 @@ int ABRosterUpdateHandler(xmpp_conn_t * const conn,
                           xmpp_stanza_t * const stanza,
                           void * const userdata)
 {
-  DDLogCDebug(@"[roster] Add complete.");
+  DDLogCDebug(@"[roster] Roster update complete.");
   
   if ( userdata ) {
     ABHandlerContext *context = (__bridge ABHandlerContext *)userdata;
     
-    [NSObject cancelPreviousPerformRequestsWithTarget:context.engine selector:@selector(rosterOperationTimeout:) object:context];
+    dispatch_sync(dispatch_get_main_queue(), ^{
+      [NSObject cancelPreviousPerformRequestsWithTarget:context.engine
+                                               selector:@selector(rosterOperationTimeout:)
+                                                 object:context];
+    });
     
     
     NSString *jid = nil;
@@ -234,12 +246,16 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
                           xmpp_stanza_t * const stanza,
                           void * const userdata)
 {
-  DDLogCDebug(@"[roster] Add complete.");
+  DDLogCDebug(@"[roster] Roster remove complete.");
   
   if ( userdata ) {
     ABHandlerContext *context = (__bridge ABHandlerContext *)userdata;
     
-    [NSObject cancelPreviousPerformRequestsWithTarget:context.engine selector:@selector(rosterOperationTimeout:) object:context];
+    dispatch_sync(dispatch_get_main_queue(), ^{
+      [NSObject cancelPreviousPerformRequestsWithTarget:context.engine
+                                               selector:@selector(rosterOperationTimeout:)
+                                                 object:context];
+    });
     
     
     NSString *jid = nil;
@@ -299,6 +315,8 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
 
 - (void)rosterOperationTimeout:(ABHandlerContext *)context
 {
+  DDLogDebug(@"[roster] Roster operation time out");
+  
   xmpp_id_handler_delete(_connection, context.handler, ABCString(context.identifier));
   
   NSError *error = [NSError errorWithDomain:@"abber.org" code:1 userInfo:@{@"ABErrorDescriptionKey": @"time out"}];
