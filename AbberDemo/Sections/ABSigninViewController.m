@@ -174,7 +174,7 @@
   [[ABEngine sharedObject] addObserver:self];
   [[ABEngine sharedObject] prepare];
   [[ABEngine sharedObject] connectWithAccount:_accountField.text password:_passwordField.text];
-  [[ABEngine sharedObject] prepareForRosterPush];
+  [[ABEngine sharedObject] addRosterPushHandler];
   [[ABEngine sharedObject] prepareForPresenceUpdate];
 }
 

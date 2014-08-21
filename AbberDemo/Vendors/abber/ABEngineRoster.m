@@ -14,36 +14,38 @@ int ABRosterPushHandler(xmpp_conn_t * const conn,
 {
   DDLogCDebug(@"[roster] Push received.");
   
+  xmpp_stanza_t *iq = xmpp_stanza_new(conn->ctx);
+  xmpp_stanza_set_name(iq, "iq");
+  xmpp_stanza_set_attribute(iq, "id", xmpp_stanza_get_attribute(stanza, "id"));
+  xmpp_stanza_set_attribute(iq, "type", "result");
+  xmpp_send(conn, iq);
+  xmpp_stanza_release(iq);
+  
+  
   if ( userdata ) {
     ABEngine *engine = (__bridge ABEngine *)userdata;
     
-    
-    xmpp_stanza_t *iq = xmpp_stanza_new(conn->ctx);
-    xmpp_stanza_set_name(iq, "iq");
-    xmpp_stanza_set_attribute(iq, "id", xmpp_stanza_get_attribute(stanza, "id"));
-    xmpp_stanza_set_attribute(iq, "type", "result");
-    xmpp_send(conn, iq);
-    xmpp_stanza_release(iq);
-    
     xmpp_stanza_t *query = xmpp_stanza_get_child_by_name(stanza, "query");
-    xmpp_stanza_t *item = xmpp_stanza_get_children(query);
-    if ( item ) {
-      char *ask = xmpp_stanza_get_attribute(item, "ask");
-      char *jid = xmpp_stanza_get_attribute(item, "jid");
-      char *name = xmpp_stanza_get_attribute(item, "name");
-      char *subscription = xmpp_stanza_get_attribute(item, "subscription");
-      
-      if ( ABCSNonempty(jid) && ABCSNonempty(subscription) ) {
-        NSMutableDictionary *map = [[NSMutableDictionary alloc] init];
-        if ( ABCSNonempty(ask) ) {
-          [map setObject:ABOString(ask) forKey:@"ask"];
+    if ( query ) {
+      xmpp_stanza_t *item = xmpp_stanza_get_child_by_name(query, "item");
+      if ( item ) {
+        char *ask = xmpp_stanza_get_attribute(item, "ask");
+        char *jid = xmpp_stanza_get_attribute(item, "jid");
+        char *name = xmpp_stanza_get_attribute(item, "name");
+        char *subscription = xmpp_stanza_get_attribute(item, "subscription");
+        
+        if ( ABCSNonempty(jid) && ABCSNonempty(subscription) ) {
+          NSMutableDictionary *map = [[NSMutableDictionary alloc] init];
+          if ( ABCSNonempty(ask) ) {
+            [map setObject:ABOString(ask) forKey:@"ask"];
+          }
+          [map setObject:ABOString(jid) forKey:@"jid"];
+          if ( ABCSNonempty(name) ) {
+            [map setObject:ABOString(name) forKey:@"name"];
+          }
+          [map setObject:ABOString(subscription) forKey:@"subscription"];
+          [engine didReceiveRosterItem:map];
         }
-        [map setObject:ABOString(jid) forKey:@"jid"];
-        if ( ABCSNonempty(name) ) {
-          [map setObject:ABOString(name) forKey:@"name"];
-        }
-        [map setObject:ABOString(subscription) forKey:@"subscription"];
-        [engine didReceiveRosterItem:map];
       }
     }
     
@@ -60,12 +62,12 @@ int ABRosterRequestHandler(xmpp_conn_t * const conn,
   DDLogCDebug(@"[roster] Request complete.");
   
   if ( userdata ) {
-    CFDictionaryRef context = userdata;
-    ABEngine *engine = [(__bridge NSValue *)CFDictionaryGetValue(context, CFSTR("Engine")) nonretainedObjectValue];
-    ABEngineCompletionHandler handler = CFDictionaryGetValue(context, CFSTR("Handler"));
+    ABHandlerContext *context = (__bridge ABHandlerContext *)userdata;
+    
+    [NSObject cancelPreviousPerformRequestsWithTarget:context.engine selector:@selector(rosterOperationTimeout:) object:context];
     
     
-    NSMutableArray *roster = [[NSMutableArray alloc] init];
+    NSMutableArray *roster = nil;
     NSError *error = nil;
     
     char *type = xmpp_stanza_get_attribute(stanza, "type");
@@ -76,83 +78,64 @@ int ABRosterRequestHandler(xmpp_conn_t * const conn,
       if ( ABCSNonempty(name) ) {
         userInfo = @{ @"ABErrorDescriptionKey": ABOString(name) };
       }
-      error = [NSError errorWithDomain:@"abber.org" code:0 userInfo:userInfo];
+      error = [NSError errorWithDomain:@"abber.org" code:1 userInfo:userInfo];
       
     } else {
       
+      roster = [[NSMutableArray alloc] init];
+      
       xmpp_stanza_t *query = xmpp_stanza_get_child_by_name(stanza, "query");
-      xmpp_stanza_t *item = xmpp_stanza_get_children(query);
-      while ( item ) {
-        char *ask = xmpp_stanza_get_attribute(item, "ask");
-        char *jid = xmpp_stanza_get_attribute(item, "jid");
-        char *name = xmpp_stanza_get_attribute(item, "name");
-        char *subscription = xmpp_stanza_get_attribute(item, "subscription");
-        
-        if ( ABCSNonempty(jid) && ABCSNonempty(subscription) ) {
-          NSMutableDictionary *map = [[NSMutableDictionary alloc] init];
-          if ( ABCSNonempty(ask) ) {
-            [map setObject:ABOString(ask) forKey:@"ask"];
+      if ( query ) {
+        xmpp_stanza_t *item = xmpp_stanza_get_children(query);
+        while ( item ) {
+          char *ask = xmpp_stanza_get_attribute(item, "ask");
+          char *jid = xmpp_stanza_get_attribute(item, "jid");
+          char *name = xmpp_stanza_get_attribute(item, "name");
+          char *subscription = xmpp_stanza_get_attribute(item, "subscription");
+          
+          if ( ABCSNonempty(jid) && ABCSNonempty(subscription) ) {
+            NSMutableDictionary *map = [[NSMutableDictionary alloc] init];
+            if ( ABCSNonempty(ask) ) {
+              [map setObject:ABOString(ask) forKey:@"ask"];
+            }
+            [map setObject:ABOString(jid) forKey:@"jid"];
+            if ( ABCSNonempty(name) ) {
+              [map setObject:ABOString(name) forKey:@"name"];
+            }
+            [map setObject:ABOString(subscription) forKey:@"subscription"];
+            [roster addObject:map];
           }
-          [map setObject:ABOString(jid) forKey:@"jid"];
-          if ( ABCSNonempty(name) ) {
-            [map setObject:ABOString(name) forKey:@"name"];
-          }
-          [map setObject:ABOString(subscription) forKey:@"subscription"];
-          [roster addObject:map];
+          item = xmpp_stanza_get_next(item);
         }
-        item = xmpp_stanza_get_next(item);
+        
       }
       
     }
     
-    [engine didReceiveRoster:roster error:error];
-    if ( handler ) {
+    [context.engine didReceiveRoster:roster error:error];
+    if ( context.completion ) {
       dispatch_sync(dispatch_get_main_queue(), ^{
-        handler(roster, error);
+        context.completion(roster, error);
       });
     }
     
     
-    CFRelease(context);
+    CFRelease((__bridge CFTypeRef)context);
   }
   
   return 0;
 }
 
-
 int ABRosterAddHandler(xmpp_conn_t * const conn,
                        xmpp_stanza_t * const stanza,
                        void * const userdata)
 {
-  return 0;
-}
-
-int ABRosterUpdateHandler(xmpp_conn_t * const conn,
-                          xmpp_stanza_t * const stanza,
-                          void * const userdata)
-{
-  return 0;
-}
-
-int ABRosterRemoveHandler(xmpp_conn_t * const conn,
-                          xmpp_stanza_t * const stanza,
-                          void * const userdata)
-{
-  return 0;
-}
-
-
-
-int ABRosterChangeHandler(xmpp_conn_t * const conn,
-                          xmpp_stanza_t * const stanza,
-                          void * const userdata)
-{
-  DDLogCDebug(@"[roster] Change complete.");
+  DDLogCDebug(@"[roster] Add complete.");
   
   if ( userdata ) {
-    CFDictionaryRef context = userdata;
-    ABEngine *engine = [(__bridge NSValue *)CFDictionaryGetValue(context, CFSTR("Engine")) nonretainedObjectValue];
-    ABEngineCompletionHandler handler = CFDictionaryGetValue(context, CFSTR("Handler"));
+    ABHandlerContext *context = (__bridge ABHandlerContext *)userdata;
+    
+    [NSObject cancelPreviousPerformRequestsWithTarget:context.engine selector:@selector(rosterOperationTimeout:) object:context];
     
     
     NSString *jid = nil;
@@ -173,7 +156,7 @@ int ABRosterChangeHandler(xmpp_conn_t * const conn,
       if ( ABCSNonempty(name) ) {
         userInfo = @{ @"ABErrorDescriptionKey": ABOString(name) };
       }
-      error = [NSError errorWithDomain:@"abber.org" code:0 userInfo:userInfo];
+      error = [NSError errorWithDomain:@"abber.org" code:1 userInfo:userInfo];
       
     } else {
       
@@ -181,15 +164,119 @@ int ABRosterChangeHandler(xmpp_conn_t * const conn,
       
     }
     
-    [engine didChangeContact:jid error:error];
-    if ( handler ) {
+    [context.engine didCompleteAddContact:jid error:error];
+    if ( context.completion ) {
       dispatch_sync(dispatch_get_main_queue(), ^{
-        handler(jid, error);
+        context.completion(jid, error);
       });
     }
     
     
-    CFRelease(context);
+    CFRelease((__bridge CFTypeRef)context);
+  }
+  
+  return 0;
+}
+
+int ABRosterUpdateHandler(xmpp_conn_t * const conn,
+                          xmpp_stanza_t * const stanza,
+                          void * const userdata)
+{
+  DDLogCDebug(@"[roster] Add complete.");
+  
+  if ( userdata ) {
+    ABHandlerContext *context = (__bridge ABHandlerContext *)userdata;
+    
+    [NSObject cancelPreviousPerformRequestsWithTarget:context.engine selector:@selector(rosterOperationTimeout:) object:context];
+    
+    
+    NSString *jid = nil;
+    NSError *error = nil;
+    
+    char *to = xmpp_stanza_get_attribute(stanza, "to");
+    char *bareTo = xmpp_jid_bare(conn->ctx, to);
+    if ( ABCSNonempty(bareTo) ) {
+      jid = ABOString(bareTo);
+      xmpp_free(conn->ctx, bareTo);
+    }
+    
+    char *type = xmpp_stanza_get_attribute(stanza, "type");
+    if ( strcmp(type, "error")==0 ) {
+      
+      NSDictionary *userInfo = nil;
+      char *name = xmpp_stanza_get_error_name(stanza);
+      if ( ABCSNonempty(name) ) {
+        userInfo = @{ @"ABErrorDescriptionKey": ABOString(name) };
+      }
+      error = [NSError errorWithDomain:@"abber.org" code:1 userInfo:userInfo];
+      
+    } else {
+      
+      // ...
+      
+    }
+    
+    [context.engine didCompleteUpdateContact:jid error:error];
+    if ( context.completion ) {
+      dispatch_sync(dispatch_get_main_queue(), ^{
+        context.completion(jid, error);
+      });
+    }
+    
+    
+    CFRelease((__bridge CFTypeRef)context);
+  }
+  
+  return 0;
+}
+
+int ABRosterRemoveHandler(xmpp_conn_t * const conn,
+                          xmpp_stanza_t * const stanza,
+                          void * const userdata)
+{
+  DDLogCDebug(@"[roster] Add complete.");
+  
+  if ( userdata ) {
+    ABHandlerContext *context = (__bridge ABHandlerContext *)userdata;
+    
+    [NSObject cancelPreviousPerformRequestsWithTarget:context.engine selector:@selector(rosterOperationTimeout:) object:context];
+    
+    
+    NSString *jid = nil;
+    NSError *error = nil;
+    
+    char *to = xmpp_stanza_get_attribute(stanza, "to");
+    char *bareTo = xmpp_jid_bare(conn->ctx, to);
+    if ( ABCSNonempty(bareTo) ) {
+      jid = ABOString(bareTo);
+      xmpp_free(conn->ctx, bareTo);
+    }
+    
+    char *type = xmpp_stanza_get_attribute(stanza, "type");
+    if ( strcmp(type, "error")==0 ) {
+      
+      NSDictionary *userInfo = nil;
+      char *name = xmpp_stanza_get_error_name(stanza);
+      if ( ABCSNonempty(name) ) {
+        userInfo = @{ @"ABErrorDescriptionKey": ABOString(name) };
+      }
+      error = [NSError errorWithDomain:@"abber.org" code:1 userInfo:userInfo];
+      
+    } else {
+      
+      // ...
+      
+    }
+    
+    [context.engine didCompleteRemoveContact:jid error:error];
+    if ( context.completion ) {
+      dispatch_sync(dispatch_get_main_queue(), ^{
+        context.completion(jid, error);
+      });
+    }
+    
+    
+    CFRelease((__bridge CFTypeRef)context);
   }
   
   return 0;
@@ -213,11 +300,42 @@ int ABRosterChangeHandler(xmpp_conn_t * const conn,
 - (void)rosterOperationTimeout:(ABHandlerContext *)context
 {
   xmpp_id_handler_delete(_connection, context.handler, ABCString(context.identifier));
-  // TODO: ...
+  
+  NSError *error = [NSError errorWithDomain:@"abber.org" code:1 userInfo:@{@"ABErrorDescriptionKey": @"time out"}];
+  
+  if ( [context.identifier hasPrefix:@"ROSTER-REQUEST"] ) {
+    [self didReceiveRoster:nil error:error];
+    if ( context.completion ) {
+      context.completion(nil, error);
+    }
+  } else if ( [context.identifier hasPrefix:@"ROSTER-ADD"] ) {
+    [self didCompleteAddContact:context.info error:error];
+    if ( context.completion ) {
+      dispatch_sync(dispatch_get_main_queue(), ^{
+        context.completion(context.jid, error);
+      });
+    }
+  } else if ( [context.identifier hasPrefix:@"ROSTER-UPDATE"] ) {
+    [self didCompleteUpdateContact:context.info error:error];
+    if ( context.completion ) {
+      dispatch_sync(dispatch_get_main_queue(), ^{
+        context.completion(context.jid, error);
+      });
+    }
+  } else if ( [context.identifier hasPrefix:@"ROSTER-REMOVE"] ) {
+    [self didCompleteRemoveContact:context.info error:error];
+    if ( context.completion ) {
+      dispatch_sync(dispatch_get_main_queue(), ^{
+        context.completion(context.jid, error);
+      });
+    }
+  }
+  
+  CFRelease((__bridge CFTypeRef)context);
 }
 
 
-- (BOOL)requestRosterWithCompletion:(ABEngineCompletionHandler)handler
+- (BOOL)requestRosterWithCompletion:(ABEngineCompletionHandler)completion
 {
 //  <iq id='bv1bs71f' type='get'>
 //    <query xmlns='jabber:iq:roster'/>
@@ -227,7 +345,7 @@ int ABRosterChangeHandler(xmpp_conn_t * const conn,
     
     ABHandlerContext *context = [[ABHandlerContext alloc] init];
     context.engine = self;
-    context.completionHandler = handler;
+    context.completion = completion;
     context.identifier = identifier;
     context.handler = ABRosterRequestHandler;
     
@@ -250,7 +368,7 @@ int ABRosterChangeHandler(xmpp_conn_t * const conn,
   return NO;
 }
 
-- (BOOL)addContact:(NSString *)jid name:(NSString *)name completion:(ABEngineCompletionHandler)handler
+- (BOOL)addContact:(NSString *)jid name:(NSString *)name completion:(ABEngineCompletionHandler)completion
 {
 //  <iq id='ph1xaz53' type='set'>
 //    <query xmlns='jabber:iq:roster'>
@@ -263,9 +381,10 @@ int ABRosterChangeHandler(xmpp_conn_t * const conn,
       
       ABHandlerContext *context = [[ABHandlerContext alloc] init];
       context.engine = self;
-      context.completionHandler = handler;
+      context.jid = jid;
+      context.completion = completion;
       context.identifier = identifier;
-      context.handler = ABRosterRequestHandler;
+      context.handler = ABRosterAddHandler;
       
       xmpp_id_handler_add(_connection, ABRosterAddHandler, ABCString(identifier), (void *)CFBridgingRetain(context));
       [self performSelector:@selector(rosterOperationTimeout:) withObject:context afterDelay:10.0];
@@ -294,7 +413,7 @@ int ABRosterChangeHandler(xmpp_conn_t * const conn,
   return NO;
 }
 
-- (BOOL)updateContact:(NSString *)jid name:(NSString *)name completion:(ABEngineCompletionHandler)handler
+- (BOOL)updateContact:(NSString *)jid name:(NSString *)name completion:(ABEngineCompletionHandler)completion
 {
 //  <iq id='ph1xaz53' type='set'>
 //    <query xmlns='jabber:iq:roster'>
@@ -307,9 +426,10 @@ int ABRosterChangeHandler(xmpp_conn_t * const conn,
       
       ABHandlerContext *context = [[ABHandlerContext alloc] init];
       context.engine = self;
-      context.completionHandler = handler;
+      context.jid = jid;
+      context.completion = completion;
       context.identifier = identifier;
-      context.handler = ABRosterRequestHandler;
+      context.handler = ABRosterUpdateHandler;
       
       xmpp_id_handler_add(_connection, ABRosterUpdateHandler, ABCString(identifier), (void *)CFBridgingRetain(context));
       [self performSelector:@selector(rosterOperationTimeout:) withObject:context afterDelay:10.0];
@@ -336,7 +456,7 @@ int ABRosterChangeHandler(xmpp_conn_t * const conn,
   return NO;
 }
 
-- (BOOL)removeContact:(NSString *)jid completion:(ABEngineCompletionHandler)handler
+- (BOOL)removeContact:(NSString *)jid completion:(ABEngineCompletionHandler)completion
 {
 //  <iq id='hm4hs97y' type='set'>
 //    <query xmlns='jabber:iq:roster'>
@@ -349,7 +469,8 @@ int ABRosterChangeHandler(xmpp_conn_t * const conn,
       
       ABHandlerContext *context = [[ABHandlerContext alloc] init];
       context.engine = self;
-      context.completionHandler = handler;
+      context.jid = jid;
+      context.completion = completion;
       context.identifier = identifier;
       context.handler = ABRosterRemoveHandler;
       

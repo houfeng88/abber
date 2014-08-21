@@ -11,18 +11,22 @@
 
 @interface ABHandlerContext : NSObject {
   __weak ABEngine *_engine;
-  
-  ABEngineCompletionHandler _completionHandler;
+  NSString *_jid;
+  ABEngineCompletionHandler _completion;
   
   NSString *_identifier;
   xmpp_handler _handler;
+  
+  id _info;
 }
 
 @property (nonatomic, weak) ABEngine *engine;
-
-@property (nonatomic, copy) ABEngineCompletionHandler completionHandler;
+@property (nonatomic, copy) NSString *jid;
+@property (nonatomic, copy) ABEngineCompletionHandler completion;
 
 @property (nonatomic, copy) NSString *identifier;
 @property (nonatomic, assign) xmpp_handler handler;
+
+@property (nonatomic, strong) id info;
 
 @end

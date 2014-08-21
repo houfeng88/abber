@@ -47,7 +47,7 @@
       [presence setValue:jid forAttribute:@"to"];
       [presence setValue:@"subscribe" forAttribute:@"type"];
       
-      [self sendData:[presence raw]];
+      [self sendData:[presence rawData]];
       
       return YES;
     }
@@ -65,7 +65,7 @@
       [presence setValue:jid forAttribute:@"to"];
       [presence setValue:@"unsubscribe" forAttribute:@"type"];
       
-      [self sendData:[presence raw]];
+      [self sendData:[presence rawData]];
       
       return YES;
     }
@@ -84,7 +84,7 @@
       [presence setValue:jid forAttribute:@"to"];
       [presence setValue:@"subscribed" forAttribute:@"type"];
       
-      [self sendData:[presence raw]];
+      [self sendData:[presence rawData]];
       
       return YES;
     }
@@ -102,7 +102,7 @@
       [presence setValue:jid forAttribute:@"to"];
       [presence setValue:@"unsubscribed" forAttribute:@"type"];
       
-      [self sendData:[presence raw]];
+      [self sendData:[presence rawData]];
       
       return YES;
     }

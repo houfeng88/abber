@@ -29,10 +29,10 @@ typedef enum {
 
 - (void)rosterOperationTimeout:(ABHandlerContext *)context;
 
-- (BOOL)requestRosterWithCompletion:(ABEngineCompletionHandler)handler;
-- (BOOL)addContact:(NSString *)jid name:(NSString *)name completion:(ABEngineCompletionHandler)handler;
-- (BOOL)updateContact:(NSString *)jid name:(NSString *)name completion:(ABEngineCompletionHandler)handler;
-- (BOOL)removeContact:(NSString *)jid completion:(ABEngineCompletionHandler)handler;
+- (BOOL)requestRosterWithCompletion:(ABEngineCompletionHandler)completion;
+- (BOOL)addContact:(NSString *)jid name:(NSString *)name completion:(ABEngineCompletionHandler)completion;
+- (BOOL)updateContact:(NSString *)jid name:(NSString *)name completion:(ABEngineCompletionHandler)completion;
+- (BOOL)removeContact:(NSString *)jid completion:(ABEngineCompletionHandler)completion;
 
 
 - (void)didReceiveRosterItem:(NSDictionary *)item;
