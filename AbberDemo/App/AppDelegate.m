@@ -82,30 +82,16 @@
     }
   }
   
-  
   for ( NSDictionary *item in roster ) {
     
-    NSString *ask = [item objectForKey:@"ask"];
     NSString *jid = [item objectForKey:@"jid"];
-    NSString *nickname = [item objectForKey:@"name"];
-    NSString *subscription = [item objectForKey:@"subscription"];
-    
-    ABSubscriptionType relation = ABSubscriptionTypeNone;
-    if ( [subscription isEqualToString:@"none"] ) {
-      relation = ((!ABOSNonempty(ask)) ? ABSubscriptionTypeNone : ABSubscriptionTypeNoneOut);
-    } else if ( [subscription isEqualToString:@"to"] ) {
-      relation = ((!ABOSNonempty(ask)) ? ABSubscriptionTypeTo : ABSubscriptionTypeToIn);
-    } else if ( [subscription isEqualToString:@"from"] ) {
-      relation = ((!ABOSNonempty(ask)) ? ABSubscriptionTypeFrom : ABSubscriptionTypeFromOut);
-    } else if ( [subscription isEqualToString:@"both"] ) {
-      relation = ABSubscriptionTypeBoth;
-    }
-    
+    NSString *memoname = [item objectForKey:@"memoname"];
+    NSNumber *relation = [item objectForKey:@"relation"];
     
     if ( [[TKDatabase sharedObject] executeQuery:@"SELECT * FROM contact WHERE jid=?;", jid] ) {
-      [[TKDatabase sharedObject] executeUpdate:@"UPDATE contact SET nickname=?, relation=? WHERE jid=?;", nickname, @(relation), jid];
+      [[TKDatabase sharedObject] executeUpdate:@"UPDATE contact SET memoname=?, relation=? WHERE jid=?;", memoname, relation, jid];
     } else {
-      [[TKDatabase sharedObject] executeUpdate:@"INSERT INTO contact(jid, nickname, relation) VALUES(?, ?, ?);", jid, nickname, @(relation)];
+      [[TKDatabase sharedObject] executeUpdate:@"INSERT INTO contact(jid, memoname, relation) VALUES(?, ?, ?);", jid, memoname, relation];
     }
   }
 }

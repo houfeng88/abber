@@ -22,11 +22,22 @@
   [super viewDidLoad];
   
   ABChatsViewController *chats = [[ABChatsViewController alloc] init];
-  ABFriendsViewController *friends = [[ABFriendsViewController alloc] init];
-  ABFindViewController *find = [[ABFindViewController alloc] init];
-  ABMoreViewController *more = [[ABMoreViewController alloc] init];
+  UINavigationController *chatsNC = [[UINavigationController alloc] initWithRootViewController:chats];
+  chatsNC.navigationBarHidden = YES;
   
-  [self setViewControllers:@[ chats, friends, find, more ] animated:NO];
+  ABFriendsViewController *friends = [[ABFriendsViewController alloc] init];
+  UINavigationController *friendsNC = [[UINavigationController alloc] initWithRootViewController:friends];
+  friendsNC.navigationBarHidden = YES;
+  
+  ABFindViewController *find = [[ABFindViewController alloc] init];
+  UINavigationController *findNC = [[UINavigationController alloc] initWithRootViewController:find];
+  findNC.navigationBarHidden = YES;
+  
+  ABMoreViewController *more = [[ABMoreViewController alloc] init];
+  UINavigationController *moreNC = [[UINavigationController alloc] initWithRootViewController:more];
+  moreNC.navigationBarHidden = YES;
+  
+  [self setViewControllers:@[ chatsNC, friendsNC, findNC, moreNC ] animated:NO];
   
   
   UITabBarItem *item = nil;

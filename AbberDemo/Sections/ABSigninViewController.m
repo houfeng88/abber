@@ -7,9 +7,11 @@
 //
 
 #import "ABSigninViewController.h"
-#import "ABRootViewController.h"
-#import "ABMainViewController.h"
 #import "ABSigninCell.h"
+
+#import "ABRootViewController.h"
+
+#import "ABMainViewController.h"
 
 @implementation ABSigninViewController
 
@@ -32,19 +34,17 @@
   
 }
 
-- (void)layoutViews
-{
-  [super layoutViews];
-  
-  _tableView.frame = _contentView.bounds;
-  
-}
-
-
 - (void)gestureTap:(UIGestureRecognizer *)recognizer
 {
   [TKFindFirstResponderInView(_tableView) resignFirstResponder];
 }
+
+- (void)layoutViews
+{
+  [super layoutViews];
+  _tableView.frame = _contentView.bounds;
+}
+
 
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -120,32 +120,12 @@
 
 
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-  if ( textField==_accountField ) {
-    [_passwordField becomeFirstResponder];
-  } else if ( textField==_passwordField ) {
-    [textField resignFirstResponder];
-    if ( [self checkValidity] ) {
-      [self signin];
-    }
-  }
-  return YES;
-}
-
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-  return (([textField.text length] + [string length] - range.length)<=40);
-}
-
-
 - (void)signinButtonClicked:(id)sender
 {
   if ( [self checkValidity] ) {
     [self signin];
   }
 }
-
 
 - (BOOL)checkValidity
 {
@@ -179,6 +159,24 @@
 }
 
 
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+  if ( textField==_accountField ) {
+    [_passwordField becomeFirstResponder];
+  } else if ( textField==_passwordField ) {
+    [textField resignFirstResponder];
+  }
+  return YES;
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+  return (([textField.text length] + [string length] - range.length)<=40);
+}
+
+
+
 - (void)engineDidStartConnecting:(ABEngine *)engine
 {
   [MBProgressHUD presentProgressHUD:self.view
@@ -203,7 +201,7 @@
       } else {
         [[ABEngine sharedObject] removeObserver:self];
         
-        //[[ABEngine sharedObject] updatePresence:ABPresenceTypeAvailable];
+        [[ABEngine sharedObject] updatePresence:ABPresenceTypeAvailable];
         
         [MBProgressHUD dismissHUD:self.view
                       immediately:NO
@@ -232,6 +230,7 @@
                 completionBlock:NULL];
 }
 
+
 - (void)configDatabase:(NSString *)jid
 {
   if ( [jid length]>0 ) {
@@ -253,7 +252,7 @@
     if ( ![db hasTableNamed:@"contact"] ) {
       NSString *contactSQL = @"CREATE TABLE contact(pk INTEGER PRIMARY KEY, "
                                                   @"jid TEXT, "
-                                                  @"nickname TEXT, "
+                                                  @"memoname TEXT, "
                                                   @"relation INTEGER);";
       [db executeUpdate:contactSQL];
     }

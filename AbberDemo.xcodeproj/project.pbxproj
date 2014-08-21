@@ -14,6 +14,8 @@
 		0A6E5509199F7A85004BD577 /* ABFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6E5508199F7A85004BD577 /* ABFriendsViewController.m */; };
 		0A6E550C199F7A93004BD577 /* ABFindViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6E550B199F7A93004BD577 /* ABFindViewController.m */; };
 		0A6E550F199F7A9F004BD577 /* ABMoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6E550E199F7A9F004BD577 /* ABMoreViewController.m */; };
+		0A9594E219A6316F007297B0 /* ABAddContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A9594E119A6316F007297B0 /* ABAddContactViewController.m */; };
+		0A9594E619A636C0007297B0 /* ABInputCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A9594E519A636C0007297B0 /* ABInputCell.m */; };
 		232CF7021999D9A0004A5AA2 /* ABEnginePresence.m in Sources */ = {isa = PBXBuildFile; fileRef = 232CF7011999D9A0004A5AA2 /* ABEnginePresence.m */; };
 		237AAD8819A5D1CB00BC4E05 /* ABHandlerContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 237AAD8719A5D1CB00BC4E05 /* ABHandlerContext.m */; };
 		23A44CF319A1A05B00EC8301 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 23A44CF219A1A05B00EC8301 /* libsqlite3.dylib */; };
@@ -64,7 +66,7 @@
 		23CB415619A1EC900024120D /* TKTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CB415219A1EC900024120D /* TKTableView.m */; };
 		23CB415719A1EC900024120D /* UITableViewExtentions.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CB415419A1EC900024120D /* UITableViewExtentions.m */; };
 		23CB415B19A1EF2A0024120D /* ABContactCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CB415A19A1EF2A0024120D /* ABContactCell.m */; };
-		23CB415E19A20A7B0024120D /* TKProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CB415D19A20A7B0024120D /* TKProfileViewController.m */; };
+		23CB415E19A20A7B0024120D /* ABProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CB415D19A20A7B0024120D /* ABProfileViewController.m */; };
 		23F6C0DA19909596005D2ED7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23F6C0D919909596005D2ED7 /* Foundation.framework */; };
 		23F6C0DE19909596005D2ED7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23F6C0DD19909596005D2ED7 /* UIKit.framework */; };
 		23F6C1A41990A8E0005D2ED7 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 23F6C17A1990A8DF005D2ED7 /* libcrypto.a */; };
@@ -106,6 +108,10 @@
 		0A6E550B199F7A93004BD577 /* ABFindViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABFindViewController.m; sourceTree = "<group>"; };
 		0A6E550D199F7A9F004BD577 /* ABMoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABMoreViewController.h; sourceTree = "<group>"; };
 		0A6E550E199F7A9F004BD577 /* ABMoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABMoreViewController.m; sourceTree = "<group>"; };
+		0A9594E019A6316F007297B0 /* ABAddContactViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABAddContactViewController.h; sourceTree = "<group>"; };
+		0A9594E119A6316F007297B0 /* ABAddContactViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABAddContactViewController.m; sourceTree = "<group>"; };
+		0A9594E419A636C0007297B0 /* ABInputCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABInputCell.h; sourceTree = "<group>"; };
+		0A9594E519A636C0007297B0 /* ABInputCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABInputCell.m; sourceTree = "<group>"; };
 		232CF7001999D9A0004A5AA2 /* ABEnginePresence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEnginePresence.h; sourceTree = "<group>"; };
 		232CF7011999D9A0004A5AA2 /* ABEnginePresence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABEnginePresence.m; sourceTree = "<group>"; };
 		237AAD8619A5D1CB00BC4E05 /* ABHandlerContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABHandlerContext.h; sourceTree = "<group>"; };
@@ -181,8 +187,8 @@
 		23CB415419A1EC900024120D /* UITableViewExtentions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITableViewExtentions.m; sourceTree = "<group>"; };
 		23CB415919A1EF2A0024120D /* ABContactCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABContactCell.h; sourceTree = "<group>"; };
 		23CB415A19A1EF2A0024120D /* ABContactCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABContactCell.m; sourceTree = "<group>"; };
-		23CB415C19A20A7B0024120D /* TKProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKProfileViewController.h; sourceTree = "<group>"; };
-		23CB415D19A20A7B0024120D /* TKProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKProfileViewController.m; sourceTree = "<group>"; };
+		23CB415C19A20A7B0024120D /* ABProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABProfileViewController.h; sourceTree = "<group>"; };
+		23CB415D19A20A7B0024120D /* ABProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABProfileViewController.m; sourceTree = "<group>"; };
 		23F6C0D619909596005D2ED7 /* AbberDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AbberDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		23F6C0D919909596005D2ED7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		23F6C0DD19909596005D2ED7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -354,8 +360,10 @@
 				0A6E5508199F7A85004BD577 /* ABFriendsViewController.m */,
 				23CB415919A1EF2A0024120D /* ABContactCell.h */,
 				23CB415A19A1EF2A0024120D /* ABContactCell.m */,
-				23CB415C19A20A7B0024120D /* TKProfileViewController.h */,
-				23CB415D19A20A7B0024120D /* TKProfileViewController.m */,
+				23CB415C19A20A7B0024120D /* ABProfileViewController.h */,
+				23CB415D19A20A7B0024120D /* ABProfileViewController.m */,
+				0A9594E019A6316F007297B0 /* ABAddContactViewController.h */,
+				0A9594E119A6316F007297B0 /* ABAddContactViewController.m */,
 			);
 			name = Friends;
 			sourceTree = "<group>";
@@ -376,6 +384,15 @@
 				0A6E550E199F7A9F004BD577 /* ABMoreViewController.m */,
 			);
 			name = More;
+			sourceTree = "<group>";
+		};
+		0A9594E319A636C0007297B0 /* General */ = {
+			isa = PBXGroup;
+			children = (
+				0A9594E419A636C0007297B0 /* ABInputCell.h */,
+				0A9594E519A636C0007297B0 /* ABInputCell.m */,
+			);
+			path = General;
 			sourceTree = "<group>";
 		};
 		23C4BC5E199DD17E006E796C /* Resources */ = {
@@ -572,6 +589,7 @@
 				23C4BC7C199DD1EF006E796C /* App */,
 				23C4BC72199DD1C8006E796C /* Sections */,
 				23CB413C19A1D2150024120D /* Helpers */,
+				0A9594E319A636C0007297B0 /* General */,
 				23F6C1551990A8DF005D2ED7 /* Vendors */,
 				23C4BC5E199DD17E006E796C /* Resources */,
 			);
@@ -718,8 +736,6 @@
 				0A5BAE6E1991382E001EF07E /* ABEngine.h */,
 				0A5BAE6F1991382E001EF07E /* ABEngine.m */,
 				23F6C1DB1990AC3E005D2ED7 /* ABConfig.h */,
-				237AAD8619A5D1CB00BC4E05 /* ABHandlerContext.h */,
-				237AAD8719A5D1CB00BC4E05 /* ABHandlerContext.m */,
 				23C5473B1994C0E900B4C0F7 /* ABEngineConnection.h */,
 				23C5473C1994C0E900B4C0F7 /* ABEngineConnection.m */,
 				23C547321994BDE900B4C0F7 /* ABEngineRoster.h */,
@@ -728,6 +744,8 @@
 				232CF7011999D9A0004A5AA2 /* ABEnginePresence.m */,
 				23C547351994BE2600B4C0F7 /* ABEngineVcard.h */,
 				23C547361994BE2600B4C0F7 /* ABEngineVcard.m */,
+				237AAD8619A5D1CB00BC4E05 /* ABHandlerContext.h */,
+				237AAD8719A5D1CB00BC4E05 /* ABHandlerContext.m */,
 				0A5BAE6B19913715001EF07E /* ABStanza.h */,
 				0A5BAE6C19913715001EF07E /* ABStanza.m */,
 				23C547261994B4B300B4C0F7 /* ABCommon.h */,
@@ -877,12 +895,13 @@
 				23CB414919A1D2150024120D /* TKDatabase.m in Sources */,
 				23F6C1D71990A993005D2ED7 /* thread.c in Sources */,
 				23C4BC84199DD1EF006E796C /* main.m in Sources */,
+				0A9594E219A6316F007297B0 /* ABAddContactViewController.m in Sources */,
 				23C547281994B4B300B4C0F7 /* ABCommon.m in Sources */,
 				23C4BC7B199DD1C8006E796C /* ABSigninViewController.m in Sources */,
 				23CB415719A1EC900024120D /* UITableViewExtentions.m in Sources */,
 				23F6C1CF1990A993005D2ED7 /* oocontext.cpp in Sources */,
 				23C547341994BDE900B4C0F7 /* ABEngineRoster.m in Sources */,
-				23CB415E19A20A7B0024120D /* TKProfileViewController.m in Sources */,
+				23CB415E19A20A7B0024120D /* ABProfileViewController.m in Sources */,
 				23F6C1D61990A993005D2ED7 /* stanza.c in Sources */,
 				23F6C1CB1990A993005D2ED7 /* handler.c in Sources */,
 				23F6C1D21990A993005D2ED7 /* sasl.c in Sources */,
@@ -892,6 +911,7 @@
 				23F6C1D81990A993005D2ED7 /* tls.c in Sources */,
 				232CF7021999D9A0004A5AA2 /* ABEnginePresence.m in Sources */,
 				23CB414819A1D2150024120D /* MBProgressHUDExtentions.m in Sources */,
+				0A9594E619A636C0007297B0 /* ABInputCell.m in Sources */,
 				23F6C1D51990A993005D2ED7 /* sock.c in Sources */,
 				0A6E550C199F7A93004BD577 /* ABFindViewController.m in Sources */,
 				23F6C1CE1990A993005D2ED7 /* md5.c in Sources */,

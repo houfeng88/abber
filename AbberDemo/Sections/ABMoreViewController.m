@@ -14,10 +14,15 @@
 {
   [super viewDidLoad];
   
-  [_navigationView showRightButton];
   _navigationView.titleLabel.text = NSLocalizedString(@"More", @"");
+  [_navigationView showRightButton];
   _navigationView.rightButton.normalTitle = NSLocalizedString(@"Sign Out", @"");
   
+}
+
+
+- (void)rightButtonClicked:(id)sender
+{
 }
 
 @end

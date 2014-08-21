@@ -92,21 +92,35 @@ int ABRosterRequestHandler(xmpp_conn_t * const conn,
       if ( query ) {
         xmpp_stanza_t *item = xmpp_stanza_get_children(query);
         while ( item ) {
-          char *ask = xmpp_stanza_get_attribute(item, "ask");
           char *jid = xmpp_stanza_get_attribute(item, "jid");
-          char *name = xmpp_stanza_get_attribute(item, "name");
-          char *subscription = xmpp_stanza_get_attribute(item, "subscription");
           
-          if ( ABCSNonempty(jid) && ABCSNonempty(subscription) ) {
+          char *memoname = xmpp_stanza_get_attribute(item, "name");
+          
+          ABSubscriptionType relation = ABSubscriptionTypeNone;
+          char *ask = xmpp_stanza_get_attribute(item, "ask");
+          char *subscription = xmpp_stanza_get_attribute(item, "subscription");
+          if ( strcmp(subscription, "none")==0 ) {
+            relation = ((!ABCSNonempty(ask)) ? ABSubscriptionTypeNone : ABSubscriptionTypeNoneOut);
+          } else if ( strcmp(subscription, "to")==0 ) {
+            relation = ((!ABCSNonempty(ask)) ? ABSubscriptionTypeTo : ABSubscriptionTypeToIn);
+          } else if ( strcmp(subscription, "from")==0 ) {
+            relation = ((!ABCSNonempty(ask)) ? ABSubscriptionTypeFrom : ABSubscriptionTypeFromOut);
+          } else if ( strcmp(subscription, "both")==0 ) {
+            relation = ABSubscriptionTypeBoth;
+          }
+          
+          
+          if ( ABCSNonempty(jid) ) {
             NSMutableDictionary *map = [[NSMutableDictionary alloc] init];
-            if ( ABCSNonempty(ask) ) {
-              [map setObject:ABOString(ask) forKey:@"ask"];
-            }
+            
             [map setObject:ABOString(jid) forKey:@"jid"];
-            if ( ABCSNonempty(name) ) {
-              [map setObject:ABOString(name) forKey:@"name"];
+            
+            if ( ABCSNonempty(memoname) ) {
+              [map setObject:ABOString(memoname) forKey:@"memoname"];
             }
-            [map setObject:ABOString(subscription) forKey:@"subscription"];
+            
+            [map setObject:@(relation) forKey:@"relation"];
+            
             [roster addObject:map];
           }
           item = xmpp_stanza_get_next(item);

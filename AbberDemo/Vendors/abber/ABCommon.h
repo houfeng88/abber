@@ -19,13 +19,5 @@
 #define ABCStringOrLater(_s_) (((_s_)!=NULL)?(_s_):"")
 #define ABOStringOrLater(_a_, _b_) (([(_a_) length]>0)?(_a_):(_b_))
 
-#define ABCStringHasPrefix(_sa_,_sb_) (strncmp(_sa_, _sb_, strlen(_sb_))==0)
-
-char *ABIdentifierCreate(const char *domain, const char *rand);
-
-int   ABIdentifierSeed();
-
-
-void ABMD5Hash(char *dest, const char *source, size_t length);
 
 NSString *ABMakeIdentifier(NSString *domain);
