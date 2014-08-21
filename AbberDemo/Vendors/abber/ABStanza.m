@@ -10,28 +10,16 @@
 
 @implementation ABStanza
 
-#pragma mark - Accessors
-
-- (xmpp_stanza_t *)stanza
-{
-  return _stanza;
-}
-
-- (void)setStanza:(xmpp_stanza_t *)stanza
-{
-  if ( _stanza ) {
-    xmpp_stanza_release(_stanza);
-    _stanza = NULL;
-  }
-  
-  if ( stanza ) {
-    _stanza = xmpp_stanza_clone(stanza);
-  }
-}
-
-
-
 #pragma mark - Memory management
+
+- (id)initWithStanza:(xmpp_stanza_t *)stanza
+{
+  self = [super init];
+  if (self) {
+    _stanza = stanza;
+  }
+  return self;
+}
 
 - (void)dealloc
 {
@@ -45,21 +33,33 @@
 
 #pragma mark - Public methods
 
-- (NSData *)raw
+- (xmpp_stanza_t *)stanza
 {
-  NSData *data = nil;
+  return _stanza;
+}
+
+- (void)copyStanza:(xmpp_stanza_t *)stanza
+{
   if ( _stanza ) {
-    char *buffer = NULL;
-    size_t length = 0;
-    int ret = xmpp_stanza_to_text(_stanza, &buffer, &length);
-    if ( ret==XMPP_EOK ) {
-      if ( length>0 ) {
-        data = [[NSData alloc] initWithBytes:buffer length:length];
-      }
-      xmpp_free(_stanza->ctx, buffer);
-    }
+    xmpp_stanza_release(_stanza);
+    _stanza = NULL;
   }
-  return data;
+  
+  if ( stanza ) {
+    _stanza = xmpp_stanza_copy(stanza);
+  }
+}
+
+- (void)cloneStanza:(xmpp_stanza_t *)stanza
+{
+  if ( _stanza ) {
+    xmpp_stanza_release(_stanza);
+    _stanza = NULL;
+  }
+  
+  if ( stanza ) {
+    _stanza = xmpp_stanza_clone(stanza);
+  }
 }
 
 
@@ -70,7 +70,7 @@
     xmpp_stanza_t *stanza = xmpp_stanza_get_children(_stanza);
     if ( stanza ) {
       node = [[ABStanza alloc] init];
-      [node setStanza:stanza];
+      [node cloneStanza:stanza];
     }
   }
   return node;
@@ -83,7 +83,7 @@
     xmpp_stanza_t *stanza = xmpp_stanza_get_next(_stanza);
     if ( stanza ) {
       node = [[ABStanza alloc] init];
-      [node setStanza:stanza];
+      [node cloneStanza:stanza];
     }
   }
   return node;
@@ -97,7 +97,7 @@
       xmpp_stanza_t *stanza = xmpp_stanza_get_child_by_name(_stanza, ABCString(name));
       if ( stanza ) {
         node = [[ABStanza alloc] init];
-        [node setStanza:stanza];
+        [node cloneStanza:stanza];
       }
     }
   }
@@ -106,8 +106,8 @@
 
 - (ABStanza *)addChild:(ABStanza *)child
 {
-  if ( (child) && (child.stanza) ) {
-    if ( _stanza ) {
+  if ( _stanza ) {
+    if ( (child) && (child.stanza) ) {
       xmpp_stanza_add_child(_stanza, child.stanza);
     }
   }
@@ -180,6 +180,23 @@
       xmpp_stanza_set_attribute(_stanza, ABCString(attr), ABCString(value));
     }
   }
+}
+
+
+- (NSData *)rawData
+{
+  NSData *data = nil;
+  if ( _stanza ) {
+    char *buffer = NULL;
+    size_t length = 0;
+    if ( xmpp_stanza_to_text(_stanza, &buffer, &length)==XMPP_EOK ) {
+      if ( length>0 ) {
+        data = [[NSData alloc] initWithBytes:buffer length:length];
+      }
+      xmpp_free(_stanza->ctx, buffer);
+    }
+  }
+  return data;
 }
 
 @end

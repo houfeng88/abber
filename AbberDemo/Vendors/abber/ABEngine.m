@@ -17,12 +17,12 @@
 
 + (ABEngine *)sharedObject
 {
-  static ABEngine *Client = nil;
+  static ABEngine *Engine = nil;
   static dispatch_once_t Token;
   dispatch_once(&Token, ^{
-    Client = [[self alloc] init];
+    Engine = [[self alloc] init];
   });
-  return Client;
+  return Engine;
 }
 
 
@@ -173,29 +173,19 @@
   ABStanza *tagStanza = nil;
   if ( (_connection) && (_connection->ctx) ) {
     
-    xmpp_stanza_t *stanza = NULL;
-    
     if ( ABOSNonempty(name) ) {
-      tagStanza = [[ABStanza alloc] init];
       
-      stanza = xmpp_stanza_new(_connection->ctx);
-      tagStanza.stanza = stanza;
-      xmpp_stanza_release(stanza);
+      xmpp_stanza_t *stanza = xmpp_stanza_new(_connection->ctx);
+      tagStanza = [[ABStanza alloc] initWithStanza:stanza];
+      [tagStanza setNodeName:name];
       stanza = NULL;
       
-      [tagStanza setNodeName:name];
-      
       if ( text ) {
-        ABStanza *textStanza = [[ABStanza alloc] init];
-        
         stanza = xmpp_stanza_new(_connection->ctx);
-        textStanza.stanza = stanza;
-        xmpp_stanza_release(stanza);
-        stanza = NULL;
-        
+        ABStanza *textStanza = [[ABStanza alloc] initWithStanza:stanza];
         [textStanza setTextValue:ABOStringOrLater(text, @"")];
-        
         [tagStanza addChild:textStanza];
+        stanza = NULL;
       }
     }
   }

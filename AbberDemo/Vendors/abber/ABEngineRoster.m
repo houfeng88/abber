@@ -52,6 +52,7 @@ int ABRosterPushHandler(xmpp_conn_t * const conn,
   return 1;
 }
 
+
 int ABRosterRequestHandler(xmpp_conn_t * const conn,
                            xmpp_stanza_t * const stanza,
                            void * const userdata)
@@ -61,7 +62,7 @@ int ABRosterRequestHandler(xmpp_conn_t * const conn,
   if ( userdata ) {
     CFDictionaryRef context = userdata;
     ABEngine *engine = [(__bridge NSValue *)CFDictionaryGetValue(context, CFSTR("Engine")) nonretainedObjectValue];
-    ABEngineRequestCompletionHandler handler = CFDictionaryGetValue(context, CFSTR("Handler"));
+    ABEngineCompletionHandler handler = CFDictionaryGetValue(context, CFSTR("Handler"));
     
     
     NSMutableArray *roster = [[NSMutableArray alloc] init];
@@ -118,6 +119,30 @@ int ABRosterRequestHandler(xmpp_conn_t * const conn,
   return 0;
 }
 
+
+int ABRosterAddHandler(xmpp_conn_t * const conn,
+                       xmpp_stanza_t * const stanza,
+                       void * const userdata)
+{
+  return 0;
+}
+
+int ABRosterUpdateHandler(xmpp_conn_t * const conn,
+                          xmpp_stanza_t * const stanza,
+                          void * const userdata)
+{
+  return 0;
+}
+
+int ABRosterRemoveHandler(xmpp_conn_t * const conn,
+                          xmpp_stanza_t * const stanza,
+                          void * const userdata)
+{
+  return 0;
+}
+
+
+
 int ABRosterChangeHandler(xmpp_conn_t * const conn,
                           xmpp_stanza_t * const stanza,
                           void * const userdata)
@@ -127,7 +152,7 @@ int ABRosterChangeHandler(xmpp_conn_t * const conn,
   if ( userdata ) {
     CFDictionaryRef context = userdata;
     ABEngine *engine = [(__bridge NSValue *)CFDictionaryGetValue(context, CFSTR("Engine")) nonretainedObjectValue];
-    ABEngineRequestCompletionHandler handler = CFDictionaryGetValue(context, CFSTR("Handler"));
+    ABEngineCompletionHandler handler = CFDictionaryGetValue(context, CFSTR("Handler"));
     
     
     NSString *jid = nil;
@@ -174,66 +199,80 @@ int ABRosterChangeHandler(xmpp_conn_t * const conn,
 
 @implementation ABEngine (Roster)
 
-- (void)prepareForRosterPush
+- (void)addRosterPushHandler
 {
-  xmpp_handler_add(_connection,
-                   ABRosterPushHandler,
-                   "jabber:iq:roster",
-                   "iq",
-                   "set",
-                   (__bridge void *)self);
+  xmpp_handler_add(_connection, ABRosterPushHandler, "jabber:iq:roster", "iq", "set", (__bridge void *)self);
+}
+
+- (void)removeRosterPushHandler
+{
+  xmpp_handler_delete(_connection, ABRosterPushHandler);
 }
 
 
-- (BOOL)requestRosterWithCompletion:(ABEngineRequestCompletionHandler)handler
+- (void)rosterOperationTimeout:(ABHandlerContext *)context
+{
+  xmpp_id_handler_delete(_connection, context.handler, ABCString(context.identifier));
+  // TODO: ...
+}
+
+
+- (BOOL)requestRosterWithCompletion:(ABEngineCompletionHandler)handler
 {
 //  <iq id='bv1bs71f' type='get'>
 //    <query xmlns='jabber:iq:roster'/>
 //  </iq>
   if ( [self isConnected] ) {
-    NSString *iden = [self makeIdentifier:@"roster_request" suffix:[self account]];
+    NSString *identifier = ABMakeIdentifier(@"ROSTER-REQUEST");
     
-    NSMutableDictionary *context = [[NSMutableDictionary alloc] init];
-    [context setObject:[NSValue valueWithNonretainedObject:self] forKey:@"Engine"];
-    [context setObject:[handler copy] forKeyIfNotNil:@"Handler"];
-    xmpp_id_handler_add(_connection, ABRosterRequestHandler, ABCString(iden), (void *)CFBridgingRetain(context));
+    ABHandlerContext *context = [[ABHandlerContext alloc] init];
+    context.engine = self;
+    context.completionHandler = handler;
+    context.identifier = identifier;
+    context.handler = ABRosterRequestHandler;
+    
+    xmpp_id_handler_add(_connection, ABRosterRequestHandler, ABCString(identifier), (void *)CFBridgingRetain(context));
+    [self performSelector:@selector(rosterOperationTimeout:) withObject:context afterDelay:10.0];
+    
     
     ABStanza *iq = [self makeStanzaWithName:@"iq"];
-    [iq setValue:iden forAttribute:@"id"];
+    [iq setValue:identifier forAttribute:@"id"];
     [iq setValue:@"get" forAttribute:@"type"];
     
     ABStanza *query = [self makeStanzaWithName:@"query"];
     [query setValue:@"jabber:iq:roster" forAttribute:@"xmlns"];
     [iq addChild:query];
     
-    [self sendData:[iq raw]];
+    [self sendData:[iq rawData]];
     
     return YES;
   }
   return NO;
 }
 
-- (BOOL)addContact:(NSString *)jid
-              name:(NSString *)name
-        completion:(ABEngineRequestCompletionHandler)handler
+- (BOOL)addContact:(NSString *)jid name:(NSString *)name completion:(ABEngineCompletionHandler)handler
 {
 //  <iq id='ph1xaz53' type='set'>
 //    <query xmlns='jabber:iq:roster'>
 //      <item jid='nurse@example.com' name='Nurse'/>
 //    </query>
 //  </iq>
-  if ( ABOSNonempty(jid) && ABOSNonempty(name) ) {
+  if ( ABOSNonempty(jid) ) {
     if ( [self isConnected] ) {
-      NSString *iden = [self makeIdentifier:@"roster_add" suffix:[self account]];
+      NSString *identifier = ABMakeIdentifier(@"ROSTER-ADD");
       
-      NSMutableDictionary *context = [[NSMutableDictionary alloc] init];
-      [context setObject:[NSValue valueWithNonretainedObject:self] forKey:@"Engine"];
-      [context setObject:[handler copy] forKeyIfNotNil:@"Handler"];
-      xmpp_id_handler_add(_connection, ABRosterChangeHandler, ABCString(iden), (void *)CFBridgingRetain(context));
+      ABHandlerContext *context = [[ABHandlerContext alloc] init];
+      context.engine = self;
+      context.completionHandler = handler;
+      context.identifier = identifier;
+      context.handler = ABRosterRequestHandler;
+      
+      xmpp_id_handler_add(_connection, ABRosterAddHandler, ABCString(identifier), (void *)CFBridgingRetain(context));
+      [self performSelector:@selector(rosterOperationTimeout:) withObject:context afterDelay:10.0];
       
       
       ABStanza *iq = [self makeStanzaWithName:@"iq"];
-      [iq setValue:iden forAttribute:@"id"];
+      [iq setValue:identifier forAttribute:@"id"];
       [iq setValue:@"set" forAttribute:@"type"];
       
       ABStanza *query = [self makeStanzaWithName:@"query"];
@@ -242,10 +281,12 @@ int ABRosterChangeHandler(xmpp_conn_t * const conn,
       
       ABStanza *item = [self makeStanzaWithName:@"item"];
       [item setValue:jid forAttribute:@"jid"];
-      [item setValue:name forAttribute:@"name"];
+      if ( ABOSNonempty(name) ) {
+        [item setValue:name forAttribute:@"name"];
+      }
       [query addChild:item];
       
-      [self sendData:[iq raw]];
+      [self sendData:[iq rawData]];
       
       return YES;
     }
@@ -253,27 +294,29 @@ int ABRosterChangeHandler(xmpp_conn_t * const conn,
   return NO;
 }
 
-- (BOOL)updateContact:(NSString *)jid
-                 name:(NSString *)name
-           completion:(ABEngineRequestCompletionHandler)handler
+- (BOOL)updateContact:(NSString *)jid name:(NSString *)name completion:(ABEngineCompletionHandler)handler
 {
 //  <iq id='ph1xaz53' type='set'>
 //    <query xmlns='jabber:iq:roster'>
 //      <item jid='nurse@example.com' name='Nurse'/>
 //    </query>
 //  </iq>
-  if ( ABOSNonempty(jid) && ABOSNonempty(name) ) {
+  if ( ABOSNonempty(jid) ) {
     if ( [self isConnected] ) {
-      NSString *iden = [self makeIdentifier:@"roster_update" suffix:[self account]];
+      NSString *identifier = ABMakeIdentifier(@"ROSTER-UPDATE");
       
-      NSMutableDictionary *context = [[NSMutableDictionary alloc] init];
-      [context setObject:[NSValue valueWithNonretainedObject:self] forKey:@"Engine"];
-      [context setObject:[handler copy] forKeyIfNotNil:@"Handler"];
-      xmpp_id_handler_add(_connection, ABRosterChangeHandler, ABCString(iden), (void *)CFBridgingRetain(context));
+      ABHandlerContext *context = [[ABHandlerContext alloc] init];
+      context.engine = self;
+      context.completionHandler = handler;
+      context.identifier = identifier;
+      context.handler = ABRosterRequestHandler;
+      
+      xmpp_id_handler_add(_connection, ABRosterUpdateHandler, ABCString(identifier), (void *)CFBridgingRetain(context));
+      [self performSelector:@selector(rosterOperationTimeout:) withObject:context afterDelay:10.0];
       
       
       ABStanza *iq = [self makeStanzaWithName:@"iq"];
-      [iq setValue:iden forAttribute:@"id"];
+      [iq setValue:identifier forAttribute:@"id"];
       [iq setValue:@"set" forAttribute:@"type"];
       
       ABStanza *query = [self makeStanzaWithName:@"query"];
@@ -282,10 +325,10 @@ int ABRosterChangeHandler(xmpp_conn_t * const conn,
       
       ABStanza *item = [self makeStanzaWithName:@"item"];
       [item setValue:jid forAttribute:@"jid"];
-      [item setValue:name forAttribute:@"name"];
+      [item setValue:ABOStringOrLater(name, @"") forAttribute:@"name"];
       [query addChild:item];
       
-      [self sendData:[iq raw]];
+      [self sendData:[iq rawData]];
       
       return YES;
     }
@@ -293,8 +336,7 @@ int ABRosterChangeHandler(xmpp_conn_t * const conn,
   return NO;
 }
 
-- (BOOL)removeContact:(NSString *)jid
-           completion:(ABEngineRequestCompletionHandler)handler
+- (BOOL)removeContact:(NSString *)jid completion:(ABEngineCompletionHandler)handler
 {
 //  <iq id='hm4hs97y' type='set'>
 //    <query xmlns='jabber:iq:roster'>
@@ -303,16 +345,20 @@ int ABRosterChangeHandler(xmpp_conn_t * const conn,
 //  </iq>
   if ( ABOSNonempty(jid) ) {
     if ( [self isConnected] ) {
-      NSString *iden = [self makeIdentifier:@"roster_remove" suffix:[self account]];
+      NSString *identifier = ABMakeIdentifier(@"ROSTER-REMOVE");
       
-      NSMutableDictionary *context = [[NSMutableDictionary alloc] init];
-      [context setObject:[NSValue valueWithNonretainedObject:self] forKey:@"Engine"];
-      [context setObject:[handler copy] forKeyIfNotNil:@"Handler"];
-      xmpp_id_handler_add(_connection, ABRosterChangeHandler, ABCString(iden), (void *)CFBridgingRetain(context));
+      ABHandlerContext *context = [[ABHandlerContext alloc] init];
+      context.engine = self;
+      context.completionHandler = handler;
+      context.identifier = identifier;
+      context.handler = ABRosterRemoveHandler;
+      
+      xmpp_id_handler_add(_connection, ABRosterRemoveHandler, ABCString(identifier), (void *)CFBridgingRetain(context));
+      [self performSelector:@selector(rosterOperationTimeout:) withObject:context afterDelay:10.0];
       
       
       ABStanza *iq = [self makeStanzaWithName:@"iq"];
-      [iq setValue:iden forAttribute:@"id"];
+      [iq setValue:identifier forAttribute:@"id"];
       [iq setValue:@"set" forAttribute:@"type"];
       
       ABStanza *query = [self makeStanzaWithName:@"query"];
@@ -324,7 +370,7 @@ int ABRosterChangeHandler(xmpp_conn_t * const conn,
       [item setValue:@"remove" forAttribute:@"subscription"];
       [query addChild:item];
       
-      [self sendData:[iq raw]];
+      [self sendData:[iq rawData]];
       
       return YES;
     }
@@ -333,12 +379,13 @@ int ABRosterChangeHandler(xmpp_conn_t * const conn,
 }
 
 
+
 - (void)didReceiveRosterItem:(NSDictionary *)item
 {
   dispatch_sync(dispatch_get_main_queue(), ^{
     NSArray *observerAry = [self observers];
     for ( NSUInteger i=0; i<[observerAry count]; ++i ) {
-      id<ABEngineDelegate> delegate = [observerAry objectAtIndex:i];
+      id<ABEngineRosterDelegate> delegate = [observerAry objectAtIndex:i];
       if ( [delegate respondsToSelector:@selector(engine:didReceiveRosterItem:)] ) {
         [delegate engine:self didReceiveRosterItem:item];
       }
@@ -346,12 +393,13 @@ int ABRosterChangeHandler(xmpp_conn_t * const conn,
   });
 }
 
+
 - (void)didReceiveRoster:(NSArray *)roster error:(NSError *)error
 {
   dispatch_sync(dispatch_get_main_queue(), ^{
     NSArray *observerAry = [self observers];
     for ( NSUInteger i=0; i<[observerAry count]; ++i ) {
-      id<ABEngineDelegate> delegate = [observerAry objectAtIndex:i];
+      id<ABEngineRosterDelegate> delegate = [observerAry objectAtIndex:i];
       if ( [delegate respondsToSelector:@selector(engine:didReceiveRoster:error:)] ) {
         [delegate engine:self didReceiveRoster:roster error:error];
       }
@@ -359,14 +407,40 @@ int ABRosterChangeHandler(xmpp_conn_t * const conn,
   });
 }
 
-- (void)didChangeContact:(NSString *)jid error:(NSError *)error
+- (void)didCompleteAddContact:(NSString *)jid error:(NSError *)error
 {
   dispatch_sync(dispatch_get_main_queue(), ^{
     NSArray *observerAry = [self observers];
     for ( NSUInteger i=0; i<[observerAry count]; ++i ) {
-      id<ABEngineDelegate> delegate = [observerAry objectAtIndex:i];
-      if ( [delegate respondsToSelector:@selector(engine:didChangeContact:error:)] ) {
-        [delegate engine:self didChangeContact:jid error:error];
+      id<ABEngineRosterDelegate> delegate = [observerAry objectAtIndex:i];
+      if ( [delegate respondsToSelector:@selector(engine:didCompleteAddContact:error:)] ) {
+        [delegate engine:self didCompleteAddContact:jid error:error];
+      }
+    }
+  });
+}
+
+- (void)didCompleteUpdateContact:(NSString *)jid error:(NSError *)error
+{
+  dispatch_sync(dispatch_get_main_queue(), ^{
+    NSArray *observerAry = [self observers];
+    for ( NSUInteger i=0; i<[observerAry count]; ++i ) {
+      id<ABEngineRosterDelegate> delegate = [observerAry objectAtIndex:i];
+      if ( [delegate respondsToSelector:@selector(engine:didCompleteUpdateContact:error:)] ) {
+        [delegate engine:self didCompleteUpdateContact:jid error:error];
+      }
+    }
+  });
+}
+
+- (void)didCompleteRemoveContact:(NSString *)jid error:(NSError *)error
+{
+  dispatch_sync(dispatch_get_main_queue(), ^{
+    NSArray *observerAry = [self observers];
+    for ( NSUInteger i=0; i<[observerAry count]; ++i ) {
+      id<ABEngineRosterDelegate> delegate = [observerAry objectAtIndex:i];
+      if ( [delegate respondsToSelector:@selector(engine:didCompleteRemoveContact:error:)] ) {
+        [delegate engine:self didCompleteRemoveContact:jid error:error];
       }
     }
   });

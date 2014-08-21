@@ -15,6 +15,7 @@
 		0A6E550C199F7A93004BD577 /* ABFindViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6E550B199F7A93004BD577 /* ABFindViewController.m */; };
 		0A6E550F199F7A9F004BD577 /* ABMoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6E550E199F7A9F004BD577 /* ABMoreViewController.m */; };
 		232CF7021999D9A0004A5AA2 /* ABEnginePresence.m in Sources */ = {isa = PBXBuildFile; fileRef = 232CF7011999D9A0004A5AA2 /* ABEnginePresence.m */; };
+		237AAD8819A5D1CB00BC4E05 /* ABHandlerContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 237AAD8719A5D1CB00BC4E05 /* ABHandlerContext.m */; };
 		23A44CF319A1A05B00EC8301 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 23A44CF219A1A05B00EC8301 /* libsqlite3.dylib */; };
 		23C4BC54199DB23F006E796C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C4BC53199DB23F006E796C /* QuartzCore.framework */; };
 		23C4BC64199DD17E006E796C /* btn_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C4BC60199DD17E006E796C /* btn_back.png */; };
@@ -107,6 +108,8 @@
 		0A6E550E199F7A9F004BD577 /* ABMoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABMoreViewController.m; sourceTree = "<group>"; };
 		232CF7001999D9A0004A5AA2 /* ABEnginePresence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEnginePresence.h; sourceTree = "<group>"; };
 		232CF7011999D9A0004A5AA2 /* ABEnginePresence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABEnginePresence.m; sourceTree = "<group>"; };
+		237AAD8619A5D1CB00BC4E05 /* ABHandlerContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABHandlerContext.h; sourceTree = "<group>"; };
+		237AAD8719A5D1CB00BC4E05 /* ABHandlerContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABHandlerContext.m; sourceTree = "<group>"; };
 		23A44CF219A1A05B00EC8301 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		23C4BC53199DB23F006E796C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		23C4BC55199DB2B8006E796C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -715,6 +718,8 @@
 				0A5BAE6E1991382E001EF07E /* ABEngine.h */,
 				0A5BAE6F1991382E001EF07E /* ABEngine.m */,
 				23F6C1DB1990AC3E005D2ED7 /* ABConfig.h */,
+				237AAD8619A5D1CB00BC4E05 /* ABHandlerContext.h */,
+				237AAD8719A5D1CB00BC4E05 /* ABHandlerContext.m */,
 				23C5473B1994C0E900B4C0F7 /* ABEngineConnection.h */,
 				23C5473C1994C0E900B4C0F7 /* ABEngineConnection.m */,
 				23C547321994BDE900B4C0F7 /* ABEngineRoster.h */,
@@ -864,6 +869,7 @@
 				23C5473D1994C0E900B4C0F7 /* ABEngineConnection.m in Sources */,
 				23F6C1D11990A993005D2ED7 /* parser.c in Sources */,
 				23F6C1D91990A993005D2ED7 /* util.c in Sources */,
+				237AAD8819A5D1CB00BC4E05 /* ABHandlerContext.m in Sources */,
 				23F6C1D01990A993005D2ED7 /* oostanza.cpp in Sources */,
 				0A5BAE701991382E001EF07E /* ABEngine.m in Sources */,
 				23F6C1CA1990A993005D2ED7 /* event.c in Sources */,

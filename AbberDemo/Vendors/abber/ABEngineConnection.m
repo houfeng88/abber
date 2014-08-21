@@ -65,7 +65,7 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
   dispatch_sync(dispatch_get_main_queue(), ^{
     NSArray *observerAry = [self observers];
     for ( NSUInteger i=0; i<[observerAry count]; ++i ) {
-      id<ABEngineDelegate> delegate = [observerAry objectAtIndex:i];
+      id<ABEngineConnectionDelegate> delegate = [observerAry objectAtIndex:i];
       if ( [delegate respondsToSelector:@selector(engineDidStartConnecting:)] ) {
         [delegate engineDidStartConnecting:self];
       }
@@ -78,7 +78,7 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
   dispatch_sync(dispatch_get_main_queue(), ^{
     NSArray *observerAry = [self observers];
     for ( NSUInteger i=0; i<[observerAry count]; ++i ) {
-      id<ABEngineDelegate> delegate = [observerAry objectAtIndex:i];
+      id<ABEngineConnectionDelegate> delegate = [observerAry objectAtIndex:i];
       if ( [delegate respondsToSelector:@selector(engine:didReceiveConnectStatus:)] ) {
         [delegate engine:self didReceiveConnectStatus:status];
       }
@@ -91,7 +91,7 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
   dispatch_sync(dispatch_get_main_queue(), ^{
     NSArray *observerAry = [self observers];
     for ( NSUInteger i=0; i<[observerAry count]; ++i ) {
-      id<ABEngineDelegate> delegate = [observerAry objectAtIndex:i];
+      id<ABEngineConnectionDelegate> delegate = [observerAry objectAtIndex:i];
       if ( [delegate respondsToSelector:@selector(engineDidDisconnected:)] ) {
         [delegate engineDidDisconnected:self];
       }

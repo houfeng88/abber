@@ -10,7 +10,7 @@
 #import "ABCommon.h"
 #import "ABStanza.h"
 
-typedef void (^ABEngineRequestCompletionHandler)(id result, NSError *error);
+typedef void (^ABEngineCompletionHandler)(id result, NSError *error);
 
 typedef enum {
   ABEngineStateDisconnected = 0,
@@ -50,21 +50,5 @@ typedef enum {
 
 - (void)sendData:(NSData *)data;
 - (void)sendString:(NSString *)string;
-
-@end
-
-
-@protocol ABEngineDelegate <NSObject>
-@optional
-
-- (void)engineDidStartConnecting:(ABEngine *)engine;
-- (void)engine:(ABEngine *)engine didReceiveConnectStatus:(BOOL)status;
-- (void)engineDidDisconnected:(ABEngine *)engine;
-
-
-// { @"ask":@"__", @"jid":@"__", @"name":@"__", @"subscription":@"__" }
-- (void)engine:(ABEngine *)engine didReceiveRosterItem:(NSDictionary *)item;
-- (void)engine:(ABEngine *)engine didReceiveRoster:(NSArray *)roster error:(NSError *)error;
-- (void)engine:(ABEngine *)engine didChangeContact:(NSString *)jid error:(NSError *)error;
 
 @end

@@ -12,11 +12,11 @@
 
 @interface ABEngine (Vcard)
 
-- (void)requestVcard:(NSString *)jid completion:(ABEngineRequestCompletionHandler)handler;
+- (void)requestVcard:(NSString *)jid completion:(ABEngineCompletionHandler)handler;
 
 - (void)updateVcardWithNickname:(NSString *)nickname
                          avatar:(NSData *)avatar
                            desc:(NSDictionary *)desc
-                     completion:(ABEngineRequestCompletionHandler)handler;
+                     completion:(ABEngineCompletionHandler)handler;
 
 @end

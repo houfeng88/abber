@@ -63,11 +63,11 @@ NSString *ABMakeIdentifier(NSString *domain)
   if ( ABOSNonempty(domain) ) {
     identifier = [[NSMutableString alloc] init];
     
-    [(NSMutableString *)identifier appendString:[domain uppercaseString]];
+    [(NSMutableString *)identifier appendString:domain];
     
     [(NSMutableString *)identifier appendString:@"-"];
     
-    [(NSMutableString *)identifier appendString:[[NSString UUIDString] uppercaseString]];
+    [(NSMutableString *)identifier appendString:[NSString UUIDString]];
   }
   return identifier;
 }

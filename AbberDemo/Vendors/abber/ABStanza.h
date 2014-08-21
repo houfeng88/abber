@@ -13,9 +13,11 @@
   xmpp_stanza_t *_stanza;
 }
 
-@property (nonatomic, assign) xmpp_stanza_t *stanza;
+- (id)initWithStanza:(xmpp_stanza_t *)stanza;
 
-- (NSData *)raw;
+- (xmpp_stanza_t *)stanza;
+- (void)copyStanza:(xmpp_stanza_t *)stanza;
+- (void)cloneStanza:(xmpp_stanza_t *)stanza;
 
 - (ABStanza *)firstChild;
 - (ABStanza *)nextSibling;
@@ -30,5 +32,7 @@
 
 - (NSString *)valueForAttribute:(NSString *)attr;
 - (void)setValue:(NSString *)value forAttribute:(NSString *)attr;
+
+- (NSData *)rawData;
 
 @end

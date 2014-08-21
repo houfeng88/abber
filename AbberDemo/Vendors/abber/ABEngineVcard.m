@@ -14,7 +14,7 @@ int ABVcardRequestHandler(xmpp_conn_t * const conn,
 {
   DDLogCDebug(@"vCard request complete.");
 //  NSDictionary *map = CFBridgingRelease(userdata);
-//  //ABEngineRequestCompletionHandler handler = [map objectForKey:@"handler"];
+//  //ABEngineCompletionHandler handler = [map objectForKey:@"handler"];
 //  //ABEngine *engine = [map objectForKey:@"engine"];
 //  ABObject *obj = [map objectForKey:@"object"];
   
@@ -38,14 +38,14 @@ int ABVcardUpdateHandler(xmpp_conn_t * const conn,
 
 @implementation ABEngine (Vcard)
 
-- (void)requestVcard:(NSString *)jid completion:(ABEngineRequestCompletionHandler)handler
+- (void)requestVcard:(NSString *)jid completion:(ABEngineCompletionHandler)handler
 {
 //  <iq from='stpeter@jabber.org/roundabout' id='v1' type='get'>
 //    <vCard xmlns='vcard-temp'/>
 //  </iq>
   
   if ( [self isConnected] ) {
-    NSString *iden = [self makeIdentifier:@"vcard_request" suffix:[self account]];
+    NSString *iden = [NSString UUIDString];
     
     NSMutableDictionary *context = [[NSMutableDictionary alloc] init];
     [context setObject:[NSValue valueWithNonretainedObject:self] forKey:@"Engine"];
@@ -62,14 +62,14 @@ int ABVcardUpdateHandler(xmpp_conn_t * const conn,
     [vcard setValue:@"vcard-temp" forAttribute:@"xmlns"];
     [iq addChild:vcard];
     
-    [self sendData:[iq raw]];
+    //[self sendData:[iq data]];
   }
 }
 
 - (void)updateVcardWithNickname:(NSString *)nickname
                          avatar:(NSData *)avatar
                            desc:(NSDictionary *)desc
-                     completion:(ABEngineRequestCompletionHandler)handler
+                     completion:(ABEngineCompletionHandler)handler
 {
 //  <iq id='v2' type='set'>
 //    <vCard xmlns='vcard-temp'>
@@ -83,7 +83,7 @@ int ABVcardUpdateHandler(xmpp_conn_t * const conn,
 //  </iq>
   
   if ( [self isConnected] ) {
-    NSString *iden = [self makeIdentifier:@"vcard_update" suffix:[self account]];
+    NSString *iden = [NSString UUIDString];
     
     NSMutableDictionary *context = [[NSMutableDictionary alloc] init];
     [context setObject:[NSValue valueWithNonretainedObject:self] forKey:@"Engine"];
@@ -106,23 +106,23 @@ int ABVcardUpdateHandler(xmpp_conn_t * const conn,
       [vcard addChild:nm];
     }
     
-    if ( [avatar length]>0 ) {
-    }
-    
-    if ( [desc count]>0 ) {
-      NSData *data = [NSJSONSerialization dataWithJSONObject:desc
-                                                     options:0
-                                                       error:NULL];
-      NSString *encoded = [data base64EncodedStringWithOptions:<#(NSDataBase64EncodingOptions)#>];
-    }
-    
-    ABStanza *ds = [self makeStanzaWithName:@"DESC"];
-    [vcard addChild:ds];
-    ABStanza *dsbody = [self makeStanzaWithName:nil];
-    [dsbody setTextValue:ABOStringOrLater(desc, @"")];
-    [ds addChild:dsbody];
-    
-    [self sendData:[iq raw]];
+//    if ( [avatar length]>0 ) {
+//    }
+//    
+//    if ( [desc count]>0 ) {
+//      NSData *data = [NSJSONSerialization dataWithJSONObject:desc
+//                                                     options:0
+//                                                       error:NULL];
+//      NSString *encoded = [data base64EncodedStringWithOptions:<#(NSDataBase64EncodingOptions)#>];
+//    }
+//    
+//    ABStanza *ds = [self makeStanzaWithName:@"DESC"];
+//    [vcard addChild:ds];
+//    ABStanza *dsbody = [self makeStanzaWithName:nil];
+//    [dsbody setTextValue:ABOStringOrLater(desc, @"")];
+//    [ds addChild:dsbody];
+//    
+//    [self sendData:[iq raw]];
   }
 }
 

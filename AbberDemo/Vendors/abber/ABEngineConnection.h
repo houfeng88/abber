@@ -14,11 +14,18 @@
 
 - (void)connectAndRun:(xmpp_conn_t *)connection;
 
-
 - (void)didStartConnecting;
-
 - (void)didReceiveConnectStatus:(BOOL)status;
-
 - (void)didDisconnected;
+
+@end
+
+
+@protocol ABEngineConnectionDelegate <NSObject>
+@optional
+
+- (void)engineDidStartConnecting:(ABEngine *)engine;
+- (void)engine:(ABEngine *)engine didReceiveConnectStatus:(BOOL)status;
+- (void)engineDidDisconnected:(ABEngine *)engine;
 
 @end
