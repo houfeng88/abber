@@ -20,4 +20,6 @@
 #define ABOStringOrLater(_a_, _b_) (([(_a_) length]>0)?(_a_):(_b_))
 
 
+void ABConfigDatabase(NSString *jid);
+
 NSString *ABMakeIdentifier(NSString *domain);

@@ -7,22 +7,6 @@
 //
 
 #import "TKDatabase.h"
-#import "TKCommon.h"
-#import "NSArrayAdditions.h"
-#import "NSStringAdditions.h"
-
-#define BuildParameterAry(_box_, _stt_, _cnt_) \
-if ( (_cnt_)>0 ) { \
-  (_box_) = [[NSMutableArray alloc] init]; \
-  va_list lst; \
-  va_start(lst, (_stt_)); \
-  for ( NSUInteger i=0; i<(_cnt_); ++i ) { \
-    id obj = va_arg(lst, id); \
-    if ( !obj ) { obj = [NSNull null]; } \
-    [(_box_) addObject:obj]; \
-  } \
-  va_end(lst); \
-}
 
 @implementation TKDatabase
 
@@ -87,7 +71,7 @@ static TKDatabase *Database = nil;
 
 - (BOOL)hasTableNamed:(NSString *)name
 {
-  if ( [name length]>0 ) {
+  if ( TKSNonempty(name) ) {
     if ( [self open] ) {
       NSString *sql = @"SELECT COUNT(*) AS count FROM sqlite_master WHERE type='table' AND name=?;";
       TKDatabaseRow *row = [[self executeQuery:sql, name] firstObject];
@@ -97,54 +81,45 @@ static TKDatabase *Database = nil;
   return NO;
 }
 
-- (BOOL)hasRowForSQLStatement:(NSString *)sql
-{
-  if ( [sql length]>0 ) {
-    if ( [self open] ) {
-      return ( [[self executeQuery:sql] count]>0 );
-    }
-  }
-  return NO;
-}
-
 
 - (BOOL)executeUpdate:(NSString *)sql, ...
 {
-  if ( [sql length]<=0 ) {
-    return NO;
-  }
-  
-  if ( !_opened ) {
-    return NO;
-  }
-  
-  
   BOOL result = NO;
   
-  [_lock lock];
-  
-  sqlite3_stmt *statement = NULL;
-  
-  if ( sqlite3_prepare(_handle, [sql UTF8String], -1, &statement, 0)==SQLITE_OK ) {
-    
-    NSMutableArray *parameterAry = nil;
-    NSUInteger parameterCount = [sql occurTimesOfCharacter:'?'];
-    
-    BuildParameterAry(parameterAry, sql, parameterCount);
-    
-    if ( [self bindStatement:statement withParameters:parameterAry] ) {
+  if ( TKSNonempty(sql) ) {
+    if ( _opened ) {
+      [_lock lock];
       
-      sqlite3_step(statement);
+      sqlite3_stmt *statement = NULL;
       
-      if ( sqlite3_finalize(statement)==SQLITE_OK ) {
-        result = YES;
+      if ( sqlite3_prepare(_handle, [sql UTF8String], -1, &statement, 0)==SQLITE_OK ) {
+        
+        NSUInteger parameterCount = [[sql componentsSeparatedByString:@"?"] count] - 1;
+        
+        NSMutableArray *parameterAry = [[NSMutableArray alloc] init];
+        va_list list;
+        va_start(list, sql);
+        for ( NSUInteger i=0; i<parameterCount; ++i ) {
+          id object = va_arg(list, id);
+          [parameterAry addObject:TKObjOrLater(object, [NSNull null])];
+        }
+        va_end(list);
+        
+        if ( [self bindStatement:statement withParameters:parameterAry] ) {
+          
+          sqlite3_step(statement);
+          
+          if ( sqlite3_finalize(statement)==SQLITE_OK ) {
+            result = YES;
+          }
+          
+        }
+        
       }
       
+      [_lock unlock];
     }
-    
   }
-  
-  [_lock unlock];
   
   return result;
 }
@@ -152,108 +127,107 @@ static TKDatabase *Database = nil;
 
 - (NSArray *)executeQuery:(NSString *)sql, ...
 {
-  if ( [sql length]<=0 ) {
-    return NO;
-  }
-  
-  if ( !_opened ) {
-    return NO;
-  }
-  
-  
   NSArray *result = nil;
   
-  [_lock lock];
-  
-  sqlite3_stmt *statement = NULL;
-  
-  if ( sqlite3_prepare(_handle, [sql UTF8String], -1, &statement, 0)==SQLITE_OK ) {
-    
-    NSMutableArray *parameterAry = nil;
-    NSUInteger parameterCount = [sql occurTimesOfCharacter:'?'];
-    
-    BuildParameterAry(parameterAry, sql, parameterCount);
-    
-    if ( [self bindStatement:statement withParameters:parameterAry] ) {
+  if ( TKSNonempty(sql) ) {
+    if ( _opened ) {
+      [_lock lock];
       
-      int columnCount = sqlite3_column_count(statement);
+      sqlite3_stmt *statement = NULL;
       
-      
-      NSMutableArray *nameAry = [[NSMutableArray alloc] init];
-      NSMutableArray *typeAry = [[NSMutableArray alloc] init];
-      
-      for ( int i=0; i<columnCount; ++i ) {
-        const char *cname = sqlite3_column_name(statement, i);
-        if ( cname ) {
-          NSString *name = [[NSString alloc] initWithUTF8String:cname];
-          [nameAry addObject:name];
-        } else {
-          NSString *name = [[NSString alloc] initWithFormat:@"%d", i];
-          [nameAry addObject:name];
+      if ( sqlite3_prepare(_handle, [sql UTF8String], -1, &statement, 0)==SQLITE_OK ) {
+        
+        NSUInteger parameterCount = [[sql componentsSeparatedByString:@"?"] count] - 1;
+        
+        NSMutableArray *parameterAry = [[NSMutableArray alloc] init];
+        va_list list;
+        va_start(list, sql);
+        for ( NSUInteger i=0; i<parameterCount; ++i ) {
+          id object = va_arg(list, id);
+          [parameterAry addObject:TKObjOrLater(object, [NSNull null])];
         }
+        va_end(list);
         
-        const char *ctype = sqlite3_column_decltype(statement, i);
-        if ( ctype ) {
-          NSString *type = [[NSString alloc] initWithUTF8String:ctype];
-          [typeAry addObject:type];
-        } else {
-          [typeAry addObject:@""];
-        }
-      }
-      
-      
-      NSMutableArray *rowAry = [[NSMutableArray alloc] init];
-      
-      while ( sqlite3_step(statement)==SQLITE_ROW ) {
-        
-        TKDatabaseRow *row = [[TKDatabaseRow alloc] init];
-        row.nameAry = nameAry;
-        row.typeAry = typeAry;
-        [rowAry addObject:row];
-        
-        NSMutableArray *valueAry = [[NSMutableArray alloc] init];
-        row.valueAry = valueAry;
-        
-        for ( int i=0; i<columnCount; ++i ) {
+        if ( [self bindStatement:statement withParameters:parameterAry] ) {
           
-          id object = [NSNull null];
-          if ( sqlite3_column_blob(statement, i) ) {
-            
-            NSString *type = [[typeAry objectAtIndex:i] uppercaseString];
-            
-            if ( [type isEqualToString:@"INTEGER"] ) {
-              sqlite3_int64 value = sqlite3_column_int64(statement, i);
-              object = [[NSNumber alloc] initWithLongLong:value];
-            } else if ( [type isEqualToString:@"REAL"] ) {
-              double value = sqlite3_column_double(statement, i);
-              object = [[NSNumber alloc] initWithDouble:value];
-            } else if ( [type isEqualToString:@"BLOB"] ) {
-              const void *value = sqlite3_column_blob(statement, i);
-              int size = sqlite3_column_bytes(statement, i);
-              object = [[NSMutableData alloc] initWithLength:size];
-              memcpy([object mutableBytes], value, size);
+          int columnCount = sqlite3_column_count(statement);
+          
+          
+          NSMutableArray *nameAry = [[NSMutableArray alloc] init];
+          NSMutableArray *typeAry = [[NSMutableArray alloc] init];
+          
+          for ( int i=0; i<columnCount; ++i ) {
+            const char *cname = sqlite3_column_name(statement, i);
+            if ( cname ) {
+              NSString *name = [[NSString alloc] initWithUTF8String:cname];
+              [nameAry addObject:name];
             } else {
-              const unsigned char *value = sqlite3_column_text(statement, i);
-              object = [[NSString alloc] initWithFormat:@"%s", value];
+              NSString *name = [[NSString alloc] initWithFormat:@"%d", i];
+              [nameAry addObject:name];
             }
             
+            const char *ctype = sqlite3_column_decltype(statement, i);
+            if ( ctype ) {
+              NSString *type = [[NSString alloc] initWithUTF8String:ctype];
+              [typeAry addObject:type];
+            } else {
+              [typeAry addObject:@""];
+            }
           }
-          [valueAry addObject:object];
+          
+          
+          NSMutableArray *rowAry = [[NSMutableArray alloc] init];
+          
+          while ( sqlite3_step(statement)==SQLITE_ROW ) {
+            
+            TKDatabaseRow *row = [[TKDatabaseRow alloc] init];
+            row.nameAry = nameAry;
+            row.typeAry = typeAry;
+            [rowAry addObject:row];
+            
+            NSMutableArray *valueAry = [[NSMutableArray alloc] init];
+            row.valueAry = valueAry;
+            
+            for ( int i=0; i<columnCount; ++i ) {
+              
+              id object = [NSNull null];
+              if ( sqlite3_column_blob(statement, i) ) {
+                
+                NSString *type = [[typeAry objectAtIndex:i] uppercaseString];
+                
+                if ( [type isEqualToString:@"INTEGER"] ) {
+                  sqlite3_int64 value = sqlite3_column_int64(statement, i);
+                  object = [[NSNumber alloc] initWithLongLong:value];
+                } else if ( [type isEqualToString:@"REAL"] ) {
+                  double value = sqlite3_column_double(statement, i);
+                  object = [[NSNumber alloc] initWithDouble:value];
+                } else if ( [type isEqualToString:@"BLOB"] ) {
+                  const void *value = sqlite3_column_blob(statement, i);
+                  int size = sqlite3_column_bytes(statement, i);
+                  object = [[NSMutableData alloc] initWithLength:size];
+                  memcpy([object mutableBytes], value, size);
+                } else {
+                  const unsigned char *value = sqlite3_column_text(statement, i);
+                  object = [[NSString alloc] initWithFormat:@"%s", value];
+                }
+                
+              }
+              [valueAry addObject:object];
+              
+            }
+          }
+          
+          if ( sqlite3_finalize(statement)==SQLITE_OK ) {
+            result = TKAryOrLater(rowAry, nil);
+          }
           
         }
+        
       }
       
-      if ( sqlite3_finalize(statement)==SQLITE_OK ) {
-        if ( [rowAry count]>0 ) {
-          result = rowAry;
-        }
-      }
-      
+      [_lock unlock];
     }
-    
   }
-  
-  [_lock unlock];
   
   return result;
 }
@@ -318,7 +292,7 @@ static TKDatabase *Database = nil;
 {
   NSUInteger idx = [_nameAry indexOfObject:name];
   id object = [_valueAry objectOrNilAtIndex:idx];
-  if ( TKIsInstance(object, [NSNumber class]) ) {
+  if ( [object isKindOfClass:[NSNumber class]] ) {
     return ( [object intValue]!=0 );
   }
   return NO;
@@ -328,7 +302,7 @@ static TKDatabase *Database = nil;
 {
   NSUInteger idx = [_nameAry indexOfObject:name];
   id object = [_valueAry objectOrNilAtIndex:idx];
-  if ( TKIsInstance(object, [NSNumber class]) ) {
+  if ( [object isKindOfClass:[NSNumber class]] ) {
     return [object intValue];
   }
   return 0;
@@ -338,7 +312,7 @@ static TKDatabase *Database = nil;
 {
   NSUInteger idx = [_nameAry indexOfObject:name];
   id object = [_valueAry objectOrNilAtIndex:idx];
-  if ( TKIsInstance(object, [NSNumber class]) ) {
+  if ( [object isKindOfClass:[NSNumber class]] ) {
     return [object longLongValue];
   }
   return 0;
@@ -348,7 +322,7 @@ static TKDatabase *Database = nil;
 {
   NSUInteger idx = [_nameAry indexOfObject:name];
   id object = [_valueAry objectOrNilAtIndex:idx];
-  if ( TKIsInstance(object, [NSNumber class]) ) {
+  if ( [object isKindOfClass:[NSNumber class]] ) {
     return [object doubleValue];
   }
   return 0.0;
@@ -358,7 +332,7 @@ static TKDatabase *Database = nil;
 {
   NSUInteger idx = [_nameAry indexOfObject:name];
   id object = [_valueAry objectOrNilAtIndex:idx];
-  if ( TKIsInstance(object, [NSString class]) ) {
+  if ( [object isKindOfClass:[NSString class]] ) {
     return TKInternetDateObject(object);
   }
   return nil;
@@ -368,7 +342,7 @@ static TKDatabase *Database = nil;
 {
   NSUInteger idx = [_nameAry indexOfObject:name];
   id object = [_valueAry objectOrNilAtIndex:idx];
-  if ( TKIsInstance(object, [NSString class]) ) {
+  if ( [object isKindOfClass:[NSString class]] ) {
     return object;
   }
   return nil;
@@ -378,7 +352,7 @@ static TKDatabase *Database = nil;
 {
   NSUInteger idx = [_nameAry indexOfObject:name];
   id object = [_valueAry objectOrNilAtIndex:idx];
-  if ( TKIsInstance(object, [NSData class]) ) {
+  if ( [object isKindOfClass:[NSData class]] ) {
     return object;
   }
   return nil;

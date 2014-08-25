@@ -45,7 +45,7 @@ int ABVcardUpdateHandler(xmpp_conn_t * const conn,
 //  </iq>
   
   if ( [self isConnected] ) {
-    NSString *iden = [NSString UUIDString];
+    NSString *iden = [[NSUUID UUID] UUIDString];
     
     NSMutableDictionary *context = [[NSMutableDictionary alloc] init];
     [context setObject:[NSValue valueWithNonretainedObject:self] forKey:@"Engine"];
@@ -83,7 +83,7 @@ int ABVcardUpdateHandler(xmpp_conn_t * const conn,
 //  </iq>
   
   if ( [self isConnected] ) {
-    NSString *iden = [NSString UUIDString];
+    NSString *iden = [[NSUUID UUID] UUIDString];
     
     NSMutableDictionary *context = [[NSMutableDictionary alloc] init];
     [context setObject:[NSValue valueWithNonretainedObject:self] forKey:@"Engine"];

@@ -54,7 +54,8 @@
 
 - (void)configTapkit
 {
-  TKSettings *settings = [[TKSettings alloc] initWithName:@"AppSettings.xml"];
+  NSString *path = TKPathForDocumentResource(@"AppSettings.xml");
+  TKSettings *settings = [[TKSettings alloc] initWithPath:path];
   [TKSettings saveObject:settings];
 }
 

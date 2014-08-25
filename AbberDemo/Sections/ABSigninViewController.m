@@ -7,7 +7,7 @@
 //
 
 #import "ABSigninViewController.h"
-#import "ABSigninCell.h"
+#import "General/ABInputCell.h"
 
 #import "ABRootViewController.h"
 
@@ -62,7 +62,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  ABSigninCell *cell = (ABSigninCell *)[tableView dequeueReusableCellWithClass:[ABSigninCell class]];
+  ABInputCell *cell = (ABInputCell *)[tableView dequeueReusableCellWithClass:[ABInputCell class]];
   if ( indexPath.row==0 ) {
     cell.titleLabel.text = NSLocalizedString(@"Account:", @"");
     cell.valueField.text = [[TKSettings sharedObject] objectForKey:@"ABSavedAccountKey"];
