@@ -52,6 +52,7 @@ static TKDatabase *Database = nil;
   
   int code = sqlite3_open([_path fileSystemRepresentation], &_handle);
   _opened = ( code==SQLITE_OK );
+  
   return _opened;
 }
 
@@ -72,7 +73,7 @@ static TKDatabase *Database = nil;
 - (BOOL)hasTableNamed:(NSString *)name
 {
   if ( TKSNonempty(name) ) {
-    if ( [self open] ) {
+    if ( _opened ) {
       NSString *sql = @"SELECT COUNT(*) AS count FROM sqlite_master WHERE type='table' AND name=?;";
       TKDatabaseRow *row = [[self executeQuery:sql, name] firstObject];
       return ( [[row stringForName:@"count"] integerValue]>0 );
@@ -97,8 +98,8 @@ static TKDatabase *Database = nil;
         NSUInteger parameterCount = [[sql componentsSeparatedByString:@"?"] count] - 1;
         
         NSMutableArray *parameterAry = [[NSMutableArray alloc] init];
-        va_list list;
-        va_start(list, sql);
+        
+        va_list list; va_start(list, sql);
         for ( NSUInteger i=0; i<parameterCount; ++i ) {
           id object = va_arg(list, id);
           [parameterAry addObject:TKObjOrLater(object, [NSNull null])];
@@ -140,8 +141,8 @@ static TKDatabase *Database = nil;
         NSUInteger parameterCount = [[sql componentsSeparatedByString:@"?"] count] - 1;
         
         NSMutableArray *parameterAry = [[NSMutableArray alloc] init];
-        va_list list;
-        va_start(list, sql);
+        
+        va_list list; va_start(list, sql);
         for ( NSUInteger i=0; i<parameterCount; ++i ) {
           id object = va_arg(list, id);
           [parameterAry addObject:TKObjOrLater(object, [NSNull null])];
