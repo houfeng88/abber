@@ -15,8 +15,6 @@
   #import <UIKit/UIKit.h>
   #import <Foundation/Foundation.h>
 
-  #import <tapkit/tapkit.h>
-
   #import <CocoaLumberjack/DDLog.h>
   #import <CocoaLumberjack/DDTTYLogger.h>
   #import <CocoaLumberjack/DDFileLogger.h>
@@ -27,6 +25,8 @@
   #endif
 
   #import <libextobjc/extobjc.h>
+  #import <FMDB/FMDB.h>
+  #import <tapkit/tapkit.h>
 
   #import "Helpers/Helpers.h"
 

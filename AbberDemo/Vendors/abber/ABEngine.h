@@ -24,6 +24,8 @@ typedef enum {
   xmpp_conn_t *_connection;
   dispatch_queue_t _runLoopQueue;
   
+  FMDatabase *_database;
+  
   NSMutableArray *_observerAry;
 }
 
