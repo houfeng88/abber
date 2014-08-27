@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <FMDB/FMDB.h>
 #import "ABCommon.h"
 #import "ABStanza.h"
 
@@ -17,6 +18,7 @@ typedef enum {
   ABEngineStateConnecting   = 1,
   ABEngineStateConnected    = 2
 } ABEngineState;
+
 
 @interface ABEngine : NSObject<
     TKObserving
