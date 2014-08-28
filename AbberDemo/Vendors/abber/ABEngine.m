@@ -173,7 +173,7 @@
   ABStanza *tagStanza = nil;
   if ( (_connection) && (_connection->ctx) ) {
     
-    if ( ABOSNonempty(name) ) {
+    if ( TKSNonempty(name) ) {
       
       xmpp_stanza_t *stanza = xmpp_stanza_new(_connection->ctx);
       tagStanza = [[ABStanza alloc] initWithStanza:stanza];
@@ -196,11 +196,9 @@
 - (void)sendData:(NSData *)data
 {
   if ( [self isConnected] ) {
-    if ( [data length]>0 ) {
-      dispatch_sync(_runLoopQueue, ^{
-        xmpp_send_raw(_connection, [data bytes], [data length]);
-        xmpp_debug(_connection->ctx, "conn", "SENT: %s", [data bytes]);
-      });
+    if ( TKDNonempty(data) ) {
+      xmpp_send_raw(_connection, [data bytes], [data length]);
+      xmpp_debug(_connection->ctx, "conn", "SENT: %s", [data bytes]);
     }
   }
 }
@@ -208,11 +206,9 @@
 - (void)sendString:(NSString *)string
 {
   if ( [self isConnected] ) {
-    if ( [string length]>0 ) {
-      dispatch_sync(_runLoopQueue, ^{
-        xmpp_send_raw(_connection, [string UTF8String], [string lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);
-        xmpp_debug(_connection->ctx, "conn", "SENT: %s", [string UTF8String]);
-      });
+    if ( TKSNonempty(string) ) {
+      xmpp_send_raw(_connection, [string UTF8String], [string lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);
+      xmpp_debug(_connection->ctx, "conn", "SENT: %s", [string UTF8String]);
     }
   }
 }
