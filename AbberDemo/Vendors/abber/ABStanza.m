@@ -94,7 +94,7 @@
   ABStanza *node = nil;
   if ( _stanza ) {
     if ( ABOSNonempty(name) ) {
-      xmpp_stanza_t *stanza = xmpp_stanza_get_child_by_name(_stanza, ABCString(name));
+      xmpp_stanza_t *stanza = xmpp_stanza_get_child_by_name(_stanza, TKCString(name));
       if ( stanza ) {
         node = [[ABStanza alloc] init];
         [node cloneStanza:stanza];
@@ -131,7 +131,7 @@
 {
   if ( _stanza ) {
     if ( ABOSNonempty(name) ) {
-      xmpp_stanza_set_name(_stanza, ABCString(name));
+      xmpp_stanza_set_name(_stanza, TKCString(name));
     }
   }
 }
@@ -153,7 +153,7 @@
 {
   if ( _stanza ) {
     if ( text ) {
-      xmpp_stanza_set_text(_stanza, ABCString(text));
+      xmpp_stanza_set_text(_stanza, TKCString(text));
     }
   }
 }
@@ -164,7 +164,7 @@
   NSString *value = nil;
   if ( _stanza ) {
     if ( ABOSNonempty(attr) ) {
-      char *string = xmpp_stanza_get_attribute(_stanza, ABCString(attr));
+      char *string = xmpp_stanza_get_attribute(_stanza, TKCString(attr));
       if ( string ) {
         value = [[NSString alloc] initWithUTF8String:string];
       }
@@ -177,7 +177,7 @@
 {
   if ( _stanza ) {
     if ( (value) && ABOSNonempty(attr) ) {
-      xmpp_stanza_set_attribute(_stanza, ABCString(attr), ABCString(value));
+      xmpp_stanza_set_attribute(_stanza, TKCString(attr), TKCString(value));
     }
   }
 }

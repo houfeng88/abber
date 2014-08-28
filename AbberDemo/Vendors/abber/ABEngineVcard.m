@@ -50,13 +50,13 @@ int ABVcardUpdateHandler(xmpp_conn_t * const conn,
     NSMutableDictionary *context = [[NSMutableDictionary alloc] init];
     [context setObject:[NSValue valueWithNonretainedObject:self] forKey:@"Engine"];
     [context setObject:[handler copy] forKeyIfNotNil:@"Handler"];
-    xmpp_id_handler_add(_connection, ABVcardRequestHandler, ABCString(iden), (void *)CFBridgingRetain(context));
+    xmpp_id_handler_add(_connection, ABVcardRequestHandler, TKCString(iden), (void *)CFBridgingRetain(context));
     
     ABStanza *iq = [self makeStanzaWithName:@"iq"];
     [iq setValue:iden forAttribute:@"id"];
     [iq setValue:@"get" forAttribute:@"type"];
-    [iq setValue:ABOStringOrLater([self boundJid], @"") forAttribute:@"from"];
-    [iq setValue:ABOStringOrLater(jid, [self account]) forAttribute:@"to"];
+    [iq setValue:ABOStrOrLater([self boundJid], @"") forAttribute:@"from"];
+    [iq setValue:ABOStrOrLater(jid, [self account]) forAttribute:@"to"];
     
     ABStanza *vcard = [self makeStanzaWithName:@"vCard"];
     [vcard setValue:@"vcard-temp" forAttribute:@"xmlns"];
@@ -88,7 +88,7 @@ int ABVcardUpdateHandler(xmpp_conn_t * const conn,
     NSMutableDictionary *context = [[NSMutableDictionary alloc] init];
     [context setObject:[NSValue valueWithNonretainedObject:self] forKey:@"Engine"];
     [context setObject:[handler copy] forKeyIfNotNil:@"Handler"];
-    xmpp_id_handler_add(_connection, ABVcardUpdateHandler, ABCString(iden), (void *)CFBridgingRetain(context));
+    xmpp_id_handler_add(_connection, ABVcardUpdateHandler, TKCString(iden), (void *)CFBridgingRetain(context));
     
     ABStanza *iq = [self makeStanzaWithName:@"iq"];
     [iq setValue:iden forAttribute:@"id"];
@@ -119,7 +119,7 @@ int ABVcardUpdateHandler(xmpp_conn_t * const conn,
 //    ABStanza *ds = [self makeStanzaWithName:@"DESC"];
 //    [vcard addChild:ds];
 //    ABStanza *dsbody = [self makeStanzaWithName:nil];
-//    [dsbody setTextValue:ABOStringOrLater(desc, @"")];
+//    [dsbody setTextValue:ABOStrOrLater(desc, @"")];
 //    [ds addChild:dsbody];
 //    
 //    [self sendData:[iq raw]];

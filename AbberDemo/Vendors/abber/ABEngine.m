@@ -58,9 +58,9 @@
       return NO;
     }
     
-    xmpp_conn_set_jid(_connection, ABCString(acnt));
+    xmpp_conn_set_jid(_connection, TKCString(acnt));
     
-    xmpp_conn_set_pass(_connection, ABCString(pswd));
+    xmpp_conn_set_pass(_connection, TKCString(pswd));
     
     dispatch_async(_runLoopQueue, ^{
       [self connectAndRun:_connection];
@@ -108,7 +108,7 @@
 - (NSString *)account
 {
   if ( _connection ) {
-    return ABOString(_connection->jid);
+    return TKOString(_connection->jid);
   }
   return nil;
 }
@@ -116,7 +116,7 @@
 - (NSString *)password
 {
   if ( _connection ) {
-    return ABOString(_connection->pass);
+    return TKOString(_connection->pass);
   }
   return nil;
 }
@@ -124,7 +124,7 @@
 - (NSString *)boundJid
 {
   if ( _connection ) {
-    return ABOString(_connection->bound_jid);
+    return TKOString(_connection->bound_jid);
   }
   return nil;
 }
@@ -183,7 +183,7 @@
       if ( text ) {
         stanza = xmpp_stanza_new(_connection->ctx);
         ABStanza *textStanza = [[ABStanza alloc] initWithStanza:stanza];
-        [textStanza setTextValue:ABOStringOrLater(text, @"")];
+        [textStanza setTextValue:ABOStrOrLater(text, @"")];
         [tagStanza addChild:textStanza];
         stanza = NULL;
       }

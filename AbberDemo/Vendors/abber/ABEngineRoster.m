@@ -37,13 +37,13 @@ int ABRosterPushHandler(xmpp_conn_t * const conn,
         if ( ABCSNonempty(jid) && ABCSNonempty(subscription) ) {
           NSMutableDictionary *map = [[NSMutableDictionary alloc] init];
           if ( ABCSNonempty(ask) ) {
-            [map setObject:ABOString(ask) forKey:@"ask"];
+            [map setObject:TKOString(ask) forKey:@"ask"];
           }
-          [map setObject:ABOString(jid) forKey:@"jid"];
+          [map setObject:TKOString(jid) forKey:@"jid"];
           if ( ABCSNonempty(name) ) {
-            [map setObject:ABOString(name) forKey:@"name"];
+            [map setObject:TKOString(name) forKey:@"name"];
           }
-          [map setObject:ABOString(subscription) forKey:@"subscription"];
+          [map setObject:TKOString(subscription) forKey:@"subscription"];
           [engine didReceiveRosterItem:map];
         }
       }
@@ -80,7 +80,7 @@ int ABRosterRequestHandler(xmpp_conn_t * const conn,
       NSDictionary *userInfo = nil;
       char *name = xmpp_stanza_get_error_name(stanza);
       if ( ABCSNonempty(name) ) {
-        userInfo = @{ @"ABErrorDescriptionKey": ABOString(name) };
+        userInfo = @{ @"ABErrorDescriptionKey": TKOString(name) };
       }
       error = [NSError errorWithDomain:@"abber.org" code:1 userInfo:userInfo];
       
@@ -113,10 +113,10 @@ int ABRosterRequestHandler(xmpp_conn_t * const conn,
           if ( ABCSNonempty(jid) ) {
             NSMutableDictionary *map = [[NSMutableDictionary alloc] init];
             
-            [map setObject:ABOString(jid) forKey:@"jid"];
+            [map setObject:TKOString(jid) forKey:@"jid"];
             
             if ( ABCSNonempty(memoname) ) {
-              [map setObject:ABOString(memoname) forKey:@"memoname"];
+              [map setObject:TKOString(memoname) forKey:@"memoname"];
             }
             
             [map setObject:@(relation) forKey:@"relation"];
@@ -166,7 +166,7 @@ int ABRosterAddHandler(xmpp_conn_t * const conn,
     char *to = xmpp_stanza_get_attribute(stanza, "to");
     char *bareTo = xmpp_jid_bare(conn->ctx, to);
     if ( ABCSNonempty(bareTo) ) {
-      jid = ABOString(bareTo);
+      jid = TKOString(bareTo);
       xmpp_free(conn->ctx, bareTo);
     }
     
@@ -176,7 +176,7 @@ int ABRosterAddHandler(xmpp_conn_t * const conn,
       NSDictionary *userInfo = nil;
       char *name = xmpp_stanza_get_error_name(stanza);
       if ( ABCSNonempty(name) ) {
-        userInfo = @{ @"ABErrorDescriptionKey": ABOString(name) };
+        userInfo = @{ @"ABErrorDescriptionKey": TKOString(name) };
       }
       error = [NSError errorWithDomain:@"abber.org" code:1 userInfo:userInfo];
       
@@ -222,7 +222,7 @@ int ABRosterUpdateHandler(xmpp_conn_t * const conn,
     char *to = xmpp_stanza_get_attribute(stanza, "to");
     char *bareTo = xmpp_jid_bare(conn->ctx, to);
     if ( ABCSNonempty(bareTo) ) {
-      jid = ABOString(bareTo);
+      jid = TKOString(bareTo);
       xmpp_free(conn->ctx, bareTo);
     }
     
@@ -232,7 +232,7 @@ int ABRosterUpdateHandler(xmpp_conn_t * const conn,
       NSDictionary *userInfo = nil;
       char *name = xmpp_stanza_get_error_name(stanza);
       if ( ABCSNonempty(name) ) {
-        userInfo = @{ @"ABErrorDescriptionKey": ABOString(name) };
+        userInfo = @{ @"ABErrorDescriptionKey": TKOString(name) };
       }
       error = [NSError errorWithDomain:@"abber.org" code:1 userInfo:userInfo];
       
@@ -278,7 +278,7 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
     char *to = xmpp_stanza_get_attribute(stanza, "to");
     char *bareTo = xmpp_jid_bare(conn->ctx, to);
     if ( ABCSNonempty(bareTo) ) {
-      jid = ABOString(bareTo);
+      jid = TKOString(bareTo);
       xmpp_free(conn->ctx, bareTo);
     }
     
@@ -288,7 +288,7 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
       NSDictionary *userInfo = nil;
       char *name = xmpp_stanza_get_error_name(stanza);
       if ( ABCSNonempty(name) ) {
-        userInfo = @{ @"ABErrorDescriptionKey": ABOString(name) };
+        userInfo = @{ @"ABErrorDescriptionKey": TKOString(name) };
       }
       error = [NSError errorWithDomain:@"abber.org" code:1 userInfo:userInfo];
       
@@ -331,7 +331,7 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
 {
   DDLogDebug(@"[roster] Roster operation time out");
   
-  xmpp_id_handler_delete(_connection, context.handler, ABCString(context.identifier));
+  xmpp_id_handler_delete(_connection, context.handler, TKCString(context.identifier));
   
   NSError *error = [NSError errorWithDomain:@"abber.org" code:1 userInfo:@{@"ABErrorDescriptionKey": @"time out"}];
   
@@ -381,7 +381,7 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
     context.identifier = identifier;
     context.handler = ABRosterRequestHandler;
     
-    xmpp_id_handler_add(_connection, ABRosterRequestHandler, ABCString(identifier), (void *)CFBridgingRetain(context));
+    xmpp_id_handler_add(_connection, ABRosterRequestHandler, TKCString(identifier), (void *)CFBridgingRetain(context));
     [self performSelector:@selector(rosterOperationTimeout:) withObject:context afterDelay:10.0];
     
     
@@ -418,7 +418,7 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
       context.identifier = identifier;
       context.handler = ABRosterAddHandler;
       
-      xmpp_id_handler_add(_connection, ABRosterAddHandler, ABCString(identifier), (void *)CFBridgingRetain(context));
+      xmpp_id_handler_add(_connection, ABRosterAddHandler, TKCString(identifier), (void *)CFBridgingRetain(context));
       [self performSelector:@selector(rosterOperationTimeout:) withObject:context afterDelay:10.0];
       
       
@@ -463,7 +463,7 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
       context.identifier = identifier;
       context.handler = ABRosterUpdateHandler;
       
-      xmpp_id_handler_add(_connection, ABRosterUpdateHandler, ABCString(identifier), (void *)CFBridgingRetain(context));
+      xmpp_id_handler_add(_connection, ABRosterUpdateHandler, TKCString(identifier), (void *)CFBridgingRetain(context));
       [self performSelector:@selector(rosterOperationTimeout:) withObject:context afterDelay:10.0];
       
       
@@ -477,7 +477,7 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
       
       ABStanza *item = [self makeStanzaWithName:@"item"];
       [item setValue:jid forAttribute:@"jid"];
-      [item setValue:ABOStringOrLater(name, @"") forAttribute:@"name"];
+      [item setValue:ABOStrOrLater(name, @"") forAttribute:@"name"];
       [query addChild:item];
       
       [self sendData:[iq rawData]];
@@ -506,7 +506,7 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
       context.identifier = identifier;
       context.handler = ABRosterRemoveHandler;
       
-      xmpp_id_handler_add(_connection, ABRosterRemoveHandler, ABCString(identifier), (void *)CFBridgingRetain(context));
+      xmpp_id_handler_add(_connection, ABRosterRemoveHandler, TKCString(identifier), (void *)CFBridgingRetain(context));
       [self performSelector:@selector(rosterOperationTimeout:) withObject:context afterDelay:10.0];
       
       

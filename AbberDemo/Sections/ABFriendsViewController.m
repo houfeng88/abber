@@ -107,7 +107,7 @@
   cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
   
   TKDatabaseRow *row = [_contactAry objectAtIndex:indexPath.row];
-  cell.nicknameLabel.text = ABOStringOrLater([row stringForName:@"memoname"], [row stringForName:@"jid"]);
+  cell.nicknameLabel.text = ABOStrOrLater([row stringForName:@"memoname"], [row stringForName:@"jid"]);
   cell.descLabel.text = [row stringForName:@"desc"];
   
   return cell;

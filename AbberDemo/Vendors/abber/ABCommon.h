@@ -10,14 +10,12 @@
 #include <strophe/strophe.h>
 #include <strophe/common.h>
 
-#define ABCString(_s_) [(_s_) UTF8String]
-#define ABOString(_s_) [[NSString alloc] initWithUTF8String:(_s_)]
 
-#define ABCSNonempty(_s_) (((_s_)!=NULL) && (strlen(_s_)>0))
-#define ABOSNonempty(_s_) (((_s_)!=nil) && ([(_s_) length]>0))
+#define ABCSNonempty(a) (((a)!=NULL)&&(strlen(a)>0))
+#define ABOSNonempty(a) (((a)!=nil )&&([(a) length]>0))
 
-#define ABCStringOrLater(_s_) (((_s_)!=NULL)?(_s_):"")
-#define ABOStringOrLater(_a_, _b_) (([(_a_) length]>0)?(_a_):(_b_))
+#define ABCStrOrLater(a,b) ((((a)!=NULL)&&(strlen(a)>0))?(a):(b))
+#define ABOStrOrLater(a,b) ((((a)!=nil )&&([(a) length]>0))?(a):(b))
 
 
 void ABConfigDatabase(NSString *jid);
