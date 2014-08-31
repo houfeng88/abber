@@ -95,7 +95,7 @@ xmpp_conn_t *xmpp_conn_new(xmpp_ctx_t * const ctx)
 	conn->send_queue_len = 0;
 	conn->send_queue_head = NULL;
 	conn->send_queue_tail = NULL;
-    conn->send_lock = mutex_create(conn->ctx);
+	conn->send_lock = mutex_create(conn->ctx);
 
 	/* default timeouts */
 	conn->connect_timeout = CONNECT_TIMEOUT;
@@ -269,17 +269,18 @@ int xmpp_conn_release(xmpp_conn_t * const conn)
 	    xmpp_free(ctx, conn->stream_error);
 	}
 
-        parser_free(conn->parser);
-	
+  parser_free(conn->parser);
+      
+  mutex_destroy(conn->send_lock);
+      
 	if (conn->domain) xmpp_free(ctx, conn->domain);
 	if (conn->jid) xmpp_free(ctx, conn->jid);
     if (conn->bound_jid) xmpp_free(ctx, conn->bound_jid);
 	if (conn->pass) xmpp_free(ctx, conn->pass);
 	if (conn->stream_id) xmpp_free(ctx, conn->stream_id);
 	if (conn->lang) xmpp_free(ctx, conn->lang);
+  
 	xmpp_free(ctx, conn);
-
-    if (conn->send_lock) mutex_destroy(conn->send_lock);
 
 	released = 1;
     }
