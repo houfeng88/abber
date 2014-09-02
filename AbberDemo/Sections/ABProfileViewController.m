@@ -10,14 +10,14 @@
 
 @implementation ABProfileViewController
 
-- (id)initWithContact:(TKDatabaseRow *)contact
-{
-  self = [super init];
-  if (self) {
-    _row = contact;
-  }
-  return self;
-}
+//- (id)initWithContact:(TKDatabaseRow *)contact
+//{
+//  self = [super init];
+//  if (self) {
+//    _row = contact;
+//  }
+//  return self;
+//}
 
 - (void)viewDidLoad
 {

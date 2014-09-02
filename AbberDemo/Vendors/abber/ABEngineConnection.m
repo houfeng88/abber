@@ -22,6 +22,10 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
     DDLogCDebug(@"[conn] Handler: connected.");
     [engine didReceiveConnectStatus:YES];
     
+    NSString *path = ABAccountPath([engine bareJid]);
+    ABSetupAccount(path);
+    ABSetupDatabase([path stringByAppendingPathComponent:@"im.db"]);
+    
   } else if ( status==XMPP_CONN_FAIL ) {
     
     DDLogCDebug(@"[conn] Handler: failed.");

@@ -18,9 +18,9 @@
   UIView *_headerView;
   UIView *_footerView;
   
-  TKDatabaseRow *_row;
+//  TKDatabaseRow *_row;
 }
 
-- (id)initWithContact:(TKDatabaseRow *)contact;
+//- (id)initWithContact:(TKDatabaseRow *)contact;
 
 @end

@@ -14,6 +14,12 @@
 extern xmpp_log_t ABDefaultLogger;
 
 
+// Account
+NSString *ABAccountPath(NSString *acnt);
+void ABSetupAccount(NSString *path);
+void ABSetupDatabase(NSString *path);
+
+
 // Jid
 NSString *ABJidCreate(NSString *node, NSString *domain, NSString *resource);
 NSString *ABJidBare(NSString *jid);

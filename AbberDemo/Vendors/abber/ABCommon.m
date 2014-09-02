@@ -29,6 +29,44 @@ void ABWriteLog(void * const userdata,
 xmpp_log_t ABDefaultLogger = { &ABWriteLog, NULL };
 
 
+#pragma mark - Account
+
+NSString *ABAccountPath(NSString *acnt)
+{
+  if ( TKSNonempty(acnt) ) {
+    return TKPathForDocumentResource(acnt);
+  }
+  return nil;
+}
+
+void ABSetupAccount(NSString *path)
+{
+  if ( TKSNonempty(path) ) {
+    TKCreateDirectory(path);
+  }
+}
+
+void ABSetupDatabase(NSString *path)
+{
+  if ( TKSNonempty(path) ) {
+    
+    FMDatabase *db = [[FMDatabase alloc] initWithPath:path];
+    
+    [db open];
+    
+    
+    NSString *contactSQL =
+    @"CREATE TABLE IF NOT EXISTS contact("
+    @"pk INTEGER PRIMARY KEY, "
+    @"jid TEXT, "
+    @"memoname TEXT, "
+    @"relation INTEGER);";
+    [db executeUpdate:contactSQL];
+    
+  }
+}
+
+
 #pragma mark - Jid
 
 NSString *ABJidCreate(NSString *node, NSString *domain, NSString *resource)

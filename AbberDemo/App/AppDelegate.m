@@ -14,6 +14,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  
   [self addLoggers];
   [self configStatusBar];
   [self configTapkit];
@@ -72,28 +73,28 @@
 
 - (void)engine:(ABEngine *)engine didReceiveRoster:(NSArray *)roster error:(NSError *)error
 {
-  NSArray *jidAry = [roster valueForKeyPath:@"@unionOfObjects.jid"];
-  
-  NSArray *savedAry = [[TKDatabase sharedObject] executeQuery:@"SELECT * FROM contact;"];
-  for ( TKDatabaseRow *row in savedAry ) {
-    NSString *jid = [row stringForName:@"jid"];
-    if ( ![jidAry containsObject:jid] ) {
-      [[TKDatabase sharedObject] executeUpdate:@"DELETE FROM contact WHERE jid=?;", jid];
-    }
-  }
-  
-  for ( NSDictionary *item in roster ) {
-    
-    NSString *jid = [item objectForKey:@"jid"];
-    NSString *memoname = [item objectForKey:@"memoname"];
-    NSNumber *relation = [item objectForKey:@"relation"];
-    
-    if ( [[TKDatabase sharedObject] executeQuery:@"SELECT * FROM contact WHERE jid=?;", jid] ) {
-      [[TKDatabase sharedObject] executeUpdate:@"UPDATE contact SET memoname=?, relation=? WHERE jid=?;", memoname, relation, jid];
-    } else {
-      [[TKDatabase sharedObject] executeUpdate:@"INSERT INTO contact(jid, memoname, relation) VALUES(?, ?, ?);", jid, memoname, relation];
-    }
-  }
+//  NSArray *jidAry = [roster valueForKeyPath:@"@unionOfObjects.jid"];
+//  
+//  NSArray *savedAry = [[TKDatabase sharedObject] executeQuery:@"SELECT * FROM contact;"];
+//  for ( TKDatabaseRow *row in savedAry ) {
+//    NSString *jid = [row stringForName:@"jid"];
+//    if ( ![jidAry containsObject:jid] ) {
+//      [[TKDatabase sharedObject] executeUpdate:@"DELETE FROM contact WHERE jid=?;", jid];
+//    }
+//  }
+//  
+//  for ( NSDictionary *item in roster ) {
+//    
+//    NSString *jid = [item objectForKey:@"jid"];
+//    NSString *memoname = [item objectForKey:@"memoname"];
+//    NSNumber *relation = [item objectForKey:@"relation"];
+//    
+//    if ( [[TKDatabase sharedObject] executeQuery:@"SELECT * FROM contact WHERE jid=?;", jid] ) {
+//      [[TKDatabase sharedObject] executeUpdate:@"UPDATE contact SET memoname=?, relation=? WHERE jid=?;", memoname, relation, jid];
+//    } else {
+//      [[TKDatabase sharedObject] executeUpdate:@"INSERT INTO contact(jid, memoname, relation) VALUES(?, ?, ?);", jid, memoname, relation];
+//    }
+//  }
 }
 
 @end

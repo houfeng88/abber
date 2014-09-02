@@ -79,7 +79,7 @@
 
 - (void)loadContacts
 {
-  _contactAry = [[TKDatabase sharedObject] executeQuery:@"SELECT * FROM contact;"];
+  //_contactAry = [[TKDatabase sharedObject] executeQuery:@"SELECT * FROM contact;"];
 }
 
 - (void)refreshContacts
@@ -106,9 +106,9 @@
   
   cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
   
-  TKDatabaseRow *row = [_contactAry objectAtIndex:indexPath.row];
-  //cell.nicknameLabel.text = ABOStrOrLater([row stringForName:@"memoname"], [row stringForName:@"jid"]);
-  cell.descLabel.text = [row stringForName:@"desc"];
+//  TKDatabaseRow *row = [_contactAry objectAtIndex:indexPath.row];
+//  //cell.nicknameLabel.text = ABOStrOrLater([row stringForName:@"memoname"], [row stringForName:@"jid"]);
+//  cell.descLabel.text = [row stringForName:@"desc"];
   
   return cell;
 }
@@ -124,11 +124,11 @@
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
-  TKDatabaseRow *row = [_contactAry objectOrNilAtIndex:indexPath.row];
-  if ( row ) {
-    ABProfileViewController *vc = [[ABProfileViewController alloc] initWithContact:row];
-    [self.navigationController pushViewController:vc animated:YES];
-  }
+//  TKDatabaseRow *row = [_contactAry objectOrNilAtIndex:indexPath.row];
+//  if ( row ) {
+//    ABProfileViewController *vc = [[ABProfileViewController alloc] initWithContact:row];
+//    [self.navigationController pushViewController:vc animated:YES];
+//  }
 }
 
 @end
