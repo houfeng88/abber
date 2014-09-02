@@ -12,7 +12,7 @@
 
 @interface ABEngine (Connection)
 
-- (void)connectAndRun:(xmpp_conn_t *)connection;
+- (void)connectAndRun;
 
 - (void)didStartConnecting;
 - (void)didReceiveConnectStatus:(BOOL)status;

@@ -41,18 +41,18 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
 
 @implementation ABEngine (Connection)
 
-- (void)connectAndRun:(xmpp_conn_t *)connection
+- (void)connectAndRun
 {
   [self didStartConnecting];
   
-  int ret = xmpp_connect_client(connection,
-                                ABJabberHost,
-                                ABJabberPort,
+  int ret = xmpp_connect_client(_connection,
+                                [ABJabberHost UTF8String],
+                                [ABJabberPort intValue],
                                 ABConnectionHandler,
                                 (__bridge void *)self);
   
   if ( ret==XMPP_EOK ) {
-    xmpp_run(connection->ctx);
+    xmpp_run(_connection->ctx);
     [self cleanup];
   } else {
     [self didReceiveConnectStatus:NO];

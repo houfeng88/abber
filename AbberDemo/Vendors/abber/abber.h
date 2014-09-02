@@ -8,8 +8,6 @@
 
 #import "ABEngine.h"
 #import "ABEngineConnection.h"
-#import "ABEnginePresence.h"
-#import "ABEngineRoster.h"
-#import "ABEngineVcard.h"
-
-#import "ABStanza.h"
+//#import "ABEnginePresence.h"
+//#import "ABEngineRoster.h"
+//#import "ABEngineVcard.h"

@@ -38,12 +38,12 @@
 
 - (void)rightButtonClicked:(id)sender
 {
-  [[ABEngine sharedObject] addContact:_accountField.text
-                                 name:_memonameField.text
-                           completion:^(id result, NSError *error) {
-                             NSLog(@"add complete");
-                           }];
-  [[ABEngine sharedObject] subscribeContact:_accountField.text];
+//  [[ABEngine sharedObject] addContact:_accountField.text
+//                                 name:_memonameField.text
+//                           completion:^(id result, NSError *error) {
+//                             NSLog(@"add complete");
+//                           }];
+//  [[ABEngine sharedObject] subscribeContact:_accountField.text];
 }
 
 

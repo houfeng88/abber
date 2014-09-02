@@ -63,12 +63,12 @@
 
 - (void)deleteButtonClicked:(id)sender
 {
-  [[ABEngine sharedObject] removeContact:[_row stringForName:@"jid"]
-                              completion:^(id result, NSError *error) {
-                                NSLog(@"remove complete");
-                              }];
-  
-  [[ABEngine sharedObject] unsubscribeContact:[_row stringForName:@"jid"]];
+//  [[ABEngine sharedObject] removeContact:[_row stringForName:@"jid"]
+//                              completion:^(id result, NSError *error) {
+//                                NSLog(@"remove complete");
+//                              }];
+//  
+//  [[ABEngine sharedObject] unsubscribeContact:[_row stringForName:@"jid"]];
 }
 
 

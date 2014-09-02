@@ -110,7 +110,7 @@
   
   UIButton *button = [[UIButton alloc] init];
   button.normalTitle = NSLocalizedString(@"Sign In", @"");
-  button.normalBackgroundImage = TKCreateResizableImage(@"btn_brown.png", UIEdgeInsetsMake(9.0, 9.0, 9.0, 9.0));
+  button.normalBackgroundImage = TKCreateResizableImage(@"btn_brown.png", TKInsets(9.0, 9.0, 9.0, 9.0));
   [button addTarget:self action:@selector(signinButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
   button.frame = CGRectMake(10.0, 5.0, 300.0, 45.0);
   [footer addSubview:button];
@@ -122,12 +122,6 @@
 
 - (void)signinButtonClicked:(id)sender
 {
-  ABEngine *engine = [ABEngine sharedObject];
-  [engine prepare];
-  [engine connectWithAccount:@"abc" password:@"abc"];
-  ABStanza *stanza = [engine makeStanzaWithName:@"vcard" text:nil];
-  NSLog(@"H%@H", [stanza textValue]);
-  
   if ( [self checkValidity] ) {
     [self signin];
   }
@@ -138,12 +132,12 @@
   NSString *acnt = _accountField.text;
   NSString *pswd = _passwordField.text;
   
-  if ( !ABOSNonempty(acnt) ) {
+  if ( !TKSNonempty(acnt) ) {
     TKPresentSystemMessage(NSLocalizedString(@"Invalid account", @""));
     return NO;
   }
   
-  if ( !ABOSNonempty(pswd) ) {
+  if ( !TKSNonempty(pswd) ) {
     TKPresentSystemMessage(NSLocalizedString(@"Invalid password", @""));
     return NO;
   }
@@ -153,15 +147,19 @@
 
 - (void)signin
 {
-//  [[TKSettings sharedObject] setObject:_accountField.text forKey:@"ABSavedAccountKey"];
-//  [[TKSettings sharedObject] setObject:_passwordField.text forKey:@"ABSavedPasswordKey"];
-//  [[TKSettings sharedObject] synchronize];
-//  
-//  [[ABEngine sharedObject] addObserver:self];
-//  [[ABEngine sharedObject] prepare];
-//  [[ABEngine sharedObject] connectWithAccount:_accountField.text password:_passwordField.text];
-//  [[ABEngine sharedObject] addRosterPushHandler];
-//  [[ABEngine sharedObject] addPresenceHandler];
+  NSString *acnt = _accountField.text;
+  NSString *pswd = _passwordField.text;
+  
+  [[TKSettings sharedObject] setObject:acnt forKey:@"ABSavedAccountKey"];
+  [[TKSettings sharedObject] setObject:pswd forKey:@"ABSavedPasswordKey"];
+  [[TKSettings sharedObject] synchronize];
+  
+  ABEngine *engine = [[ABEngine alloc] init];
+  [ABEngine saveObject:engine];
+  
+  [engine addObserver:self];
+  [engine prepare];
+  [engine connectWithAccount:acnt password:pswd];
 }
 
 
@@ -178,7 +176,7 @@
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-  return (([textField.text length] + [string length] - range.length)<=40);
+  return (([textField.text length] + [string length] - range.length)<=15);
 }
 
 
@@ -196,29 +194,29 @@
     
     [self configDatabase:[engine account]];
     
-    [[ABEngine sharedObject] requestRosterWithCompletion:^(id result, NSError *error) {
-      
-      if ( error ) {
-        [MBProgressHUD presentTextHUD:self.view
-                                 info:NSLocalizedString(@"Sign in failed", @"")
-                              offsetY:0.0
-                      completionBlock:NULL];
-        [engine disconnect];
-      } else {
-        [[ABEngine sharedObject] removeObserver:self];
-        
-        [[ABEngine sharedObject] updatePresence:ABPresenceTypeAvailable];
-        
-        [MBProgressHUD dismissHUD:self.view
-                      immediately:NO
-                  completionBlock:^{
-                    ABRootViewController *root = (ABRootViewController *)(self.parentViewController);
-                    ABMainViewController *vc = [[ABMainViewController alloc] init];
-                    [root presentWithViewController:vc];
-                  }];
-      }
-      
-    }];
+//    [[ABEngine sharedObject] requestRosterWithCompletion:^(id result, NSError *error) {
+//      
+//      if ( error ) {
+//        [MBProgressHUD presentTextHUD:self.view
+//                                 info:NSLocalizedString(@"Sign in failed", @"")
+//                              offsetY:0.0
+//                      completionBlock:NULL];
+//        [engine disconnect];
+//      } else {
+//        [[ABEngine sharedObject] removeObserver:self];
+//        
+//        [[ABEngine sharedObject] updatePresence:ABPresenceTypeAvailable];
+//        
+//        [MBProgressHUD dismissHUD:self.view
+//                      immediately:NO
+//                  completionBlock:^{
+//                    ABRootViewController *root = (ABRootViewController *)(self.parentViewController);
+//                    ABMainViewController *vc = [[ABMainViewController alloc] init];
+//                    [root presentWithViewController:vc];
+//                  }];
+//      }
+//    
+//    }];
     
   } else {
     [MBProgressHUD presentTextHUD:self.view

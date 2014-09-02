@@ -7,7 +7,7 @@
 //
 
 #import "ABEngine.h"
-
+#import "ABConfig.h"
 #import "ABEngineConnection.h"
 
 @implementation ABEngine
@@ -31,13 +31,9 @@ static ABEngine *Engine = nil;
 {
   DDLogDebug(@"[engine] Prepare context");
   if ( [self isDisconnected] ) {
+    
     xmpp_initialize();
     
-    
-    //_connection = NULL;
-    
-    NSString *uuid = [[NSUUID UUID] UUIDString];
-    _runLoopQueue = dispatch_queue_create(ABCString(uuid), DISPATCH_QUEUE_CONCURRENT);
   }
 }
 
@@ -48,7 +44,8 @@ static ABEngine *Engine = nil;
     return YES;
   }
   
-  if ( ABOSNonempty(acnt) && ABOSNonempty(pswd) ) {
+  if ( TKSNonempty(acnt) && TKSNonempty(pswd) ) {
+    
     xmpp_ctx_t *ctx = xmpp_ctx_new(NULL, &ABDefaultLogger);
     if ( !ctx ) {
       return NO;
@@ -60,12 +57,15 @@ static ABEngine *Engine = nil;
       return NO;
     }
     
-    xmpp_conn_set_jid(_connection, TKCString(acnt));
+    
+    NSString *jid = ABJidCreate(acnt, ABJabberDomain, ABJabberResource);
+    xmpp_conn_set_jid(_connection, TKCString(jid));
     
     xmpp_conn_set_pass(_connection, TKCString(pswd));
     
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-      [self connectAndRun:_connection];
+      [self connectAndRun];
     });
     
     return YES;
@@ -77,21 +77,19 @@ static ABEngine *Engine = nil;
 - (void)disconnect
 {
   DDLogDebug(@"[engine] Launch disconnect");
-  dispatch_sync(_runLoopQueue, ^{
-    xmpp_disconnect(_connection);
-  });
+  xmpp_disconnect(_connection);
 }
 
 - (void)stopRunLoop
 {
+  DDLogDebug(@"[engine] Launch stop run loop");
+  
   xmpp_stop(_connection->ctx);
 }
 
 - (void)cleanup
 {
   DDLogDebug(@"[engine] Cleanup context");
-  
-  _runLoopQueue = nil;
   
   if ( _connection ) {
     xmpp_ctx_t *ctx = _connection->ctx;
@@ -102,7 +100,6 @@ static ABEngine *Engine = nil;
     }
   }
   
-  
   xmpp_shutdown();
 }
 
@@ -110,7 +107,7 @@ static ABEngine *Engine = nil;
 - (NSString *)account
 {
   if ( _connection ) {
-    return TKOString(_connection->jid);
+    return ABJidNode(TKOString(_connection->bound_jid));
   }
   return nil;
 }
@@ -119,6 +116,14 @@ static ABEngine *Engine = nil;
 {
   if ( _connection ) {
     return TKOString(_connection->pass);
+  }
+  return nil;
+}
+
+- (NSString *)bareJid
+{
+  if ( _connection ) {
+    return ABJidBare(TKOString(_connection->bound_jid));
   }
   return nil;
 }
@@ -161,32 +166,6 @@ static ABEngine *Engine = nil;
 - (BOOL)isConnected
 {
   return ( (_connection) && (_connection->state==XMPP_STATE_CONNECTED) );
-}
-
-
-
-- (ABStanza *)makeStanzaWithName:(NSString *)name
-{
-  return [self makeStanzaWithName:name text:nil];
-}
-
-- (ABStanza *)makeStanzaWithName:(NSString *)name text:(NSString *)text
-{
-  ABStanza *node = nil;
-  if ( (_connection) && (_connection->ctx) ) {
-    
-    if ( TKSNonempty(name) ) {
-      xmpp_stanza_t *stanza = xmpp_stanza_new(_connection->ctx);
-      node = [[ABStanza alloc] initWithStanza:stanza];
-      xmpp_stanza_release(stanza);
-      stanza = NULL;
-      
-      [node setNodeName:name];
-      [node setTextValue:text];
-    }
-    
-  }
-  return node;
 }
 
 

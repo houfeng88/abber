@@ -61,7 +61,6 @@
 
 - (void)configEngine
 {
-  [[ABEngine sharedObject] addObserver:self];
 }
 
 

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <FMDB/FMDB.h>
 #import "ABCommon.h"
-#import "ABStanza.h"
+//#import "ABStanza.h"
 
 typedef void (^ABEngineCompletionHandler)(id result, NSError *error);
 
@@ -24,14 +24,13 @@ typedef enum {
     TKObserving
 > {
   xmpp_conn_t *_connection;
-  dispatch_queue_t _runLoopQueue;
   
   FMDatabase *_database;
   
   NSMutableArray *_observerAry;
 }
 
-+ (void)saveObject:(TKMemoryCache *)object;
++ (void)saveObject:(ABEngine *)object;
 
 + (ABEngine *)sharedObject;
 
@@ -43,16 +42,13 @@ typedef enum {
 
 - (NSString *)account;
 - (NSString *)password;
+- (NSString *)bareJid;
 - (NSString *)boundJid;
 
 - (ABEngineState)state;
 - (BOOL)isDisconnected;
 - (BOOL)isConnecting;
 - (BOOL)isConnected;
-
-
-- (ABStanza *)makeStanzaWithName:(NSString *)name;
-- (ABStanza *)makeStanzaWithName:(NSString *)name text:(NSString *)text;
 
 - (void)sendData:(NSData *)data;
 - (void)sendString:(NSString *)string;

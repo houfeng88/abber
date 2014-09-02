@@ -68,13 +68,13 @@
 
 - (void)requestContacts
 {
-  [[ABEngine sharedObject] requestRosterWithCompletion:^(id result, NSError *error) {
-    
-    [self loadContacts];
-    [self refreshContacts];
-    [_tableView.initialRefreshControl endRefreshing];
-    
-  }];
+//  [[ABEngine sharedObject] requestRosterWithCompletion:^(id result, NSError *error) {
+//    
+//    [self loadContacts];
+//    [self refreshContacts];
+//    [_tableView.initialRefreshControl endRefreshing];
+//    
+//  }];
 }
 
 - (void)loadContacts
@@ -107,7 +107,7 @@
   cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
   
   TKDatabaseRow *row = [_contactAry objectAtIndex:indexPath.row];
-  cell.nicknameLabel.text = ABOStrOrLater([row stringForName:@"memoname"], [row stringForName:@"jid"]);
+  //cell.nicknameLabel.text = ABOStrOrLater([row stringForName:@"memoname"], [row stringForName:@"jid"]);
   cell.descLabel.text = [row stringForName:@"desc"];
   
   return cell;
