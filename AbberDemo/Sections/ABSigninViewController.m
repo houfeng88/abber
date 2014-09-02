@@ -239,27 +239,27 @@
 {
   if ( [jid length]>0 ) {
     
-    NSString *path = TKPathForDocumentResource(jid);
-    if ( ![[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:NULL] ) {
-      [[NSFileManager defaultManager] createDirectoryAtPath:path
-                                withIntermediateDirectories:YES
-                                                 attributes:nil
-                                                      error:NULL];
-    }
-    
-    NSString *dbpath = [path stringByAppendingPathComponent:@"im.db"];
-    TKDatabase *db = [[TKDatabase alloc] initWithPath:dbpath];
-    [TKDatabase saveObject:db];
-    
-    [db open];
-    
-    if ( ![db hasTableNamed:@"contact"] ) {
-      NSString *contactSQL = @"CREATE TABLE contact(pk INTEGER PRIMARY KEY, "
-                                                  @"jid TEXT, "
-                                                  @"memoname TEXT, "
-                                                  @"relation INTEGER);";
-      [db executeUpdate:contactSQL];
-    }
+//    NSString *path = TKPathForDocumentResource(jid);
+//    if ( ![[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:NULL] ) {
+//      [[NSFileManager defaultManager] createDirectoryAtPath:path
+//                                withIntermediateDirectories:YES
+//                                                 attributes:nil
+//                                                      error:NULL];
+//    }
+//    
+//    NSString *dbpath = [path stringByAppendingPathComponent:@"im.db"];
+//    TKDatabase *db = [[TKDatabase alloc] initWithPath:dbpath];
+//    [TKDatabase saveObject:db];
+//    
+//    [db open];
+//    
+//    if ( ![db hasTableNamed:@"contact"] ) {
+//      NSString *contactSQL = @"CREATE TABLE contact(pk INTEGER PRIMARY KEY, "
+//                                                  @"jid TEXT, "
+//                                                  @"memoname TEXT, "
+//                                                  @"relation INTEGER);";
+//      [db executeUpdate:contactSQL];
+//    }
     
   }
 }

@@ -139,7 +139,7 @@
     size = image.size;
   } else {
     NSString *title = self.normalTitle;
-    if ( [title length]>0 ) {
+    if ( TKSNonempty(title) ) {
       size = [title sizeWithFont:self.titleLabel.font];
     }
   }
