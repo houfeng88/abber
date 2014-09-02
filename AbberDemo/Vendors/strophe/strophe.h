@@ -185,9 +185,15 @@ typedef struct _xmpp_stanza_t xmpp_stanza_t;
 
   int xmpp_stanza_is_text(xmpp_stanza_t * const stanza);
   int xmpp_stanza_is_tag(xmpp_stanza_t * const stanza);
-
-
+  
+  
+  char *xmpp_stanza_get_name(xmpp_stanza_t * const stanza);
+  int   xmpp_stanza_set_name(xmpp_stanza_t *stanza, const char * const name);
   char *xmpp_stanza_get_error_name(xmpp_stanza_t * const stanza);
+  
+  
+  char *xmpp_stanza_get_attribute(xmpp_stanza_t * const stanza, const char * const name);
+  int   xmpp_stanza_set_attribute(xmpp_stanza_t * const stanza, const char * const key, const char * const value);
   
   char *xmpp_stanza_get_id(xmpp_stanza_t * const stanza);
   int   xmpp_stanza_set_id(xmpp_stanza_t * const stanza, const char * const id);
@@ -195,14 +201,9 @@ typedef struct _xmpp_stanza_t xmpp_stanza_t;
   char *xmpp_stanza_get_type(xmpp_stanza_t * const stanza);
   int   xmpp_stanza_set_type(xmpp_stanza_t * const stanza, const char * const type);
 
-  char *xmpp_stanza_get_name(xmpp_stanza_t * const stanza);
-  int   xmpp_stanza_set_name(xmpp_stanza_t *stanza, const char * const name);
-
   char *xmpp_stanza_get_ns(xmpp_stanza_t * const stanza);
   int   xmpp_stanza_set_ns(xmpp_stanza_t * const stanza, const char * const ns);
-
-  char *xmpp_stanza_get_attribute(xmpp_stanza_t * const stanza, const char * const name);
-  int   xmpp_stanza_set_attribute(xmpp_stanza_t * const stanza, const char * const key, const char * const value);
+  
 
   char *xmpp_stanza_get_text(xmpp_stanza_t * const stanza); // NOTE: Caller should free return value
   char *xmpp_stanza_get_text_ptr(xmpp_stanza_t * const stanza);

@@ -7,7 +7,6 @@
 //
 
 #import "ABEngine.h"
-#import "ABLogger.h"
 
 #import "ABEngineConnection.h"
 
@@ -15,13 +14,15 @@
 
 #pragma mark - Public methods
 
+static ABEngine *Engine = nil;
+
++ (void)saveObject:(ABEngine *)object
+{
+  Engine = object;
+}
+
 + (ABEngine *)sharedObject
 {
-  static ABEngine *Engine = nil;
-  static dispatch_once_t Token;
-  dispatch_once(&Token, ^{
-    Engine = [[self alloc] init];
-  });
   return Engine;
 }
 
@@ -35,7 +36,8 @@
     
     //_connection = NULL;
     
-    _runLoopQueue = dispatch_queue_create("RunLoopQueue", DISPATCH_QUEUE_CONCURRENT);
+    NSString *uuid = [[NSUUID UUID] UUIDString];
+    _runLoopQueue = dispatch_queue_create(ABCString(uuid), DISPATCH_QUEUE_CONCURRENT);
   }
 }
 
@@ -62,7 +64,7 @@
     
     xmpp_conn_set_pass(_connection, TKCString(pswd));
     
-    dispatch_async(_runLoopQueue, ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
       [self connectAndRun:_connection];
     });
     
@@ -170,26 +172,21 @@
 
 - (ABStanza *)makeStanzaWithName:(NSString *)name text:(NSString *)text
 {
-  ABStanza *tagStanza = nil;
+  ABStanza *node = nil;
   if ( (_connection) && (_connection->ctx) ) {
     
     if ( TKSNonempty(name) ) {
-      
       xmpp_stanza_t *stanza = xmpp_stanza_new(_connection->ctx);
-      tagStanza = [[ABStanza alloc] initWithStanza:stanza];
-      [tagStanza setNodeName:name];
+      node = [[ABStanza alloc] initWithStanza:stanza];
+      xmpp_stanza_release(stanza);
       stanza = NULL;
       
-      if ( text ) {
-        stanza = xmpp_stanza_new(_connection->ctx);
-        ABStanza *textStanza = [[ABStanza alloc] initWithStanza:stanza];
-        [textStanza setTextValue:ABOStrOrLater(text, @"")];
-        [tagStanza addChild:textStanza];
-        stanza = NULL;
-      }
+      [node setNodeName:name];
+      [node setTextValue:text];
     }
+    
   }
-  return tagStanza;
+  return node;
 }
 
 

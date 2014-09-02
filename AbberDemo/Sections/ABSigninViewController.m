@@ -122,6 +122,12 @@
 
 - (void)signinButtonClicked:(id)sender
 {
+  ABEngine *engine = [ABEngine sharedObject];
+  [engine prepare];
+  [engine connectWithAccount:@"abc" password:@"abc"];
+  ABStanza *stanza = [engine makeStanzaWithName:@"vcard" text:nil];
+  NSLog(@"H%@H", [stanza textValue]);
+  
   if ( [self checkValidity] ) {
     [self signin];
   }
@@ -147,15 +153,15 @@
 
 - (void)signin
 {
-  [[TKSettings sharedObject] setObject:_accountField.text forKey:@"ABSavedAccountKey"];
-  [[TKSettings sharedObject] setObject:_passwordField.text forKey:@"ABSavedPasswordKey"];
-  [[TKSettings sharedObject] synchronize];
-  
-  [[ABEngine sharedObject] addObserver:self];
-  [[ABEngine sharedObject] prepare];
-  [[ABEngine sharedObject] connectWithAccount:_accountField.text password:_passwordField.text];
-  [[ABEngine sharedObject] addRosterPushHandler];
-  [[ABEngine sharedObject] addPresenceHandler];
+//  [[TKSettings sharedObject] setObject:_accountField.text forKey:@"ABSavedAccountKey"];
+//  [[TKSettings sharedObject] setObject:_passwordField.text forKey:@"ABSavedPasswordKey"];
+//  [[TKSettings sharedObject] synchronize];
+//  
+//  [[ABEngine sharedObject] addObserver:self];
+//  [[ABEngine sharedObject] prepare];
+//  [[ABEngine sharedObject] connectWithAccount:_accountField.text password:_passwordField.text];
+//  [[ABEngine sharedObject] addRosterPushHandler];
+//  [[ABEngine sharedObject] addPresenceHandler];
 }
 
 

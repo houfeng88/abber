@@ -16,8 +16,6 @@
 - (id)initWithStanza:(xmpp_stanza_t *)stanza;
 
 - (xmpp_stanza_t *)stanza;
-- (void)copyStanza:(xmpp_stanza_t *)stanza;
-- (void)cloneStanza:(xmpp_stanza_t *)stanza;
 
 - (ABStanza *)firstChild;
 - (ABStanza *)nextSibling;

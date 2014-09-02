@@ -31,6 +31,8 @@ typedef enum {
   NSMutableArray *_observerAry;
 }
 
++ (void)saveObject:(TKMemoryCache *)object;
+
 + (ABEngine *)sharedObject;
 
 - (void)prepare;
