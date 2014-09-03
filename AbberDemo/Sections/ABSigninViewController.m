@@ -154,10 +154,12 @@
   [[TKSettings sharedObject] setObject:pswd forKey:@"ABSavedPasswordKey"];
   [[TKSettings sharedObject] synchronize];
   
+  
   ABEngine *engine = [[ABEngine alloc] init];
   [ABEngine saveObject:engine];
   
   [engine addObserver:self];
+  [engine addObserver:[[UIApplication sharedApplication] delegate]];
   [engine prepare];
   [engine connectWithAccount:acnt password:pswd];
 }
@@ -192,31 +194,29 @@
 {
   if ( status ) {
     
-    [self configDatabase:[engine account]];
+    [[ABEngine sharedObject] requestRosterWithCompletion:^(id result, NSError *error) {
+      
+      if ( error ) {
+        [MBProgressHUD presentTextHUD:self.view
+                                 info:NSLocalizedString(@"Sign in failed", @"")
+                              offsetY:0.0
+                      completionBlock:NULL];
+        [engine disconnect];
+      } else {
+        [[ABEngine sharedObject] removeObserver:self];
+        
+        //[[ABEngine sharedObject] updatePresence:ABPresenceTypeAvailable];
+        
+        [MBProgressHUD dismissHUD:self.view
+                      immediately:NO
+                  completionBlock:^{
+                    ABRootViewController *root = (ABRootViewController *)(self.parentViewController);
+                    ABMainViewController *vc = [[ABMainViewController alloc] init];
+                    [root presentWithViewController:vc];
+                  }];
+      }
     
-//    [[ABEngine sharedObject] requestRosterWithCompletion:^(id result, NSError *error) {
-//      
-//      if ( error ) {
-//        [MBProgressHUD presentTextHUD:self.view
-//                                 info:NSLocalizedString(@"Sign in failed", @"")
-//                              offsetY:0.0
-//                      completionBlock:NULL];
-//        [engine disconnect];
-//      } else {
-//        [[ABEngine sharedObject] removeObserver:self];
-//        
-//        [[ABEngine sharedObject] updatePresence:ABPresenceTypeAvailable];
-//        
-//        [MBProgressHUD dismissHUD:self.view
-//                      immediately:NO
-//                  completionBlock:^{
-//                    ABRootViewController *root = (ABRootViewController *)(self.parentViewController);
-//                    ABMainViewController *vc = [[ABMainViewController alloc] init];
-//                    [root presentWithViewController:vc];
-//                  }];
-//      }
-//    
-//    }];
+    }];
     
   } else {
     [MBProgressHUD presentTextHUD:self.view
@@ -232,36 +232,6 @@
                            info:NSLocalizedString(@"Sign in failed", @"")
                         offsetY:0.0
                 completionBlock:NULL];
-}
-
-
-- (void)configDatabase:(NSString *)jid
-{
-  if ( [jid length]>0 ) {
-    
-//    NSString *path = TKPathForDocumentResource(jid);
-//    if ( ![[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:NULL] ) {
-//      [[NSFileManager defaultManager] createDirectoryAtPath:path
-//                                withIntermediateDirectories:YES
-//                                                 attributes:nil
-//                                                      error:NULL];
-//    }
-//    
-//    NSString *dbpath = [path stringByAppendingPathComponent:@"im.db"];
-//    TKDatabase *db = [[TKDatabase alloc] initWithPath:dbpath];
-//    [TKDatabase saveObject:db];
-//    
-//    [db open];
-//    
-//    if ( ![db hasTableNamed:@"contact"] ) {
-//      NSString *contactSQL = @"CREATE TABLE contact(pk INTEGER PRIMARY KEY, "
-//                                                  @"jid TEXT, "
-//                                                  @"memoname TEXT, "
-//                                                  @"relation INTEGER);";
-//      [db executeUpdate:contactSQL];
-//    }
-    
-  }
 }
 
 @end

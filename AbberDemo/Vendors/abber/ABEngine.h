@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <FMDB/FMDB.h>
 #import "ABCommon.h"
-//#import "ABStanza.h"
 
 typedef void (^ABEngineCompletionHandler)(id result, NSError *error);
 
@@ -31,7 +30,6 @@ typedef enum {
 }
 
 + (void)saveObject:(ABEngine *)object;
-
 + (ABEngine *)sharedObject;
 
 - (void)prepare;

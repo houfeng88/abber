@@ -83,7 +83,6 @@ static ABEngine *Engine = nil;
 - (void)stopRunLoop
 {
   DDLogDebug(@"[engine] Launch stop run loop");
-  
   xmpp_stop(_connection->ctx);
 }
 

@@ -20,11 +20,8 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
   if ( status==XMPP_CONN_CONNECT ) {
     
     DDLogCDebug(@"[conn] Handler: connected.");
+    [engine configAccount:[engine bareJid]];
     [engine didReceiveConnectStatus:YES];
-    
-    NSString *path = ABAccountPath([engine bareJid]);
-    ABSetupAccount(path);
-    ABSetupDatabase([path stringByAppendingPathComponent:@"im.db"]);
     
   } else if ( status==XMPP_CONN_FAIL ) {
     
@@ -60,6 +57,32 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
     [self cleanup];
   } else {
     [self didReceiveConnectStatus:NO];
+  }
+}
+
+
+- (void)configAccount:(NSString *)acnt
+{
+  if ( TKSNonempty(acnt) ) {
+    NSString *path = TKPathForDocumentResource(acnt);
+    
+    
+    TKCreateDirectory(path);
+    
+    
+    NSString *dbpath = [path stringByAppendingPathComponent:@"im.db"];
+    FMDatabase *db = [[FMDatabase alloc] initWithPath:dbpath];
+    [db open];
+    
+    NSString *contactSQL =
+    @"CREATE TABLE IF NOT EXISTS contact("
+    @"pk INTEGER PRIMARY KEY, "
+    @"jid TEXT, "
+    @"memoname TEXT, "
+    @"relation INTEGER, "
+    @"nickname TEXT, "
+    @"desc TEXT);";
+    [db executeUpdate:contactSQL];
   }
 }
 

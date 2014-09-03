@@ -14,12 +14,6 @@
 extern xmpp_log_t ABDefaultLogger;
 
 
-// Account
-NSString *ABAccountPath(NSString *acnt);
-void ABSetupAccount(NSString *path);
-void ABSetupDatabase(NSString *path);
-
-
 // Jid
 NSString *ABJidCreate(NSString *node, NSString *domain, NSString *resource);
 NSString *ABJidBare(NSString *jid);
@@ -29,7 +23,7 @@ NSString *ABJidResource(NSString *jid);
 
 
 // Stanza
-xmpp_stanza_t *ABStanzaCreate(xmpp_ctx_t *ctx);
+xmpp_stanza_t *ABStanzaCreate(xmpp_ctx_t *ctx, NSString *name, NSString *text);
 xmpp_stanza_t *ABStanzaCopy(xmpp_stanza_t *stanza);
 xmpp_stanza_t *ABStanzaClone(xmpp_stanza_t *stanza);
 void           ABStanzaRelease(xmpp_stanza_t *stanza);
@@ -51,8 +45,19 @@ void           ABStanzaSetText(xmpp_stanza_t *stanza, NSString *text);
 NSString      *ABStanzaToString(xmpp_stanza_t *stanza);
 NSData        *ABStanzaToData(xmpp_stanza_t *stanza);
 
+NSError       *ABStanzaMakeError(xmpp_stanza_t *stanza);
+
+
+// Handler context
+id    ABHandlexCreate();
+void *ABHandlexPointer(id context);
+id    ABHandlexObject(void *context);
+void  ABHandlexDestroy(id context);
+id    ABHandlexGetObject(id context, NSString *key);
+void  ABHandlexSetObject(id context, NSString *key, id object);
+id    ABHandlexGetNonretainedObject(id context, NSString *key);
+void  ABHandlexSetNonretainedObject(id context, NSString *key, id object);
+
 
 // Misc
 NSString *ABMakeIdentifier(NSString *domain);
-
-

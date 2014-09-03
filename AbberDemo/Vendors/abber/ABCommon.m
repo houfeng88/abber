@@ -29,44 +29,6 @@ void ABWriteLog(void * const userdata,
 xmpp_log_t ABDefaultLogger = { &ABWriteLog, NULL };
 
 
-#pragma mark - Account
-
-NSString *ABAccountPath(NSString *acnt)
-{
-  if ( TKSNonempty(acnt) ) {
-    return TKPathForDocumentResource(acnt);
-  }
-  return nil;
-}
-
-void ABSetupAccount(NSString *path)
-{
-  if ( TKSNonempty(path) ) {
-    TKCreateDirectory(path);
-  }
-}
-
-void ABSetupDatabase(NSString *path)
-{
-  if ( TKSNonempty(path) ) {
-    
-    FMDatabase *db = [[FMDatabase alloc] initWithPath:path];
-    
-    [db open];
-    
-    
-    NSString *contactSQL =
-    @"CREATE TABLE IF NOT EXISTS contact("
-    @"pk INTEGER PRIMARY KEY, "
-    @"jid TEXT, "
-    @"memoname TEXT, "
-    @"relation INTEGER);";
-    [db executeUpdate:contactSQL];
-    
-  }
-}
-
-
 #pragma mark - Jid
 
 NSString *ABJidCreate(NSString *node, NSString *domain, NSString *resource)
@@ -192,11 +154,13 @@ NSString *ABJidResource(NSString *jid)
 
 #pragma mark - Stanza
 
-xmpp_stanza_t *ABStanzaCreate(xmpp_ctx_t *ctx)
+xmpp_stanza_t *ABStanzaCreate(xmpp_ctx_t *ctx, NSString *name, NSString *text)
 {
   xmpp_stanza_t *st = NULL;
   if ( ctx ) {
     st = xmpp_stanza_new(ctx);
+    ABStanzaSetName(st, name);
+    ABStanzaSetText(st, text);
   }
   return st;
 }
@@ -382,6 +346,81 @@ NSData        *ABStanzaToData(xmpp_stanza_t *stanza)
     }
   }
   return data;
+}
+
+
+NSError       *ABStanzaMakeError(xmpp_stanza_t *stanza)
+{
+  NSError *error = nil;
+  
+  xmpp_stanza_t *errorNode = ABStanzaChildByName(stanza, @"error");
+  if ( errorNode ) {
+    xmpp_stanza_t *descNode = ABStanzaFirstChild(errorNode);
+    if ( descNode ) {
+      NSString *name = ABStanzaGetName(descNode);
+      NSDictionary *userInfo = @{ @"ABErrorDescriptionKey": TKStrOrLater(name, @"") };
+      
+      error = [NSError errorWithDomain:@"abber.org" code:1 userInfo:userInfo];
+    }
+  }
+  
+  return error;
+}
+
+
+#pragma mark - Handler context
+
+id    ABHandlexCreate()
+{
+  return [[NSMutableDictionary alloc] init];
+}
+
+void *ABHandlexPointer(id context)
+{
+  return (void *)CFBridgingRetain(context);
+}
+
+id    ABHandlexObject(void *context)
+{
+  return CFBridgingRelease(context);
+}
+
+void  ABHandlexDestroy(id context)
+{
+  NSMutableDictionary *map = context;
+  CFRelease((__bridge CFTypeRef)map);
+}
+
+id    ABHandlexGetObject(id context, NSString *key)
+{
+  if ( context ) {
+    NSMutableDictionary *map = context;
+    return [map objectForKey:key];
+  }
+  return nil;
+}
+
+void  ABHandlexSetObject(id context, NSString *key, id object)
+{
+  if ( context ) {
+    NSMutableDictionary *map = context;
+    [map setObject:object forKeyIfNotNil:key];
+  }
+}
+
+id    ABHandlexGetNonretainedObject(id context, NSString *key)
+{
+  NSValue *value = ABHandlexGetObject(context, key);
+  return [value nonretainedObjectValue];
+}
+
+void  ABHandlexSetNonretainedObject(id context, NSString *key, id object)
+{
+  NSValue *value = nil;
+  if ( object ) {
+    value = [NSValue valueWithNonretainedObject:object];
+  }
+  ABHandlexSetObject(context, key, value);
 }
 
 
