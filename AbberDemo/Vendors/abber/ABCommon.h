@@ -50,13 +50,14 @@ NSError       *ABStanzaMakeError(xmpp_stanza_t *stanza);
 
 // Handler context
 id    ABHandlexCreate();
-void *ABHandlexPointer(id context);
-id    ABHandlexObject(void *context);
 void  ABHandlexDestroy(id context);
 id    ABHandlexGetObject(id context, NSString *key);
 void  ABHandlexSetObject(id context, NSString *key, id object);
 id    ABHandlexGetNonretainedObject(id context, NSString *key);
 void  ABHandlexSetNonretainedObject(id context, NSString *key, id object);
+
+void *ABHandlexPointer(id context);
+id    ABHandlexObject(void *context);
 
 
 // Misc

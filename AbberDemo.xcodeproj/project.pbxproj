@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0A2352A119B72030003BA4A6 /* ABEngineRoster.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A2352A019B72030003BA4A6 /* ABEngineRoster.m */; };
+		0A2865C319B847FE00F20312 /* ABObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A2865C219B847FE00F20312 /* ABObject.m */; };
 		0A5BAE701991382E001EF07E /* ABEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5BAE6F1991382E001EF07E /* ABEngine.m */; };
 		0A6E5506199F7A6A004BD577 /* ABChatsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6E5505199F7A6A004BD577 /* ABChatsViewController.m */; };
 		0A6E5509199F7A85004BD577 /* ABFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6E5508199F7A85004BD577 /* ABFriendsViewController.m */; };
@@ -89,6 +90,8 @@
 /* Begin PBXFileReference section */
 		0A23529F19B72030003BA4A6 /* ABEngineRoster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEngineRoster.h; sourceTree = "<group>"; };
 		0A2352A019B72030003BA4A6 /* ABEngineRoster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABEngineRoster.m; sourceTree = "<group>"; };
+		0A2865C119B847FE00F20312 /* ABObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABObject.h; sourceTree = "<group>"; };
+		0A2865C219B847FE00F20312 /* ABObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABObject.m; sourceTree = "<group>"; };
 		0A5BAE6E1991382E001EF07E /* ABEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEngine.h; sourceTree = "<group>"; };
 		0A5BAE6F1991382E001EF07E /* ABEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABEngine.m; sourceTree = "<group>"; };
 		0A6E5504199F7A6A004BD577 /* ABChatsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABChatsViewController.h; sourceTree = "<group>"; };
@@ -709,6 +712,8 @@
 				0A2352A019B72030003BA4A6 /* ABEngineRoster.m */,
 				23C547261994B4B300B4C0F7 /* ABCommon.h */,
 				23C547271994B4B300B4C0F7 /* ABCommon.m */,
+				0A2865C119B847FE00F20312 /* ABObject.h */,
+				0A2865C219B847FE00F20312 /* ABObject.m */,
 			);
 			path = abber;
 			sourceTree = "<group>";
@@ -851,6 +856,7 @@
 				0A9594E219A6316F007297B0 /* ABAddContactViewController.m in Sources */,
 				23C547281994B4B300B4C0F7 /* ABCommon.m in Sources */,
 				23C4BC7B199DD1C8006E796C /* ABSigninViewController.m in Sources */,
+				0A2865C319B847FE00F20312 /* ABObject.m in Sources */,
 				23CB415719A1EC900024120D /* UITableViewExtentions.m in Sources */,
 				23F6C1CF1990A993005D2ED7 /* oocontext.cpp in Sources */,
 				23CB415E19A20A7B0024120D /* ABProfileViewController.m in Sources */,
