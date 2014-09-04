@@ -19,10 +19,14 @@ typedef enum {
   ABPresenceTypeUnavailable = 5
 } ABPresenceType;
 
-@interface ABEngine (Presence)
+@interface ABEngine (IncomePresence)
 
 - (void)addPresenceHandler;
 - (void)removePresenceHandler;
+
+@end
+
+@interface ABEngine (Presence)
 
 - (BOOL)updatePresence:(ABPresenceType)type;
 

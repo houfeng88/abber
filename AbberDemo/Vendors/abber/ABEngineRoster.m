@@ -76,7 +76,7 @@ int ABRosterPushHandler(xmpp_conn_t * const conn,
   return 1;
 }
 
-@implementation ABEngine (RosterPush)
+@implementation ABEngine (IncomeRoster)
 
 - (void)addRosterPushHandler
 {

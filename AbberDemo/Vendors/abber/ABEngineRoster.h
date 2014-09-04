@@ -21,7 +21,7 @@ typedef enum {
 } ABSubscriptionType;
 
 
-@interface ABEngine (RosterPush)
+@interface ABEngine (IncomeRoster)
 
 - (void)addRosterPushHandler;
 - (void)removeRosterPushHandler;

@@ -8,16 +8,31 @@
 
 #import "ABEnginePresence.h"
 
-@implementation ABEngine (Presence)
+int ABPresenceHandler(xmpp_conn_t * const conn,
+                      xmpp_stanza_t * const stanza,
+                      void * const userdata)
+{
+  return 1;
+}
+
+
+@implementation ABEngine (IncomePresence)
 
 - (void)addPresenceHandler
 {
+  xmpp_handler_add(_connection, ABPresenceHandler, NULL, "presence", NULL, NULL);
 }
 
 - (void)removePresenceHandler
 {
+  xmpp_handler_delete(_connection, ABPresenceHandler);
 }
 
+@end
+
+
+
+@implementation ABEngine (Presence)
 
 - (BOOL)updatePresence:(ABPresenceType)type
 {
