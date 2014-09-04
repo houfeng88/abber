@@ -370,57 +370,48 @@ NSError       *ABStanzaMakeError(xmpp_stanza_t *stanza)
 
 #pragma mark - Handler context
 
-id    ABHandlexCreate()
+void *ABHandlexCreate()
 {
-  return [[NSMutableDictionary alloc] init];
+  NSDictionary *dictionary = [[NSMutableDictionary alloc] init];
+  CFDictionaryRef dictionaryRef = (__bridge_retained CFDictionaryRef)dictionary;
+  return (void *)dictionaryRef;
 }
 
-void *ABHandlexPointer(id context)
+void  ABHandlexDestroy(void *contextRef)
 {
-  return (void *)CFBridgingRetain(context);
+  CFDictionaryRef dictionaryRef = (CFDictionaryRef)contextRef;
+  CFRelease(dictionaryRef);
 }
 
-id    ABHandlexObject(void *context)
+id    ABHandlexGetObject(void *contextRef, NSString *key)
 {
-  return CFBridgingRelease(context);
-}
-
-void  ABHandlexDestroy(id context)
-{
-  NSMutableDictionary *map = context;
-  CFRelease((__bridge CFTypeRef)map);
-}
-
-id    ABHandlexGetObject(id context, NSString *key)
-{
-  if ( context ) {
-    NSMutableDictionary *map = context;
-    return [map objectForKey:key];
+  if ( contextRef ) {
+    CFMutableDictionaryRef dictionaryRef = (CFMutableDictionaryRef)contextRef;
+    NSMutableDictionary *dictionary = (__bridge NSMutableDictionary *)dictionaryRef;
+    return [dictionary objectForKey:key];
   }
   return nil;
 }
 
-void  ABHandlexSetObject(id context, NSString *key, id object)
+void  ABHandlexSetObject(void *contextRef, NSString *key, id object)
 {
-  if ( context ) {
-    NSMutableDictionary *map = context;
-    [map setObject:object forKeyIfNotNil:key];
+  if ( contextRef ) {
+    CFMutableDictionaryRef dictionaryRef = (CFMutableDictionaryRef)contextRef;
+    NSMutableDictionary *dictionary = (__bridge NSMutableDictionary *)dictionaryRef;
+    [dictionary setObject:object forKey:key];
   }
 }
 
-id    ABHandlexGetNonretainedObject(id context, NSString *key)
+id    ABHandlexGetNonretainedObject(void *contextRef, NSString *key)
 {
-  NSValue *value = ABHandlexGetObject(context, key);
+  NSValue *value = ABHandlexGetObject(contextRef, key);
   return [value nonretainedObjectValue];
 }
 
-void  ABHandlexSetNonretainedObject(id context, NSString *key, id object)
+void  ABHandlexSetNonretainedObject(void *contextRef, NSString *key, id object)
 {
-  NSValue *value = nil;
-  if ( object ) {
-    value = [NSValue valueWithNonretainedObject:object];
-  }
-  ABHandlexSetObject(context, key, value);
+  NSValue *value = [NSValue valueWithNonretainedObject:object];
+  ABHandlexSetObject(contextRef, key, value);
 }
 
 
