@@ -168,6 +168,12 @@ static ABEngine *Engine = nil;
 }
 
 
+- (FMDatabaseQueue *)database
+{
+  return _database;
+}
+
+
 - (void)sendData:(NSData *)data
 {
   if ( [self isConnected] ) {

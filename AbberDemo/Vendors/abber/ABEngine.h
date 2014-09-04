@@ -48,6 +48,8 @@ typedef enum {
 - (BOOL)isConnecting;
 - (BOOL)isConnected;
 
+- (FMDatabaseQueue *)database;
+
 - (void)sendData:(NSData *)data;
 - (void)sendString:(NSString *)string;
 

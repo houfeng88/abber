@@ -79,6 +79,8 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
     @"memoname TEXT, "
     @"relation INTEGER, "
     @"nickname TEXT, "
+    @"avatar TEXT, "
+    @"birthday TEXT, "
     @"desc TEXT);";
     [_database inDatabase:^(FMDatabase *db) { [db executeUpdate:contactSQL]; }];
   }

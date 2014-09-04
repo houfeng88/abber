@@ -15,9 +15,9 @@
   UILabel *_descLabel;
 }
 
-@property (nonatomic, strong) UIImageView *avatarView;
-@property (nonatomic, strong) UILabel *nicknameLabel;
-@property (nonatomic, strong) UILabel *statusLabel;
-@property (nonatomic, strong) UILabel *descLabel;
+@property (nonatomic, strong, readonly) UIImageView *avatarView;
+@property (nonatomic, strong, readonly) UILabel *nicknameLabel;
+@property (nonatomic, strong, readonly) UILabel *statusLabel;
+@property (nonatomic, strong, readonly) UILabel *descLabel;
 
 @end

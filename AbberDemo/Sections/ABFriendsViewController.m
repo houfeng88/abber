@@ -11,7 +11,7 @@
 
 #import "ABAddContactViewController.h"
 
-#import "ABProfileViewController.h"
+#import "ABContactInfoViewController.h"
 
 @implementation ABFriendsViewController
 
@@ -79,7 +79,31 @@
 
 - (void)loadContacts
 {
-  //_contactAry = [[TKDatabase sharedObject] executeQuery:@"SELECT * FROM contact;"];
+  FMDatabaseQueue *database = [[ABEngine sharedObject] database];
+  [database inDatabase:^(FMDatabase *db) {
+    FMResultSet *rs = [db executeQuery:@"SELECT * FROM contact;"];
+    NSMutableArray *ary = [[NSMutableArray alloc] init];
+    while ( [rs next] ) {
+      NSString *jid = [rs stringForColumn:@"jid"];
+      NSString *memoname = [rs stringForColumn:@"memoname"];
+      int relation = [rs intForColumn:@"relation"];
+      NSString *nickname = [rs stringForColumn:@"nickname"];
+      NSString *avatar = [rs stringForColumn:@"avatar"];
+      NSString *birthday = [rs stringForColumn:@"birthday"];
+      NSString *desc = [rs stringForColumn:@"desc"];
+      
+      NSMutableDictionary *contact = [[NSMutableDictionary alloc] init];
+      [contact setObject:jid forKeyIfNotNil:@"jid"];
+      [contact setObject:memoname forKeyIfNotNil:@"memoname"];
+      [contact setObject:@(relation) forKeyIfNotNil:@"relation"];
+      [contact setObject:nickname forKeyIfNotNil:@"nickname"];
+      [contact setObject:avatar forKeyIfNotNil:@"avatar"];
+      [contact setObject:birthday forKeyIfNotNil:@"birthday"];
+      [contact setObject:desc forKeyIfNotNil:@"desc"];
+      [ary addObject:contact];
+    }
+    _contactAry = ary;
+  }];
 }
 
 - (void)refreshContacts
@@ -106,9 +130,22 @@
   
   cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
   
-//  TKDatabaseRow *row = [_contactAry objectAtIndex:indexPath.row];
-//  //cell.nicknameLabel.text = ABOStrOrLater([row stringForName:@"memoname"], [row stringForName:@"jid"]);
-//  cell.descLabel.text = [row stringForName:@"desc"];
+  NSDictionary *contact = [_contactAry objectAtIndex:indexPath.row];
+  NSString *jid = [contact objectForKey:@"jid"];
+  NSString *memoname = [contact objectForKey:@"memoname"];
+  //NSNumber *relation = [contact objectForKey:@"relation"];
+  NSString *nickname = [contact objectForKey:@"nickname"];
+  //NSString *avatar = [contact objectForKey:@"avatar"];
+  //NSString *birthday = [contact objectForKey:@"birthday"];
+  NSString *desc = [contact objectForKey:@"desc"];
+  
+  
+  NSString *name = TKStrOrLater(memoname, nickname);
+  
+  //cell.avatarView.image = nil;
+  cell.nicknameLabel.text = TKStrOrLater(name, jid);
+  cell.statusLabel.text = nil;
+  cell.descLabel.text = desc;
   
   return cell;
 }
@@ -124,11 +161,9 @@
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
-//  TKDatabaseRow *row = [_contactAry objectOrNilAtIndex:indexPath.row];
-//  if ( row ) {
-//    ABProfileViewController *vc = [[ABProfileViewController alloc] initWithContact:row];
-//    [self.navigationController pushViewController:vc animated:YES];
-//  }
+  NSDictionary *contact = [_contactAry objectAtIndex:indexPath.row];
+  ABContactInfoViewController *vc = [[ABContactInfoViewController alloc] initWithContact:contact];
+  [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end
