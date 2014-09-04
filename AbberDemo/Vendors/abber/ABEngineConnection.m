@@ -64,15 +64,13 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
 - (void)configAccount:(NSString *)acnt
 {
   if ( TKSNonempty(acnt) ) {
+    
     NSString *path = TKPathForDocumentResource(acnt);
-    
-    
     TKCreateDirectory(path);
     
     
     NSString *dbpath = [path stringByAppendingPathComponent:@"im.db"];
-    FMDatabase *db = [[FMDatabase alloc] initWithPath:dbpath];
-    [db open];
+    _database = [[FMDatabaseQueue alloc] initWithPath:dbpath];
     
     NSString *contactSQL =
     @"CREATE TABLE IF NOT EXISTS contact("
@@ -82,7 +80,7 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
     @"relation INTEGER, "
     @"nickname TEXT, "
     @"desc TEXT);";
-    [db executeUpdate:contactSQL];
+    [_database inDatabase:^(FMDatabase *db) { [db executeUpdate:contactSQL]; }];
   }
 }
 

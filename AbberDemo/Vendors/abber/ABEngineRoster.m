@@ -62,7 +62,15 @@ int ABRosterPushHandler(xmpp_conn_t * const conn,
     
     ABSubscriptionType relation = ABRosterRelation(ask, subscription);
     
-    [engine didReceiveRosterItem:@{ @"jid":jid, @"memoname":TKStrOrLater(memoname, @""), @"relation":@(relation) }];
+    if ( TKSNonempty(jid) ) {
+      NSMutableDictionary *contact = [[NSMutableDictionary alloc] init];
+      [contact setObject:jid forKey:@"jid"];
+      [contact setObject:memoname forKeyIfNotNil:@"memoname"];
+      [contact setObject:@(relation) forKey:@"relation"];
+      
+      [engine saveContact:contact];
+      [engine didReceiveRosterItem:contact];
+    }
   }
   
   return 1;
@@ -123,13 +131,21 @@ int ABRosterRequestHandler(xmpp_conn_t * const conn,
       
       ABSubscriptionType relation = ABRosterRelation(ask, subscription);
       
-      [roster addObject:@{ @"jid":jid, @"memoname":TKStrOrLater(memoname, @""), @"relation":@(relation) }];
+      if ( TKSNonempty(jid) ) {
+        NSMutableDictionary *contact = [[NSMutableDictionary alloc] init];
+        [contact setObject:jid forKey:@"jid"];
+        [contact setObject:memoname forKeyIfNotNil:@"memoname"];
+        [contact setObject:@(relation) forKey:@"relation"];
+        
+        [roster addObject:contact];
+      }
       
       item = ABStanzaNextChild(item);
     }
     
   }
   
+  [engine saveRoster:roster];
   [engine didReceiveRoster:roster error:error];
   if ( completion ) {
     dispatch_sync(dispatch_get_main_queue(), ^{
@@ -229,7 +245,7 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
     
     void *contextRef = ABHandlexCreate();
     ABHandlexSetNonretainedObject(contextRef, @"engine", self);
-    ABHandlexSetObject(contextRef, @"completion", [completion copy]);
+    if ( completion ) ABHandlexSetObject(contextRef, @"completion", [completion copy]);
     
     xmpp_id_handler_add(_connection, ABRosterRequestHandler, TKCString(identifier), contextRef);
     
@@ -262,7 +278,7 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
       
       void *contextRef = ABHandlexCreate();
       ABHandlexSetNonretainedObject(contextRef, @"engine", self);
-      ABHandlexSetObject(contextRef, @"completion", [completion copy]);
+      if ( completion ) ABHandlexSetObject(contextRef, @"completion", [completion copy]);
       
       xmpp_id_handler_add(_connection, ABRosterAddHandler, TKCString(identifier), contextRef);
       
@@ -303,7 +319,7 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
       
       void *contextRef = ABHandlexCreate();
       ABHandlexSetNonretainedObject(contextRef, @"engine", self);
-      ABHandlexSetObject(contextRef, @"completion", [completion copy]);
+      if ( completion ) ABHandlexSetObject(contextRef, @"completion", [completion copy]);
       
       xmpp_id_handler_add(_connection, ABRosterUpdateHandler, TKCString(identifier), contextRef);
       
@@ -344,7 +360,7 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
       
       void *contextRef = ABHandlexCreate();
       ABHandlexSetNonretainedObject(contextRef, @"engine", self);
-      ABHandlexSetObject(contextRef, @"completion", [completion copy]);
+      if ( completion ) ABHandlexSetObject(contextRef, @"completion", [completion copy]);
       
       xmpp_id_handler_add(_connection, ABRosterRemoveHandler, TKCString(identifier), contextRef);
       
@@ -368,6 +384,42 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
     }
   }
   return NO;
+}
+
+
+- (void)saveRoster:(NSArray *)roster
+{
+  NSArray *jidAry = [roster valueForKeyPath:@"@unionOfObjects.jid"];
+  
+  [_database inDatabase:^(FMDatabase *db) {
+    FMResultSet *rs = [db executeQuery:@"SELECT * FROM contact;"];
+    while ( [rs next] ) {
+      NSString *jid = [rs stringForColumn:@"jid"];
+      if ( ![jidAry containsObject:jid] ) {
+        [db executeUpdate:@"DELETE FROM contact WHERE jid=?;", jid];
+      }
+    }
+  }];
+  
+  for ( NSDictionary *contact in roster ) {
+    [self saveContact:contact];
+  }
+}
+
+- (void)saveContact:(NSDictionary *)contact
+{
+  NSString *jid = [contact objectForKey:@"jid"];
+  NSString *memoname = [contact objectForKey:@"memoname"];
+  NSNumber *relation = [contact objectForKey:@"relation"];
+  
+  [_database inDatabase:^(FMDatabase *db) {
+    FMResultSet *rs = [db executeQuery:@"SELECT * FROM contact WHERE jid=?;", jid];
+    if ( [rs hasAnotherRow] ) {
+      [db executeUpdate:@"UPDATE contact SET memoname=?, relation=? WHERE jid=?;", memoname, relation, jid];
+    } else {
+      [db executeUpdate:@"INSERT INTO contact(jid, memoname, relation) VALUES(?, ?, ?);", jid, memoname, relation];
+    }
+  }];
 }
 
 

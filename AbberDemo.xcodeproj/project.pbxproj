@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0A2352A119B72030003BA4A6 /* ABEngineRoster.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A2352A019B72030003BA4A6 /* ABEngineRoster.m */; };
+		0A2865CC19B880F400F20312 /* ABEnginePresence.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A2865CB19B880F400F20312 /* ABEnginePresence.m */; };
 		0A5BAE701991382E001EF07E /* ABEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5BAE6F1991382E001EF07E /* ABEngine.m */; };
 		0A6E5506199F7A6A004BD577 /* ABChatsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6E5505199F7A6A004BD577 /* ABChatsViewController.m */; };
 		0A6E5509199F7A85004BD577 /* ABFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6E5508199F7A85004BD577 /* ABFriendsViewController.m */; };
@@ -89,6 +90,8 @@
 /* Begin PBXFileReference section */
 		0A23529F19B72030003BA4A6 /* ABEngineRoster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEngineRoster.h; sourceTree = "<group>"; };
 		0A2352A019B72030003BA4A6 /* ABEngineRoster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABEngineRoster.m; sourceTree = "<group>"; };
+		0A2865CA19B880F400F20312 /* ABEnginePresence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEnginePresence.h; sourceTree = "<group>"; };
+		0A2865CB19B880F400F20312 /* ABEnginePresence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABEnginePresence.m; sourceTree = "<group>"; };
 		0A5BAE6E1991382E001EF07E /* ABEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEngine.h; sourceTree = "<group>"; };
 		0A5BAE6F1991382E001EF07E /* ABEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABEngine.m; sourceTree = "<group>"; };
 		0A6E5504199F7A6A004BD577 /* ABChatsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABChatsViewController.h; sourceTree = "<group>"; };
@@ -707,6 +710,8 @@
 				23C5473C1994C0E900B4C0F7 /* ABEngineConnection.m */,
 				0A23529F19B72030003BA4A6 /* ABEngineRoster.h */,
 				0A2352A019B72030003BA4A6 /* ABEngineRoster.m */,
+				0A2865CA19B880F400F20312 /* ABEnginePresence.h */,
+				0A2865CB19B880F400F20312 /* ABEnginePresence.m */,
 				23C547261994B4B300B4C0F7 /* ABCommon.h */,
 				23C547271994B4B300B4C0F7 /* ABCommon.m */,
 			);
@@ -859,6 +864,7 @@
 				23F6C1D21990A993005D2ED7 /* sasl.c in Sources */,
 				23C4BC79199DD1C8006E796C /* ABMainViewController.m in Sources */,
 				23F6C1CC1990A993005D2ED7 /* hash.c in Sources */,
+				0A2865CC19B880F400F20312 /* ABEnginePresence.m in Sources */,
 				23F6C1C81990A993005D2ED7 /* conn.c in Sources */,
 				23F6C1D81990A993005D2ED7 /* tls.c in Sources */,
 				23CB414819A1D2150024120D /* MBProgressHUDExtentions.m in Sources */,

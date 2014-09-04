@@ -205,7 +205,7 @@
       } else {
         [[ABEngine sharedObject] removeObserver:self];
         
-        //[[ABEngine sharedObject] updatePresence:ABPresenceTypeAvailable];
+        [[ABEngine sharedObject] updatePresence:ABPresenceTypeAvailable];
         
         [MBProgressHUD dismissHUD:self.view
                       immediately:NO
