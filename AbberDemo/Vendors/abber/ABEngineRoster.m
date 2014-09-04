@@ -7,7 +7,6 @@
 //
 
 #import "ABEngineRoster.h"
-#import "ABObject.h"
 
 ABSubscriptionType ABRosterRelation(NSString *ask, NSString *subscription)
 {
@@ -105,59 +104,41 @@ int ABRosterRequestHandler(xmpp_conn_t * const conn,
 {
   DDLogCDebug(@"[roster] Roster request complete.");
   
-//  dispatch_sync(dispatch_get_main_queue(), ^{
-//    [NSObject cancelPreviousPerformRequestsWithTarget:[ABEngine sharedObject]
-//                                             selector:@selector(requestRosterTimeout:)
-//                                               object:(__bridge id)userdata];
-//  });
+  ABEngine *engine = (__bridge id)ABHandlexGetNonretainedObject(userdata, @"engine");
+  ABEngineCompletionHandler completion = (__bridge id)ABHandlexGetObject(userdata, @"completion");
   
-  ABObject *obj = ABHandlexGetObject(userdata, @"obj");
-//  NSLog(@"AAA Handler %@", obj);
+  
+  NSMutableArray *roster = [[NSMutableArray alloc] init];
+  NSError *error = ABStanzaMakeError(stanza);
+  
+  if ( !error ) {
+    
+    xmpp_stanza_t *query = ABStanzaChildByName(stanza, @"query");
+    xmpp_stanza_t *item = ABStanzaFirstChild(query);
+    while ( item ) {
+      NSString *jid = ABStanzaGetAttribute(item, @"jid");
+      NSString *memoname = ABStanzaGetAttribute(item, @"name");
+      NSString *ask = ABStanzaGetAttribute(item, @"ask");
+      NSString *subscription = ABStanzaGetAttribute(item, @"subscription");
+      
+      ABSubscriptionType relation = ABRosterRelation(ask, subscription);
+      
+      [roster addObject:@{ @"jid":jid, @"memoname":TKStrOrLater(memoname, @""), @"relation":@(relation) }];
+      
+      item = ABStanzaNextChild(item);
+    }
+    
+  }
+  
+  [engine didReceiveRoster:roster error:error];
+  if ( completion ) {
+    dispatch_sync(dispatch_get_main_queue(), ^{
+      completion(roster, error);
+    });
+  }
+
+  
   ABHandlexDestroy(userdata);
-  
-//  ABEngine *engine = ABHandlexGetNonretainedObject(ABHandlexObject(userdata), @"engine");
-//  //NSString *identifier = ABHandlexGetObject(ABHandlexObject(userdata), @"identifier");
-//  ABEngineCompletionHandler completion = ABHandlexGetObject(ABHandlexObject(userdata), @"completion");
-//  
-//  dispatch_sync(dispatch_get_main_queue(), ^{
-//    [NSObject cancelPreviousPerformRequestsWithTarget:engine
-//                                             selector:@selector(requestRosterTimeout:)
-//                                               object:(__bridge id)userdata];
-//  });
-//
-//  
-//  NSMutableArray *roster = [[NSMutableArray alloc] init];
-//  NSError *error = ABStanzaMakeError(stanza);
-//  
-//  if ( !error ) {
-//    
-//    xmpp_stanza_t *query = ABStanzaChildByName(stanza, @"query");
-//    xmpp_stanza_t *item = ABStanzaFirstChild(query);
-//    while ( item ) {
-//      NSString *jid = ABStanzaGetAttribute(item, @"jid");
-//      NSString *memoname = ABStanzaGetAttribute(item, @"name");
-//      NSString *ask = ABStanzaGetAttribute(item, @"ask");
-//      NSString *subscription = ABStanzaGetAttribute(item, @"subscription");
-//      
-//      ABSubscriptionType relation = ABRosterRelation(ask, subscription);
-//      
-//      [roster addObject:@{ @"jid":jid, @"memoname":TKStrOrLater(memoname, @""), @"relation":@(relation) }];
-//      
-//      item = ABStanzaNextChild(item);
-//    }
-//    
-//  }
-//  
-//  [engine didReceiveRoster:roster error:error];
-//  if ( completion ) {
-//    dispatch_sync(dispatch_get_main_queue(), ^{
-//      completion(roster, error);
-//    });
-//  }
-//  
-//  
-//  ABHandlexDestroy(ABHandlexObject(userdata));
-  
   return 0;
 }
 
@@ -167,31 +148,22 @@ int ABRosterAddHandler(xmpp_conn_t * const conn,
 {
   DDLogCDebug(@"[roster] Roster add complete.");
   
-//  ABEngine *engine = ABHandlexGetNonretainedObject(ABHandlexObject(userdata), @"engine");
-//  //NSString *jid = ABHandlexGetObject(ABHandlexObject(userdata), @"jid");
-//  //NSString *identifier = ABHandlexGetObject(ABHandlexObject(userdata), @"identifier");
-//  //ABEngineCompletionHandler completion = ABHandlexGetObject(ABHandlexObject(userdata), @"completion");
-//  
-//  dispatch_sync(dispatch_get_main_queue(), ^{
-//    [NSObject cancelPreviousPerformRequestsWithTarget:engine
-//                                             selector:@selector(addContactTimeout:)
-//                                               object:(__bridge id)userdata];
-//  });
-//  
-//  
-//  NSString *jid = ABJidBare(ABStanzaGetAttribute(stanza, @"to"));
-//  NSError *error = ABStanzaMakeError(stanza);
-//  
-//  [engine didCompleteAddContact:jid error:error];
-//  if ( completion ) {
-//    dispatch_sync(dispatch_get_main_queue(), ^{
-//      completion(jid, error);
-//    });
-//  }
-//  
-//  
-//  ABHandlexDestroy(ABHandlexObject(userdata));
+  ABEngine *engine = (__bridge id)ABHandlexGetNonretainedObject(userdata, @"engine");
+  ABEngineCompletionHandler completion = (__bridge id)ABHandlexGetObject(userdata, @"completion");
   
+  
+  NSString *jid = ABJidBare(ABStanzaGetAttribute(stanza, @"to"));
+  NSError *error = ABStanzaMakeError(stanza);
+  
+  [engine didCompleteAddContact:jid error:error];
+  if ( completion ) {
+    dispatch_sync(dispatch_get_main_queue(), ^{
+      completion(jid, error);
+    });
+  }
+  
+  
+  ABHandlexDestroy(userdata);
   return 0;
 }
 
@@ -201,31 +173,22 @@ int ABRosterUpdateHandler(xmpp_conn_t * const conn,
 {
   DDLogCDebug(@"[roster] Roster update complete.");
   
-//  ABEngine *engine = ABHandlexGetNonretainedObject(ABHandlexObject(userdata), @"engine");
-//  //NSString *jid = ABHandlexGetObject(ABHandlexObject(userdata), @"jid");
-//  //NSString *identifier = ABHandlexGetObject(ABHandlexObject(userdata), @"identifier");
-//  //ABEngineCompletionHandler completion = ABHandlexGetObject(ABHandlexObject(userdata), @"completion");
-//  
-//  dispatch_sync(dispatch_get_main_queue(), ^{
-//    [NSObject cancelPreviousPerformRequestsWithTarget:engine
-//                                             selector:@selector(updateContactTimeout:)
-//                                               object:(__bridge id)userdata];
-//  });
-//  
-//  
-//  NSString *jid = ABJidBare(ABStanzaGetAttribute(stanza, @"to"));
-//  NSError *error = ABStanzaMakeError(stanza);
-//  
-//  [engine didCompleteUpdateContact:jid error:error];
-//  if ( completion ) {
-//    dispatch_sync(dispatch_get_main_queue(), ^{
-//      completion(jid, error);
-//    });
-//  }
-//  
-//  
-//  ABHandlexDestroy(ABHandlexObject(userdata));
+  ABEngine *engine = (__bridge id)ABHandlexGetNonretainedObject(userdata, @"engine");
+  ABEngineCompletionHandler completion = (__bridge id)ABHandlexGetObject(userdata, @"completion");
   
+  
+  NSString *jid = ABJidBare(ABStanzaGetAttribute(stanza, @"to"));
+  NSError *error = ABStanzaMakeError(stanza);
+  
+  [engine didCompleteUpdateContact:jid error:error];
+  if ( completion ) {
+    dispatch_sync(dispatch_get_main_queue(), ^{
+      completion(jid, error);
+    });
+  }
+  
+  
+  ABHandlexDestroy(userdata);
   return 0;
 }
 
@@ -235,31 +198,22 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
 {
   DDLogCDebug(@"[roster] Roster remove complete.");
   
-//  ABEngine *engine = ABHandlexGetNonretainedObject(ABHandlexObject(userdata), @"engine");
-//  //NSString *jid = ABHandlexGetObject(ABHandlexObject(userdata), @"jid");
-//  //NSString *identifier = ABHandlexGetObject(ABHandlexObject(userdata), @"identifier");
-//  //ABEngineCompletionHandler completion = ABHandlexGetObject(ABHandlexObject(userdata), @"completion");
-//  
-//  dispatch_sync(dispatch_get_main_queue(), ^{
-//    [NSObject cancelPreviousPerformRequestsWithTarget:engine
-//                                             selector:@selector(removeContactTimeout:)
-//                                               object:(__bridge id)userdata];
-//  });
-//  
-//  
-//  NSString *jid = ABJidBare(ABStanzaGetAttribute(stanza, @"to"));
-//  NSError *error = ABStanzaMakeError(stanza);
-//  
-//  [engine didCompleteUpdateContact:jid error:error];
-//  if ( completion ) {
-//    dispatch_sync(dispatch_get_main_queue(), ^{
-//      completion(jid, error);
-//    });
-//  }
-//  
-//  
-//  ABHandlexDestroy(ABHandlexObject(userdata));
+  ABEngine *engine = (__bridge id)ABHandlexGetNonretainedObject(userdata, @"engine");
+  ABEngineCompletionHandler completion = (__bridge id)ABHandlexGetObject(userdata, @"completion");
   
+  
+  NSString *jid = ABJidBare(ABStanzaGetAttribute(stanza, @"to"));
+  NSError *error = ABStanzaMakeError(stanza);
+  
+  [engine didCompleteUpdateContact:jid error:error];
+  if ( completion ) {
+    dispatch_sync(dispatch_get_main_queue(), ^{
+      completion(jid, error);
+    });
+  }
+  
+  
+  ABHandlexDestroy(userdata);
   return 0;
 }
 
@@ -274,14 +228,10 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
     NSString *identifier = [[NSUUID UUID] UUIDString];
     
     void *contextRef = ABHandlexCreate();
-//    ABHandlexSetNonretainedObject(context, @"engine", self);
-//    ABHandlexSetObject(context, @"identifier", identifier);
-//    ABHandlexSetObject(context, @"completion", [completion copy]);
-    ABObject *obj = [[ABObject alloc] init];
-    ABHandlexSetObject(contextRef, @"obj", obj);
+    ABHandlexSetNonretainedObject(contextRef, @"engine", self);
+    ABHandlexSetObject(contextRef, @"completion", [completion copy]);
     
     xmpp_id_handler_add(_connection, ABRosterRequestHandler, TKCString(identifier), contextRef);
-    //[self performSelector:@selector(requestRosterTimeout:) withObject:(__bridge id)contextRef afterDelay:10.0];
     
     
     xmpp_stanza_t *iq = ABStanzaCreate(_connection->ctx, @"iq", nil);
@@ -306,40 +256,37 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
 //      <item jid='nurse@example.com' name='Nurse'/>
 //    </query>
 //  </iq>
-//  if ( TKSNonempty(jid) ) {
-//    if ( [self isConnected] ) {
-//      NSString *identifier = [[NSUUID UUID] UUIDString];
-//      
-//      id context = ABHandlexCreate();
-//      ABHandlexSetNonretainedObject(context, @"engine", self);
-//      ABHandlexSetObject(context, @"jid", jid);
-//      ABHandlexSetObject(context, @"identifier", identifier);
-//      ABHandlexSetObject(context, @"completion", [completion copy]);
-//      
-//      xmpp_id_handler_add(_connection, ABRosterAddHandler, TKCString(identifier), ABHandlexPointer(context));
-//      [self performSelector:@selector(addContactTimeout:) withObject:context afterDelay:10.0];
-//      
-//      
-//      xmpp_stanza_t *iq = ABStanzaCreate(_connection->ctx, @"iq", nil);
-//      ABStanzaSetAttribute(iq, @"id", identifier);
-//      ABStanzaSetAttribute(iq, @"type", @"set");
-//      
-//      xmpp_stanza_t *query = ABStanzaCreate(_connection->ctx, @"query", nil);
-//      ABStanzaSetAttribute(query, @"xmlns", @"jabber:iq:roster");
-//      ABStanzaAddChild(iq, query);
-//      
-//      xmpp_stanza_t *item = ABStanzaCreate(_connection->ctx, @"item", nil);
-//      ABStanzaSetAttribute(item, @"jid", jid);
-//      if ( name ) {
-//        ABStanzaSetAttribute(item, @"name", name);
-//      }
-//      ABStanzaAddChild(query, item);
-//      
-//      [self sendData:ABStanzaToData(iq)];
-//      
-//      return YES;
-//    }
-//  }
+  if ( TKSNonempty(jid) ) {
+    if ( [self isConnected] ) {
+      NSString *identifier = [[NSUUID UUID] UUIDString];
+      
+      void *contextRef = ABHandlexCreate();
+      ABHandlexSetNonretainedObject(contextRef, @"engine", self);
+      ABHandlexSetObject(contextRef, @"completion", [completion copy]);
+      
+      xmpp_id_handler_add(_connection, ABRosterAddHandler, TKCString(identifier), contextRef);
+      
+      
+      xmpp_stanza_t *iq = ABStanzaCreate(_connection->ctx, @"iq", nil);
+      ABStanzaSetAttribute(iq, @"id", identifier);
+      ABStanzaSetAttribute(iq, @"type", @"set");
+      
+      xmpp_stanza_t *query = ABStanzaCreate(_connection->ctx, @"query", nil);
+      ABStanzaSetAttribute(query, @"xmlns", @"jabber:iq:roster");
+      ABStanzaAddChild(iq, query);
+      
+      xmpp_stanza_t *item = ABStanzaCreate(_connection->ctx, @"item", nil);
+      ABStanzaSetAttribute(item, @"jid", jid);
+      if ( name ) {
+        ABStanzaSetAttribute(item, @"name", name);
+      }
+      ABStanzaAddChild(query, item);
+      
+      [self sendData:ABStanzaToData(iq)];
+      
+      return YES;
+    }
+  }
   return NO;
 }
 
@@ -350,40 +297,37 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
 //      <item jid='nurse@example.com' name='Nurse'/>
 //    </query>
 //  </iq>
-//  if ( TKSNonempty(jid) ) {
-//    if ( [self isConnected] ) {
-//      NSString *identifier = [[NSUUID UUID] UUIDString];
-//      
-//      id context = ABHandlexCreate();
-//      ABHandlexSetNonretainedObject(context, @"engine", self);
-//      ABHandlexSetObject(context, @"jid", jid);
-//      ABHandlexSetObject(context, @"identifier", identifier);
-//      ABHandlexSetObject(context, @"completion", [completion copy]);
-//      
-//      xmpp_id_handler_add(_connection, ABRosterUpdateHandler, TKCString(identifier), ABHandlexPointer(context));
-//      [self performSelector:@selector(updateContactTimeout:) withObject:context afterDelay:10.0];
-//      
-//      
-//      xmpp_stanza_t *iq = ABStanzaCreate(_connection->ctx, @"iq", nil);
-//      ABStanzaSetAttribute(iq, @"id", identifier);
-//      ABStanzaSetAttribute(iq, @"type", @"set");
-//      
-//      xmpp_stanza_t *query = ABStanzaCreate(_connection->ctx, @"query", nil);
-//      ABStanzaSetAttribute(query, @"xmlns", @"jabber:iq:roster");
-//      ABStanzaAddChild(iq, query);
-//      
-//      xmpp_stanza_t *item = ABStanzaCreate(_connection->ctx, @"item", nil);
-//      ABStanzaSetAttribute(item, @"jid", jid);
-//      if ( name ) {
-//        ABStanzaSetAttribute(item, @"name", name);
-//      }
-//      ABStanzaAddChild(query, item);
-//      
-//      [self sendData:ABStanzaToData(iq)];
-//      
-//      return YES;
-//    }
-//  }
+  if ( TKSNonempty(jid) ) {
+    if ( [self isConnected] ) {
+      NSString *identifier = [[NSUUID UUID] UUIDString];
+      
+      void *contextRef = ABHandlexCreate();
+      ABHandlexSetNonretainedObject(contextRef, @"engine", self);
+      ABHandlexSetObject(contextRef, @"completion", [completion copy]);
+      
+      xmpp_id_handler_add(_connection, ABRosterUpdateHandler, TKCString(identifier), contextRef);
+      
+      
+      xmpp_stanza_t *iq = ABStanzaCreate(_connection->ctx, @"iq", nil);
+      ABStanzaSetAttribute(iq, @"id", identifier);
+      ABStanzaSetAttribute(iq, @"type", @"set");
+      
+      xmpp_stanza_t *query = ABStanzaCreate(_connection->ctx, @"query", nil);
+      ABStanzaSetAttribute(query, @"xmlns", @"jabber:iq:roster");
+      ABStanzaAddChild(iq, query);
+      
+      xmpp_stanza_t *item = ABStanzaCreate(_connection->ctx, @"item", nil);
+      ABStanzaSetAttribute(item, @"jid", jid);
+      if ( name ) {
+        ABStanzaSetAttribute(item, @"name", name);
+      }
+      ABStanzaAddChild(query, item);
+      
+      [self sendData:ABStanzaToData(iq)];
+      
+      return YES;
+    }
+  }
   return NO;
 }
 
@@ -394,146 +338,36 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
 //      <item jid='nurse@example.com' subscription='remove'/>
 //    </query>
 //  </iq>
-//  if ( TKSNonempty(jid) ) {
-//    if ( [self isConnected] ) {
-//      NSString *identifier = [[NSUUID UUID] UUIDString];
-//      
-//      id context = ABHandlexCreate();
-//      ABHandlexSetNonretainedObject(context, @"engine", self);
-//      ABHandlexSetObject(context, @"jid", jid);
-//      ABHandlexSetObject(context, @"identifier", identifier);
-//      ABHandlexSetObject(context, @"completion", [completion copy]);
-//      
-//      xmpp_id_handler_add(_connection, ABRosterRemoveHandler, TKCString(identifier), ABHandlexPointer(context));
-//      [self performSelector:@selector(removeContactTimeout:) withObject:context afterDelay:10.0];
-//      
-//      
-//      xmpp_stanza_t *iq = ABStanzaCreate(_connection->ctx, @"iq", nil);
-//      ABStanzaSetAttribute(iq, @"id", identifier);
-//      ABStanzaSetAttribute(iq, @"type", @"set");
-//      
-//      xmpp_stanza_t *query = ABStanzaCreate(_connection->ctx, @"query", nil);
-//      ABStanzaSetAttribute(query, @"xmlns", @"jabber:iq:roster");
-//      ABStanzaAddChild(iq, query);
-//      
-//      xmpp_stanza_t *item = ABStanzaCreate(_connection->ctx, @"item", nil);
-//      ABStanzaSetAttribute(item, @"jid", jid);
-//      ABStanzaSetAttribute(item, @"subscription", @"remove");
-//      ABStanzaAddChild(query, item);
-//      
-//      [self sendData:ABStanzaToData(iq)];
-//      
-//      return YES;
-//    }
-//  }
+  if ( TKSNonempty(jid) ) {
+    if ( [self isConnected] ) {
+      NSString *identifier = [[NSUUID UUID] UUIDString];
+      
+      void *contextRef = ABHandlexCreate();
+      ABHandlexSetNonretainedObject(contextRef, @"engine", self);
+      ABHandlexSetObject(contextRef, @"completion", [completion copy]);
+      
+      xmpp_id_handler_add(_connection, ABRosterRemoveHandler, TKCString(identifier), contextRef);
+      
+      
+      xmpp_stanza_t *iq = ABStanzaCreate(_connection->ctx, @"iq", nil);
+      ABStanzaSetAttribute(iq, @"id", identifier);
+      ABStanzaSetAttribute(iq, @"type", @"set");
+      
+      xmpp_stanza_t *query = ABStanzaCreate(_connection->ctx, @"query", nil);
+      ABStanzaSetAttribute(query, @"xmlns", @"jabber:iq:roster");
+      ABStanzaAddChild(iq, query);
+      
+      xmpp_stanza_t *item = ABStanzaCreate(_connection->ctx, @"item", nil);
+      ABStanzaSetAttribute(item, @"jid", jid);
+      ABStanzaSetAttribute(item, @"subscription", @"remove");
+      ABStanzaAddChild(query, item);
+      
+      [self sendData:ABStanzaToData(iq)];
+      
+      return YES;
+    }
+  }
   return NO;
-}
-
-
-- (void)requestRosterTimeout:(id)object
-{
-  DDLogDebug(@"[roster] Request roster time out");
-  
-  void *contextRef = (__bridge void *)object;
-  ABObject *obj = ABHandlexGetObject(contextRef, @"obj");
-  NSLog(@"AAA Timeout %@", obj);
-  ABHandlexDestroy(contextRef);
-  
-//  //ABEngine *engine = ABHandlexGetNonretainedObject(object, @"engine");
-//  NSString *identifier = ABHandlexGetObject(object, @"identifier");
-//  ABEngineCompletionHandler completion = ABHandlexGetObject(object, @"completion");
-//  
-//  
-//  xmpp_id_handler_delete(_connection, ABRosterRequestHandler, TKCString(identifier));
-//  
-//  
-//  NSError *error = [NSError errorWithDomain:@"abber.org" code:1 userInfo:@{@"ABErrorDescriptionKey": @"time-out"}];
-//  
-//  [self didReceiveRoster:nil error:error];
-//  if ( completion ) {
-//    completion(nil, error);
-//  }
-//  
-//  
-//  ABHandlexDestroy(object);
-}
-
-- (void)addContactTimeout:(id)object
-{
-  DDLogDebug(@"[roster] Add contact time out");
-  
-//  //ABEngine *engine = ABHandlexGetNonretainedObject(object, @"engine");
-//  NSString *jid = ABHandlexGetObject(object, @"jid");
-//  NSString *identifier = ABHandlexGetObject(object, @"identifier");
-//  ABEngineCompletionHandler completion = ABHandlexGetObject(object, @"completion");
-//  
-//  
-//  xmpp_id_handler_delete(_connection, ABRosterRequestHandler, TKCString(identifier));
-//  
-//  
-//  NSError *error = [NSError errorWithDomain:@"abber.org" code:1 userInfo:@{@"ABErrorDescriptionKey": @"time-out"}];
-//  
-//  [self didCompleteAddContact:jid error:error];
-//  if ( completion ) {
-//    dispatch_sync(dispatch_get_main_queue(), ^{
-//      completion(jid, error);
-//    });
-//  }
-//  
-//  
-//  ABHandlexDestroy(object);
-}
-
-- (void)updateContactTimeout:(id)object
-{
-  DDLogDebug(@"[roster] Update contact time out");
-  
-//  //ABEngine *engine = ABHandlexGetNonretainedObject(object, @"engine");
-//  NSString *jid = ABHandlexGetObject(object, @"jid");
-//  NSString *identifier = ABHandlexGetObject(object, @"identifier");
-//  ABEngineCompletionHandler completion = ABHandlexGetObject(object, @"completion");
-//  
-//  
-//  xmpp_id_handler_delete(_connection, ABRosterRequestHandler, TKCString(identifier));
-//  
-//  
-//  NSError *error = [NSError errorWithDomain:@"abber.org" code:1 userInfo:@{@"ABErrorDescriptionKey": @"time-out"}];
-//  
-//  [self didCompleteUpdateContact:jid error:error];
-//  if ( completion ) {
-//    dispatch_sync(dispatch_get_main_queue(), ^{
-//      completion(jid, error);
-//    });
-//  }
-//  
-//  
-//  ABHandlexDestroy(object);
-}
-
-- (void)removeContactTimeout:(id)object
-{
-  DDLogDebug(@"[roster] Remove contact time out");
-  
-//  //ABEngine *engine = ABHandlexGetNonretainedObject(object, @"engine");
-//  NSString *jid = ABHandlexGetObject(object, @"jid");
-//  NSString *identifier = ABHandlexGetObject(object, @"identifier");
-//  ABEngineCompletionHandler completion = ABHandlexGetObject(object, @"completion");
-//  
-//  
-//  xmpp_id_handler_delete(_connection, ABRosterRequestHandler, TKCString(identifier));
-//  
-//  
-//  NSError *error = [NSError errorWithDomain:@"abber.org" code:1 userInfo:@{@"ABErrorDescriptionKey": @"time-out"}];
-//  
-//  [self didCompleteRemoveContact:jid error:error];
-//  if ( completion ) {
-//    dispatch_sync(dispatch_get_main_queue(), ^{
-//      completion(jid, error);
-//    });
-//  }
-//  
-//  
-//  ABHandlexDestroy(object);
 }
 
 

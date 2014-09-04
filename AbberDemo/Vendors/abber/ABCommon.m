@@ -383,14 +383,14 @@ void  ABHandlexDestroy(void *contextRef)
   CFRelease(dictionaryRef);
 }
 
-id    ABHandlexGetObject(void *contextRef, NSString *key)
+void *ABHandlexGetObject(void *contextRef, NSString *key)
 {
   if ( contextRef ) {
     CFMutableDictionaryRef dictionaryRef = (CFMutableDictionaryRef)contextRef;
     NSMutableDictionary *dictionary = (__bridge NSMutableDictionary *)dictionaryRef;
-    return [dictionary objectForKey:key];
+    return (__bridge void *)[dictionary objectForKey:key];
   }
-  return nil;
+  return NULL;
 }
 
 void  ABHandlexSetObject(void *contextRef, NSString *key, id object)
@@ -402,10 +402,15 @@ void  ABHandlexSetObject(void *contextRef, NSString *key, id object)
   }
 }
 
-id    ABHandlexGetNonretainedObject(void *contextRef, NSString *key)
+void *ABHandlexGetNonretainedObject(void *contextRef, NSString *key)
 {
-  NSValue *value = ABHandlexGetObject(contextRef, key);
-  return [value nonretainedObjectValue];
+  if ( contextRef ) {
+    CFMutableDictionaryRef dictionaryRef = (CFMutableDictionaryRef)contextRef;
+    NSMutableDictionary *dictionary = (__bridge NSMutableDictionary *)dictionaryRef;
+    NSValue *value = [dictionary objectForKey:key];
+    return (__bridge void *)[value nonretainedObjectValue];
+  }
+  return NULL;
 }
 
 void  ABHandlexSetNonretainedObject(void *contextRef, NSString *key, id object)

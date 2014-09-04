@@ -37,11 +37,6 @@ typedef enum {
 - (BOOL)updateContact:(NSString *)jid name:(NSString *)name completion:(ABEngineCompletionHandler)completion;
 - (BOOL)removeContact:(NSString *)jid completion:(ABEngineCompletionHandler)completion;
 
-- (void)requestRosterTimeout:(id)object;
-- (void)addContactTimeout:(id)object;
-- (void)updateContactTimeout:(id)object;
-- (void)removeContactTimeout:(id)object;
-
 - (void)didReceiveRoster:(NSArray *)roster error:(NSError *)error;
 - (void)didCompleteAddContact:(NSString *)jid error:(NSError *)error;
 - (void)didCompleteUpdateContact:(NSString *)jid error:(NSError *)error;

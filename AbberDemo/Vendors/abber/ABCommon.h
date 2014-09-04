@@ -51,9 +51,9 @@ NSError       *ABStanzaMakeError(xmpp_stanza_t *stanza);
 // Handler context
 void *ABHandlexCreate();
 void  ABHandlexDestroy(void *contextRef);
-id    ABHandlexGetObject(void *contextRef, NSString *key);
+void *ABHandlexGetObject(void *contextRef, NSString *key);
 void  ABHandlexSetObject(void *contextRef, NSString *key, id object);
-id    ABHandlexGetNonretainedObject(void *contextRef, NSString *key);
+void *ABHandlexGetNonretainedObject(void *contextRef, NSString *key);
 void  ABHandlexSetNonretainedObject(void *contextRef, NSString *key, id object);
 
 
