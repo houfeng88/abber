@@ -68,14 +68,13 @@
 
 - (void)requestContacts
 {
-  [[ABEngine sharedObject] updateContact:@"tkbill@blah.im" name:@"" completion:NULL];
-//  [[ABEngine sharedObject] requestRosterWithCompletion:^(id result, NSError *error) {
-//    
-//    [self loadContacts];
-//    [self refreshContacts];
-//    [_tableView.initialRefreshControl endRefreshing];
-//    
-//  }];
+  [[ABEngine sharedObject] requestRosterWithCompletion:^(id result, NSError *error) {
+    
+    [self loadContacts];
+    [self refreshContacts];
+    [_tableView.initialRefreshControl endRefreshing];
+    
+  }];
 }
 
 - (void)loadContacts

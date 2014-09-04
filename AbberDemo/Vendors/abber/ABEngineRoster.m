@@ -413,8 +413,8 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
   NSNumber *relation = [contact objectForKey:@"relation"];
   
   [_database inDatabase:^(FMDatabase *db) {
-    FMResultSet *rs = [db executeQuery:@"SELECT * FROM contact WHERE jid=?;", jid];
-    if ( [rs hasAnotherRow] ) {
+    FMResultSet *rs = [db executeQuery:@"SELECT count(*) AS count FROM contact WHERE jid=?;", jid];
+    if ( [rs next] && ([rs intForColumn:@"count"]>0) ) {
       [db executeUpdate:@"UPDATE contact SET memoname=?, relation=? WHERE jid=?;", memoname, relation, jid];
     } else {
       [db executeUpdate:@"INSERT INTO contact(jid, memoname, relation) VALUES(?, ?, ?);", jid, memoname, relation];
