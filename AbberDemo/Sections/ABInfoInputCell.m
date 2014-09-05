@@ -33,7 +33,7 @@
     _bodyField.returnKeyType = UIReturnKeyDone;
     _bodyField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     _bodyField.adjustsFontSizeToFitWidth = NO;
-    _bodyField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    _bodyField.clearButtonMode = UITextFieldViewModeNever;
     [self.contentView addSubview:_bodyField];
   }
   return self;

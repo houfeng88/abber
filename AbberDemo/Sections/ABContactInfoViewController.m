@@ -8,7 +8,6 @@
 
 #import "ABContactInfoViewController.h"
 
-#import "ABInfoImageCell.h"
 #import "ABInfoInputCell.h"
 #import "ABInfoStaticCell.h"
 
@@ -66,7 +65,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
   if ( section==0 ) {
-    return 7;
+    return 5;
   }
   return 0;
 }
@@ -74,9 +73,9 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
   if ( indexPath.row==0 ) {
-    ABInfoImageCell *cell = (ABInfoImageCell *)[tableView dequeueReusableCellWithClass:[ABInfoImageCell class]];
-    cell.titleLabel.text = NSLocalizedString(@"avatar", @"");
-    cell.bodyLabel.text = [_contact objectForKey:@"avatar"];
+    ABInfoInputCell *cell = (ABInfoInputCell *)[tableView dequeueReusableCellWithClass:[ABInfoInputCell class]];
+    cell.titleLabel.text = NSLocalizedString(@"memoname", @"");
+    cell.bodyField.text = [_contact objectForKey:@"memoname"];
     return cell;
   } else if ( indexPath.row==1 ) {
     ABInfoStaticCell *cell = (ABInfoStaticCell *)[tableView dequeueReusableCellWithClass:[ABInfoStaticCell class]];
@@ -84,11 +83,6 @@
     cell.bodyLabel.text = [_contact objectForKey:@"jid"];
     return cell;
   } else if ( indexPath.row==2 ) {
-    ABInfoInputCell *cell = (ABInfoInputCell *)[tableView dequeueReusableCellWithClass:[ABInfoInputCell class]];
-    cell.titleLabel.text = NSLocalizedString(@"memoname", @"");
-    cell.bodyField.text = [_contact objectForKey:@"memoname"];
-    return cell;
-  } else if ( indexPath.row==3 ) {
     ABInfoStaticCell *cell = (ABInfoStaticCell *)[tableView dequeueReusableCellWithClass:[ABInfoStaticCell class]];
     cell.titleLabel.text = NSLocalizedString(@"relation", @"");
     int relation = [[_contact objectForKey:@"relation"] intValue];
@@ -108,17 +102,12 @@
       cell.bodyLabel.text = NSLocalizedString(@"Both", @"");
     }
     return cell;
-  } else if ( indexPath.row==4 ) {
+  } else if ( indexPath.row==3 ) {
     ABInfoStaticCell *cell = (ABInfoStaticCell *)[tableView dequeueReusableCellWithClass:[ABInfoStaticCell class]];
     cell.titleLabel.text = NSLocalizedString(@"nickname", @"");
     cell.bodyLabel.text = [_contact objectForKey:@"nickname"];
     return cell;
-  } else if ( indexPath.row==5 ) {
-    ABInfoStaticCell *cell = (ABInfoStaticCell *)[tableView dequeueReusableCellWithClass:[ABInfoStaticCell class]];
-    cell.titleLabel.text = NSLocalizedString(@"birthday", @"");
-    cell.bodyLabel.text = [_contact objectForKey:@"birthday"];
-    return cell;
-  } else if ( indexPath.row==6 ) {
+  } else if ( indexPath.row==4 ) {
     ABInfoStaticCell *cell = (ABInfoStaticCell *)[tableView dequeueReusableCellWithClass:[ABInfoStaticCell class]];
     cell.titleLabel.text = NSLocalizedString(@"desc", @"");
     cell.bodyLabel.text = [_contact objectForKey:@"desc"];
@@ -130,18 +119,14 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
   if ( indexPath.row==0 ) {
-    return [ABInfoImageCell heightForTableView:tableView object:nil];
+    return [ABInfoInputCell heightForTableView:tableView object:nil];
   } else if ( indexPath.row==1 ) {
     return [ABInfoStaticCell heightForTableView:tableView object:nil];
   } else if ( indexPath.row==2 ) {
-    return [ABInfoInputCell heightForTableView:tableView object:nil];
+    return [ABInfoStaticCell heightForTableView:tableView object:nil];
   } else if ( indexPath.row==3 ) {
     return [ABInfoStaticCell heightForTableView:tableView object:nil];
   } else if ( indexPath.row==4 ) {
-    return [ABInfoStaticCell heightForTableView:tableView object:nil];
-  } else if ( indexPath.row==5 ) {
-    return [ABInfoStaticCell heightForTableView:tableView object:nil];
-  } else if ( indexPath.row==6 ) {
     return [ABInfoStaticCell heightForTableView:tableView object:nil];
   }
   return 0.0;
