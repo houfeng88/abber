@@ -36,4 +36,13 @@ typedef enum {
 - (BOOL)acceptContact:(NSString *)jid;
 - (BOOL)declineContact:(NSString *)jid;
 
+- (void)didReceiveFriendRequest:(NSString *)jid;
+
+@end
+
+@protocol ABEnginePresenceDelegate <NSObject>
+@optional
+
+- (void)engine:(ABEngine *)engine didReceiveFriendRequest:(NSString *)jid;
+
 @end

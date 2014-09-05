@@ -14,6 +14,7 @@
 		0A2865D519B8E7CA00F20312 /* ABInfoStaticCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A2865D419B8E7CA00F20312 /* ABInfoStaticCell.m */; };
 		0A2865DB19B8F13200F20312 /* ABUserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A2865DA19B8F13200F20312 /* ABUserInfoViewController.m */; };
 		0A31925519B968C500DDA368 /* ABInputCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A31925419B968C500DDA368 /* ABInputCell.m */; };
+		0A31925A19B97F2100DDA368 /* TKAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A31925919B97F2100DDA368 /* TKAlertView.m */; };
 		0A5BAE701991382E001EF07E /* ABEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5BAE6F1991382E001EF07E /* ABEngine.m */; };
 		0A6E5506199F7A6A004BD577 /* ABChatsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6E5505199F7A6A004BD577 /* ABChatsViewController.m */; };
 		0A6E5509199F7A85004BD577 /* ABFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6E5508199F7A85004BD577 /* ABFriendsViewController.m */; };
@@ -105,6 +106,8 @@
 		0A2865DA19B8F13200F20312 /* ABUserInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABUserInfoViewController.m; sourceTree = "<group>"; };
 		0A31925319B968C500DDA368 /* ABInputCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABInputCell.h; sourceTree = "<group>"; };
 		0A31925419B968C500DDA368 /* ABInputCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABInputCell.m; sourceTree = "<group>"; };
+		0A31925819B97F2100DDA368 /* TKAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKAlertView.h; sourceTree = "<group>"; };
+		0A31925919B97F2100DDA368 /* TKAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKAlertView.m; sourceTree = "<group>"; };
 		0A5BAE6E1991382E001EF07E /* ABEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEngine.h; sourceTree = "<group>"; };
 		0A5BAE6F1991382E001EF07E /* ABEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABEngine.m; sourceTree = "<group>"; };
 		0A6E5504199F7A6A004BD577 /* ABChatsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABChatsViewController.h; sourceTree = "<group>"; };
@@ -328,6 +331,15 @@
 			name = Common;
 			sourceTree = "<group>";
 		};
+		0A31925719B97F2100DDA368 /* General */ = {
+			isa = PBXGroup;
+			children = (
+				0A31925819B97F2100DDA368 /* TKAlertView.h */,
+				0A31925919B97F2100DDA368 /* TKAlertView.m */,
+			);
+			path = General;
+			sourceTree = "<group>";
+		};
 		0A6E54FD199F4A65004BD577 /* Signin */ = {
 			isa = PBXGroup;
 			children = (
@@ -364,8 +376,6 @@
 				23CB415A19A1EF2A0024120D /* ABContactCell.m */,
 				0A2865CD19B8E1BD00F20312 /* ABContactInfoViewController.h */,
 				0A2865CE19B8E1BD00F20312 /* ABContactInfoViewController.m */,
-				0A2865D919B8F13200F20312 /* ABUserInfoViewController.h */,
-				0A2865DA19B8F13200F20312 /* ABUserInfoViewController.m */,
 				0A9594E019A6316F007297B0 /* ABAddContactViewController.h */,
 				0A9594E119A6316F007297B0 /* ABAddContactViewController.m */,
 			);
@@ -386,6 +396,8 @@
 			children = (
 				0A6E550D199F7A9F004BD577 /* ABMoreViewController.h */,
 				0A6E550E199F7A9F004BD577 /* ABMoreViewController.m */,
+				0A2865D919B8F13200F20312 /* ABUserInfoViewController.h */,
+				0A2865DA19B8F13200F20312 /* ABUserInfoViewController.m */,
 			);
 			name = More;
 			sourceTree = "<group>";
@@ -575,6 +587,7 @@
 				23C4BC7C199DD1EF006E796C /* App */,
 				23C4BC72199DD1C8006E796C /* Sections */,
 				23CB413C19A1D2150024120D /* Helpers */,
+				0A31925719B97F2100DDA368 /* General */,
 				23F6C1551990A8DF005D2ED7 /* Vendors */,
 				23C4BC5E199DD17E006E796C /* Resources */,
 			);
@@ -898,6 +911,7 @@
 				0A2865D519B8E7CA00F20312 /* ABInfoStaticCell.m in Sources */,
 				23F6C1C91990A993005D2ED7 /* ctx.c in Sources */,
 				23CB415519A1EC900024120D /* TKRefreshControl.m in Sources */,
+				0A31925A19B97F2100DDA368 /* TKAlertView.m in Sources */,
 				23C4BC7A199DD1C8006E796C /* ABRootViewController.m in Sources */,
 				23CB414A19A1D2150024120D /* TKNavigationView.m in Sources */,
 				23F6C1D41990A993005D2ED7 /* snprintf.c in Sources */,

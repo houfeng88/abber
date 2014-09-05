@@ -162,6 +162,8 @@
   [engine addObserver:[[UIApplication sharedApplication] delegate]];
   [engine prepare];
   [engine connectWithAccount:acnt password:pswd];
+  [engine addRosterPushHandler];
+  [engine addPresenceHandler];
 }
 
 

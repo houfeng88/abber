@@ -11,6 +11,15 @@
 
 @implementation ABAddContactViewController
 
+- (id)init
+{
+  self = [super init];
+  if (self) {
+    self.hidesBottomBarWhenPushed = YES;
+  }
+  return self;
+}
+
 - (void)viewDidLoad
 {
   [super viewDidLoad];
@@ -35,15 +44,43 @@
 
 
 
-
 - (void)rightButtonClicked:(id)sender
 {
-//  [[ABEngine sharedObject] addContact:_accountField.text
-//                                 name:_memonameField.text
-//                           completion:^(id result, NSError *error) {
-//                             NSLog(@"add complete");
-//                           }];
-//  [[ABEngine sharedObject] subscribeContact:_accountField.text];
+  if ( [self checkValidity] ) {
+    [self add];
+  }
+}
+
+
+- (BOOL)checkValidity
+{
+  NSString *acnt = _accountField.text;
+  NSString *memo = _memonameField.text;
+  
+  if ( !TKSNonempty(acnt) ) {
+    TKPresentSystemMessage(NSLocalizedString(@"Invalid account", @""));
+    return NO;
+  }
+  
+  if ( !TKSNonempty(memo) ) {
+    TKPresentSystemMessage(NSLocalizedString(@"Invalid memoname", @""));
+    return NO;
+  }
+  
+  return YES;
+}
+
+- (void)add
+{
+  NSString *acnt = _accountField.text;
+  NSString *memo = _memonameField.text;
+  
+  [[ABEngine sharedObject] addContact:acnt
+                                 name:memo
+                           completion:^(id result, NSError *error) {
+                             [self.navigationController popViewControllerAnimated:YES];
+                           }];
+  [[ABEngine sharedObject] subscribeContact:acnt];
 }
 
 
@@ -73,6 +110,7 @@
     _accountField = cell.valueField;
   } else if ( indexPath.row==1 ) {
     cell.titleLabel.text = NSLocalizedString(@"Memoname:", @"");
+    cell.valueField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     cell.valueField.returnKeyType = UIReturnKeyDone;
     cell.valueField.delegate = self;
     _memonameField = cell.valueField;

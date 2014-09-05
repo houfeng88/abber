@@ -10,6 +10,8 @@
 #import "Sections/ABRootViewController.h"
 #import "Sections/ABSigninViewController.h"
 
+#import "General/TKAlertView.h"
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -55,6 +57,22 @@
   NSString *path = TKPathForDocumentResource(@"AppSettings.xml");
   TKSettings *settings = [[TKSettings alloc] initWithPath:path];
   [TKSettings saveObject:settings];
+}
+
+
+
+- (void)engine:(ABEngine *)engine didReceiveFriendRequest:(NSString *)jid
+{
+  NSString *fmt = NSLocalizedString(@"Should accept %@ ?", @"");
+  NSString *message = [[NSString alloc] initWithFormat:fmt, jid];
+  
+  TKAlertView *av = [[TKAlertView alloc] initWithTitle:NSLocalizedString(@"Friend Request", @"")
+                                               message:message];
+  [av addButtonWithTitle:NSLocalizedString(@"Accept", @"") block:^{
+  }];
+  [av addCancelButtonWithTitle:NSLocalizedString(@"Decline", @"") block:^{
+  }];
+  [av show];
 }
 
 @end

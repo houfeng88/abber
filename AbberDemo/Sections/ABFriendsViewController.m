@@ -133,10 +133,8 @@
   NSDictionary *contact = [_contactAry objectAtIndex:indexPath.row];
   NSString *jid = [contact objectForKey:@"jid"];
   NSString *memoname = [contact objectForKey:@"memoname"];
-  //NSNumber *relation = [contact objectForKey:@"relation"];
+  NSNumber *relation = [contact objectForKey:@"relation"];
   NSString *nickname = [contact objectForKey:@"nickname"];
-  //NSString *avatar = [contact objectForKey:@"avatar"];
-  //NSString *birthday = [contact objectForKey:@"birthday"];
   NSString *desc = [contact objectForKey:@"desc"];
   
   
