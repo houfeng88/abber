@@ -16,7 +16,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  [self addLoggers];
+  [self configLoggers];
   [self configStatusBar];
   [self configTapkit];
   
@@ -32,7 +32,7 @@
   return YES;
 }
 
-- (void)addLoggers
+- (void)configLoggers
 {
   [DDLog addLogger:[DDTTYLogger sharedInstance]];
   
