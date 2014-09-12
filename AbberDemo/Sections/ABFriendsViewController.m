@@ -28,6 +28,8 @@
   _tableView.dataSource = self;
   _tableView.delegate = self;
   [_contentView addSubview:_tableView];
+  
+  [[ABEngine sharedObject] addObserver:self];
 }
 
 - (void)layoutViews
@@ -109,6 +111,13 @@
 - (void)refreshContacts
 {
   [_tableView reloadData];
+}
+
+
+- (void)engine:(ABEngine *)engine didReceiveRosterUpdate:(NSDictionary *)item
+{
+  [self loadContacts];
+  [self refreshContacts];
 }
 
 

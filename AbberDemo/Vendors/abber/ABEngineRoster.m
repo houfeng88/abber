@@ -60,16 +60,24 @@ int ABRosterPushHandler(xmpp_conn_t * const conn,
     NSString *ask = ABStanzaGetAttribute(item, @"ask");
     NSString *subscription = ABStanzaGetAttribute(item, @"subscription");
     
-    ABSubscriptionType relation = ABRosterRelation(ask, subscription);
-    
     if ( TKSNonempty(jid) ) {
-      NSMutableDictionary *contact = [[NSMutableDictionary alloc] init];
-      [contact setObject:jid forKey:@"jid"];
-      [contact setObject:memoname forKeyIfNotNil:@"memoname"];
-      [contact setObject:@(relation) forKey:@"relation"];
       
-      [engine saveContact:contact];
-      [engine didReceiveRosterItem:contact];
+      NSMutableDictionary *contact = [[NSMutableDictionary alloc] init];
+      
+      [contact setObject:jid forKey:@"jid"];
+      
+      if ( [@"remove" isEqualToString:subscription]) {
+        [engine deleteContact:contact];
+        [engine didReceiveRosterUpdate:contact];
+      } else {
+        [contact setObject:memoname forKeyIfNotNil:@"memoname"];
+        
+        ABSubscriptionType relation = ABRosterRelation(ask, subscription);
+        [contact setObject:@(relation) forKey:@"relation"];
+        
+        [engine saveContact:contact];
+        [engine didReceiveRosterUpdate:contact];
+      }
     }
   }
   
@@ -89,14 +97,14 @@ int ABRosterPushHandler(xmpp_conn_t * const conn,
 }
 
 
-- (void)didReceiveRosterItem:(NSDictionary *)item
+- (void)didReceiveRosterUpdate:(NSDictionary *)item
 {
   dispatch_sync(dispatch_get_main_queue(), ^{
     NSArray *observerAry = [self observers];
     for ( NSUInteger i=0; i<[observerAry count]; ++i ) {
       id<ABEngineRosterDelegate> delegate = [observerAry objectAtIndex:i];
-      if ( [delegate respondsToSelector:@selector(engine:didReceiveRosterItem:)] ) {
-        [delegate engine:self didReceiveRosterItem:item];
+      if ( [delegate respondsToSelector:@selector(engine:didReceiveRosterUpdate:)] ) {
+        [delegate engine:self didReceiveRosterUpdate:item];
       }
     }
   });
@@ -129,12 +137,14 @@ int ABRosterRequestHandler(xmpp_conn_t * const conn,
       NSString *ask = ABStanzaGetAttribute(item, @"ask");
       NSString *subscription = ABStanzaGetAttribute(item, @"subscription");
       
-      ABSubscriptionType relation = ABRosterRelation(ask, subscription);
-      
       if ( TKSNonempty(jid) ) {
         NSMutableDictionary *contact = [[NSMutableDictionary alloc] init];
+        
         [contact setObject:jid forKey:@"jid"];
+        
         [contact setObject:memoname forKeyIfNotNil:@"memoname"];
+        
+        ABSubscriptionType relation = ABRosterRelation(ask, subscription);
         [contact setObject:@(relation) forKey:@"relation"];
         
         [roster addObject:contact];
@@ -419,6 +429,14 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
     } else {
       [db executeUpdate:@"INSERT INTO contact(jid, memoname, relation) VALUES(?, ?, ?);", jid, memoname, relation];
     }
+  }];
+}
+
+- (void)deleteContact:(NSDictionary *)contact
+{
+  NSString *jid = [contact objectForKey:@"jid"];
+  [_database inDatabase:^(FMDatabase *db) {
+    [db executeUpdate:@"DELETE FROM contact WHERE jid=?;", jid];
   }];
 }
 
