@@ -8,6 +8,8 @@
 
 #import "ABMoreViewController.h"
 
+#import "ABMainViewController.h"
+
 @implementation ABMoreViewController
 
 - (void)viewDidLoad
@@ -23,6 +25,10 @@
 
 - (void)rightButtonClicked:(id)sender
 {
+  [[ABEngine sharedObject] disconnect];
+  
+  ABMainViewController *main = (ABMainViewController *)([self tabBarController]);
+  [main presentSignin];
 }
 
 @end

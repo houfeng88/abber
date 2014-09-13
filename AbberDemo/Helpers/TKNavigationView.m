@@ -28,9 +28,9 @@
     
     
     button = [[TKButton alloc] init];
-    button.normalTitleColor = [UIColor blackColor];
-    button.highlightedTitleColor = [UIColor whiteColor];
-    button.titleLabel.font = [UIFont systemFontOfSize:16.0];
+    button.normalTitleColor = [UIColor whiteColor];
+    button.highlightedTitleColor = [UIColor lightGrayColor];
+    button.titleLabel.font = [UIFont systemFontOfSize:14.0];
     button.exclusiveTouch = YES;
     button.hidden = YES;
     [self addSubview:button];
@@ -47,9 +47,9 @@
     
     
     button = [[TKButton alloc] init];
-    button.normalTitleColor = [UIColor blackColor];
-    button.highlightedTitleColor = [UIColor whiteColor];
-    button.titleLabel.font = [UIFont systemFontOfSize:16.0];
+    button.normalTitleColor = [UIColor whiteColor];
+    button.highlightedTitleColor = [UIColor lightGrayColor];
+    button.titleLabel.font = [UIFont systemFontOfSize:14.0];
     button.exclusiveTouch = YES;
     button.hidden = YES;
     [self addSubview:button];
