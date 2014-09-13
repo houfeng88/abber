@@ -9,13 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <abber/abber.h>
 
-@interface ABSigninViewController : TKViewController<
-    UITableViewDataSource,
-    UITableViewDelegate,
+@interface ABSigninViewController : TKTableViewController<
     UITextFieldDelegate
 > {
-  UITableView *_tableView;
-  
   UITextField *_accountField;
   UITextField *_passwordField;
 }

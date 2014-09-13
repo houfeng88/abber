@@ -23,21 +23,7 @@
   [_navigationView showRightButton];
   _navigationView.rightButton.normalTitle = NSLocalizedString(@"Add", @"");
   
-  
-  _tableView = [[TKTableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-  _tableView.dataSource = self;
-  _tableView.delegate = self;
-  [_contentView addSubview:_tableView];
-  
   [[ABEngine sharedObject] addObserver:self];
-}
-
-- (void)layoutViews
-{
-  [super layoutViews];
-  
-  _tableView.frame = _contentView.bounds;
-  
 }
 
 - (void)viewWillAppear:(BOOL)animated

@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Tapmob. All rights reserved.
 //
 
-#import "TKViewController.h"
-#import "TKTableView.h"
+#import "TKTableViewController.h"
 
-#import "CATransitionExtentions.h"
 #import "MBProgressHUDExtentions.h"

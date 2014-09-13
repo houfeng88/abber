@@ -49,10 +49,22 @@
   _contentView.backgroundColor = [UIColor clearColor];
   [self.view addSubview:_contentView];
   
+  
+  UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                               action:@selector(gestureTap:)];
+  recognizer.cancelsTouchesInView = NO;
+  [self.view addGestureRecognizer:recognizer];
+  
+  
   // TODO: ...
   _navigationView.backgroundImageView.image = TKCreateResizableImage(@"navbar_bg.png", TKInsets(2.0, 2.0, 2.0, 2.0));
   _navigationView.titleLabel.textColor = [UIColor whiteColor];
   _navigationView.backButton.normalBackgroundImage = TKCreateImage(@"btn_back.png");
+}
+
+- (void)gestureTap:(UIGestureRecognizer *)recognizer
+{
+  [TKFindFirstResponderInView(self.view) resignFirstResponder];
 }
 
 

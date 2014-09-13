@@ -19,28 +19,6 @@
   
   _navigationView.titleLabel.text = @"Abber";
   
-  
-  _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
-  _tableView.delegate = self;
-  _tableView.dataSource = self;
-  [_contentView addSubview:_tableView];
-  
-  UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                               action:@selector(gestureTap:)];
-  recognizer.cancelsTouchesInView = NO;
-  [self.view addGestureRecognizer:recognizer];
-  
-}
-
-- (void)gestureTap:(UIGestureRecognizer *)recognizer
-{
-  [TKFindFirstResponderInView(_tableView) resignFirstResponder];
-}
-
-- (void)layoutViews
-{
-  [super layoutViews];
-  _tableView.frame = _contentView.bounds;
 }
 
 

@@ -9,12 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <abber/abber.h>
 
-@interface ABFriendsViewController : TKViewController<
-    UITableViewDataSource,
-    UITableViewDelegate
-> {
-  TKTableView *_tableView;
-  
+@interface ABFriendsViewController : TKTableViewController {
   NSArray *_contactAry;
 }
 

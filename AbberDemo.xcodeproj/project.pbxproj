@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		0A205D1219C3DA3600ED4EED /* ABMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A205D1019C3DA3600ED4EED /* ABMainViewController.m */; };
+		0A205D1B19C3ECCA00ED4EED /* TKTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A205D1A19C3ECCA00ED4EED /* TKTableViewController.m */; };
+		0A205D2219C3F0A100ED4EED /* TKRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A205D1D19C3F0A100ED4EED /* TKRefreshControl.m */; };
+		0A205D2319C3F0A100ED4EED /* TKTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A205D1F19C3F0A100ED4EED /* TKTableView.m */; };
+		0A205D2419C3F0A100ED4EED /* UITableViewExtentions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A205D2119C3F0A100ED4EED /* UITableViewExtentions.m */; };
 		0A2352A119B72030003BA4A6 /* ABEngineRoster.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A2352A019B72030003BA4A6 /* ABEngineRoster.m */; };
 		0A2865CC19B880F400F20312 /* ABEnginePresence.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A2865CB19B880F400F20312 /* ABEnginePresence.m */; };
 		0A2865CF19B8E1BD00F20312 /* ABContactInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A2865CE19B8E1BD00F20312 /* ABContactInfoViewController.m */; };
@@ -56,13 +60,9 @@
 		23C4BCCF199DFA48006E796C /* inputbar_field@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C4BCCD199DFA48006E796C /* inputbar_field@2x.png */; };
 		23C547281994B4B300B4C0F7 /* ABCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C547271994B4B300B4C0F7 /* ABCommon.m */; };
 		23C5473D1994C0E900B4C0F7 /* ABEngineConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C5473C1994C0E900B4C0F7 /* ABEngineConnection.m */; };
-		23CB414719A1D2150024120D /* CATransitionExtentions.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CB413E19A1D2150024120D /* CATransitionExtentions.m */; };
 		23CB414819A1D2150024120D /* MBProgressHUDExtentions.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CB414019A1D2150024120D /* MBProgressHUDExtentions.m */; };
 		23CB414A19A1D2150024120D /* TKNavigationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CB414419A1D2150024120D /* TKNavigationView.m */; };
 		23CB414B19A1D2150024120D /* TKViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CB414619A1D2150024120D /* TKViewController.m */; };
-		23CB415519A1EC900024120D /* TKRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CB415019A1EC900024120D /* TKRefreshControl.m */; };
-		23CB415619A1EC900024120D /* TKTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CB415219A1EC900024120D /* TKTableView.m */; };
-		23CB415719A1EC900024120D /* UITableViewExtentions.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CB415419A1EC900024120D /* UITableViewExtentions.m */; };
 		23CB415B19A1EF2A0024120D /* ABContactCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CB415A19A1EF2A0024120D /* ABContactCell.m */; };
 		23F6C0DA19909596005D2ED7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23F6C0D919909596005D2ED7 /* Foundation.framework */; };
 		23F6C0DE19909596005D2ED7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23F6C0DD19909596005D2ED7 /* UIKit.framework */; };
@@ -93,6 +93,14 @@
 /* Begin PBXFileReference section */
 		0A205D0F19C3DA3600ED4EED /* ABMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABMainViewController.h; sourceTree = "<group>"; };
 		0A205D1019C3DA3600ED4EED /* ABMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABMainViewController.m; sourceTree = "<group>"; };
+		0A205D1919C3ECCA00ED4EED /* TKTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKTableViewController.h; sourceTree = "<group>"; };
+		0A205D1A19C3ECCA00ED4EED /* TKTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKTableViewController.m; sourceTree = "<group>"; };
+		0A205D1C19C3F0A100ED4EED /* TKRefreshControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKRefreshControl.h; sourceTree = "<group>"; };
+		0A205D1D19C3F0A100ED4EED /* TKRefreshControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKRefreshControl.m; sourceTree = "<group>"; };
+		0A205D1E19C3F0A100ED4EED /* TKTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKTableView.h; sourceTree = "<group>"; };
+		0A205D1F19C3F0A100ED4EED /* TKTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKTableView.m; sourceTree = "<group>"; };
+		0A205D2019C3F0A100ED4EED /* UITableViewExtentions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITableViewExtentions.h; sourceTree = "<group>"; };
+		0A205D2119C3F0A100ED4EED /* UITableViewExtentions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITableViewExtentions.m; sourceTree = "<group>"; };
 		0A23529F19B72030003BA4A6 /* ABEngineRoster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEngineRoster.h; sourceTree = "<group>"; };
 		0A2352A019B72030003BA4A6 /* ABEngineRoster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABEngineRoster.m; sourceTree = "<group>"; };
 		0A2865CA19B880F400F20312 /* ABEnginePresence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEnginePresence.h; sourceTree = "<group>"; };
@@ -163,8 +171,6 @@
 		23C547381994BFF300B4C0F7 /* abber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = abber.h; sourceTree = "<group>"; };
 		23C5473B1994C0E900B4C0F7 /* ABEngineConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEngineConnection.h; sourceTree = "<group>"; };
 		23C5473C1994C0E900B4C0F7 /* ABEngineConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABEngineConnection.m; sourceTree = "<group>"; };
-		23CB413D19A1D2150024120D /* CATransitionExtentions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CATransitionExtentions.h; sourceTree = "<group>"; };
-		23CB413E19A1D2150024120D /* CATransitionExtentions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CATransitionExtentions.m; sourceTree = "<group>"; };
 		23CB413F19A1D2150024120D /* MBProgressHUDExtentions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUDExtentions.h; sourceTree = "<group>"; };
 		23CB414019A1D2150024120D /* MBProgressHUDExtentions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUDExtentions.m; sourceTree = "<group>"; };
 		23CB414319A1D2150024120D /* TKNavigationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKNavigationView.h; sourceTree = "<group>"; };
@@ -172,12 +178,6 @@
 		23CB414519A1D2150024120D /* TKViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKViewController.h; sourceTree = "<group>"; };
 		23CB414619A1D2150024120D /* TKViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKViewController.m; sourceTree = "<group>"; };
 		23CB414C19A1D2210024120D /* Helpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Helpers.h; sourceTree = "<group>"; };
-		23CB414F19A1EC900024120D /* TKRefreshControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKRefreshControl.h; sourceTree = "<group>"; };
-		23CB415019A1EC900024120D /* TKRefreshControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKRefreshControl.m; sourceTree = "<group>"; };
-		23CB415119A1EC900024120D /* TKTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKTableView.h; sourceTree = "<group>"; };
-		23CB415219A1EC900024120D /* TKTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKTableView.m; sourceTree = "<group>"; };
-		23CB415319A1EC900024120D /* UITableViewExtentions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITableViewExtentions.h; sourceTree = "<group>"; };
-		23CB415419A1EC900024120D /* UITableViewExtentions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITableViewExtentions.m; sourceTree = "<group>"; };
 		23CB415919A1EF2A0024120D /* ABContactCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABContactCell.h; sourceTree = "<group>"; };
 		23CB415A19A1EF2A0024120D /* ABContactCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABContactCell.m; sourceTree = "<group>"; };
 		23F6C0D619909596005D2ED7 /* AbberDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AbberDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -315,6 +315,37 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0A205D2519C3F0A500ED4EED /* TableView */ = {
+			isa = PBXGroup;
+			children = (
+				0A205D1E19C3F0A100ED4EED /* TKTableView.h */,
+				0A205D1F19C3F0A100ED4EED /* TKTableView.m */,
+				0A205D1C19C3F0A100ED4EED /* TKRefreshControl.h */,
+				0A205D1D19C3F0A100ED4EED /* TKRefreshControl.m */,
+				0A205D2019C3F0A100ED4EED /* UITableViewExtentions.h */,
+				0A205D2119C3F0A100ED4EED /* UITableViewExtentions.m */,
+			);
+			name = TableView;
+			sourceTree = "<group>";
+		};
+		0A205D2619C3F0B400ED4EED /* AlertView */ = {
+			isa = PBXGroup;
+			children = (
+				0A31925819B97F2100DDA368 /* TKAlertView.h */,
+				0A31925919B97F2100DDA368 /* TKAlertView.m */,
+			);
+			name = AlertView;
+			sourceTree = "<group>";
+		};
+		0A205D2719C3F0D700ED4EED /* Extentions */ = {
+			isa = PBXGroup;
+			children = (
+				23CB413F19A1D2150024120D /* MBProgressHUDExtentions.h */,
+				23CB414019A1D2150024120D /* MBProgressHUDExtentions.m */,
+			);
+			name = Extentions;
+			sourceTree = "<group>";
+		};
 		0A31925619B968D200DDA368 /* Common */ = {
 			isa = PBXGroup;
 			children = (
@@ -331,8 +362,8 @@
 		0A31925719B97F2100DDA368 /* General */ = {
 			isa = PBXGroup;
 			children = (
-				0A31925819B97F2100DDA368 /* TKAlertView.h */,
-				0A31925919B97F2100DDA368 /* TKAlertView.m */,
+				0A205D2619C3F0B400ED4EED /* AlertView */,
+				0A205D2519C3F0A500ED4EED /* TableView */,
 			);
 			path = General;
 			sourceTree = "<group>";
@@ -511,38 +542,23 @@
 			isa = PBXGroup;
 			children = (
 				23CB414C19A1D2210024120D /* Helpers.h */,
-				23CB414D19A1EC760024120D /* ViewController */,
-				23CB415819A1EC960024120D /* TableView */,
-				23CB413D19A1D2150024120D /* CATransitionExtentions.h */,
-				23CB413E19A1D2150024120D /* CATransitionExtentions.m */,
-				23CB413F19A1D2150024120D /* MBProgressHUDExtentions.h */,
-				23CB414019A1D2150024120D /* MBProgressHUDExtentions.m */,
+				23CB414D19A1EC760024120D /* TableViewController */,
+				0A205D2719C3F0D700ED4EED /* Extentions */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		23CB414D19A1EC760024120D /* ViewController */ = {
+		23CB414D19A1EC760024120D /* TableViewController */ = {
 			isa = PBXGroup;
 			children = (
+				0A205D1919C3ECCA00ED4EED /* TKTableViewController.h */,
+				0A205D1A19C3ECCA00ED4EED /* TKTableViewController.m */,
 				23CB414519A1D2150024120D /* TKViewController.h */,
 				23CB414619A1D2150024120D /* TKViewController.m */,
 				23CB414319A1D2150024120D /* TKNavigationView.h */,
 				23CB414419A1D2150024120D /* TKNavigationView.m */,
 			);
-			name = ViewController;
-			sourceTree = "<group>";
-		};
-		23CB415819A1EC960024120D /* TableView */ = {
-			isa = PBXGroup;
-			children = (
-				23CB415119A1EC900024120D /* TKTableView.h */,
-				23CB415219A1EC900024120D /* TKTableView.m */,
-				23CB414F19A1EC900024120D /* TKRefreshControl.h */,
-				23CB415019A1EC900024120D /* TKRefreshControl.m */,
-				23CB415319A1EC900024120D /* UITableViewExtentions.h */,
-				23CB415419A1EC900024120D /* UITableViewExtentions.m */,
-			);
-			name = TableView;
+			name = TableViewController;
 			sourceTree = "<group>";
 		};
 		23F6C0CD19909596005D2ED7 = {
@@ -868,20 +884,22 @@
 				0A6E5509199F7A85004BD577 /* ABFriendsViewController.m in Sources */,
 				23CB414B19A1D2150024120D /* TKViewController.m in Sources */,
 				23F6C1D31990A993005D2ED7 /* sha1.c in Sources */,
+				0A205D2219C3F0A100ED4EED /* TKRefreshControl.m in Sources */,
 				23C5473D1994C0E900B4C0F7 /* ABEngineConnection.m in Sources */,
 				23F6C1D11990A993005D2ED7 /* parser.c in Sources */,
 				23F6C1D91990A993005D2ED7 /* util.c in Sources */,
 				23F6C1D01990A993005D2ED7 /* oostanza.cpp in Sources */,
+				0A205D1B19C3ECCA00ED4EED /* TKTableViewController.m in Sources */,
 				0A205D1219C3DA3600ED4EED /* ABMainViewController.m in Sources */,
 				0A5BAE701991382E001EF07E /* ABEngine.m in Sources */,
 				23F6C1CA1990A993005D2ED7 /* event.c in Sources */,
 				23F6C1D71990A993005D2ED7 /* thread.c in Sources */,
 				23C4BC84199DD1EF006E796C /* main.m in Sources */,
+				0A205D2419C3F0A100ED4EED /* UITableViewExtentions.m in Sources */,
 				0A31925519B968C500DDA368 /* ABInputCell.m in Sources */,
 				0A9594E219A6316F007297B0 /* ABAddContactViewController.m in Sources */,
 				23C547281994B4B300B4C0F7 /* ABCommon.m in Sources */,
 				23C4BC7B199DD1C8006E796C /* ABSigninViewController.m in Sources */,
-				23CB415719A1EC900024120D /* UITableViewExtentions.m in Sources */,
 				0A2865CF19B8E1BD00F20312 /* ABContactInfoViewController.m in Sources */,
 				0A2865DB19B8F13200F20312 /* ABUserInfoViewController.m in Sources */,
 				23F6C1CF1990A993005D2ED7 /* oocontext.cpp in Sources */,
@@ -905,12 +923,10 @@
 				0A2865D219B8E7B800F20312 /* ABInfoInputCell.m in Sources */,
 				0A2865D519B8E7CA00F20312 /* ABInfoStaticCell.m in Sources */,
 				23F6C1C91990A993005D2ED7 /* ctx.c in Sources */,
-				23CB415519A1EC900024120D /* TKRefreshControl.m in Sources */,
+				0A205D2319C3F0A100ED4EED /* TKTableView.m in Sources */,
 				0A31925A19B97F2100DDA368 /* TKAlertView.m in Sources */,
 				23CB414A19A1D2150024120D /* TKNavigationView.m in Sources */,
 				23F6C1D41990A993005D2ED7 /* snprintf.c in Sources */,
-				23CB415619A1EC900024120D /* TKTableView.m in Sources */,
-				23CB414719A1D2150024120D /* CATransitionExtentions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
