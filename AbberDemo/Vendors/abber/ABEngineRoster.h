@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "ABEngine.h"
-#import "ABCommon.h"
 
 typedef enum {
   ABSubscriptionTypeNone    = 0,  // 0000
@@ -37,10 +36,6 @@ typedef enum {
 - (BOOL)addContact:(NSString *)jid name:(NSString *)name completion:(ABEngineCompletionHandler)completion;
 - (BOOL)updateContact:(NSString *)jid name:(NSString *)name completion:(ABEngineCompletionHandler)completion;
 - (BOOL)removeContact:(NSString *)jid completion:(ABEngineCompletionHandler)completion;
-
-- (void)saveRoster:(NSArray *)roster;
-- (void)saveContact:(NSDictionary *)contact;
-- (void)deleteContact:(NSDictionary *)contact;
 
 - (void)didReceiveRoster:(NSArray *)roster error:(NSError *)error;
 - (void)didCompleteAddContact:(NSString *)jid error:(NSError *)error;

@@ -31,9 +31,7 @@ static ABEngine *Engine = nil;
 {
   DDLogDebug(@"[engine] Prepare context");
   if ( [self isDisconnected] ) {
-    
     xmpp_initialize();
-    
   }
 }
 
@@ -98,6 +96,9 @@ static ABEngine *Engine = nil;
       xmpp_ctx_free(ctx);
     }
   }
+  
+  [_databaseQueue close];
+  _databaseQueue = nil;
   
   xmpp_shutdown();
 }
@@ -165,12 +166,6 @@ static ABEngine *Engine = nil;
 - (BOOL)isConnected
 {
   return ( (_connection) && (_connection->state==XMPP_STATE_CONNECTED) );
-}
-
-
-- (FMDatabaseQueue *)database
-{
-  return _database;
 }
 
 

@@ -30,8 +30,8 @@
 {
   [super viewWillAppear:animated];
   
-  [self loadContacts];
-  [self refreshContacts];
+  _contactAry = [[ABEngine sharedObject] loadContacts];
+  [_tableView reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -58,52 +58,18 @@
 {
   [[ABEngine sharedObject] requestRosterWithCompletion:^(id result, NSError *error) {
     
-    [self loadContacts];
-    [self refreshContacts];
+    _contactAry = [[ABEngine sharedObject] loadContacts];
+    [_tableView reloadData];
     [_tableView.initialRefreshControl endRefreshing];
     
   }];
 }
 
-- (void)loadContacts
-{
-  FMDatabaseQueue *database = [[ABEngine sharedObject] database];
-  [database inDatabase:^(FMDatabase *db) {
-    FMResultSet *rs = [db executeQuery:@"SELECT * FROM contact;"];
-    NSMutableArray *ary = [[NSMutableArray alloc] init];
-    while ( [rs next] ) {
-      NSString *jid = [rs stringForColumn:@"jid"];
-      NSString *memoname = [rs stringForColumn:@"memoname"];
-      int relation = [rs intForColumn:@"relation"];
-      NSString *nickname = [rs stringForColumn:@"nickname"];
-      NSString *avatar = [rs stringForColumn:@"avatar"];
-      NSString *birthday = [rs stringForColumn:@"birthday"];
-      NSString *desc = [rs stringForColumn:@"desc"];
-      
-      NSMutableDictionary *contact = [[NSMutableDictionary alloc] init];
-      [contact setObject:jid forKeyIfNotNil:@"jid"];
-      [contact setObject:memoname forKeyIfNotNil:@"memoname"];
-      [contact setObject:@(relation) forKeyIfNotNil:@"relation"];
-      [contact setObject:nickname forKeyIfNotNil:@"nickname"];
-      [contact setObject:avatar forKeyIfNotNil:@"avatar"];
-      [contact setObject:birthday forKeyIfNotNil:@"birthday"];
-      [contact setObject:desc forKeyIfNotNil:@"desc"];
-      [ary addObject:contact];
-    }
-    _contactAry = ary;
-  }];
-}
-
-- (void)refreshContacts
-{
-  [_tableView reloadData];
-}
-
 
 - (void)engine:(ABEngine *)engine didReceiveRosterUpdate:(NSDictionary *)item
 {
-  [self loadContacts];
-  [self refreshContacts];
+  _contactAry = [[ABEngine sharedObject] loadContacts];
+  [_tableView reloadData];
 }
 
 

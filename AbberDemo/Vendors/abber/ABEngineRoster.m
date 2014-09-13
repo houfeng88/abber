@@ -7,6 +7,7 @@
 //
 
 #import "ABEngineRoster.h"
+#import "ABEngineStorage.h"
 
 ABSubscriptionType ABRosterRelation(NSString *ask, NSString *subscription)
 {
@@ -394,50 +395,6 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
     }
   }
   return NO;
-}
-
-
-- (void)saveRoster:(NSArray *)roster
-{
-  NSArray *jidAry = [roster valueForKeyPath:@"@unionOfObjects.jid"];
-  
-  [_database inDatabase:^(FMDatabase *db) {
-    FMResultSet *rs = [db executeQuery:@"SELECT * FROM contact;"];
-    while ( [rs next] ) {
-      NSString *jid = [rs stringForColumn:@"jid"];
-      if ( ![jidAry containsObject:jid] ) {
-        [db executeUpdate:@"DELETE FROM contact WHERE jid=?;", jid];
-      }
-    }
-  }];
-  
-  for ( NSDictionary *contact in roster ) {
-    [self saveContact:contact];
-  }
-}
-
-- (void)saveContact:(NSDictionary *)contact
-{
-  NSString *jid = [contact objectForKey:@"jid"];
-  NSString *memoname = [contact objectForKey:@"memoname"];
-  NSNumber *relation = [contact objectForKey:@"relation"];
-  
-  [_database inDatabase:^(FMDatabase *db) {
-    FMResultSet *rs = [db executeQuery:@"SELECT count(*) AS count FROM contact WHERE jid=?;", jid];
-    if ( [rs next] && ([rs intForColumn:@"count"]>0) ) {
-      [db executeUpdate:@"UPDATE contact SET memoname=?, relation=? WHERE jid=?;", memoname, relation, jid];
-    } else {
-      [db executeUpdate:@"INSERT INTO contact(jid, memoname, relation) VALUES(?, ?, ?);", jid, memoname, relation];
-    }
-  }];
-}
-
-- (void)deleteContact:(NSDictionary *)contact
-{
-  NSString *jid = [contact objectForKey:@"jid"];
-  [_database inDatabase:^(FMDatabase *db) {
-    [db executeUpdate:@"DELETE FROM contact WHERE jid=?;", jid];
-  }];
 }
 
 

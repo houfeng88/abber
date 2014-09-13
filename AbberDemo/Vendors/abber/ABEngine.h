@@ -24,7 +24,7 @@ typedef enum {
 > {
   xmpp_conn_t *_connection;
   
-  FMDatabaseQueue *_database;
+  FMDatabaseQueue *_databaseQueue;
   
   NSMutableArray *_observerAry;
 }
@@ -47,8 +47,6 @@ typedef enum {
 - (BOOL)isDisconnected;
 - (BOOL)isConnecting;
 - (BOOL)isConnected;
-
-- (FMDatabaseQueue *)database;
 
 - (void)sendData:(NSData *)data;
 - (void)sendString:(NSString *)string;

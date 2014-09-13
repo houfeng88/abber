@@ -12,6 +12,7 @@
 		0A205D2219C3F0A100ED4EED /* TKRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A205D1D19C3F0A100ED4EED /* TKRefreshControl.m */; };
 		0A205D2319C3F0A100ED4EED /* TKTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A205D1F19C3F0A100ED4EED /* TKTableView.m */; };
 		0A205D2419C3F0A100ED4EED /* UITableViewExtentions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A205D2119C3F0A100ED4EED /* UITableViewExtentions.m */; };
+		0A205D2A19C3F37D00ED4EED /* ABEngineStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A205D2919C3F37D00ED4EED /* ABEngineStorage.m */; };
 		0A2352A119B72030003BA4A6 /* ABEngineRoster.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A2352A019B72030003BA4A6 /* ABEngineRoster.m */; };
 		0A2865CC19B880F400F20312 /* ABEnginePresence.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A2865CB19B880F400F20312 /* ABEnginePresence.m */; };
 		0A2865CF19B8E1BD00F20312 /* ABContactInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A2865CE19B8E1BD00F20312 /* ABContactInfoViewController.m */; };
@@ -101,6 +102,8 @@
 		0A205D1F19C3F0A100ED4EED /* TKTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKTableView.m; sourceTree = "<group>"; };
 		0A205D2019C3F0A100ED4EED /* UITableViewExtentions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITableViewExtentions.h; sourceTree = "<group>"; };
 		0A205D2119C3F0A100ED4EED /* UITableViewExtentions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITableViewExtentions.m; sourceTree = "<group>"; };
+		0A205D2819C3F37D00ED4EED /* ABEngineStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEngineStorage.h; sourceTree = "<group>"; };
+		0A205D2919C3F37D00ED4EED /* ABEngineStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABEngineStorage.m; sourceTree = "<group>"; };
 		0A23529F19B72030003BA4A6 /* ABEngineRoster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEngineRoster.h; sourceTree = "<group>"; };
 		0A2352A019B72030003BA4A6 /* ABEngineRoster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABEngineRoster.m; sourceTree = "<group>"; };
 		0A2865CA19B880F400F20312 /* ABEnginePresence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEnginePresence.h; sourceTree = "<group>"; };
@@ -751,6 +754,8 @@
 				0A2352A019B72030003BA4A6 /* ABEngineRoster.m */,
 				0A2865CA19B880F400F20312 /* ABEnginePresence.h */,
 				0A2865CB19B880F400F20312 /* ABEnginePresence.m */,
+				0A205D2819C3F37D00ED4EED /* ABEngineStorage.h */,
+				0A205D2919C3F37D00ED4EED /* ABEngineStorage.m */,
 				23C547261994B4B300B4C0F7 /* ABCommon.h */,
 				23C547271994B4B300B4C0F7 /* ABCommon.m */,
 			);
@@ -890,6 +895,7 @@
 				23F6C1D91990A993005D2ED7 /* util.c in Sources */,
 				23F6C1D01990A993005D2ED7 /* oostanza.cpp in Sources */,
 				0A205D1B19C3ECCA00ED4EED /* TKTableViewController.m in Sources */,
+				0A205D2A19C3F37D00ED4EED /* ABEngineStorage.m in Sources */,
 				0A205D1219C3DA3600ED4EED /* ABMainViewController.m in Sources */,
 				0A5BAE701991382E001EF07E /* ABEngine.m in Sources */,
 				23F6C1CA1990A993005D2ED7 /* event.c in Sources */,

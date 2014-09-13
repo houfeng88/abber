@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "ABEngine.h"
-#import "ABCommon.h"
 
 typedef enum {
   ABPresenceTypeAvailable   = 0,

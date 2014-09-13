@@ -9,6 +9,8 @@
 #import "ABEngineConnection.h"
 #import "ABConfig.h"
 
+#import "ABEngineStorage.h"
+
 void ABConnectionHandler(xmpp_conn_t * const conn,
                          const xmpp_conn_event_t status,
                          const int error,
@@ -69,18 +71,7 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
     TKCreateDirectory(path);
     
     
-    NSString *dbpath = [path stringByAppendingPathComponent:@"im.db"];
-    _database = [[FMDatabaseQueue alloc] initWithPath:dbpath];
-    
-    NSString *contactSQL =
-    @"CREATE TABLE IF NOT EXISTS contact("
-    @"pk INTEGER PRIMARY KEY, "
-    @"jid TEXT, "
-    @"memoname TEXT, "
-    @"relation INTEGER, "
-    @"nickname TEXT, "
-    @"desc TEXT);";
-    [_database inDatabase:^(FMDatabase *db) { [db executeUpdate:contactSQL]; }];
+    [self createDatabaseQueue:[path stringByAppendingPathComponent:@"im.db"]];
   }
 }
 
