@@ -9,8 +9,6 @@
 #import "ABSigninViewController.h"
 #import "ABInputCell.h"
 
-#import "ABRootViewController.h"
-
 #import "ABMainViewController.h"
 
 @implementation ABSigninViewController
@@ -54,10 +52,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-  if ( section==0 ) {
-    return 2;
-  }
-  return 0;
+  return 2;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -84,10 +79,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-  if ( section==0 ) {
-    return 55.0;
-  }
-  return 0.0;
+  return 55.0;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -97,10 +89,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-  if ( section==0 ) {
-    return 55.0;
-  }
-  return 0.0;
+  return 55.0;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
@@ -212,9 +201,7 @@
         [MBProgressHUD dismissHUD:self.view
                       immediately:NO
                   completionBlock:^{
-                    ABRootViewController *root = (ABRootViewController *)(self.parentViewController);
-                    ABMainViewController *vc = [[ABMainViewController alloc] init];
-                    [root presentWithViewController:vc];
+                    [self.parentViewController dismissChildViewController:self];
                   }];
       }
     

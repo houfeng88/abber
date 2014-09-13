@@ -40,8 +40,12 @@
 {
   [super layoutSubviews];
   
-  _titleLabel.frame = CGRectMake(10.0, 2.0, 80.0, 40.0);
-  _bodyLabel.frame = CGRectMake(10.0+80.0+5.0, 2.0, self.contentView.width-(10.0+80.0+5.0)-10.0, 40.0);
+  _titleLabel.frame = CGRectMake(10.0, 2.0, 80.0, self.contentView.height-2*2.0);
+  
+  _bodyLabel.frame = CGRectMake(_titleLabel.rightX+5.0,
+                                2.0,
+                                self.contentView.width-10.0-(_titleLabel.rightX+5.0),
+                                self.contentView.height-2*2.0);
 }
 
 + (CGFloat)heightForTableView:(UITableView *)tableView object:(id)object

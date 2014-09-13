@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A205D1219C3DA3600ED4EED /* ABMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A205D1019C3DA3600ED4EED /* ABMainViewController.m */; };
 		0A2352A119B72030003BA4A6 /* ABEngineRoster.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A2352A019B72030003BA4A6 /* ABEngineRoster.m */; };
 		0A2865CC19B880F400F20312 /* ABEnginePresence.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A2865CB19B880F400F20312 /* ABEnginePresence.m */; };
 		0A2865CF19B8E1BD00F20312 /* ABContactInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A2865CE19B8E1BD00F20312 /* ABContactInfoViewController.m */; };
@@ -25,8 +26,6 @@
 		23C4BC54199DB23F006E796C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C4BC53199DB23F006E796C /* QuartzCore.framework */; };
 		23C4BC64199DD17E006E796C /* btn_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C4BC60199DD17E006E796C /* btn_back.png */; };
 		23C4BC65199DD17E006E796C /* btn_back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C4BC61199DD17E006E796C /* btn_back@2x.png */; };
-		23C4BC79199DD1C8006E796C /* ABMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C4BC74199DD1C8006E796C /* ABMainViewController.m */; };
-		23C4BC7A199DD1C8006E796C /* ABRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C4BC76199DD1C8006E796C /* ABRootViewController.m */; };
 		23C4BC7B199DD1C8006E796C /* ABSigninViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C4BC78199DD1C8006E796C /* ABSigninViewController.m */; };
 		23C4BC82199DD1EF006E796C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C4BC7E199DD1EF006E796C /* AppDelegate.m */; };
 		23C4BC84199DD1EF006E796C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C4BC80199DD1EF006E796C /* main.m */; };
@@ -92,6 +91,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A205D0F19C3DA3600ED4EED /* ABMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABMainViewController.h; sourceTree = "<group>"; };
+		0A205D1019C3DA3600ED4EED /* ABMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABMainViewController.m; sourceTree = "<group>"; };
 		0A23529F19B72030003BA4A6 /* ABEngineRoster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEngineRoster.h; sourceTree = "<group>"; };
 		0A2352A019B72030003BA4A6 /* ABEngineRoster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABEngineRoster.m; sourceTree = "<group>"; };
 		0A2865CA19B880F400F20312 /* ABEnginePresence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEnginePresence.h; sourceTree = "<group>"; };
@@ -125,10 +126,6 @@
 		23C4BC55199DB2B8006E796C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		23C4BC60199DD17E006E796C /* btn_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_back.png; sourceTree = "<group>"; };
 		23C4BC61199DD17E006E796C /* btn_back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_back@2x.png"; sourceTree = "<group>"; };
-		23C4BC73199DD1C8006E796C /* ABMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABMainViewController.h; sourceTree = "<group>"; };
-		23C4BC74199DD1C8006E796C /* ABMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABMainViewController.m; sourceTree = "<group>"; };
-		23C4BC75199DD1C8006E796C /* ABRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABRootViewController.h; sourceTree = "<group>"; };
-		23C4BC76199DD1C8006E796C /* ABRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABRootViewController.m; sourceTree = "<group>"; };
 		23C4BC77199DD1C8006E796C /* ABSigninViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABSigninViewController.h; sourceTree = "<group>"; };
 		23C4BC78199DD1C8006E796C /* ABSigninViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABSigninViewController.m; sourceTree = "<group>"; };
 		23C4BC7D199DD1EF006E796C /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -352,8 +349,8 @@
 		0A6E5510199F7B30004BD577 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				23C4BC73199DD1C8006E796C /* ABMainViewController.h */,
-				23C4BC74199DD1C8006E796C /* ABMainViewController.m */,
+				0A205D0F19C3DA3600ED4EED /* ABMainViewController.h */,
+				0A205D1019C3DA3600ED4EED /* ABMainViewController.m */,
 			);
 			name = Main;
 			sourceTree = "<group>";
@@ -426,10 +423,8 @@
 		23C4BC72199DD1C8006E796C /* Sections */ = {
 			isa = PBXGroup;
 			children = (
-				23C4BC75199DD1C8006E796C /* ABRootViewController.h */,
-				23C4BC76199DD1C8006E796C /* ABRootViewController.m */,
-				0A6E54FD199F4A65004BD577 /* Signin */,
 				0A6E5510199F7B30004BD577 /* Main */,
+				0A6E54FD199F4A65004BD577 /* Signin */,
 				0A6E5511199F7B36004BD577 /* Chats */,
 				0A6E5512199F7B3C004BD577 /* Friends */,
 				0A6E5513199F7B43004BD577 /* Find */,
@@ -877,6 +872,7 @@
 				23F6C1D11990A993005D2ED7 /* parser.c in Sources */,
 				23F6C1D91990A993005D2ED7 /* util.c in Sources */,
 				23F6C1D01990A993005D2ED7 /* oostanza.cpp in Sources */,
+				0A205D1219C3DA3600ED4EED /* ABMainViewController.m in Sources */,
 				0A5BAE701991382E001EF07E /* ABEngine.m in Sources */,
 				23F6C1CA1990A993005D2ED7 /* event.c in Sources */,
 				23F6C1D71990A993005D2ED7 /* thread.c in Sources */,
@@ -892,7 +888,6 @@
 				23F6C1D61990A993005D2ED7 /* stanza.c in Sources */,
 				23F6C1CB1990A993005D2ED7 /* handler.c in Sources */,
 				23F6C1D21990A993005D2ED7 /* sasl.c in Sources */,
-				23C4BC79199DD1C8006E796C /* ABMainViewController.m in Sources */,
 				23F6C1CC1990A993005D2ED7 /* hash.c in Sources */,
 				0A2865CC19B880F400F20312 /* ABEnginePresence.m in Sources */,
 				23F6C1C81990A993005D2ED7 /* conn.c in Sources */,
@@ -912,7 +907,6 @@
 				23F6C1C91990A993005D2ED7 /* ctx.c in Sources */,
 				23CB415519A1EC900024120D /* TKRefreshControl.m in Sources */,
 				0A31925A19B97F2100DDA368 /* TKAlertView.m in Sources */,
-				23C4BC7A199DD1C8006E796C /* ABRootViewController.m in Sources */,
 				23CB414A19A1D2150024120D /* TKNavigationView.m in Sources */,
 				23F6C1D41990A993005D2ED7 /* snprintf.c in Sources */,
 				23CB415619A1EC900024120D /* TKTableView.m in Sources */,

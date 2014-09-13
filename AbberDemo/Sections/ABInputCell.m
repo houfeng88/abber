@@ -18,9 +18,12 @@
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     
     
-    _titleLabel = [UILabel singleLineLabelWithFont:[UIFont systemFontOfSize:14.0]
-                                         textColor:[UIColor blackColor]];
-    _titleLabel.textAlignment = NSTextAlignmentRight;
+    _titleLabel = [UILabel labelWithFont:[UIFont systemFontOfSize:14.0]
+                               textColor:[UIColor blackColor]
+                           textAlignment:NSTextAlignmentRight
+                           lineBreakMode:NSLineBreakByTruncatingHead
+                           numberOfLines:1
+                         backgroundColor:[UIColor clearColor]];
     [self.contentView addSubview:_titleLabel];
     
     _valueField = [[UITextField alloc] init];
@@ -42,8 +45,15 @@
   
   _titleLabel.frame = CGRectMake(10.0, 2.0, 80.0, self.contentView.height-2*2.0);
   
-  _valueField.frame = CGRectMake(_titleLabel.rightX+5.0, 2.0, self.contentView.width-10.0-(_titleLabel.rightX+5.0), self.contentView.height-2*2.0);
-  
+  _valueField.frame = CGRectMake(_titleLabel.rightX+5.0,
+                                 2.0,
+                                 self.contentView.width-10.0-(_titleLabel.rightX+5.0),
+                                 self.contentView.height-2*2.0);
+}
+
++ (CGFloat)heightForTableView:(UITableView *)tableView object:(id)object
+{
+  return 44.0;
 }
 
 @end

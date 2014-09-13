@@ -2,18 +2,18 @@
 //  ABMainViewController.m
 //  AbberDemo
 //
-//  Created by Kevin Wu on 8/15/14.
+//  Created by Kevin on 9/13/14.
 //  Copyright (c) 2014 Tapmob. All rights reserved.
 //
 
 #import "ABMainViewController.h"
-#import "ABRootViewController.h"
-#import "ABSigninViewController.h"
 
 #import "ABChatsViewController.h"
 #import "ABFriendsViewController.h"
 #import "ABFindViewController.h"
 #import "ABMoreViewController.h"
+
+#import "ABSigninViewController.h"
 
 @implementation ABMainViewController
 
@@ -57,7 +57,13 @@
   item = [self.tabBar.items objectAtIndex:3];
   item.title = NSLocalizedString(@"More", @"");
   item.image = TKCreateImage(@"tab_icon_more.png");
-  
+}
+
+- (void)presentSignin
+{
+  ABSigninViewController *signin = [[ABSigninViewController alloc] init];
+  [self presentChildViewController:signin inView:self.view];
+  signin.view.frame = self.view.bounds;
 }
 
 @end

@@ -2,7 +2,7 @@
 //  ABMainViewController.h
 //  AbberDemo
 //
-//  Created by Kevin Wu on 8/15/14.
+//  Created by Kevin on 9/13/14.
 //  Copyright (c) 2014 Tapmob. All rights reserved.
 //
 
@@ -10,5 +10,7 @@
 
 @interface ABMainViewController : UITabBarController {
 }
+
+- (void)presentSignin;
 
 @end
