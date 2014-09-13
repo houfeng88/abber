@@ -14,6 +14,11 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
 {
   ABEngine *engine = (__bridge ABEngine *)userdata;
   
+  //<presence to="tkcara@blah.im" type="unavailable" from="tkbill@blah.im"/>
+  
+  //<presence from="tkcara@blah.im/teemo"/>
+  //<presence type="subscribe" from="tkcara@blah.im"/>
+  
   NSLog(@"==============================");
   NSLog(@"%@", ABStanzaToString(stanza));
   NSLog(@"==============================");
