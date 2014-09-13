@@ -23,7 +23,6 @@
   [_navigationView showRightButton];
   _navigationView.rightButton.normalTitle = NSLocalizedString(@"Add", @"");
   
-  [[ABEngine sharedObject] addObserver:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -37,6 +36,8 @@
 - (void)viewDidAppear:(BOOL)animated
 {
   [super viewDidAppear:animated];
+  
+  [[ABEngine sharedObject] addObserver:self];
   
   @weakify(self);
   [_tableView addInitialRefreshControlWithRefreshBlock:^{
