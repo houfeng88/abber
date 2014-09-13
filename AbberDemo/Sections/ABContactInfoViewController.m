@@ -17,8 +17,9 @@
 {
   self = [super init];
   if (self) {
-    _contact = contact;
     self.hidesBottomBarWhenPushed = YES;
+    
+    _contact = contact;
   }
   return self;
 }
@@ -27,34 +28,12 @@
 {
   [super viewDidLoad];
   
-  _navigationView.titleLabel.text = NSLocalizedString(@"Info", @"");
   [_navigationView showBackButton];
+  _navigationView.titleLabel.text = NSLocalizedString(@"Info", @"");
+  [_navigationView showRightButton];
+  _navigationView.rightButton.normalTitle = NSLocalizedString(@"Done", @"");
   
-  
-  _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-  _tableView.dataSource = self;
-  _tableView.delegate = self;
-  [_contentView addSubview:_tableView];
-  
-  
-  UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                               action:@selector(gestureTap:)];
-  recognizer.cancelsTouchesInView = NO;
-  [self.view addGestureRecognizer:recognizer];
 }
-
-- (void)gestureTap:(UIGestureRecognizer *)recognizer
-{
-  [TKFindFirstResponderInView(_tableView) resignFirstResponder];
-}
-
-- (void)layoutViews
-{
-  [super layoutViews];
-  
-  _tableView.frame = _contentView.bounds;
-}
-
 
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -64,27 +43,25 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-  if ( section==0 ) {
-    return 5;
-  }
-  return 0;
+  return 5;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
   if ( indexPath.row==0 ) {
     ABInfoInputCell *cell = (ABInfoInputCell *)[tableView dequeueReusableCellWithClass:[ABInfoInputCell class]];
-    cell.titleLabel.text = NSLocalizedString(@"memoname", @"");
+    cell.titleLabel.text = NSLocalizedString(@"Memoname", @"");
     cell.bodyField.text = [_contact objectForKey:@"memoname"];
+    _memonameField = cell.bodyField;
     return cell;
   } else if ( indexPath.row==1 ) {
     ABInfoStaticCell *cell = (ABInfoStaticCell *)[tableView dequeueReusableCellWithClass:[ABInfoStaticCell class]];
-    cell.titleLabel.text = NSLocalizedString(@"jid", @"");
+    cell.titleLabel.text = NSLocalizedString(@"Jid", @"");
     cell.bodyLabel.text = [_contact objectForKey:@"jid"];
     return cell;
   } else if ( indexPath.row==2 ) {
     ABInfoStaticCell *cell = (ABInfoStaticCell *)[tableView dequeueReusableCellWithClass:[ABInfoStaticCell class]];
-    cell.titleLabel.text = NSLocalizedString(@"relation", @"");
+    cell.titleLabel.text = NSLocalizedString(@"Relation", @"");
     int relation = [[_contact objectForKey:@"relation"] intValue];
     if ( relation==ABSubscriptionTypeNone ) {
       cell.bodyLabel.text = NSLocalizedString(@"None", @"");
@@ -104,12 +81,12 @@
     return cell;
   } else if ( indexPath.row==3 ) {
     ABInfoStaticCell *cell = (ABInfoStaticCell *)[tableView dequeueReusableCellWithClass:[ABInfoStaticCell class]];
-    cell.titleLabel.text = NSLocalizedString(@"nickname", @"");
+    cell.titleLabel.text = NSLocalizedString(@"Nickname", @"");
     cell.bodyLabel.text = [_contact objectForKey:@"nickname"];
     return cell;
   } else if ( indexPath.row==4 ) {
     ABInfoStaticCell *cell = (ABInfoStaticCell *)[tableView dequeueReusableCellWithClass:[ABInfoStaticCell class]];
-    cell.titleLabel.text = NSLocalizedString(@"desc", @"");
+    cell.titleLabel.text = NSLocalizedString(@"Desc", @"");
     cell.bodyLabel.text = [_contact objectForKey:@"desc"];
     return cell;
   }
@@ -135,10 +112,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-  if ( section==0 ) {
-    return 55.0;
-  }
-  return 0.0;
+  return 55.0;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
@@ -157,14 +131,41 @@
 }
 
 
+- (void)rightButtonClicked:(id)sender
+{
+  [TKFindFirstResponderInView(self.view) resignFirstResponder];
+  
+  
+  [MBProgressHUD presentProgressHUD:self.view
+                               info:nil
+                            offsetY:0.0];
+  
+  NSString *memo = _memonameField.text;
+  [[ABEngine sharedObject] updateContact:[_contact objectForKey:@"jid"]
+                                    name:TKStrOrLater(memo, @"")
+                              completion:^(id result, NSError *error) {
+                                [MBProgressHUD dismissHUD:self.view
+                                              immediately:NO
+                                          completionBlock:^{
+                                            [self.navigationController popViewControllerAnimated:YES];
+                                          }];
+                              }];
+}
 
 - (void)deleteButtonClicked:(id)sender
 {
+  [MBProgressHUD presentProgressHUD:self.view
+                               info:nil
+                            offsetY:0.0];
+  
   [[ABEngine sharedObject] removeContact:[_contact objectForKey:@"jid"]
                               completion:^(id result, NSError *error) {
-                                [self.navigationController popViewControllerAnimated:YES];
+                                [MBProgressHUD dismissHUD:self.view
+                                              immediately:NO
+                                          completionBlock:^{
+                                            [self.navigationController popViewControllerAnimated:YES];
+                                          }];
                               }];
-  [[ABEngine sharedObject] unsubscribeContact:[_contact objectForKey:@"jid"]];
 }
 
 @end

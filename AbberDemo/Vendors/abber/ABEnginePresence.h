@@ -30,10 +30,9 @@ typedef enum {
 - (BOOL)updatePresence:(ABPresenceType)type;
 
 - (BOOL)subscribeContact:(NSString *)jid;
+- (BOOL)subscribedContact:(NSString *)jid;
 - (BOOL)unsubscribeContact:(NSString *)jid;
-
-- (BOOL)acceptContact:(NSString *)jid;
-- (BOOL)declineContact:(NSString *)jid;
+- (BOOL)unsubscribedContact:(NSString *)jid;
 
 - (void)didReceiveFriendRequest:(NSString *)jid;
 

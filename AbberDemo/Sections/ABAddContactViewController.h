@@ -9,13 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <abber/abber.h>
 
-@interface ABAddContactViewController : TKViewController<
-    UITableViewDataSource,
-    UITableViewDelegate,
+@interface ABAddContactViewController : TKTableViewController<
     UITextFieldDelegate
 > {
-  UITableView *_tableView;
-  
   UITextField *_accountField;
   UITextField *_memonameField;
 }

@@ -15,6 +15,8 @@
 
 #import "ABSigninViewController.h"
 
+#import "General/TKAlertView.h"
+
 @implementation ABMainViewController
 
 - (void)viewDidLoad
@@ -64,6 +66,23 @@
   ABSigninViewController *signin = [[ABSigninViewController alloc] init];
   [self presentChildViewController:signin inView:self.view];
   signin.view.frame = self.view.bounds;
+}
+
+
+- (void)engine:(ABEngine *)engine didReceiveFriendRequest:(NSString *)jid
+{
+  NSString *fmt = NSLocalizedString(@"Would you accept %@?", @"");
+  NSString *message = [[NSString alloc] initWithFormat:fmt, jid];
+  TKAlertView *av = [[TKAlertView alloc] initWithTitle:NSLocalizedString(@"Friend Request", @"")
+                                               message:message];
+  [av addButtonWithTitle:NSLocalizedString(@"Accept", @"") block:^{
+    [[ABEngine sharedObject] subscribedContact:jid];
+    [[ABEngine sharedObject] subscribeContact:jid];
+  }];
+  [av addCancelButtonWithTitle:NSLocalizedString(@"Decline", @"") block:^{
+    [[ABEngine sharedObject] unsubscribedContact:jid];
+  }];
+  [av show];
 }
 
 @end

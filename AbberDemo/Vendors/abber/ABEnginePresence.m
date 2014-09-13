@@ -7,6 +7,8 @@
 //
 
 #import "ABEnginePresence.h"
+#import "ABEngineStorage.h"
+#import "ABEngineRoster.h"
 
 int ABPresenceHandler(xmpp_conn_t * const conn,
                       xmpp_stanza_t * const stanza,
@@ -24,9 +26,23 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
   NSLog(@"==============================");
   
   NSString *type = ABStanzaGetAttribute(stanza, @"type");
-  if ( [@"subscribe" isEqualToString:type] ) {
-    NSString *jid = ABJidBare(ABStanzaGetAttribute(stanza, @"from"));
-    [engine didReceiveFriendRequest:jid];
+  NSString *jid = ABJidBare(ABStanzaGetAttribute(stanza, @"from"));
+  
+  if ( [@"error" isEqualToString:type] ) {
+  } else if ( [@"probe" isEqualToString:type] ) {
+  } else if ( [@"subscribe" isEqualToString:type] ) {
+    NSDictionary *contact = [engine contactByJid:jid];
+    if ( (contact) && ([[contact objectForKey:@"relation"] intValue]==ABSubscriptionTypeTo) ) {
+      [engine subscribedContact:jid];
+    } else {
+      [engine didReceiveFriendRequest:jid];
+    }
+  } else if ( [@"subscribed" isEqualToString:type] ) {
+  } else if ( [@"unavailable" isEqualToString:type] ) {
+  } else if ( [@"unsubscribe" isEqualToString:type] ) {
+    
+  } else if ( [@"unsubscribed" isEqualToString:type] ) {
+    
   }
   
   return 1;
@@ -91,6 +107,24 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
   return NO;
 }
 
+- (BOOL)subscribedContact:(NSString *)jid
+{
+  //  <presence to='romeo@example.com' type='subscribed'/>
+  if ( [self isConnected] ) {
+    if ( TKSNonempty(jid) ) {
+      
+      xmpp_stanza_t *presence = ABStanzaCreate(_connection->ctx, @"presence", nil);
+      ABStanzaSetAttribute(presence, @"to", jid);
+      ABStanzaSetAttribute(presence, @"type", @"subscribed");
+      
+      [self sendData:ABStanzaToData(presence)];
+      
+      return YES;
+    }
+  }
+  return NO;
+}
+
 - (BOOL)unsubscribeContact:(NSString *)jid
 {
 //  <presence to='juliet@example.com' type='unsubscribe'/>
@@ -109,26 +143,7 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
   return NO;
 }
 
-
-- (BOOL)acceptContact:(NSString *)jid
-{
-//  <presence to='romeo@example.com' type='subscribed'/>
-  if ( [self isConnected] ) {
-    if ( TKSNonempty(jid) ) {
-      
-      xmpp_stanza_t *presence = ABStanzaCreate(_connection->ctx, @"presence", nil);
-      ABStanzaSetAttribute(presence, @"to", jid);
-      ABStanzaSetAttribute(presence, @"type", @"subscribed");
-      
-      [self sendData:ABStanzaToData(presence)];
-      
-      return YES;
-    }
-  }
-  return NO;
-}
-
-- (BOOL)declineContact:(NSString *)jid
+- (BOOL)unsubscribedContact:(NSString *)jid
 {
 //  <presence to='romeo@example.net' type='unsubscribed'/>
   if ( [self isConnected] ) {

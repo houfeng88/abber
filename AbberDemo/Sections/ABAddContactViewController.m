@@ -29,61 +29,7 @@
   [_navigationView showRightButton];
   _navigationView.rightButton.normalTitle = NSLocalizedString(@"Done", @"");
   
-  
-  _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
-  _tableView.delegate = self;
-  _tableView.dataSource = self;
-  [_contentView addSubview:_tableView];
 }
-
-- (void)layoutViews
-{
-  [super layoutViews];
-  _tableView.frame = _contentView.bounds;
-}
-
-
-
-- (void)rightButtonClicked:(id)sender
-{
-  if ( [self checkValidity] ) {
-    [self add];
-  }
-}
-
-
-- (BOOL)checkValidity
-{
-  NSString *acnt = _accountField.text;
-  NSString *memo = _memonameField.text;
-  
-  if ( !TKSNonempty(acnt) ) {
-    TKPresentSystemMessage(NSLocalizedString(@"Invalid account", @""));
-    return NO;
-  }
-  
-  if ( !TKSNonempty(memo) ) {
-    TKPresentSystemMessage(NSLocalizedString(@"Invalid memoname", @""));
-    return NO;
-  }
-  
-  return YES;
-}
-
-- (void)add
-{
-  NSString *acnt = _accountField.text;
-  NSString *memo = _memonameField.text;
-  
-  [[ABEngine sharedObject] addContact:acnt
-                                 name:memo
-                           completion:^(id result, NSError *error) {
-                             [self.navigationController popViewControllerAnimated:YES];
-                           }];
-  [[ABEngine sharedObject] subscribeContact:acnt];
-}
-
-
 
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -93,10 +39,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-  if ( section==0 ) {
-    return 2;
-  }
-  return 0;
+  return 2;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -131,7 +74,60 @@
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-  return (([textField.text length] + [string length] - range.length)<=40);
+  return (([textField.text length] + [string length] - range.length)<=20);
+}
+
+
+
+
+- (void)rightButtonClicked:(id)sender
+{
+  [TKFindFirstResponderInView(self.view) resignFirstResponder];
+  
+  if ( [self checkValidity] ) {
+    [self add];
+  }
+}
+
+
+- (BOOL)checkValidity
+{
+  NSString *acnt = _accountField.text;
+  NSString *memo = _memonameField.text;
+  
+  if ( !TKSNonempty(acnt) ) {
+    TKPresentSystemMessage(NSLocalizedString(@"Invalid account", @""));
+    return NO;
+  }
+  
+  if ( !TKSNonempty(memo) ) {
+    TKPresentSystemMessage(NSLocalizedString(@"Invalid memoname", @""));
+    return NO;
+  }
+  
+  return YES;
+}
+
+- (void)add
+{
+  [MBProgressHUD presentProgressHUD:self.view
+                               info:nil
+                            offsetY:0.0];
+  
+  
+  NSString *acnt = _accountField.text;
+  NSString *memo = _memonameField.text;
+  
+  [[ABEngine sharedObject] addContact:acnt
+                                 name:memo
+                           completion:^(id result, NSError *error) {
+                             [MBProgressHUD dismissHUD:self.view
+                                           immediately:NO
+                                       completionBlock:^{
+                                         [self.navigationController popViewControllerAnimated:YES];
+                                       }];
+                           }];
+  [[ABEngine sharedObject] subscribeContact:acnt];
 }
 
 @end

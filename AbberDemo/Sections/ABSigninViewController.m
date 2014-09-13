@@ -86,9 +86,28 @@
 }
 
 
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+  if ( textField==_accountField ) {
+    [_passwordField becomeFirstResponder];
+  } else if ( textField==_passwordField ) {
+    [textField resignFirstResponder];
+  }
+  return YES;
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+  return (([textField.text length] + [string length] - range.length)<=20);
+}
+
+
+
 
 - (void)signinButtonClicked:(id)sender
 {
+  [TKFindFirstResponderInView(self.view) resignFirstResponder];
+  
   if ( [self checkValidity] ) {
     [self signin];
   }
@@ -126,28 +145,11 @@
   [ABEngine saveObject:engine];
   
   [engine addObserver:self];
-  [engine addObserver:[[UIApplication sharedApplication] delegate]];
+  [engine addObserver:self.parentViewController];
   [engine prepare];
   [engine connectWithAccount:acnt password:pswd];
   [engine addRosterPushHandler];
   [engine addPresenceHandler];
-}
-
-
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-  if ( textField==_accountField ) {
-    [_passwordField becomeFirstResponder];
-  } else if ( textField==_passwordField ) {
-    [textField resignFirstResponder];
-  }
-  return YES;
-}
-
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-  return (([textField.text length] + [string length] - range.length)<=15);
 }
 
 

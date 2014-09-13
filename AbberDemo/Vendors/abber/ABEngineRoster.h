@@ -48,8 +48,6 @@ typedef enum {
 @protocol ABEngineRosterDelegate <NSObject>
 @optional
 
-// { @"ask":@"__", @"jid":@"__", @"name":@"__", @"subscription":@"__" }
-
 - (void)engine:(ABEngine *)engine didReceiveRosterUpdate:(NSDictionary *)item;
 
 - (void)engine:(ABEngine *)engine didReceiveRoster:(NSArray *)roster error:(NSError *)error;

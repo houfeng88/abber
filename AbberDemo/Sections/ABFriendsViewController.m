@@ -30,7 +30,7 @@
 {
   [super viewWillAppear:animated];
   
-  _contactAry = [[ABEngine sharedObject] loadContacts];
+  _contactAry = [[ABEngine sharedObject] contacts];
   [_tableView reloadData];
 }
 
@@ -58,7 +58,7 @@
 {
   [[ABEngine sharedObject] requestRosterWithCompletion:^(id result, NSError *error) {
     
-    _contactAry = [[ABEngine sharedObject] loadContacts];
+    _contactAry = [[ABEngine sharedObject] contacts];
     [_tableView reloadData];
     [_tableView.initialRefreshControl endRefreshing];
     
@@ -68,7 +68,7 @@
 
 - (void)engine:(ABEngine *)engine didReceiveRosterUpdate:(NSDictionary *)item
 {
-  _contactAry = [[ABEngine sharedObject] loadContacts];
+  _contactAry = [[ABEngine sharedObject] contacts];
   [_tableView reloadData];
 }
 

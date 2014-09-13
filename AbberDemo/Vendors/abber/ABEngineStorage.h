@@ -14,7 +14,8 @@
 - (FMDatabaseQueue *)databaseQueue;
 - (void)createDatabaseQueue:(NSString *)path;
 
-- (NSArray *)loadContacts;
+- (NSArray *)contacts;
+- (NSDictionary *)contactByJid:(NSString *)jid;
 - (void)saveRoster:(NSArray *)roster;
 - (void)saveContact:(NSDictionary *)contact;
 - (void)deleteContact:(NSDictionary *)contact;

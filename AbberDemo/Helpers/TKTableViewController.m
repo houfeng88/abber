@@ -14,7 +14,7 @@
 {
   [super viewDidLoad];
   
-  _tableView = [[TKTableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+  _tableView = [[TKTableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
   _tableView.delegate = self;
   _tableView.dataSource = self;
   [_contentView addSubview:_tableView];
