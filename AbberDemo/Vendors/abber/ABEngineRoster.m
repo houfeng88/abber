@@ -398,6 +398,27 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
 }
 
 
+- (NSString *)subscriptionString:(int)subscription
+{
+  if ( subscription==ABSubscriptionTypeNone ) {
+    return NSLocalizedString(@"None", @"");
+  } else if ( subscription==ABSubscriptionTypeNoneOut ) {
+    return NSLocalizedString(@"None+Out", @"");
+  } else if ( subscription==ABSubscriptionTypeTo ) {
+    return NSLocalizedString(@"To", @"");
+  } else if ( subscription==ABSubscriptionTypeToIn ) {
+    return NSLocalizedString(@"To+In", @"");
+  } else if ( subscription==ABSubscriptionTypeFrom ) {
+    return NSLocalizedString(@"From", @"");
+  } else if ( subscription==ABSubscriptionTypeFromOut ) {
+    return NSLocalizedString(@"From+Out", @"");
+  } else if ( subscription==ABSubscriptionTypeBoth ) {
+    return NSLocalizedString(@"Both", @"");
+  }
+  return NSLocalizedString(@"None", @"");
+}
+
+
 - (void)didReceiveRoster:(NSArray *)roster error:(NSError *)error
 {
   dispatch_sync(dispatch_get_main_queue(), ^{

@@ -62,22 +62,8 @@
   } else if ( indexPath.row==2 ) {
     ABInfoStaticCell *cell = (ABInfoStaticCell *)[tableView dequeueReusableCellWithClass:[ABInfoStaticCell class]];
     cell.titleLabel.text = NSLocalizedString(@"Relation", @"");
-    int relation = [[_contact objectForKey:@"relation"] intValue];
-    if ( relation==ABSubscriptionTypeNone ) {
-      cell.bodyLabel.text = NSLocalizedString(@"None", @"");
-    } else if ( relation==ABSubscriptionTypeNoneOut ) {
-      cell.bodyLabel.text = NSLocalizedString(@"None+Out", @"");
-    } else if ( relation==ABSubscriptionTypeTo ) {
-      cell.bodyLabel.text = NSLocalizedString(@"To", @"");
-    } else if ( relation==ABSubscriptionTypeToIn ) {
-      cell.bodyLabel.text = NSLocalizedString(@"To+In", @"");
-    } else if ( relation==ABSubscriptionTypeFrom ) {
-      cell.bodyLabel.text = NSLocalizedString(@"From", @"");
-    } else if ( relation==ABSubscriptionTypeFromOut ) {
-      cell.bodyLabel.text = NSLocalizedString(@"From+Out", @"");
-    } else if ( relation==ABSubscriptionTypeBoth ) {
-      cell.bodyLabel.text = NSLocalizedString(@"Both", @"");
-    }
+    NSNumber *relation = [_contact objectForKey:@"relation"];
+    cell.bodyLabel.text = [[ABEngine sharedObject] subscriptionString:[relation intValue]];
     return cell;
   } else if ( indexPath.row==3 ) {
     ABInfoStaticCell *cell = (ABInfoStaticCell *)[tableView dequeueReusableCellWithClass:[ABInfoStaticCell class]];

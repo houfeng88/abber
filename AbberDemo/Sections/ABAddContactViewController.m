@@ -61,6 +61,16 @@
   return cell;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+  return 55.0;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+  return [[UIView alloc] init];
+}
+
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {

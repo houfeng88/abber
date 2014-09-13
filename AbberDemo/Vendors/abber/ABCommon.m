@@ -418,21 +418,3 @@ void  ABHandlexSetNonretainedObject(void *contextRef, NSString *key, id object)
   NSValue *value = [NSValue valueWithNonretainedObject:object];
   ABHandlexSetObject(contextRef, key, value);
 }
-
-
-#pragma mark - Misc
-
-NSString *ABMakeIdentifier(NSString *domain)
-{
-  NSString *identifier = nil;
-  if ( TKSNonempty(domain) ) {
-    identifier = [[NSMutableString alloc] init];
-    
-    [(NSMutableString *)identifier appendString:domain];
-    
-    [(NSMutableString *)identifier appendString:@"-"];
-    
-    [(NSMutableString *)identifier appendString:[[NSUUID UUID] UUIDString]];
-  }
-  return identifier;
-}

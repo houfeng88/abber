@@ -10,12 +10,12 @@
 #import "ABEngine.h"
 
 typedef enum {
-  ABPresenceTypeAvailable   = 0,
-  ABPresenceTypeChat        = 1,
-  ABPresenceTypeAway        = 2,
-  ABPresenceTypeDND         = 3,
-  ABPresenceTypeXA          = 4,
-  ABPresenceTypeUnavailable = 5
+  ABPresenceTypeUnavailable = 0,
+  ABPresenceTypeAvailable   = 1,
+  ABPresenceTypeChat        = 2,
+  ABPresenceTypeAway        = 3,
+  ABPresenceTypeDND         = 4,
+  ABPresenceTypeXA          = 5
 } ABPresenceType;
 
 @interface ABEngine (IncomePresence)
@@ -23,24 +23,31 @@ typedef enum {
 - (void)addPresenceHandler;
 - (void)removePresenceHandler;
 
+- (void)didReceiveFriendRequest:(NSString *)jid;
+
+- (void)didReceiveContactStatus:(NSString *)jid presence:(int)presence;
+
 @end
 
 @interface ABEngine (Presence)
 
-- (BOOL)updatePresence:(ABPresenceType)type;
+- (BOOL)updatePresence:(int)type;
 
 - (BOOL)subscribeContact:(NSString *)jid;
 - (BOOL)subscribedContact:(NSString *)jid;
 - (BOOL)unsubscribeContact:(NSString *)jid;
 - (BOOL)unsubscribedContact:(NSString *)jid;
 
-- (void)didReceiveFriendRequest:(NSString *)jid;
+- (NSString *)presenceString:(int)presence;
 
 @end
+
 
 @protocol ABEnginePresenceDelegate <NSObject>
 @optional
 
 - (void)engine:(ABEngine *)engine didReceiveFriendRequest:(NSString *)jid;
+
+- (void)engine:(ABEngine *)engine didReceiveContactStatus:(NSString *)jid presence:(int)presence;
 
 @end

@@ -17,17 +17,20 @@
 
 - (void)createDatabaseQueue:(NSString *)path
 {
-  _databaseQueue = [[FMDatabaseQueue alloc] initWithPath:path];
-  
-  NSString *contactSQL =
-  @"CREATE TABLE IF NOT EXISTS contact("
-  @"pk INTEGER PRIMARY KEY, "
-  @"jid TEXT, "
-  @"memoname TEXT, "
-  @"relation INTEGER, "
-  @"nickname TEXT, "
-  @"desc TEXT);";
-  [_databaseQueue inDatabase:^(FMDatabase *db) { [db executeUpdate:contactSQL]; }];
+  if ( TKSNonempty(path) ) {
+    _databaseQueue = [[FMDatabaseQueue alloc] initWithPath:path];
+    
+    NSString *contactSQL =
+    @"CREATE TABLE IF NOT EXISTS contact("
+    @"pk INTEGER PRIMARY KEY, "
+    @"jid TEXT, "
+    @"status INTEGER, "
+    @"memoname TEXT, "
+    @"relation INTEGER, "
+    @"nickname TEXT, "
+    @"desc TEXT);";
+    [_databaseQueue inDatabase:^(FMDatabase *db) { [db executeUpdate:contactSQL]; }];
+  }
 }
 
 
@@ -38,6 +41,7 @@
     FMResultSet *rs = [db executeQuery:@"SELECT * FROM contact;"];
     while ( [rs next] ) {
       NSString *jid = [rs stringForColumn:@"jid"];
+      int status = [rs intForColumn:@"status"];
       NSString *memoname = [rs stringForColumn:@"memoname"];
       int relation = [rs intForColumn:@"relation"];
       NSString *nickname = [rs stringForColumn:@"nickname"];
@@ -45,6 +49,7 @@
       
       NSMutableDictionary *contact = [[NSMutableDictionary alloc] init];
       [contact setObject:jid forKeyIfNotNil:@"jid"];
+      [contact setObject:@(status) forKeyIfNotNil:@"status"];
       [contact setObject:memoname forKeyIfNotNil:@"memoname"];
       [contact setObject:@(relation) forKeyIfNotNil:@"relation"];
       [contact setObject:nickname forKeyIfNotNil:@"nickname"];
@@ -64,12 +69,14 @@
       FMResultSet *rs = [db executeQuery:@"SELECT * FROM contact WHERE jid=?;", jid];
       while ( [rs next] ) {
         NSString *jid = [rs stringForColumn:@"jid"];
+        int status = [rs intForColumn:@"status"];
         NSString *memoname = [rs stringForColumn:@"memoname"];
         int relation = [rs intForColumn:@"relation"];
         NSString *nickname = [rs stringForColumn:@"nickname"];
         NSString *desc = [rs stringForColumn:@"desc"];
         
         [contact setObject:jid forKeyIfNotNil:@"jid"];
+        [contact setObject:@(status) forKeyIfNotNil:@"status"];
         [contact setObject:memoname forKeyIfNotNil:@"memoname"];
         [contact setObject:@(relation) forKeyIfNotNil:@"relation"];
         [contact setObject:nickname forKeyIfNotNil:@"nickname"];
@@ -116,6 +123,13 @@
       [db executeUpdate:@"INSERT INTO contact(memoname, relation, jid) VALUES(?, ?, ?);", memoname, relation, jid];
     }
     [rs close];
+  }];
+}
+
+- (void)saveContactStatus:(NSString *)jid presence:(int)presence
+{
+  [_databaseQueue inDatabase:^(FMDatabase *db) {
+    [db executeUpdate:@"UPDATE contact SET status=? WHERE jid=?;", @(presence), jid];
   }];
 }
 

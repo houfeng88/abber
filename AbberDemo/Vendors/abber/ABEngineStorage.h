@@ -18,6 +18,7 @@
 - (NSDictionary *)contactByJid:(NSString *)jid;
 - (void)saveRoster:(NSArray *)roster;
 - (void)saveContact:(NSDictionary *)contact;
+- (void)saveContactStatus:(NSString *)jid presence:(int)presence;
 - (void)deleteContact:(NSDictionary *)contact;
 
 @end

@@ -55,7 +55,3 @@ void *ABHandlexGetObject(void *contextRef, NSString *key);
 void  ABHandlexSetObject(void *contextRef, NSString *key, id object);
 void *ABHandlexGetNonretainedObject(void *contextRef, NSString *key);
 void  ABHandlexSetNonretainedObject(void *contextRef, NSString *key, id object);
-
-
-// Misc
-NSString *ABMakeIdentifier(NSString *domain);

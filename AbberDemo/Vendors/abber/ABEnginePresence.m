@@ -16,33 +16,47 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
 {
   ABEngine *engine = (__bridge ABEngine *)userdata;
   
-  //<presence to="tkcara@blah.im" type="unavailable" from="tkbill@blah.im"/>
-  
-  //<presence from="tkcara@blah.im/teemo"/>
-  //<presence type="subscribe" from="tkcara@blah.im"/>
-  
-  NSLog(@"==============================");
-  NSLog(@"%@", ABStanzaToString(stanza));
-  NSLog(@"==============================");
-  
   NSString *type = ABStanzaGetAttribute(stanza, @"type");
   NSString *jid = ABJidBare(ABStanzaGetAttribute(stanza, @"from"));
   
-  if ( [@"error" isEqualToString:type] ) {
-  } else if ( [@"probe" isEqualToString:type] ) {
-  } else if ( [@"subscribe" isEqualToString:type] ) {
-    NSDictionary *contact = [engine contactByJid:jid];
-    if ( (contact) && ([[contact objectForKey:@"relation"] intValue]==ABSubscriptionTypeTo) ) {
-      [engine subscribedContact:jid];
+  if ( TKSNonempty(jid) ) {
+    if ( [@"error" isEqualToString:type] ) {
+    } else if ( [@"probe" isEqualToString:type] ) {
+    } else if ( [@"subscribe" isEqualToString:type] ) {
+      NSDictionary *contact = [engine contactByJid:jid];
+      if ( (contact) && ([[contact objectForKey:@"relation"] intValue]==ABSubscriptionTypeTo) ) {
+        [engine subscribedContact:jid];
+      } else {
+        [engine didReceiveFriendRequest:jid];
+      }
+    } else if ( [@"subscribed" isEqualToString:type] ) {
+      
+    } else if ( [@"unavailable" isEqualToString:type] ) {
+      [engine saveContactStatus:jid presence:ABPresenceTypeUnavailable];
+      [engine didReceiveContactStatus:jid presence:ABPresenceTypeUnavailable];
+    } else if ( [@"unsubscribe" isEqualToString:type] ) {
+      
+    } else if ( [@"unsubscribed" isEqualToString:type] ) {
+      
     } else {
-      [engine didReceiveFriendRequest:jid];
+      NSString *show = ABStanzaGetText(ABStanzaChildByName(stanza, @"show"));
+      if ( [@"chat" isEqualToString:show] ) {
+        [engine saveContactStatus:jid presence:ABPresenceTypeChat];
+        [engine didReceiveContactStatus:jid presence:ABPresenceTypeChat];
+      } else if ( [@"away" isEqualToString:show] ) {
+        [engine saveContactStatus:jid presence:ABPresenceTypeAway];
+        [engine didReceiveContactStatus:jid presence:ABPresenceTypeAway];
+      } else if ( [@"dnd" isEqualToString:show] ) {
+        [engine saveContactStatus:jid presence:ABPresenceTypeDND];
+        [engine didReceiveContactStatus:jid presence:ABPresenceTypeDND];
+      } else if ( [@"xa" isEqualToString:show] ) {
+        [engine saveContactStatus:jid presence:ABPresenceTypeXA];
+        [engine didReceiveContactStatus:jid presence:ABPresenceTypeXA];
+      } else {
+        [engine saveContactStatus:jid presence:ABPresenceTypeAvailable];
+        [engine didReceiveContactStatus:jid presence:ABPresenceTypeAvailable];
+      }
     }
-  } else if ( [@"subscribed" isEqualToString:type] ) {
-  } else if ( [@"unavailable" isEqualToString:type] ) {
-  } else if ( [@"unsubscribe" isEqualToString:type] ) {
-    
-  } else if ( [@"unsubscribed" isEqualToString:type] ) {
-    
   }
   
   return 1;
@@ -61,13 +75,41 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
   xmpp_handler_delete(_connection, ABPresenceHandler);
 }
 
+
+- (void)didReceiveFriendRequest:(NSString *)jid
+{
+  dispatch_sync(dispatch_get_main_queue(), ^{
+    NSArray *observerAry = [self observers];
+    for ( NSUInteger i=0; i<[observerAry count]; ++i ) {
+      id<ABEnginePresenceDelegate> delegate = [observerAry objectAtIndex:i];
+      if ( [delegate respondsToSelector:@selector(engine:didReceiveFriendRequest:)] ) {
+        [delegate engine:self didReceiveFriendRequest:jid];
+      }
+    }
+  });
+}
+
+
+- (void)didReceiveContactStatus:(NSString *)jid presence:(int)presence
+{
+  dispatch_sync(dispatch_get_main_queue(), ^{
+    NSArray *observerAry = [self observers];
+    for ( NSUInteger i=0; i<[observerAry count]; ++i ) {
+      id<ABEnginePresenceDelegate> delegate = [observerAry objectAtIndex:i];
+      if ( [delegate respondsToSelector:@selector(engine:didReceiveContactStatus:presence:)] ) {
+        [delegate engine:self didReceiveContactStatus:jid presence:presence];
+      }
+    }
+  });
+}
+
 @end
 
 
 
 @implementation ABEngine (Presence)
 
-- (BOOL)updatePresence:(ABPresenceType)type
+- (BOOL)updatePresence:(int)type
 {
   if ( [self isConnected] ) {
     if ( type==ABPresenceTypeAvailable ) {
@@ -81,7 +123,7 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
     } else if ( type==ABPresenceTypeXA ) {
       [self sendString:@"<presence><show>xa</show></presence>"];
     } else {
-      [self sendString:@"<presence type='unavailable'/>"];
+      [self sendString:@"<presence type=\"unavailable\"/>"];
     }
     return YES;
   }
@@ -162,17 +204,22 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
 }
 
 
-- (void)didReceiveFriendRequest:(NSString *)jid
+- (NSString *)presenceString:(int)presence
 {
-  dispatch_sync(dispatch_get_main_queue(), ^{
-    NSArray *observerAry = [self observers];
-    for ( NSUInteger i=0; i<[observerAry count]; ++i ) {
-      id<ABEnginePresenceDelegate> delegate = [observerAry objectAtIndex:i];
-      if ( [delegate respondsToSelector:@selector(engine:didReceiveFriendRequest:)] ) {
-        [delegate engine:self didReceiveFriendRequest:jid];
-      }
-    }
-  });
+  if ( presence==ABPresenceTypeUnavailable ) {
+    return NSLocalizedString(@"Unavailable", @"");
+  } else if ( presence==ABPresenceTypeAvailable ) {
+    return NSLocalizedString(@"Available", @"");
+  } else if ( presence==ABPresenceTypeChat ) {
+    return NSLocalizedString(@"Chat", @"");
+  } else if ( presence==ABPresenceTypeAway ) {
+    return NSLocalizedString(@"Away", @"");
+  } else if ( presence==ABPresenceTypeDND ) {
+    return NSLocalizedString(@"DND", @"");
+  } else if ( presence==ABPresenceTypeXA ) {
+    return NSLocalizedString(@"XA", @"");
+  }
+  return NSLocalizedString(@"Unavailable", @"");
 }
 
 @end

@@ -31,11 +31,12 @@ typedef enum {
 
 @interface ABEngine (Roster)
 
-// name = @"" 时，清除name属性
 - (BOOL)requestRosterWithCompletion:(ABEngineCompletionHandler)completion;
 - (BOOL)addContact:(NSString *)jid name:(NSString *)name completion:(ABEngineCompletionHandler)completion;
 - (BOOL)updateContact:(NSString *)jid name:(NSString *)name completion:(ABEngineCompletionHandler)completion;
 - (BOOL)removeContact:(NSString *)jid completion:(ABEngineCompletionHandler)completion;
+
+- (NSString *)subscriptionString:(int)subscription;
 
 - (void)didReceiveRoster:(NSArray *)roster error:(NSError *)error;
 - (void)didCompleteAddContact:(NSString *)jid error:(NSError *)error;

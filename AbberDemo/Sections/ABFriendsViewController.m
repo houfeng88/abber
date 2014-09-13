@@ -72,6 +72,12 @@
   [_tableView reloadData];
 }
 
+- (void)engine:(ABEngine *)engine didReceiveContactStatus:(NSString *)jid presence:(int)presence
+{
+  _contactAry = [[ABEngine sharedObject] contacts];
+  [_tableView reloadData];
+}
+
 
 
 
@@ -93,17 +99,17 @@
   
   NSDictionary *contact = [_contactAry objectAtIndex:indexPath.row];
   NSString *jid = [contact objectForKey:@"jid"];
+  NSNumber *status = [contact objectForKey:@"status"];
   NSString *memoname = [contact objectForKey:@"memoname"];
-  NSNumber *relation = [contact objectForKey:@"relation"];
+  //NSNumber *relation = [contact objectForKey:@"relation"];
   NSString *nickname = [contact objectForKey:@"nickname"];
   NSString *desc = [contact objectForKey:@"desc"];
   
   
   NSString *name = TKStrOrLater(memoname, nickname);
-  
   //cell.avatarView.image = nil;
   cell.nicknameLabel.text = TKStrOrLater(name, jid);
-  cell.statusLabel.text = nil;
+  cell.statusLabel.text = [[ABEngine sharedObject] presenceString:[status intValue]];
   cell.descLabel.text = desc;
   
   return cell;
