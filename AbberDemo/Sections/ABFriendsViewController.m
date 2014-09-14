@@ -79,6 +79,11 @@
   [_tableView reloadData];
 }
 
+- (void)engine:(ABEngine *)engine didReceiveVcard:(NSDictionary *)vcard error:(NSError *)error
+{
+  _contactAry = [[ABEngine sharedObject] contacts];
+  [_tableView reloadData];
+}
 
 
 
@@ -123,11 +128,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  if ( indexPath.row==0 ) {
-    [[ABEngine sharedObject] requestVcard:@"tkbill@blah.im" completion:NULL];
-  } else if ( indexPath.row==1 ) {
-    [[ABEngine sharedObject] updateVcardWithNickname:@"CARA" desc:@"kj" completion:NULL];
-  }
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath

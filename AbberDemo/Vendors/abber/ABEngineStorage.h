@@ -14,11 +14,17 @@
 - (FMDatabaseQueue *)databaseQueue;
 - (void)createDatabaseQueue:(NSString *)path;
 
+
 - (NSArray *)contacts;
 - (NSDictionary *)contactByJid:(NSString *)jid;
+
 - (void)saveRoster:(NSArray *)roster;
 - (void)saveContact:(NSDictionary *)contact;
-- (void)saveContactStatus:(NSString *)jid presence:(int)presence;
 - (void)deleteContact:(NSDictionary *)contact;
+
+- (void)savePresence:(int)presence contact:(NSString *)jid;
+
+
+- (void)saveVcard:(NSDictionary *)vcard;
 
 @end

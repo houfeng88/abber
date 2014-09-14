@@ -34,6 +34,7 @@
 }
 
 
+
 - (NSArray *)contacts
 {
   NSMutableArray *contactAry = [[NSMutableArray alloc] init];
@@ -89,6 +90,7 @@
   return nil;
 }
 
+
 - (void)saveRoster:(NSArray *)roster
 {
   NSArray *jidAry = [roster valueForKeyPath:@"@unionOfObjects.jid"];
@@ -126,18 +128,31 @@
   }];
 }
 
-- (void)saveContactStatus:(NSString *)jid presence:(int)presence
+- (void)deleteContact:(NSDictionary *)contact
+{
+  NSString *jid = [contact objectForKey:@"jid"];
+  [_databaseQueue inDatabase:^(FMDatabase *db) {
+    [db executeUpdate:@"DELETE FROM contact WHERE jid=?;", jid];
+  }];
+}
+
+
+- (void)savePresence:(int)presence contact:(NSString *)jid
 {
   [_databaseQueue inDatabase:^(FMDatabase *db) {
     [db executeUpdate:@"UPDATE contact SET status=? WHERE jid=?;", @(presence), jid];
   }];
 }
 
-- (void)deleteContact:(NSDictionary *)contact
+
+
+- (void)saveVcard:(NSDictionary *)vcard
 {
-  NSString *jid = [contact objectForKey:@"jid"];
+  NSString *jid = [vcard objectForKey:@"jid"];
+  NSString *nickname = [vcard objectForKey:@"nickname"];
+  NSString *desc = [vcard objectForKey:@"desc"];
   [_databaseQueue inDatabase:^(FMDatabase *db) {
-    [db executeUpdate:@"DELETE FROM contact WHERE jid=?;", jid];
+    [db executeUpdate:@"UPDATE contact SET nickname=?, desc=? WHERE jid=?;", nickname, desc, jid];
   }];
 }
 

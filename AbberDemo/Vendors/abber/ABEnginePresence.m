@@ -75,7 +75,7 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
     } else if ( [@"subscribed" isEqualToString:type] ) {
       
     } else if ( [@"unavailable" isEqualToString:type] ) {
-      [engine saveContactStatus:jid presence:ABPresenceTypeUnavailable];
+      [engine savePresence:ABPresenceTypeUnavailable contact:jid];
       [engine didReceivePresence:ABPresenceTypeUnavailable contact:jid];
     } else if ( [@"unsubscribe" isEqualToString:type] ) {
       
@@ -84,19 +84,19 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
     } else {
       NSString *show = ABStanzaGetText(ABStanzaChildByName(stanza, @"show"));
       if ( [@"chat" isEqualToString:show] ) {
-        [engine saveContactStatus:jid presence:ABPresenceTypeChat];
+        [engine savePresence:ABPresenceTypeChat contact:jid];
         [engine didReceivePresence:ABPresenceTypeChat contact:jid];
       } else if ( [@"away" isEqualToString:show] ) {
-        [engine saveContactStatus:jid presence:ABPresenceTypeAway];
+        [engine savePresence:ABPresenceTypeAway contact:jid];
         [engine didReceivePresence:ABPresenceTypeAway contact:jid];
       } else if ( [@"dnd" isEqualToString:show] ) {
-        [engine saveContactStatus:jid presence:ABPresenceTypeDND];
+        [engine savePresence:ABPresenceTypeDND contact:jid];
         [engine didReceivePresence:ABPresenceTypeDND contact:jid];
       } else if ( [@"xa" isEqualToString:show] ) {
-        [engine saveContactStatus:jid presence:ABPresenceTypeXA];
+        [engine savePresence:ABPresenceTypeXA contact:jid];
         [engine didReceivePresence:ABPresenceTypeXA contact:jid];
       } else {
-        [engine saveContactStatus:jid presence:ABPresenceTypeAvailable];
+        [engine savePresence:ABPresenceTypeAvailable contact:jid];
         [engine didReceivePresence:ABPresenceTypeAvailable contact:jid];
       }
     }
