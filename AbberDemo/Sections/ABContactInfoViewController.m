@@ -63,7 +63,7 @@
     ABInfoStaticCell *cell = (ABInfoStaticCell *)[tableView dequeueReusableCellWithClass:[ABInfoStaticCell class]];
     cell.titleLabel.text = NSLocalizedString(@"Relation", @"");
     NSNumber *relation = [_contact objectForKey:@"relation"];
-    cell.bodyLabel.text = [[ABEngine sharedObject] subscriptionString:[relation intValue]];
+    cell.bodyLabel.text = [[ABEngine sharedObject] relationString:[relation intValue]];
     return cell;
   } else if ( indexPath.row==3 ) {
     ABInfoStaticCell *cell = (ABInfoStaticCell *)[tableView dequeueReusableCellWithClass:[ABInfoStaticCell class]];

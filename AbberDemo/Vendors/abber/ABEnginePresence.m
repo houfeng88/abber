@@ -7,74 +7,20 @@
 //
 
 #import "ABEnginePresence.h"
+
 #import "ABEngineStorage.h"
+
 #import "ABEngineRoster.h"
 
-int ABPresenceHandler(xmpp_conn_t * const conn,
-                      xmpp_stanza_t * const stanza,
-                      void * const userdata)
-{
-  ABEngine *engine = (__bridge ABEngine *)userdata;
-  
-  NSString *type = ABStanzaGetAttribute(stanza, @"type");
-  NSString *jid = ABJidBare(ABStanzaGetAttribute(stanza, @"from"));
-  
-  if ( TKSNonempty(jid) ) {
-    if ( [@"error" isEqualToString:type] ) {
-    } else if ( [@"probe" isEqualToString:type] ) {
-    } else if ( [@"subscribe" isEqualToString:type] ) {
-      NSDictionary *contact = [engine contactByJid:jid];
-      if ( (contact) && ([[contact objectForKey:@"relation"] intValue]==ABSubscriptionTypeTo) ) {
-        [engine subscribedContact:jid];
-      } else {
-        [engine didReceiveFriendRequest:jid];
-      }
-    } else if ( [@"subscribed" isEqualToString:type] ) {
-      
-    } else if ( [@"unavailable" isEqualToString:type] ) {
-      [engine saveContactStatus:jid presence:ABPresenceTypeUnavailable];
-      [engine didReceiveContactStatus:jid presence:ABPresenceTypeUnavailable];
-    } else if ( [@"unsubscribe" isEqualToString:type] ) {
-      
-    } else if ( [@"unsubscribed" isEqualToString:type] ) {
-      
-    } else {
-      NSString *show = ABStanzaGetText(ABStanzaChildByName(stanza, @"show"));
-      if ( [@"chat" isEqualToString:show] ) {
-        [engine saveContactStatus:jid presence:ABPresenceTypeChat];
-        [engine didReceiveContactStatus:jid presence:ABPresenceTypeChat];
-      } else if ( [@"away" isEqualToString:show] ) {
-        [engine saveContactStatus:jid presence:ABPresenceTypeAway];
-        [engine didReceiveContactStatus:jid presence:ABPresenceTypeAway];
-      } else if ( [@"dnd" isEqualToString:show] ) {
-        [engine saveContactStatus:jid presence:ABPresenceTypeDND];
-        [engine didReceiveContactStatus:jid presence:ABPresenceTypeDND];
-      } else if ( [@"xa" isEqualToString:show] ) {
-        [engine saveContactStatus:jid presence:ABPresenceTypeXA];
-        [engine didReceiveContactStatus:jid presence:ABPresenceTypeXA];
-      } else {
-        [engine saveContactStatus:jid presence:ABPresenceTypeAvailable];
-        [engine didReceiveContactStatus:jid presence:ABPresenceTypeAvailable];
-      }
-    }
-  }
-  
-  return 1;
-}
+@interface ABEngine (IncomePresenceNotify)
 
+- (void)didReceiveFriendRequest:(NSString *)jid;
 
-@implementation ABEngine (IncomePresence)
+- (void)didReceivePresence:(int)presence contact:(NSString *)jid;
 
-- (void)addPresenceHandler
-{
-  xmpp_handler_add(_connection, ABPresenceHandler, NULL, "presence", NULL, (__bridge void *)self);
-}
+@end
 
-- (void)removePresenceHandler
-{
-  xmpp_handler_delete(_connection, ABPresenceHandler);
-}
-
+@implementation ABEngine (IncomePresenceNotify)
 
 - (void)didReceiveFriendRequest:(NSString *)jid
 {
@@ -90,17 +36,85 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
 }
 
 
-- (void)didReceiveContactStatus:(NSString *)jid presence:(int)presence
+- (void)didReceivePresence:(int)presence contact:(NSString *)jid
 {
   dispatch_sync(dispatch_get_main_queue(), ^{
     NSArray *observerAry = [self observers];
     for ( NSUInteger i=0; i<[observerAry count]; ++i ) {
       id<ABEnginePresenceDelegate> delegate = [observerAry objectAtIndex:i];
-      if ( [delegate respondsToSelector:@selector(engine:didReceiveContactStatus:presence:)] ) {
-        [delegate engine:self didReceiveContactStatus:jid presence:presence];
+      if ( [delegate respondsToSelector:@selector(engine:didReceivePresence:contact:)] ) {
+        [delegate engine:self didReceivePresence:presence contact:jid];
       }
     }
   });
+}
+
+@end
+
+int ABPresenceHandler(xmpp_conn_t * const conn,
+                      xmpp_stanza_t * const stanza,
+                      void * const userdata)
+{
+  ABEngine *engine = (__bridge ABEngine *)userdata;
+  
+  NSString *type = ABStanzaGetAttribute(stanza, @"type");
+  NSString *jid = ABJidBare(ABStanzaGetAttribute(stanza, @"from"));
+  
+  if ( TKSNonempty(jid) ) {
+    if ( [@"error" isEqualToString:type] ) {
+      
+    } else if ( [@"probe" isEqualToString:type] ) {
+      
+    } else if ( [@"subscribe" isEqualToString:type] ) {
+      NSDictionary *contact = [engine contactByJid:jid];
+      if ( (contact) && ([[contact objectForKey:@"relation"] intValue]==ABSubscriptionTypeTo) ) {
+        [engine subscribedContact:jid];
+      } else {
+        [engine didReceiveFriendRequest:jid];
+      }
+    } else if ( [@"subscribed" isEqualToString:type] ) {
+      
+    } else if ( [@"unavailable" isEqualToString:type] ) {
+      [engine saveContactStatus:jid presence:ABPresenceTypeUnavailable];
+      [engine didReceivePresence:ABPresenceTypeUnavailable contact:jid];
+    } else if ( [@"unsubscribe" isEqualToString:type] ) {
+      
+    } else if ( [@"unsubscribed" isEqualToString:type] ) {
+      
+    } else {
+      NSString *show = ABStanzaGetText(ABStanzaChildByName(stanza, @"show"));
+      if ( [@"chat" isEqualToString:show] ) {
+        [engine saveContactStatus:jid presence:ABPresenceTypeChat];
+        [engine didReceivePresence:ABPresenceTypeChat contact:jid];
+      } else if ( [@"away" isEqualToString:show] ) {
+        [engine saveContactStatus:jid presence:ABPresenceTypeAway];
+        [engine didReceivePresence:ABPresenceTypeAway contact:jid];
+      } else if ( [@"dnd" isEqualToString:show] ) {
+        [engine saveContactStatus:jid presence:ABPresenceTypeDND];
+        [engine didReceivePresence:ABPresenceTypeDND contact:jid];
+      } else if ( [@"xa" isEqualToString:show] ) {
+        [engine saveContactStatus:jid presence:ABPresenceTypeXA];
+        [engine didReceivePresence:ABPresenceTypeXA contact:jid];
+      } else {
+        [engine saveContactStatus:jid presence:ABPresenceTypeAvailable];
+        [engine didReceivePresence:ABPresenceTypeAvailable contact:jid];
+      }
+    }
+  }
+  
+  return 1;
+}
+
+@implementation ABEngine (IncomePresence)
+
+- (void)addPresenceHandler
+{
+  xmpp_handler_add(_connection, ABPresenceHandler, NULL, "presence", NULL, (__bridge void *)self);
+}
+
+- (void)removePresenceHandler
+{
+  xmpp_handler_delete(_connection, ABPresenceHandler);
 }
 
 @end
@@ -204,7 +218,7 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
 }
 
 
-- (NSString *)presenceString:(int)presence
+- (NSString *)statusString:(int)presence
 {
   if ( presence==ABPresenceTypeUnavailable ) {
     return NSLocalizedString(@"Unavailable", @"");

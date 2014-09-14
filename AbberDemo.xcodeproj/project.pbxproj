@@ -13,6 +13,7 @@
 		0A205D2319C3F0A100ED4EED /* TKTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A205D1F19C3F0A100ED4EED /* TKTableView.m */; };
 		0A205D2419C3F0A100ED4EED /* UITableViewExtentions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A205D2119C3F0A100ED4EED /* UITableViewExtentions.m */; };
 		0A205D2A19C3F37D00ED4EED /* ABEngineStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A205D2919C3F37D00ED4EED /* ABEngineStorage.m */; };
+		0A205D2D19C482D600ED4EED /* ABEngineVcard.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A205D2C19C482D600ED4EED /* ABEngineVcard.m */; };
 		0A2352A119B72030003BA4A6 /* ABEngineRoster.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A2352A019B72030003BA4A6 /* ABEngineRoster.m */; };
 		0A2865CC19B880F400F20312 /* ABEnginePresence.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A2865CB19B880F400F20312 /* ABEnginePresence.m */; };
 		0A2865CF19B8E1BD00F20312 /* ABContactInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A2865CE19B8E1BD00F20312 /* ABContactInfoViewController.m */; };
@@ -104,6 +105,8 @@
 		0A205D2119C3F0A100ED4EED /* UITableViewExtentions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITableViewExtentions.m; sourceTree = "<group>"; };
 		0A205D2819C3F37D00ED4EED /* ABEngineStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEngineStorage.h; sourceTree = "<group>"; };
 		0A205D2919C3F37D00ED4EED /* ABEngineStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABEngineStorage.m; sourceTree = "<group>"; };
+		0A205D2B19C482D600ED4EED /* ABEngineVcard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEngineVcard.h; sourceTree = "<group>"; };
+		0A205D2C19C482D600ED4EED /* ABEngineVcard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABEngineVcard.m; sourceTree = "<group>"; };
 		0A23529F19B72030003BA4A6 /* ABEngineRoster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEngineRoster.h; sourceTree = "<group>"; };
 		0A2352A019B72030003BA4A6 /* ABEngineRoster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABEngineRoster.m; sourceTree = "<group>"; };
 		0A2865CA19B880F400F20312 /* ABEnginePresence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEnginePresence.h; sourceTree = "<group>"; };
@@ -754,6 +757,8 @@
 				0A2352A019B72030003BA4A6 /* ABEngineRoster.m */,
 				0A2865CA19B880F400F20312 /* ABEnginePresence.h */,
 				0A2865CB19B880F400F20312 /* ABEnginePresence.m */,
+				0A205D2B19C482D600ED4EED /* ABEngineVcard.h */,
+				0A205D2C19C482D600ED4EED /* ABEngineVcard.m */,
 				0A205D2819C3F37D00ED4EED /* ABEngineStorage.h */,
 				0A205D2919C3F37D00ED4EED /* ABEngineStorage.m */,
 				23C547261994B4B300B4C0F7 /* ABCommon.h */,
@@ -909,6 +914,7 @@
 				0A2865CF19B8E1BD00F20312 /* ABContactInfoViewController.m in Sources */,
 				0A2865DB19B8F13200F20312 /* ABUserInfoViewController.m in Sources */,
 				23F6C1CF1990A993005D2ED7 /* oocontext.cpp in Sources */,
+				0A205D2D19C482D600ED4EED /* ABEngineVcard.m in Sources */,
 				23F6C1D61990A993005D2ED7 /* stanza.c in Sources */,
 				23F6C1CB1990A993005D2ED7 /* handler.c in Sources */,
 				23F6C1D21990A993005D2ED7 /* sasl.c in Sources */,

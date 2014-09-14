@@ -7,35 +7,31 @@
 //
 
 #import "ABEngineRoster.h"
+
 #import "ABEngineStorage.h"
 
-ABSubscriptionType ABRosterRelation(NSString *ask, NSString *subscription)
+@interface ABEngine (IncomeRosterNotify)
+
+- (void)didReceiveRosterUpdate:(NSDictionary *)item;
+
+@end
+
+@implementation ABEngine (IncomeRosterNotify)
+
+- (void)didReceiveRosterUpdate:(NSDictionary *)item
 {
-  if ( [@"none" isEqualToString:subscription] ) {
-    if ( !TKSNonempty(ask) ) {
-      return ABSubscriptionTypeNone;
-    } else {
-      return ABSubscriptionTypeNoneOut;
+  dispatch_sync(dispatch_get_main_queue(), ^{
+    NSArray *observerAry = [self observers];
+    for ( NSUInteger i=0; i<[observerAry count]; ++i ) {
+      id<ABEngineRosterDelegate> delegate = [observerAry objectAtIndex:i];
+      if ( [delegate respondsToSelector:@selector(engine:didReceiveRosterUpdate:)] ) {
+        [delegate engine:self didReceiveRosterUpdate:item];
+      }
     }
-  } else if ( [@"to" isEqualToString:subscription] ) {
-    if ( !TKSNonempty(ask) ) {
-      return ABSubscriptionTypeTo;
-    } else {
-      return ABSubscriptionTypeToIn;
-    }
-  } else if ( [@"from" isEqualToString:subscription] ) {
-    if ( !TKSNonempty(ask) ) {
-      return ABSubscriptionTypeFrom;
-    } else {
-      return ABSubscriptionTypeFromOut;
-    }
-  } else if ( [@"both" isEqualToString:subscription] ) {
-    return ABSubscriptionTypeBoth;
-  }
-  return ABSubscriptionTypeNone;
+  });
 }
 
-
+@end
 
 int ABRosterPushHandler(xmpp_conn_t * const conn,
                         xmpp_stanza_t * const stanza,
@@ -73,7 +69,7 @@ int ABRosterPushHandler(xmpp_conn_t * const conn,
       } else {
         [contact setObject:memoname forKeyIfNotNil:@"memoname"];
         
-        ABSubscriptionType relation = ABRosterRelation(ask, subscription);
+        ABSubscriptionType relation = [engine relationFromAsk:ask subscription:subscription];
         [contact setObject:@(relation) forKey:@"relation"];
         
         [engine saveContact:contact];
@@ -97,23 +93,86 @@ int ABRosterPushHandler(xmpp_conn_t * const conn,
   xmpp_handler_delete(_connection, ABRosterPushHandler);
 }
 
+@end
 
-- (void)didReceiveRosterUpdate:(NSDictionary *)item
+
+
+@interface ABEngine (RosterNotify)
+
+- (void)didReceiveRoster:(NSArray *)roster error:(NSError *)error completion:(ABEngineCompletionHandler)completion;
+- (void)didCompleteAddContact:(NSString *)jid error:(NSError *)error completion:(ABEngineCompletionHandler)completion;
+- (void)didCompleteUpdateContact:(NSString *)jid error:(NSError *)error completion:(ABEngineCompletionHandler)completion;
+- (void)didCompleteRemoveContact:(NSString *)jid error:(NSError *)error completion:(ABEngineCompletionHandler)completion;
+
+@end
+
+@implementation ABEngine (RosterNotify)
+
+- (void)didReceiveRoster:(NSArray *)roster error:(NSError *)error completion:(ABEngineCompletionHandler)completion
 {
   dispatch_sync(dispatch_get_main_queue(), ^{
     NSArray *observerAry = [self observers];
     for ( NSUInteger i=0; i<[observerAry count]; ++i ) {
       id<ABEngineRosterDelegate> delegate = [observerAry objectAtIndex:i];
-      if ( [delegate respondsToSelector:@selector(engine:didReceiveRosterUpdate:)] ) {
-        [delegate engine:self didReceiveRosterUpdate:item];
+      if ( [delegate respondsToSelector:@selector(engine:didReceiveRoster:error:)] ) {
+        [delegate engine:self didReceiveRoster:roster error:error];
       }
+    }
+    if ( completion ) {
+      completion(roster, error);
+    }
+  });
+}
+
+- (void)didCompleteAddContact:(NSString *)jid error:(NSError *)error completion:(ABEngineCompletionHandler)completion
+{
+  dispatch_sync(dispatch_get_main_queue(), ^{
+    NSArray *observerAry = [self observers];
+    for ( NSUInteger i=0; i<[observerAry count]; ++i ) {
+      id<ABEngineRosterDelegate> delegate = [observerAry objectAtIndex:i];
+      if ( [delegate respondsToSelector:@selector(engine:didCompleteAddContact:error:)] ) {
+        [delegate engine:self didCompleteAddContact:jid error:error];
+      }
+    }
+    if ( completion ) {
+      completion(jid, error);
+    }
+  });
+}
+
+- (void)didCompleteUpdateContact:(NSString *)jid error:(NSError *)error completion:(ABEngineCompletionHandler)completion
+{
+  dispatch_sync(dispatch_get_main_queue(), ^{
+    NSArray *observerAry = [self observers];
+    for ( NSUInteger i=0; i<[observerAry count]; ++i ) {
+      id<ABEngineRosterDelegate> delegate = [observerAry objectAtIndex:i];
+      if ( [delegate respondsToSelector:@selector(engine:didCompleteUpdateContact:error:)] ) {
+        [delegate engine:self didCompleteUpdateContact:jid error:error];
+      }
+    }
+    if ( completion ) {
+      completion(jid, error);
+    }
+  });
+}
+
+- (void)didCompleteRemoveContact:(NSString *)jid error:(NSError *)error completion:(ABEngineCompletionHandler)completion
+{
+  dispatch_sync(dispatch_get_main_queue(), ^{
+    NSArray *observerAry = [self observers];
+    for ( NSUInteger i=0; i<[observerAry count]; ++i ) {
+      id<ABEngineRosterDelegate> delegate = [observerAry objectAtIndex:i];
+      if ( [delegate respondsToSelector:@selector(engine:didCompleteRemoveContact:error:)] ) {
+        [delegate engine:self didCompleteRemoveContact:jid error:error];
+      }
+    }
+    if ( completion ) {
+      completion(jid, error);
     }
   });
 }
 
 @end
-
-
 
 int ABRosterRequestHandler(xmpp_conn_t * const conn,
                            xmpp_stanza_t * const stanza,
@@ -145,7 +204,7 @@ int ABRosterRequestHandler(xmpp_conn_t * const conn,
         
         [contact setObject:memoname forKeyIfNotNil:@"memoname"];
         
-        ABSubscriptionType relation = ABRosterRelation(ask, subscription);
+        ABSubscriptionType relation = [engine relationFromAsk:ask subscription:subscription];
         [contact setObject:@(relation) forKey:@"relation"];
         
         [roster addObject:contact];
@@ -157,13 +216,8 @@ int ABRosterRequestHandler(xmpp_conn_t * const conn,
   }
   
   [engine saveRoster:roster];
-  [engine didReceiveRoster:roster error:error];
-  if ( completion ) {
-    dispatch_sync(dispatch_get_main_queue(), ^{
-      completion(roster, error);
-    });
-  }
-
+  [engine didReceiveRoster:roster error:error completion:completion];
+  
   
   ABHandlexDestroy(userdata);
   return 0;
@@ -182,12 +236,7 @@ int ABRosterAddHandler(xmpp_conn_t * const conn,
   NSString *jid = ABJidBare(ABStanzaGetAttribute(stanza, @"to"));
   NSError *error = ABStanzaMakeError(stanza);
   
-  [engine didCompleteAddContact:jid error:error];
-  if ( completion ) {
-    dispatch_sync(dispatch_get_main_queue(), ^{
-      completion(jid, error);
-    });
-  }
+  [engine didCompleteAddContact:jid error:error completion:completion];
   
   
   ABHandlexDestroy(userdata);
@@ -207,12 +256,7 @@ int ABRosterUpdateHandler(xmpp_conn_t * const conn,
   NSString *jid = ABJidBare(ABStanzaGetAttribute(stanza, @"to"));
   NSError *error = ABStanzaMakeError(stanza);
   
-  [engine didCompleteUpdateContact:jid error:error];
-  if ( completion ) {
-    dispatch_sync(dispatch_get_main_queue(), ^{
-      completion(jid, error);
-    });
-  }
+  [engine didCompleteUpdateContact:jid error:error completion:completion];
   
   
   ABHandlexDestroy(userdata);
@@ -232,12 +276,7 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
   NSString *jid = ABJidBare(ABStanzaGetAttribute(stanza, @"to"));
   NSError *error = ABStanzaMakeError(stanza);
   
-  [engine didCompleteUpdateContact:jid error:error];
-  if ( completion ) {
-    dispatch_sync(dispatch_get_main_queue(), ^{
-      completion(jid, error);
-    });
-  }
+  [engine didCompleteUpdateContact:jid error:error completion:completion];
   
   
   ABHandlexDestroy(userdata);
@@ -398,77 +437,50 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
 }
 
 
-- (NSString *)subscriptionString:(int)subscription
+- (int)relationFromAsk:(NSString *)ask subscription:(NSString *)subscription
 {
-  if ( subscription==ABSubscriptionTypeNone ) {
+  if ( [@"none" isEqualToString:subscription] ) {
+    if ( !TKSNonempty(ask) ) {
+      return ABSubscriptionTypeNone;
+    } else {
+      return ABSubscriptionTypeNoneOut;
+    }
+  } else if ( [@"to" isEqualToString:subscription] ) {
+    if ( !TKSNonempty(ask) ) {
+      return ABSubscriptionTypeTo;
+    } else {
+      return ABSubscriptionTypeToIn;
+    }
+  } else if ( [@"from" isEqualToString:subscription] ) {
+    if ( !TKSNonempty(ask) ) {
+      return ABSubscriptionTypeFrom;
+    } else {
+      return ABSubscriptionTypeFromOut;
+    }
+  } else if ( [@"both" isEqualToString:subscription] ) {
+    return ABSubscriptionTypeBoth;
+  }
+  return ABSubscriptionTypeNone;
+}
+
+- (NSString *)relationString:(int)relation
+{
+  if ( relation==ABSubscriptionTypeNone ) {
     return NSLocalizedString(@"None", @"");
-  } else if ( subscription==ABSubscriptionTypeNoneOut ) {
+  } else if ( relation==ABSubscriptionTypeNoneOut ) {
     return NSLocalizedString(@"None+Out", @"");
-  } else if ( subscription==ABSubscriptionTypeTo ) {
+  } else if ( relation==ABSubscriptionTypeTo ) {
     return NSLocalizedString(@"To", @"");
-  } else if ( subscription==ABSubscriptionTypeToIn ) {
+  } else if ( relation==ABSubscriptionTypeToIn ) {
     return NSLocalizedString(@"To+In", @"");
-  } else if ( subscription==ABSubscriptionTypeFrom ) {
+  } else if ( relation==ABSubscriptionTypeFrom ) {
     return NSLocalizedString(@"From", @"");
-  } else if ( subscription==ABSubscriptionTypeFromOut ) {
+  } else if ( relation==ABSubscriptionTypeFromOut ) {
     return NSLocalizedString(@"From+Out", @"");
-  } else if ( subscription==ABSubscriptionTypeBoth ) {
+  } else if ( relation==ABSubscriptionTypeBoth ) {
     return NSLocalizedString(@"Both", @"");
   }
   return NSLocalizedString(@"None", @"");
-}
-
-
-- (void)didReceiveRoster:(NSArray *)roster error:(NSError *)error
-{
-  dispatch_sync(dispatch_get_main_queue(), ^{
-    NSArray *observerAry = [self observers];
-    for ( NSUInteger i=0; i<[observerAry count]; ++i ) {
-      id<ABEngineRosterDelegate> delegate = [observerAry objectAtIndex:i];
-      if ( [delegate respondsToSelector:@selector(engine:didReceiveRoster:error:)] ) {
-        [delegate engine:self didReceiveRoster:roster error:error];
-      }
-    }
-  });
-}
-
-- (void)didCompleteAddContact:(NSString *)jid error:(NSError *)error
-{
-  dispatch_sync(dispatch_get_main_queue(), ^{
-    NSArray *observerAry = [self observers];
-    for ( NSUInteger i=0; i<[observerAry count]; ++i ) {
-      id<ABEngineRosterDelegate> delegate = [observerAry objectAtIndex:i];
-      if ( [delegate respondsToSelector:@selector(engine:didCompleteAddContact:error:)] ) {
-        [delegate engine:self didCompleteAddContact:jid error:error];
-      }
-    }
-  });
-}
-
-- (void)didCompleteUpdateContact:(NSString *)jid error:(NSError *)error
-{
-  dispatch_sync(dispatch_get_main_queue(), ^{
-    NSArray *observerAry = [self observers];
-    for ( NSUInteger i=0; i<[observerAry count]; ++i ) {
-      id<ABEngineRosterDelegate> delegate = [observerAry objectAtIndex:i];
-      if ( [delegate respondsToSelector:@selector(engine:didCompleteUpdateContact:error:)] ) {
-        [delegate engine:self didCompleteUpdateContact:jid error:error];
-      }
-    }
-  });
-}
-
-- (void)didCompleteRemoveContact:(NSString *)jid error:(NSError *)error
-{
-  dispatch_sync(dispatch_get_main_queue(), ^{
-    NSArray *observerAry = [self observers];
-    for ( NSUInteger i=0; i<[observerAry count]; ++i ) {
-      id<ABEngineRosterDelegate> delegate = [observerAry objectAtIndex:i];
-      if ( [delegate respondsToSelector:@selector(engine:didCompleteRemoveContact:error:)] ) {
-        [delegate engine:self didCompleteRemoveContact:jid error:error];
-      }
-    }
-  });
 }
 
 @end

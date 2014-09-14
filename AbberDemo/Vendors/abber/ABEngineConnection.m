@@ -11,70 +11,15 @@
 
 #import "ABEngineStorage.h"
 
-void ABConnectionHandler(xmpp_conn_t * const conn,
-                         const xmpp_conn_event_t status,
-                         const int error,
-                         xmpp_stream_error_t * const stream_error,
-                         void * const userdata)
-{
-  ABEngine *engine = (__bridge ABEngine *)userdata;
-  
-  if ( status==XMPP_CONN_CONNECT ) {
-    
-    DDLogCDebug(@"[conn] Handler: connected.");
-    [engine configAccount:[engine bareJid]];
-    [engine didReceiveConnectStatus:YES];
-    
-  } else if ( status==XMPP_CONN_FAIL ) {
-    
-    DDLogCDebug(@"[conn] Handler: failed.");
-    xmpp_stop(conn->ctx);
-    [engine didReceiveConnectStatus:NO];
-    
-  } else if ( status==XMPP_CONN_DISCONNECT ) {
-    
-    DDLogCDebug(@"[conn] Handler: disconnected.");
-    xmpp_stop(conn->ctx);
-    [engine didDisconnected];
-    
-  }
-}
+@interface ABEngine (ConnectionNotify)
 
+- (void)didStartConnecting;
+- (void)didReceiveConnectStatus:(BOOL)status;
+- (void)didDisconnected;
 
+@end
 
-@implementation ABEngine (Connection)
-
-- (void)connectAndRun
-{
-  [self didStartConnecting];
-  
-  int ret = xmpp_connect_client(_connection,
-                                [ABJabberHost UTF8String],
-                                [ABJabberPort intValue],
-                                ABConnectionHandler,
-                                (__bridge void *)self);
-  
-  if ( ret==XMPP_EOK ) {
-    xmpp_run(_connection->ctx);
-    [self cleanup];
-  } else {
-    [self didReceiveConnectStatus:NO];
-  }
-}
-
-
-- (void)configAccount:(NSString *)acnt
-{
-  if ( TKSNonempty(acnt) ) {
-    
-    NSString *path = TKPathForDocumentResource(acnt);
-    TKCreateDirectory(path);
-    
-    
-    [self createDatabaseQueue:[path stringByAppendingPathComponent:@"im.db"]];
-  }
-}
-
+@implementation ABEngine (ConnectionNotify)
 
 - (void)didStartConnecting
 {
@@ -113,6 +58,70 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
       }
     }
   });
+}
+
+@end
+
+void ABConnectionHandler(xmpp_conn_t * const conn,
+                         const xmpp_conn_event_t status,
+                         const int error,
+                         xmpp_stream_error_t * const stream_error,
+                         void * const userdata)
+{
+  ABEngine *engine = (__bridge ABEngine *)userdata;
+  
+  if ( status==XMPP_CONN_CONNECT ) {
+    
+    DDLogCDebug(@"[conn] Handler: connected.");
+    [engine configAccount:[engine bareJid]];
+    [engine didReceiveConnectStatus:YES];
+    
+  } else if ( status==XMPP_CONN_FAIL ) {
+    
+    DDLogCDebug(@"[conn] Handler: failed.");
+    xmpp_stop(conn->ctx);
+    [engine didReceiveConnectStatus:NO];
+    
+  } else if ( status==XMPP_CONN_DISCONNECT ) {
+    
+    DDLogCDebug(@"[conn] Handler: disconnected.");
+    xmpp_stop(conn->ctx);
+    [engine didDisconnected];
+    
+  }
+}
+
+@implementation ABEngine (Connection)
+
+- (void)connectAndRun
+{
+  [self didStartConnecting];
+  
+  int ret = xmpp_connect_client(_connection,
+                                [ABJabberHost UTF8String],
+                                [ABJabberPort intValue],
+                                ABConnectionHandler,
+                                (__bridge void *)self);
+  
+  if ( ret==XMPP_EOK ) {
+    xmpp_run(_connection->ctx);
+    [self cleanup];
+  } else {
+    [self didReceiveConnectStatus:NO];
+  }
+}
+
+
+- (void)configAccount:(NSString *)acnt
+{
+  if ( TKSNonempty(acnt) ) {
+    
+    NSString *path = TKPathForDocumentResource(acnt);
+    TKCreateDirectory(path);
+    
+    
+    [self createDatabaseQueue:[path stringByAppendingPathComponent:@"im.db"]];
+  }
 }
 
 @end

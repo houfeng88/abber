@@ -73,7 +73,7 @@
   [_tableView reloadData];
 }
 
-- (void)engine:(ABEngine *)engine didReceiveContactStatus:(NSString *)jid presence:(int)presence
+- (void)engine:(ABEngine *)engine didReceivePresence:(int)presence contact:(NSString *)jid
 {
   _contactAry = [[ABEngine sharedObject] contacts];
   [_tableView reloadData];
@@ -110,7 +110,7 @@
   NSString *name = TKStrOrLater(memoname, nickname);
   //cell.avatarView.image = nil;
   cell.nicknameLabel.text = TKStrOrLater(name, jid);
-  cell.statusLabel.text = [[ABEngine sharedObject] presenceString:[status intValue]];
+  cell.statusLabel.text = [[ABEngine sharedObject] statusString:[status intValue]];
   cell.descLabel.text = desc;
   
   return cell;
@@ -123,6 +123,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+  if ( indexPath.row==0 ) {
+    [[ABEngine sharedObject] requestVcard:@"tkbill@blah.im" completion:NULL];
+  } else if ( indexPath.row==1 ) {
+    [[ABEngine sharedObject] updateVcardWithNickname:@"CARA" desc:@"kj" completion:NULL];
+  }
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath

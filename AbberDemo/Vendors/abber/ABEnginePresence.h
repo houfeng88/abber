@@ -23,10 +23,6 @@ typedef enum {
 - (void)addPresenceHandler;
 - (void)removePresenceHandler;
 
-- (void)didReceiveFriendRequest:(NSString *)jid;
-
-- (void)didReceiveContactStatus:(NSString *)jid presence:(int)presence;
-
 @end
 
 @interface ABEngine (Presence)
@@ -38,7 +34,7 @@ typedef enum {
 - (BOOL)unsubscribeContact:(NSString *)jid;
 - (BOOL)unsubscribedContact:(NSString *)jid;
 
-- (NSString *)presenceString:(int)presence;
+- (NSString *)statusString:(int)presence;
 
 @end
 
@@ -48,6 +44,6 @@ typedef enum {
 
 - (void)engine:(ABEngine *)engine didReceiveFriendRequest:(NSString *)jid;
 
-- (void)engine:(ABEngine *)engine didReceiveContactStatus:(NSString *)jid presence:(int)presence;
+- (void)engine:(ABEngine *)engine didReceivePresence:(int)presence contact:(NSString *)jid;
 
 @end

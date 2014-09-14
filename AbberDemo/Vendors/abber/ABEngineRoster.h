@@ -25,8 +25,6 @@ typedef enum {
 - (void)addRosterPushHandler;
 - (void)removeRosterPushHandler;
 
-- (void)didReceiveRosterUpdate:(NSDictionary *)item;
-
 @end
 
 @interface ABEngine (Roster)
@@ -36,12 +34,8 @@ typedef enum {
 - (BOOL)updateContact:(NSString *)jid name:(NSString *)name completion:(ABEngineCompletionHandler)completion;
 - (BOOL)removeContact:(NSString *)jid completion:(ABEngineCompletionHandler)completion;
 
-- (NSString *)subscriptionString:(int)subscription;
-
-- (void)didReceiveRoster:(NSArray *)roster error:(NSError *)error;
-- (void)didCompleteAddContact:(NSString *)jid error:(NSError *)error;
-- (void)didCompleteUpdateContact:(NSString *)jid error:(NSError *)error;
-- (void)didCompleteRemoveContact:(NSString *)jid error:(NSError *)error;
+- (int)relationFromAsk:(NSString *)ask subscription:(NSString *)subscription;
+- (NSString *)relationString:(int)relation;
 
 @end
 
