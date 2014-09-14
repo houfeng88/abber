@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A0FF7B819C560A7000EFC44 /* ABEngineMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0FF7B719C560A7000EFC44 /* ABEngineMessage.m */; };
 		0A205D1219C3DA3600ED4EED /* ABMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A205D1019C3DA3600ED4EED /* ABMainViewController.m */; };
 		0A205D1B19C3ECCA00ED4EED /* TKTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A205D1A19C3ECCA00ED4EED /* TKTableViewController.m */; };
 		0A205D2219C3F0A100ED4EED /* TKRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A205D1D19C3F0A100ED4EED /* TKRefreshControl.m */; };
@@ -93,6 +94,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A0FF7B619C560A7000EFC44 /* ABEngineMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEngineMessage.h; sourceTree = "<group>"; };
+		0A0FF7B719C560A7000EFC44 /* ABEngineMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABEngineMessage.m; sourceTree = "<group>"; };
 		0A205D0F19C3DA3600ED4EED /* ABMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABMainViewController.h; sourceTree = "<group>"; };
 		0A205D1019C3DA3600ED4EED /* ABMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABMainViewController.m; sourceTree = "<group>"; };
 		0A205D1919C3ECCA00ED4EED /* TKTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKTableViewController.h; sourceTree = "<group>"; };
@@ -759,6 +762,8 @@
 				0A2865CB19B880F400F20312 /* ABEnginePresence.m */,
 				0A205D2B19C482D600ED4EED /* ABEngineVcard.h */,
 				0A205D2C19C482D600ED4EED /* ABEngineVcard.m */,
+				0A0FF7B619C560A7000EFC44 /* ABEngineMessage.h */,
+				0A0FF7B719C560A7000EFC44 /* ABEngineMessage.m */,
 				0A205D2819C3F37D00ED4EED /* ABEngineStorage.h */,
 				0A205D2919C3F37D00ED4EED /* ABEngineStorage.m */,
 				23C547261994B4B300B4C0F7 /* ABCommon.h */,
@@ -924,6 +929,7 @@
 				23F6C1D81990A993005D2ED7 /* tls.c in Sources */,
 				23CB414819A1D2150024120D /* MBProgressHUDExtentions.m in Sources */,
 				23F6C1D51990A993005D2ED7 /* sock.c in Sources */,
+				0A0FF7B819C560A7000EFC44 /* ABEngineMessage.m in Sources */,
 				0A6E550C199F7A93004BD577 /* ABFindViewController.m in Sources */,
 				0A2352A119B72030003BA4A6 /* ABEngineRoster.m in Sources */,
 				23F6C1CE1990A993005D2ED7 /* md5.c in Sources */,

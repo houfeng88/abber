@@ -12,5 +12,6 @@
 #import "ABEngineRoster.h"
 #import "ABEnginePresence.h"
 #import "ABEngineVcard.h"
+#import "ABEngineMessage.h"
 
 #import "ABEngineStorage.h"
