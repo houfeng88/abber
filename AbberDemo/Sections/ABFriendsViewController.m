@@ -37,8 +37,6 @@
 {
   [super viewDidAppear:animated];
   
-  [[ABEngine sharedObject] addObserver:self];
-  
   @weakify(self);
   [_tableView addInitialRefreshControlWithRefreshBlock:^{
     @strongify(self);
@@ -85,6 +83,12 @@
   [_tableView reloadData];
 }
 
+- (void)engine:(ABEngine *)engine didReceiveMessage:(NSString *)msg jid:(NSString *)jid
+{
+  NSString *tmp = [[NSString alloc] initWithFormat:@"%@ %@", msg, jid];
+  TKPresentSystemMessage(tmp);
+}
+
 
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -128,6 +132,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+  [[ABEngine sharedObject] sendMessage:@"haha" jid:@"tkbill@blah.im"];
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath

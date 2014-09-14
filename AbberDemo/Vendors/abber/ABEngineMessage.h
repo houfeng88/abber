@@ -11,11 +11,14 @@
 
 @interface ABEngine (IncomeMessage)
 
+- (void)addMessageHandler;
+- (void)removeMessageHandler;
+
 @end
 
 @interface ABEngine (Message)
 
-- (void)sendMessage:(NSString *)message jid:(NSString *)jid;
+- (BOOL)sendMessage:(NSString *)msg jid:(NSString *)jid;
 
 @end
 
@@ -23,7 +26,6 @@
 @protocol ABEngineMessageDelegate <NSObject>
 @optional
 
-- (void)engine:(ABEngine *)engine didReceiveMessage:(NSString *)message jid:(NSString *)jid;
-- (void)engine:(ABEngine *)engine didSendMessage:(NSString *)message jid:(NSString *)jid;
+- (void)engine:(ABEngine *)engine didReceiveMessage:(NSString *)msg jid:(NSString *)jid;
 
 @end

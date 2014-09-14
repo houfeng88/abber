@@ -55,6 +55,8 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
                       xmpp_stanza_t * const stanza,
                       void * const userdata)
 {
+  DDLogCDebug(@"[presence] Presence received.");
+  
   ABEngine *engine = (__bridge ABEngine *)userdata;
   
   NSString *type = ABStanzaGetAttribute(stanza, @"type");

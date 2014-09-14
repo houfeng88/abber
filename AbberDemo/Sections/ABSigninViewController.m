@@ -150,6 +150,7 @@
   [engine connectWithAccount:acnt password:pswd];
   [engine addRosterPushHandler];
   [engine addPresenceHandler];
+  [engine addMessageHandler];
 }
 
 
