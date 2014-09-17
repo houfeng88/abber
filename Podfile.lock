@@ -45,7 +45,7 @@ PODS:
   - libextobjc/RuntimeExtensions (0.4)
   - libextobjc/UmbrellaHeader (0.4)
   - MBProgressHUD (0.9)
-  - tapkit (1.0.5)
+  - tapkit (1.0.8)
 
 DEPENDENCIES:
   - CocoaLumberjack (~> 1.9.0)
@@ -63,6 +63,6 @@ SPEC CHECKSUMS:
   FMDB: 31ec26773c7f7b7890a6038235a1f2bbd933a7cb
   libextobjc: ba42e4111f433273a886cd54f0ddaddb7f62f82f
   MBProgressHUD: 2038dbcf3dce73215abed6001657043d53aa79a8
-  tapkit: 8c36069e05c3dfbd3f0b60ef79356d7715e479e2
+  tapkit: bb0d58c430616813c122124d5eaab849dca47f5f
 
 COCOAPODS: 0.33.1
