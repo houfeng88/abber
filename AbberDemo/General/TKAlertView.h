@@ -15,7 +15,7 @@ typedef void (^TKAlertViewBlock)(void);
     UIAlertViewDelegate
 > {
   
-  NSMutableDictionary *_blockDictionary;
+  NSMutableDictionary *_blockMap;
   
 }
 

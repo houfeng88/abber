@@ -21,7 +21,7 @@
     
     self.delegate = self;
     
-    _blockDictionary = [[NSMutableDictionary alloc] init];
+    _blockMap = [[NSMutableDictionary alloc] init];
     
   }
   return self;
@@ -31,13 +31,13 @@
 {
   if ( TKSNonempty(title) ) {
     
-    if ( ![_blockDictionary hasKeyEqualTo:title] ) {
+    if ( ![_blockMap hasKeyEqualTo:title] ) {
       NSInteger index = [self addButtonWithTitle:title];
       
       if ( block ) {
-        [_blockDictionary setObject:[block copy] forKey:title];
+        [_blockMap setObject:[block copy] forKey:title];
       } else {
-        [_blockDictionary setObject:[NSNull null] forKey:title];
+        [_blockMap setObject:[NSNull null] forKey:title];
       }
       
       return index;
@@ -60,7 +60,7 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
   NSString *title = [self buttonTitleAtIndex:buttonIndex];
-  id block = [_blockDictionary objectForKey:title];
+  id block = [_blockMap objectForKey:title];
   if ( block!=[NSNull null] ) {
     ((TKAlertViewBlock)block)();
   }
