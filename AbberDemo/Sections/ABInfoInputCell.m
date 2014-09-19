@@ -25,7 +25,7 @@
                          backgroundColor:[UIColor clearColor]];
     [self.contentView addSubview:_titleLabel];
     
-    _bodyField = [[UITextField alloc] init];
+    _bodyField = [[TKTextField alloc] init];
     _bodyField.font = [UIFont systemFontOfSize:10.0];
     _bodyField.textColor = [UIColor blackColor];
     _bodyField.textAlignment = NSTextAlignmentRight;

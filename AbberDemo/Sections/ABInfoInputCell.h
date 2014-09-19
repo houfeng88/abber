@@ -7,13 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "General/TKTextField.h"
 
 @interface ABInfoInputCell : UITableViewCell {
   UILabel *_titleLabel;
-  UITextField *_bodyField;
+  TKTextField *_bodyField;
 }
 
 @property (nonatomic, strong, readonly) UILabel *titleLabel;
-@property (nonatomic, strong, readonly) UITextField *bodyField;
+@property (nonatomic, strong, readonly) TKTextField *bodyField;
 
 @end

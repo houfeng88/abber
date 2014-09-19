@@ -41,16 +41,18 @@
     cell.valueField.text = [[TKSettings sharedObject] objectForKey:@"ABSavedAccountKey"];
     cell.valueField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     cell.valueField.returnKeyType = UIReturnKeyNext;
-    cell.valueField.delegate = self;
+    cell.valueField.maxLength = 20;
     _accountField = cell.valueField;
   } else if ( indexPath.row==1 ) {
     cell.titleLabel.text = NSLocalizedString(@"Password:", @"");
     cell.valueField.text = [[TKSettings sharedObject] objectForKey:@"ABSavedPasswordKey"];
     cell.valueField.secureTextEntry = YES;
     cell.valueField.returnKeyType = UIReturnKeyDone;
-    cell.valueField.delegate = self;
+    cell.valueField.maxLength = 20;
     _passwordField = cell.valueField;
   }
+  _accountField.nextField = _passwordField;
+  _passwordField.nextField = nil;
   return cell;
 }
 
@@ -84,23 +86,6 @@
   
   return footer;
 }
-
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-  if ( textField==_accountField ) {
-    [_passwordField becomeFirstResponder];
-  } else if ( textField==_passwordField ) {
-    [textField resignFirstResponder];
-  }
-  return YES;
-}
-
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-  return (([textField.text length] + [string length] - range.length)<=20);
-}
-
 
 
 

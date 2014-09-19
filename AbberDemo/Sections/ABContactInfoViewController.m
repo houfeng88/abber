@@ -52,6 +52,9 @@
     ABInfoInputCell *cell = (ABInfoInputCell *)[tableView dequeueReusableCellWithClass:[ABInfoInputCell class]];
     cell.titleLabel.text = NSLocalizedString(@"Memoname", @"");
     cell.bodyField.text = [_contact objectForKey:@"memoname"];
+    cell.bodyField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    cell.bodyField.returnKeyType = UIReturnKeyDone;
+    cell.bodyField.maxLength = 20;
     _memonameField = cell.bodyField;
     return cell;
   } else if ( indexPath.row==1 ) {
@@ -125,9 +128,11 @@
   [MBProgressHUD presentProgressHUD:self.view
                                info:nil
                             offsetY:0.0];
-  
+
+  NSString *jid = [_contact objectForKey:@"jid"];
   NSString *memo = _memonameField.text;
-  [[ABEngine sharedObject] updateContact:[_contact objectForKey:@"jid"]
+
+  [[ABEngine sharedObject] updateContact:jid
                                     name:TKStrOrLater(memo, @"")
                               completion:^(id result, NSError *error) {
                                 [MBProgressHUD dismissHUD:self.view
@@ -143,8 +148,10 @@
   [MBProgressHUD presentProgressHUD:self.view
                                info:nil
                             offsetY:0.0];
-  
-  [[ABEngine sharedObject] removeContact:[_contact objectForKey:@"jid"]
+
+  NSString *jid = [_contact objectForKey:@"jid"];
+
+  [[ABEngine sharedObject] removeContact:jid
                               completion:^(id result, NSError *error) {
                                 [MBProgressHUD dismissHUD:self.view
                                               immediately:NO

@@ -29,6 +29,7 @@
 		0A6E550C199F7A93004BD577 /* ABFindViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6E550B199F7A93004BD577 /* ABFindViewController.m */; };
 		0A6E550F199F7A9F004BD577 /* ABMoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6E550E199F7A9F004BD577 /* ABMoreViewController.m */; };
 		0A9594E219A6316F007297B0 /* ABAddContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A9594E119A6316F007297B0 /* ABAddContactViewController.m */; };
+		0AB39CBC19CC1B6D003E7525 /* TKTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AB39CBB19CC1B6D003E7525 /* TKTextField.m */; };
 		23A44CF319A1A05B00EC8301 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 23A44CF219A1A05B00EC8301 /* libsqlite3.dylib */; };
 		23C4BC54199DB23F006E796C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C4BC53199DB23F006E796C /* QuartzCore.framework */; };
 		23C4BC64199DD17E006E796C /* btn_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C4BC60199DD17E006E796C /* btn_back.png */; };
@@ -138,6 +139,8 @@
 		0A6E550E199F7A9F004BD577 /* ABMoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABMoreViewController.m; sourceTree = "<group>"; };
 		0A9594E019A6316F007297B0 /* ABAddContactViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABAddContactViewController.h; sourceTree = "<group>"; };
 		0A9594E119A6316F007297B0 /* ABAddContactViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABAddContactViewController.m; sourceTree = "<group>"; };
+		0AB39CBA19CC1B6D003E7525 /* TKTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKTextField.h; sourceTree = "<group>"; };
+		0AB39CBB19CC1B6D003E7525 /* TKTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKTextField.m; sourceTree = "<group>"; };
 		23A44CF219A1A05B00EC8301 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		23C4BC53199DB23F006E796C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		23C4BC55199DB2B8006E796C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -373,6 +376,7 @@
 			children = (
 				0A205D2619C3F0B400ED4EED /* AlertView */,
 				0A205D2519C3F0A500ED4EED /* TableView */,
+				0AB39CBD19CC1B72003E7525 /* TextField */,
 			);
 			path = General;
 			sourceTree = "<group>";
@@ -437,6 +441,15 @@
 				0A2865DA19B8F13200F20312 /* ABUserInfoViewController.m */,
 			);
 			name = More;
+			sourceTree = "<group>";
+		};
+		0AB39CBD19CC1B72003E7525 /* TextField */ = {
+			isa = PBXGroup;
+			children = (
+				0AB39CBA19CC1B6D003E7525 /* TKTextField.h */,
+				0AB39CBB19CC1B6D003E7525 /* TKTextField.m */,
+			);
+			name = TextField;
 			sourceTree = "<group>";
 		};
 		23C4BC5E199DD17E006E796C /* Resources */ = {
@@ -941,6 +954,7 @@
 				0A2865D219B8E7B800F20312 /* ABInfoInputCell.m in Sources */,
 				0A2865D519B8E7CA00F20312 /* ABInfoStaticCell.m in Sources */,
 				23F6C1C91990A993005D2ED7 /* ctx.c in Sources */,
+				0AB39CBC19CC1B6D003E7525 /* TKTextField.m in Sources */,
 				0A205D2319C3F0A100ED4EED /* TKTableView.m in Sources */,
 				0A31925A19B97F2100DDA368 /* TKAlertView.m in Sources */,
 				23CB414A19A1D2150024120D /* TKNavigationView.m in Sources */,

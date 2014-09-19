@@ -49,17 +49,20 @@
     cell.titleLabel.text = NSLocalizedString(@"Account:", @"");
     cell.valueField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     cell.valueField.returnKeyType = UIReturnKeyNext;
-    cell.valueField.delegate = self;
+    cell.valueField.maxLength = 20;
     _accountField = cell.valueField;
   } else if ( indexPath.row==1 ) {
     cell.titleLabel.text = NSLocalizedString(@"Memoname:", @"");
     cell.valueField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     cell.valueField.returnKeyType = UIReturnKeyDone;
-    cell.valueField.delegate = self;
+    cell.valueField.maxLength = 20;
     _memonameField = cell.valueField;
   }
+  [(TKTextField *)_accountField setNextField:_memonameField];
+  [(TKTextField *)_memonameField setNextField:nil];
   return cell;
 }
+
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
@@ -70,23 +73,6 @@
 {
   return [[UIView alloc] init];
 }
-
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-  if ( textField==_accountField ) {
-    [_memonameField becomeFirstResponder];
-  } else if ( textField==_memonameField ) {
-    [textField resignFirstResponder];
-  }
-  return YES;
-}
-
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-  return (([textField.text length] + [string length] - range.length)<=20);
-}
-
 
 
 

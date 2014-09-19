@@ -8,12 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import <abber/abber.h>
+#import "General/TKTextField.h"
 
-@interface ABSigninViewController : TKTableViewController<
-    UITextFieldDelegate
-> {
-  UITextField *_accountField;
-  UITextField *_passwordField;
+@interface ABSigninViewController : TKTableViewController {
+  TKTextField *_accountField;
+  TKTextField *_passwordField;
 }
 
 @end
