@@ -127,6 +127,13 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+  if ( indexPath.row==0 ) {
+    [[ABEngine sharedObject] sendText:@"ABCD" jid:@"tkbill@blah.im"];
+  } else if ( indexPath.row==1 ) {
+    NSString *path = TKPathForBundleResource(nil, @"btn_brown.png");
+    NSData *data = [[NSData alloc] initWithContentsOfFile:path];
+    [[ABEngine sharedObject] sendImage:data jid:@"tkbill@blah.im"];
+  }
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath

@@ -18,6 +18,7 @@
   [self configStatusBar];
   [self configTapkit];
   
+  
   _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   
   ABMainViewController *main = [[ABMainViewController alloc] init];

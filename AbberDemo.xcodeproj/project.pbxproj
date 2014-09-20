@@ -32,6 +32,7 @@
 		0A78E5F619CD256C004A7D6C /* TKTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A78E5EB19CD256B004A7D6C /* TKTextField.m */; };
 		0A78E5F719CD256C004A7D6C /* TKViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A78E5ED19CD256C004A7D6C /* TKViewController.m */; };
 		0A78E5F819CD256C004A7D6C /* UITableViewExtentions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A78E5EF19CD256C004A7D6C /* UITableViewExtentions.m */; };
+		0A78E60819CDC172004A7D6C /* GTMBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A78E60619CDC172004A7D6C /* GTMBase64.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		0A9594E219A6316F007297B0 /* ABAddContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A9594E119A6316F007297B0 /* ABAddContactViewController.m */; };
 		23A44CF319A1A05B00EC8301 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 23A44CF219A1A05B00EC8301 /* libsqlite3.dylib */; };
 		23C4BC54199DB23F006E796C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C4BC53199DB23F006E796C /* QuartzCore.framework */; };
@@ -146,6 +147,9 @@
 		0A78E5EE19CD256C004A7D6C /* UITableViewExtentions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITableViewExtentions.h; sourceTree = "<group>"; };
 		0A78E5EF19CD256C004A7D6C /* UITableViewExtentions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITableViewExtentions.m; sourceTree = "<group>"; };
 		0A78E5FE19CD2625004A7D6C /* ABCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ABCommon.h; sourceTree = "<group>"; };
+		0A78E60519CDC172004A7D6C /* GTMBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMBase64.h; sourceTree = "<group>"; };
+		0A78E60619CDC172004A7D6C /* GTMBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMBase64.m; sourceTree = "<group>"; };
+		0A78E60719CDC172004A7D6C /* GTMDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMDefines.h; sourceTree = "<group>"; };
 		0A9594E019A6316F007297B0 /* ABAddContactViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABAddContactViewController.h; sourceTree = "<group>"; };
 		0A9594E119A6316F007297B0 /* ABAddContactViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABAddContactViewController.m; sourceTree = "<group>"; };
 		23A44CF219A1A05B00EC8301 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
@@ -468,6 +472,16 @@
 			name = AlertView;
 			sourceTree = "<group>";
 		};
+		0A78E60419CDC172004A7D6C /* GTMBase64 */ = {
+			isa = PBXGroup;
+			children = (
+				0A78E60519CDC172004A7D6C /* GTMBase64.h */,
+				0A78E60619CDC172004A7D6C /* GTMBase64.m */,
+				0A78E60719CDC172004A7D6C /* GTMDefines.h */,
+			);
+			path = GTMBase64;
+			sourceTree = "<group>";
+		};
 		23C4BC5E199DD17E006E796C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -625,6 +639,7 @@
 				23F6C1DA1990AC3E005D2ED7 /* abber */,
 				23F6C1A61990A993005D2ED7 /* strophe */,
 				23F6C1561990A8DF005D2ED7 /* openssl */,
+				0A78E60419CDC172004A7D6C /* GTMBase64 */,
 			);
 			path = Vendors;
 			sourceTree = "<group>";
@@ -923,6 +938,7 @@
 				0A78E5F119CD256C004A7D6C /* TKAlertView.m in Sources */,
 				23F6C1CF1990A993005D2ED7 /* oocontext.cpp in Sources */,
 				0A205D2D19C482D600ED4EED /* ABEngineVcard.m in Sources */,
+				0A78E60819CDC172004A7D6C /* GTMBase64.m in Sources */,
 				0A78E5F419CD256C004A7D6C /* TKTableView.m in Sources */,
 				23F6C1D61990A993005D2ED7 /* stanza.c in Sources */,
 				23F6C1CB1990A993005D2ED7 /* handler.c in Sources */,

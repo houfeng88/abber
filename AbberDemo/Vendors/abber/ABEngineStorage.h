@@ -15,6 +15,7 @@
 - (void)createDatabaseQueue:(NSString *)path;
 
 
+// contact
 - (NSArray *)contacts;
 - (NSDictionary *)contactByJid:(NSString *)jid;
 
@@ -25,7 +26,12 @@
 - (void)savePresence:(int)presence contact:(NSString *)jid;
 - (void)clearAllPresence;
 
-
 - (void)saveVcard:(NSDictionary *)vcard;
+
+
+// session
+
+
+// message
 
 @end

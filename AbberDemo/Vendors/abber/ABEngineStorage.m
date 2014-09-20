@@ -152,7 +152,6 @@
 }
 
 
-
 - (void)saveVcard:(NSDictionary *)vcard
 {
   NSString *jid = [vcard objectForKey:@"jid"];

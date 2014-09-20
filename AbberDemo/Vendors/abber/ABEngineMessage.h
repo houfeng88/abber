@@ -18,7 +18,9 @@
 
 @interface ABEngine (Message)
 
-- (BOOL)sendMessage:(NSString *)msg jid:(NSString *)jid;
+- (BOOL)sendText:(NSString *)text jid:(NSString *)jid;
+- (BOOL)sendAudio:(NSData *)audio jid:(NSString *)jid;
+- (BOOL)sendImage:(NSData *)image jid:(NSString *)jid;
 
 @end
 
@@ -26,6 +28,6 @@
 @protocol ABEngineMessageDelegate <NSObject>
 @optional
 
-- (void)engine:(ABEngine *)engine didReceiveMessage:(NSString *)msg jid:(NSString *)jid;
+- (void)engine:(ABEngine *)engine didReceiveMessage:(id)msg type:(NSString *)type jid:(NSString *)jid;
 
 @end

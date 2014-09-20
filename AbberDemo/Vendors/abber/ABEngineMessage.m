@@ -8,22 +8,24 @@
 
 #import "ABEngineMessage.h"
 
+#import <GTMBase64/GTMBase64.h>
+
 @interface ABEngine (IncomeMessageNotify)
 
-- (void)didReceiveMessage:(NSString *)msg jid:(NSString *)jid;
+- (void)didReceiveMessage:(id)msg type:(NSString *)type jid:(NSString *)jid;
 
 @end
 
 @implementation ABEngine (IncomeMessageNotify)
 
-- (void)didReceiveMessage:(NSString *)msg jid:(NSString *)jid
+- (void)didReceiveMessage:(id)msg type:(NSString *)type jid:(NSString *)jid
 {
   dispatch_sync(dispatch_get_main_queue(), ^{
     NSArray *observerAry = [self observers];
     for ( NSUInteger i=0; i<[observerAry count]; ++i ) {
       id<ABEngineMessageDelegate> delegate = [observerAry objectAtIndex:i];
-      if ( [delegate respondsToSelector:@selector(engine:didReceiveMessage:jid:)] ) {
-        [delegate engine:self didReceiveMessage:msg jid:jid];
+      if ( [delegate respondsToSelector:@selector(engine:didReceiveMessage:type:jid:)] ) {
+        [delegate engine:self didReceiveMessage:msg type:type jid:jid];
       }
     }
   });
@@ -45,7 +47,19 @@ int ABMessageHandler(xmpp_conn_t * const conn,
   if ( [@"chat" isEqualToString:type] ) {
     xmpp_stanza_t *body = ABStanzaChildByName(stanza, @"body");
     
-    [engine didReceiveMessage:ABStanzaGetText(body) jid:jid];
+    NSString *ctype = ABStanzaGetAttribute(body, @"type");
+    NSString *cbody = ABStanzaGetText(body);
+    
+    if ( [@"audio" isEqualToString:ctype] ) {
+      NSData *audio = [GTMBase64 decodeString:cbody];
+      [engine didReceiveMessage:audio type:@"audio" jid:jid];
+    } else if ( [@"image" isEqualToString:ctype] ) {
+      NSData *image = [GTMBase64 decodeString:cbody];
+      [engine didReceiveMessage:image type:@"image" jid:jid];
+    } else {
+      [engine didReceiveMessage:cbody type:@"text" jid:jid];
+    }
+    
   }
   
   return 1;
@@ -69,7 +83,7 @@ int ABMessageHandler(xmpp_conn_t * const conn,
 
 @implementation ABEngine (Message)
 
-- (BOOL)sendMessage:(NSString *)msg jid:(NSString *)jid
+- (BOOL)sendText:(NSString *)text jid:(NSString *)jid
 {
 //  <message id='b4vs9km4'
 //           to='romeo@example.net'
@@ -77,7 +91,7 @@ int ABMessageHandler(xmpp_conn_t * const conn,
 //    <body>Wherefore art thou, Romeo?</body>
 //  </message>
   if ( [self isConnected] ) {
-    if ( TKSNonempty(jid) && TKSNonempty(msg) ) {
+    if ( TKSNonempty(jid) && TKSNonempty(text) ) {
       NSString *identifier = [[NSUUID UUID] UUIDString];
       
       xmpp_stanza_t *message = ABStanzaCreate(_connection->ctx, @"message", nil);
@@ -85,7 +99,73 @@ int ABMessageHandler(xmpp_conn_t * const conn,
       ABStanzaSetAttribute(message, @"type", @"chat");
       ABStanzaSetAttribute(message, @"to", jid);
       
-      xmpp_stanza_t *body = ABStanzaCreate(_connection->ctx, @"body", msg);
+      NSString *ctype = @"text";
+      NSString *cbody = text;
+      
+      xmpp_stanza_t *body = ABStanzaCreate(_connection->ctx, @"body", cbody);
+      ABStanzaSetAttribute(body, @"type", ctype);
+      ABStanzaAddChild(message, body);
+      
+      [self sendData:ABStanzaToData(message)];
+    }
+    
+    return YES;
+  }
+  return NO;
+}
+
+- (BOOL)sendAudio:(NSData *)audio jid:(NSString *)jid
+{
+//  <message id='b4vs9km4'
+//           to='romeo@example.net'
+//           type='chat'>
+//    <body>Wherefore art thou, Romeo?</body>
+//  </message>
+  if ( [self isConnected] ) {
+    if ( TKSNonempty(jid) && TKDNonempty(audio) ) {
+      NSString *identifier = [[NSUUID UUID] UUIDString];
+      
+      xmpp_stanza_t *message = ABStanzaCreate(_connection->ctx, @"message", nil);
+      ABStanzaSetAttribute(message, @"id", identifier);
+      ABStanzaSetAttribute(message, @"type", @"chat");
+      ABStanzaSetAttribute(message, @"to", jid);
+      
+      NSString *ctype = @"audio";
+      NSString *cbody = [GTMBase64 stringByEncodingData:audio];
+      
+      xmpp_stanza_t *body = ABStanzaCreate(_connection->ctx, @"body", cbody);
+      ABStanzaSetAttribute(body, @"type", ctype);
+      ABStanzaAddChild(message, body);
+      
+      [self sendData:ABStanzaToData(message)];
+    }
+    
+    return YES;
+  }
+  return NO;
+}
+
+- (BOOL)sendImage:(NSData *)image jid:(NSString *)jid
+{
+//  <message id='b4vs9km4'
+//           to='romeo@example.net'
+//           type='chat'>
+//    <body>Wherefore art thou, Romeo?</body>
+//  </message>
+  if ( [self isConnected] ) {
+    if ( TKSNonempty(jid) && TKDNonempty(image) ) {
+      NSString *identifier = [[NSUUID UUID] UUIDString];
+      
+      xmpp_stanza_t *message = ABStanzaCreate(_connection->ctx, @"message", nil);
+      ABStanzaSetAttribute(message, @"id", identifier);
+      ABStanzaSetAttribute(message, @"type", @"chat");
+      ABStanzaSetAttribute(message, @"to", jid);
+      
+      NSString *ctype = @"image";
+      NSString *cbody = [GTMBase64 stringByEncodingData:image];
+      
+      xmpp_stanza_t *body = ABStanzaCreate(_connection->ctx, @"body", cbody);
+      ABStanzaSetAttribute(body, @"type", ctype);
       ABStanzaAddChild(message, body);
       
       [self sendData:ABStanzaToData(message)];
