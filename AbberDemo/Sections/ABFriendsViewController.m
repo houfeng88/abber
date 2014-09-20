@@ -111,6 +111,7 @@
   
   
   NSString *name = TKStrOrLater(memoname, nickname);
+  
   //cell.avatarView.image = nil;
   cell.nicknameLabel.text = TKStrOrLater(name, jid);
   cell.statusLabel.text = [[ABEngine sharedObject] statusString:[status intValue]];

@@ -22,13 +22,16 @@
     _avatarView.image = TKCreateImage(@"default_avatar.png");
     [self.contentView addSubview:_avatarView];
     
-    _nicknameLabel = [UILabel singleLineLabelWithFont:[UIFont systemFontOfSize:14.0] textColor:[UIColor blackColor]];
+    _nicknameLabel = [UILabel singleLineLabelWithFont:[UIFont systemFontOfSize:14.0]
+                                            textColor:[UIColor blackColor]];
     [self.contentView addSubview:_nicknameLabel];
     
-    _statusLabel = [UILabel singleLineLabelWithFont:[UIFont systemFontOfSize:10.0] textColor:[UIColor darkGrayColor]];
+    _statusLabel = [UILabel singleLineLabelWithFont:[UIFont systemFontOfSize:10.0]
+                                          textColor:[UIColor darkGrayColor]];
     [self.contentView addSubview:_statusLabel];
     
-    _descLabel = [UILabel singleLineLabelWithFont:[UIFont systemFontOfSize:10.0] textColor:[UIColor darkGrayColor]];
+    _descLabel = [UILabel singleLineLabelWithFont:[UIFont systemFontOfSize:10.0]
+                                        textColor:[UIColor darkGrayColor]];
     [self.contentView addSubview:_descLabel];
   }
   return self;
@@ -44,7 +47,8 @@
                                     self.contentView.width-(_avatarView.rightX+5.0)-10.0, 25.0);
   
   [_statusLabel sizeToFit];
-  _statusLabel.frame = CGRectMake(_nicknameLabel.leftX, _nicknameLabel.bottomY, _statusLabel.width, 15.0);
+  _statusLabel.frame = CGRectMake(_nicknameLabel.leftX, _nicknameLabel.bottomY,
+                                  _statusLabel.width, 15.0);
   _descLabel.frame = CGRectMake(_statusLabel.rightX+5.0, _nicknameLabel.bottomY,
                                 _nicknameLabel.width-(_statusLabel.width+5.0), 15.0);
 }

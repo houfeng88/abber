@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <abber/abber.h>
 
 @interface ABMoreViewController : TKViewController {
 }

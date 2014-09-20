@@ -23,6 +23,7 @@
 - (void)deleteContact:(NSDictionary *)contact;
 
 - (void)savePresence:(int)presence contact:(NSString *)jid;
+- (void)clearAllPresence;
 
 
 - (void)saveVcard:(NSDictionary *)vcard;

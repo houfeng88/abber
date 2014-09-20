@@ -33,6 +33,7 @@
     _valueField.textAlignment = NSTextAlignmentLeft;
     _valueField.adjustsFontSizeToFitWidth = NO;
     _valueField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    _valueField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [self.contentView addSubview:_valueField];
     
   }
@@ -43,7 +44,10 @@
 {
   [super layoutSubviews];
   
-  _titleLabel.frame = CGRectMake(10.0, 2.0, 90.0, self.contentView.height-2*2.0);
+  _titleLabel.frame = CGRectMake(10.0,
+                                 2.0,
+                                 90.0,
+                                 self.contentView.height-2*2.0);
   
   _valueField.frame = CGRectMake(_titleLabel.rightX+5.0,
                                  2.0,

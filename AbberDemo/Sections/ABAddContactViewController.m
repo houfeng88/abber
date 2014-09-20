@@ -47,13 +47,11 @@
   ABInputCell *cell = (ABInputCell *)[tableView dequeueReusableCellWithClass:[ABInputCell class]];
   if ( indexPath.row==0 ) {
     cell.titleLabel.text = NSLocalizedString(@"Account:", @"");
-    cell.valueField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     cell.valueField.returnKeyType = UIReturnKeyNext;
     cell.valueField.maxLength = 20;
     _accountField = cell.valueField;
   } else if ( indexPath.row==1 ) {
     cell.titleLabel.text = NSLocalizedString(@"Memoname:", @"");
-    cell.valueField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     cell.valueField.returnKeyType = UIReturnKeyDone;
     cell.valueField.maxLength = 20;
     _memonameField = cell.valueField;
@@ -85,7 +83,6 @@
   }
 }
 
-
 - (BOOL)checkValidity
 {
   NSString *acnt = _accountField.text;
@@ -106,10 +103,7 @@
 
 - (void)add
 {
-  [MBProgressHUD presentProgressHUD:self.view
-                               info:nil
-                            offsetY:0.0];
-  
+  [self HUDStart];
   
   NSString *acnt = _accountField.text;
   NSString *memo = _memonameField.text;
@@ -117,13 +111,38 @@
   [[ABEngine sharedObject] addContact:acnt
                                  name:memo
                            completion:^(id result, NSError *error) {
-                             [MBProgressHUD dismissHUD:self.view
-                                           immediately:NO
-                                       completionBlock:^{
-                                         [self.navigationController popViewControllerAnimated:YES];
-                                       }];
+                             if ( error ) {
+                               [self HUDAddNo];
+                             } else {
+                               [self HUDAddYes];
+                             }
                            }];
   [[ABEngine sharedObject] subscribeContact:acnt];
+}
+
+
+- (void)HUDStart
+{
+  [MBProgressHUD presentProgressHUD:self.view
+                               info:nil
+                            offsetY:0.0];
+}
+
+- (void)HUDAddYes
+{
+  [MBProgressHUD dismissHUD:self.view
+                immediately:NO
+            completionBlock:^{
+              [self.navigationController popViewControllerAnimated:YES];
+            }];
+}
+
+- (void)HUDAddNo
+{
+  [MBProgressHUD presentTextHUD:self.view
+                           info:NSLocalizedString(@"Add failed", @"")
+                        offsetY:0.0
+                completionBlock:NULL];
 }
 
 @end

@@ -7,12 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <abber/abber.h>
-#import "General/TKTextField.h"
 
 @interface ABSigninViewController : TKTableViewController {
-  TKTextField *_accountField;
-  TKTextField *_passwordField;
+  UITextField *_accountField;
+  UITextField *_passwordField;
 }
 
 @end

@@ -52,7 +52,6 @@
     ABInfoInputCell *cell = (ABInfoInputCell *)[tableView dequeueReusableCellWithClass:[ABInfoInputCell class]];
     cell.titleLabel.text = NSLocalizedString(@"Memoname", @"");
     cell.bodyField.text = [_contact objectForKey:@"memoname"];
-    cell.bodyField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     cell.bodyField.returnKeyType = UIReturnKeyDone;
     cell.bodyField.maxLength = 20;
     _memonameField = cell.bodyField;
@@ -124,10 +123,7 @@
 {
   [TKFindFirstResponderInView(self.view) resignFirstResponder];
   
-  
-  [MBProgressHUD presentProgressHUD:self.view
-                               info:nil
-                            offsetY:0.0];
+  [self HUDStart];
 
   NSString *jid = [_contact objectForKey:@"jid"];
   NSString *memo = _memonameField.text;
@@ -135,30 +131,68 @@
   [[ABEngine sharedObject] updateContact:jid
                                     name:TKStrOrLater(memo, @"")
                               completion:^(id result, NSError *error) {
-                                [MBProgressHUD dismissHUD:self.view
-                                              immediately:NO
-                                          completionBlock:^{
-                                            [self.navigationController popViewControllerAnimated:YES];
-                                          }];
+                                if ( error ) {
+                                  [self HUDChangeNo];
+                                } else {
+                                  [self HUDChangeYes];
+                                }
                               }];
 }
 
 - (void)deleteButtonClicked:(id)sender
 {
-  [MBProgressHUD presentProgressHUD:self.view
-                               info:nil
-                            offsetY:0.0];
+  [self HUDStart];
 
   NSString *jid = [_contact objectForKey:@"jid"];
 
   [[ABEngine sharedObject] removeContact:jid
                               completion:^(id result, NSError *error) {
-                                [MBProgressHUD dismissHUD:self.view
-                                              immediately:NO
-                                          completionBlock:^{
-                                            [self.navigationController popViewControllerAnimated:YES];
-                                          }];
+                                if ( error ) {
+                                  [self HUDDeleteNo];
+                                } else {
+                                  [self HUDDeleteYes];
+                                }
                               }];
+}
+
+
+- (void)HUDStart
+{
+  [MBProgressHUD presentProgressHUD:self.view
+                               info:nil
+                            offsetY:0.0];
+}
+
+- (void)HUDChangeYes
+{
+  [MBProgressHUD dismissHUD:self.view
+                immediately:NO
+            completionBlock:NULL];
+}
+
+- (void)HUDChangeNo
+{
+  [MBProgressHUD presentTextHUD:self.view
+                           info:NSLocalizedString(@"Change failed", @"")
+                        offsetY:0.0
+                completionBlock:NULL];
+}
+
+- (void)HUDDeleteYes
+{
+  [MBProgressHUD dismissHUD:self.view
+                immediately:NO
+            completionBlock:^{
+              [self.navigationController popViewControllerAnimated:YES];
+            }];
+}
+
+- (void)HUDDeleteNo
+{
+  [MBProgressHUD presentTextHUD:self.view
+                           info:NSLocalizedString(@"Delete failed", @"")
+                        offsetY:0.0
+                completionBlock:NULL];
 }
 
 @end

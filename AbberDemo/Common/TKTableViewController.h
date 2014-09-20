@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "TKViewController.h"
-#import "General/TKTableView.h"
+#import "TKTableView.h"
 
 @interface TKTableViewController : TKViewController<
     UITableViewDataSource,

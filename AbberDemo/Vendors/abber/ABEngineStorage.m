@@ -144,6 +144,13 @@
   }];
 }
 
+- (void)clearAllPresence
+{
+  [_databaseQueue inDatabase:^(FMDatabase *db) {
+    [db executeUpdate:@"UPDATE contact SET status=?;", @(ABPresenceTypeUnavailable)];
+  }];
+}
+
 
 
 - (void)saveVcard:(NSDictionary *)vcard

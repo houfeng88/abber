@@ -39,20 +39,19 @@
   if ( indexPath.row==0 ) {
     cell.titleLabel.text = NSLocalizedString(@"Account:", @"");
     cell.valueField.text = [[TKSettings sharedObject] objectForKey:@"ABSavedAccountKey"];
-    cell.valueField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     cell.valueField.returnKeyType = UIReturnKeyNext;
     cell.valueField.maxLength = 20;
     _accountField = cell.valueField;
   } else if ( indexPath.row==1 ) {
     cell.titleLabel.text = NSLocalizedString(@"Password:", @"");
     cell.valueField.text = [[TKSettings sharedObject] objectForKey:@"ABSavedPasswordKey"];
-    cell.valueField.secureTextEntry = YES;
     cell.valueField.returnKeyType = UIReturnKeyDone;
+    cell.valueField.secureTextEntry = YES;
     cell.valueField.maxLength = 20;
     _passwordField = cell.valueField;
   }
-  _accountField.nextField = _passwordField;
-  _passwordField.nextField = nil;
+  [(TKTextField *)_accountField setNextField:_passwordField];
+  [(TKTextField *)_passwordField setNextField:nil];
   return cell;
 }
 
@@ -126,11 +125,22 @@
   [[TKSettings sharedObject] synchronize];
   
   
-  ABEngine *engine = [[ABEngine alloc] init];
+  ABEngine *engine = [ABEngine sharedObject];
+  [engine removeAllObservers];
+  
+  engine = [[ABEngine alloc] init];
   [ABEngine saveObject:engine];
   
   [engine addObserver:self];
-  [engine addObserver:self.parentViewController];
+  
+  UITabBarController *main = (UITabBarController *)(self.parentViewController);
+  [engine addObserver:main];
+  for ( UINavigationController *vc in main.viewControllers ) {
+    if ( [vc isKindOfClass:[UINavigationController class]] ) {
+      [engine addObserver:[vc.viewControllers firstObject]];
+    }
+  }
+  
   [engine prepare];
   [engine connectWithAccount:acnt password:pswd];
   [engine addRosterPushHandler];
@@ -142,9 +152,7 @@
 
 - (void)engineDidStartConnecting:(ABEngine *)engine
 {
-  [MBProgressHUD presentProgressHUD:self.view
-                               info:nil
-                            offsetY:0.0];
+  [self HUDStart];
 }
 
 - (void)engine:(ABEngine *)engine didReceiveConnectStatus:(BOOL)status
@@ -154,34 +162,47 @@
     [[ABEngine sharedObject] requestRosterWithCompletion:^(id result, NSError *error) {
       
       if ( error ) {
-        [MBProgressHUD presentTextHUD:self.view
-                                 info:NSLocalizedString(@"Sign in failed", @"")
-                              offsetY:0.0
-                      completionBlock:NULL];
+        [self HUDConnectNo];
+        
         [engine disconnect];
       } else {
         [[ABEngine sharedObject] removeObserver:self];
-        
+        [[ABEngine sharedObject] clearAllPresence];
         [[ABEngine sharedObject] updatePresence:ABPresenceTypeAvailable];
         
-        [MBProgressHUD dismissHUD:self.view
-                      immediately:NO
-                  completionBlock:^{
-                    [self.parentViewController dismissChildViewController:self];
-                  }];
+        [self HUDConnectYes];
       }
     
     }];
     
   } else {
-    [MBProgressHUD presentTextHUD:self.view
-                             info:NSLocalizedString(@"Sign in failed", @"")
-                          offsetY:0.0
-                  completionBlock:NULL];
+    [self HUDConnectNo];
   }
 }
 
 - (void)engineDidDisconnected:(ABEngine *)engine
+{
+  [self HUDConnectNo];
+}
+
+
+- (void)HUDStart
+{
+  [MBProgressHUD presentProgressHUD:self.view
+                               info:nil
+                            offsetY:0.0];
+}
+
+- (void)HUDConnectYes
+{
+  [MBProgressHUD dismissHUD:self.view
+                immediately:NO
+            completionBlock:^{
+              [self.parentViewController dismissChildViewController:self];
+            }];
+}
+
+- (void)HUDConnectNo
 {
   [MBProgressHUD presentTextHUD:self.view
                            info:NSLocalizedString(@"Sign in failed", @"")

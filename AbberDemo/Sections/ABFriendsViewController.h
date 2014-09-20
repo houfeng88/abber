@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <abber/abber.h>
 
 @interface ABFriendsViewController : TKTableViewController {
   NSArray *_contactAry;

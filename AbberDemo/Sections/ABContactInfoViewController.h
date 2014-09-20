@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <abber/abber.h>
 
 @interface ABContactInfoViewController : TKTableViewController {
   NSDictionary *_contact;
