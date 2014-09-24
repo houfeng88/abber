@@ -20,7 +20,7 @@
 @protocol ABEngineVcardDelegate <NSObject>
 @optional
 
-- (void)engine:(ABEngine *)engine didReceiveVcard:(NSDictionary *)vcard error:(NSError *)error;
+- (void)engine:(ABEngine *)engine didReceiveVcard:(ABContact *)contact error:(NSError *)error;
 - (void)engine:(ABEngine *)engine didCompleteUpdateVcard:(NSString *)jid error:(NSError *)error;
 
 @end

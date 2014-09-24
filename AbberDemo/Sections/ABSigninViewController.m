@@ -167,7 +167,7 @@
         [engine disconnect];
       } else {
         [[ABEngine sharedObject] removeObserver:self];
-        [[ABEngine sharedObject] clearAllPresence];
+        //[[ABEngine sharedObject] clearAllPresence];
         [[ABEngine sharedObject] updatePresence:ABPresenceTypeAvailable];
         
         [self HUDConnectYes];

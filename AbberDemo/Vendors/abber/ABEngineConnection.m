@@ -73,7 +73,7 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
   if ( status==XMPP_CONN_CONNECT ) {
     
     DDLogCDebug(@"[conn] Handler: connected.");
-    [engine configAccount:[engine bareJid]];
+    TKCreateDirectory(TKPathForDocumentResource([engine bareJid]));
     [engine didReceiveConnectStatus:YES];
     
   } else if ( status==XMPP_CONN_FAIL ) {
@@ -108,19 +108,6 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
     [self cleanup];
   } else {
     [self didReceiveConnectStatus:NO];
-  }
-}
-
-
-- (void)configAccount:(NSString *)acnt
-{
-  if ( TKSNonempty(acnt) ) {
-    
-    NSString *path = TKPathForDocumentResource(acnt);
-    TKCreateDirectory(path);
-    
-    
-    [self createDatabaseQueue:[path stringByAppendingPathComponent:@"im.db"]];
   }
 }
 

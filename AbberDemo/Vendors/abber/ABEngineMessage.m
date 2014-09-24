@@ -8,8 +8,6 @@
 
 #import "ABEngineMessage.h"
 
-#import <GTMBase64/GTMBase64.h>
-
 @interface ABEngine (IncomeMessageNotify)
 
 - (void)didReceiveMessage:(id)msg type:(NSString *)type jid:(NSString *)jid;
@@ -51,11 +49,13 @@ int ABMessageHandler(xmpp_conn_t * const conn,
     NSString *cbody = ABStanzaGetText(body);
     
     if ( [@"audio" isEqualToString:ctype] ) {
-      NSData *audio = [GTMBase64 decodeString:cbody];
+      NSData *audio = [[NSData alloc] initWithBase64EncodedString:cbody options:0];
       [engine didReceiveMessage:audio type:@"audio" jid:jid];
     } else if ( [@"image" isEqualToString:ctype] ) {
-      NSData *image = [GTMBase64 decodeString:cbody];
+      NSData *image = [[NSData alloc] initWithBase64EncodedString:cbody options:0];
       [engine didReceiveMessage:image type:@"image" jid:jid];
+    } else if ( [@"nudge" isEqualToString:ctype] ) {
+      [engine didReceiveMessage:nil type:@"nudge" jid:jid];
     } else {
       [engine didReceiveMessage:cbody type:@"text" jid:jid];
     }
@@ -131,7 +131,7 @@ int ABMessageHandler(xmpp_conn_t * const conn,
       ABStanzaSetAttribute(message, @"to", jid);
       
       NSString *ctype = @"audio";
-      NSString *cbody = [GTMBase64 stringByEncodingData:audio];
+      NSString *cbody = [audio base64EncodedStringWithOptions:0];
       
       xmpp_stanza_t *body = ABStanzaCreate(_connection->ctx, @"body", cbody);
       ABStanzaSetAttribute(body, @"type", ctype);
@@ -162,9 +162,39 @@ int ABMessageHandler(xmpp_conn_t * const conn,
       ABStanzaSetAttribute(message, @"to", jid);
       
       NSString *ctype = @"image";
-      NSString *cbody = [GTMBase64 stringByEncodingData:image];
+      NSString *cbody = [image base64EncodedStringWithOptions:0];
       
       xmpp_stanza_t *body = ABStanzaCreate(_connection->ctx, @"body", cbody);
+      ABStanzaSetAttribute(body, @"type", ctype);
+      ABStanzaAddChild(message, body);
+      
+      [self sendData:ABStanzaToData(message)];
+    }
+    
+    return YES;
+  }
+  return NO;
+}
+
+- (BOOL)sendNudge:(NSString *)jid
+{
+//  <message id='b4vs9km4'
+//           to='romeo@example.net'
+//           type='chat'>
+//    <body>Wherefore art thou, Romeo?</body>
+//  </message>
+  if ( [self isConnected] ) {
+    if ( TKSNonempty(jid) ) {
+      NSString *identifier = [[NSUUID UUID] UUIDString];
+      
+      xmpp_stanza_t *message = ABStanzaCreate(_connection->ctx, @"message", nil);
+      ABStanzaSetAttribute(message, @"id", identifier);
+      ABStanzaSetAttribute(message, @"type", @"chat");
+      ABStanzaSetAttribute(message, @"to", jid);
+      
+      NSString *ctype = @"nudge";
+      
+      xmpp_stanza_t *body = ABStanzaCreate(_connection->ctx, @"body", nil);
       ABStanzaSetAttribute(body, @"type", ctype);
       ABStanzaAddChild(message, body);
       

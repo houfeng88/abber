@@ -11,22 +11,17 @@
 
 @interface ABEngine (Storage)
 
-- (FMDatabaseQueue *)databaseQueue;
-- (void)createDatabaseQueue:(NSString *)path;
-
-
 // contact
 - (NSArray *)contacts;
-- (NSDictionary *)contactByJid:(NSString *)jid;
+- (ABContact *)contactByJid:(NSString *)jid;
 
+- (void)saveContact:(ABContact *)contact;
 - (void)saveRoster:(NSArray *)roster;
-- (void)saveContact:(NSDictionary *)contact;
-- (void)deleteContact:(NSDictionary *)contact;
 
-- (void)savePresence:(int)presence contact:(NSString *)jid;
-- (void)clearAllPresence;
+- (void)deleteContactByJid:(NSString *)jid;
 
-- (void)saveVcard:(NSDictionary *)vcard;
+- (void)loadContacts;
+- (void)syncContacts;
 
 
 // session

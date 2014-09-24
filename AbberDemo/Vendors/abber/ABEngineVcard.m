@@ -12,25 +12,25 @@
 
 @interface ABEngine (VcardNotify)
 
-- (void)didReceiveVcard:(NSDictionary *)vcard error:(NSError *)error completion:(ABEngineCompletionHandler)completion;
+- (void)didReceiveVcard:(ABContact *)vcard error:(NSError *)error completion:(ABEngineCompletionHandler)completion;
 - (void)didCompleteUpdateVcard:(NSString *)jid error:(NSError *)error completion:(ABEngineCompletionHandler)completion;
 
 @end
 
 @implementation ABEngine (VcardNotify)
 
-- (void)didReceiveVcard:(NSDictionary *)vcard error:(NSError *)error completion:(ABEngineCompletionHandler)completion
+- (void)didReceiveVcard:(ABContact *)contact error:(NSError *)error completion:(ABEngineCompletionHandler)completion
 {
   dispatch_sync(dispatch_get_main_queue(), ^{
     NSArray *observerAry = [self observers];
     for ( NSUInteger i=0; i<[observerAry count]; ++i ) {
       id<ABEngineVcardDelegate> delegate = [observerAry objectAtIndex:i];
       if ( [delegate respondsToSelector:@selector(engine:didReceiveVcard:error:)] ) {
-        [delegate engine:self didReceiveVcard:vcard error:error];
+        [delegate engine:self didReceiveVcard:contact error:error];
       }
     }
     if ( completion ) {
-      completion(vcard, error);
+      completion(contact, error);
     }
   });
 }
@@ -63,21 +63,23 @@ int ABVcardRequestHandler(xmpp_conn_t * const conn,
   ABEngineCompletionHandler completion = (__bridge id)ABHandlexGetObject(userdata, @"completion");
   
   
-  NSMutableDictionary *vcard = [[NSMutableDictionary alloc] init];
+  ABContact *vcard = nil;
   NSError *error = nil;
   
   xmpp_stanza_t *vCard = ABStanzaChildByName(stanza, @"vCard");
   
   NSString *jid = ABStanzaGetAttribute(stanza, @"from");
-  [vcard setObject:TKStrOrLater(jid, [engine bareJid]) forKey:@"jid"];
+  vcard = [engine contactByJid:TKStrOrLater(jid, [engine bareJid])];
+  if ( !vcard ) {
+    vcard = [[ABContact alloc] init];
+  }
   
   xmpp_stanza_t *nickname = ABStanzaChildByName(vCard, @"NICKNAME");
-  [vcard setObject:ABStanzaGetText(nickname) forKeyIfNotNil:@"nickname"];
+  vcard.nickname = ABStanzaGetText(nickname);
   
   xmpp_stanza_t *desc = ABStanzaChildByName(vCard, @"DESC");
-  [vcard setObject:ABStanzaGetText(desc) forKeyIfNotNil:@"desc"];
+  vcard.desc = ABStanzaGetText(desc);
   
-  [engine saveVcard:vcard];
   [engine didReceiveVcard:vcard error:error completion:completion];
   
   

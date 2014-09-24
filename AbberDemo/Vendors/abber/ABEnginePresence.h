@@ -27,14 +27,14 @@ typedef enum {
 
 @interface ABEngine (Presence)
 
-- (BOOL)updatePresence:(int)type;
+- (BOOL)updatePresence:(NSInteger)type;
 
 - (BOOL)subscribeContact:(NSString *)jid;
 - (BOOL)subscribedContact:(NSString *)jid;
 - (BOOL)unsubscribeContact:(NSString *)jid;
 - (BOOL)unsubscribedContact:(NSString *)jid;
 
-- (NSString *)statusString:(int)presence;
+- (NSString *)statusString:(NSInteger)presence;
 
 @end
 
@@ -44,6 +44,6 @@ typedef enum {
 
 - (void)engine:(ABEngine *)engine didReceiveFriendRequest:(NSString *)jid;
 
-- (void)engine:(ABEngine *)engine didReceivePresence:(int)presence contact:(NSString *)jid;
+- (void)engine:(ABEngine *)engine didReceivePresence:(NSInteger)presence contact:(NSString *)jid;
 
 @end

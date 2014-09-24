@@ -16,7 +16,7 @@
 
 - (void)didReceiveFriendRequest:(NSString *)jid;
 
-- (void)didReceivePresence:(int)presence contact:(NSString *)jid;
+- (void)didReceivePresence:(NSInteger)presence contact:(NSString *)jid;
 
 @end
 
@@ -36,7 +36,7 @@
 }
 
 
-- (void)didReceivePresence:(int)presence contact:(NSString *)jid
+- (void)didReceivePresence:(NSInteger)presence contact:(NSString *)jid
 {
   dispatch_sync(dispatch_get_main_queue(), ^{
     NSArray *observerAry = [self observers];
@@ -68,8 +68,8 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
     } else if ( [@"probe" isEqualToString:type] ) {
       
     } else if ( [@"subscribe" isEqualToString:type] ) {
-      NSDictionary *contact = [engine contactByJid:jid];
-      if ( (contact) && ([[contact objectForKey:@"relation"] intValue]==ABSubscriptionTypeTo) ) {
+      ABContact *contact = [engine contactByJid:jid];
+      if ( (contact) && (contact.relation==ABSubscriptionTypeTo) ) {
         [engine subscribedContact:jid];
       } else {
         [engine didReceiveFriendRequest:jid];
@@ -77,7 +77,8 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
     } else if ( [@"subscribed" isEqualToString:type] ) {
       
     } else if ( [@"unavailable" isEqualToString:type] ) {
-      [engine savePresence:ABPresenceTypeUnavailable contact:jid];
+      ABContact *contact = [engine contactByJid:jid];
+      contact.status = ABPresenceTypeUnavailable;
       [engine didReceivePresence:ABPresenceTypeUnavailable contact:jid];
     } else if ( [@"unsubscribe" isEqualToString:type] ) {
       
@@ -86,19 +87,24 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
     } else {
       NSString *show = ABStanzaGetText(ABStanzaChildByName(stanza, @"show"));
       if ( [@"chat" isEqualToString:show] ) {
-        [engine savePresence:ABPresenceTypeChat contact:jid];
+        ABContact *contact = [engine contactByJid:jid];
+        contact.status = ABPresenceTypeChat;
         [engine didReceivePresence:ABPresenceTypeChat contact:jid];
       } else if ( [@"away" isEqualToString:show] ) {
-        [engine savePresence:ABPresenceTypeAway contact:jid];
+        ABContact *contact = [engine contactByJid:jid];
+        contact.status = ABPresenceTypeAway;
         [engine didReceivePresence:ABPresenceTypeAway contact:jid];
       } else if ( [@"dnd" isEqualToString:show] ) {
-        [engine savePresence:ABPresenceTypeDND contact:jid];
+        ABContact *contact = [engine contactByJid:jid];
+        contact.status = ABPresenceTypeDND;
         [engine didReceivePresence:ABPresenceTypeDND contact:jid];
       } else if ( [@"xa" isEqualToString:show] ) {
-        [engine savePresence:ABPresenceTypeXA contact:jid];
+        ABContact *contact = [engine contactByJid:jid];
+        contact.status = ABPresenceTypeXA;
         [engine didReceivePresence:ABPresenceTypeXA contact:jid];
       } else {
-        [engine savePresence:ABPresenceTypeAvailable contact:jid];
+        ABContact *contact = [engine contactByJid:jid];
+        contact.status = ABPresenceTypeAvailable;
         [engine didReceivePresence:ABPresenceTypeAvailable contact:jid];
       }
     }

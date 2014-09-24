@@ -13,8 +13,6 @@
 
 - (void)connectAndRun;
 
-- (void)configAccount:(NSString *)acnt;
-
 @end
 
 

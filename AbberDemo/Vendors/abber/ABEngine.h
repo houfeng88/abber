@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <FMDB/FMDB.h>
 #import "ABCommon.h"
+#import "ABContact.h"
 
 typedef void (^ABEngineCompletionHandler)(id result, NSError *error);
 
@@ -24,9 +25,12 @@ typedef enum {
 > {
   xmpp_conn_t *_connection;
   
-  FMDatabaseQueue *_databaseQueue;
+  NSMutableArray *_contactAry;
   
   NSMutableArray *_observerAry;
+  
+  
+  FMDatabaseQueue *_databaseQueue;
 }
 
 + (void)saveObject:(ABEngine *)object;

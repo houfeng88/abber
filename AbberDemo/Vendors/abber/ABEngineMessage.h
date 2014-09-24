@@ -21,6 +21,7 @@
 - (BOOL)sendText:(NSString *)text jid:(NSString *)jid;
 - (BOOL)sendAudio:(NSData *)audio jid:(NSString *)jid;
 - (BOOL)sendImage:(NSData *)image jid:(NSString *)jid;
+- (BOOL)sendNudge:(NSString *)jid;
 
 @end
 
