@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <FMDB/FMDB.h>
 #import "ABCommon.h"
 #import "ABContact.h"
 
@@ -27,10 +26,8 @@ typedef enum {
   
   NSMutableArray *_contactAry;
   
+  
   NSMutableArray *_observerAry;
-  
-  
-  FMDatabaseQueue *_databaseQueue;
 }
 
 + (void)saveObject:(ABEngine *)object;

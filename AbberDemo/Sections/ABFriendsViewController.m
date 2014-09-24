@@ -101,21 +101,15 @@
   
   cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
   
-  NSDictionary *contact = [_contactAry objectAtIndex:indexPath.row];
-  NSString *jid = [contact objectForKey:@"jid"];
-  NSNumber *status = [contact objectForKey:@"status"];
-  NSString *memoname = [contact objectForKey:@"memoname"];
-  //NSNumber *relation = [contact objectForKey:@"relation"];
-  NSString *nickname = [contact objectForKey:@"nickname"];
-  NSString *desc = [contact objectForKey:@"desc"];
+  ABContact *contact = [_contactAry objectAtIndex:indexPath.row];
   
   
-  NSString *name = TKStrOrLater(memoname, nickname);
+  NSString *name = TKStrOrLater(contact.memoname, contact.nickname);
   
   //cell.avatarView.image = nil;
-  cell.nicknameLabel.text = TKStrOrLater(name, jid);
-  cell.statusLabel.text = [[ABEngine sharedObject] statusString:[status intValue]];
-  cell.descLabel.text = desc;
+  cell.nicknameLabel.text = TKStrOrLater(name, contact.jid);
+  cell.statusLabel.text = [[ABEngine sharedObject] statusString:contact.status];
+  cell.descLabel.text = contact.desc;
   
   return cell;
 }

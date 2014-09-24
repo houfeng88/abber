@@ -159,6 +159,8 @@
 {
   if ( status ) {
     
+    [[ABEngine sharedObject] loadContacts];
+    
     [[ABEngine sharedObject] requestRosterWithCompletion:^(id result, NSError *error) {
       
       if ( error ) {
@@ -167,7 +169,6 @@
         [engine disconnect];
       } else {
         [[ABEngine sharedObject] removeObserver:self];
-        //[[ABEngine sharedObject] clearAllPresence];
         [[ABEngine sharedObject] updatePresence:ABPresenceTypeAvailable];
         
         [self HUDConnectYes];

@@ -9,8 +9,6 @@
 #import "ABEngineConnection.h"
 #import "ABConfig.h"
 
-#import "ABEngineStorage.h"
-
 @interface ABEngine (ConnectionNotify)
 
 - (void)didStartConnecting;
@@ -73,7 +71,8 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
   if ( status==XMPP_CONN_CONNECT ) {
     
     DDLogCDebug(@"[conn] Handler: connected.");
-    TKCreateDirectory(TKPathForDocumentResource([engine bareJid]));
+    NSString *root = TKPathForDocumentResource([engine bareJid]);
+    TKCreateDirectory(root);
     [engine didReceiveConnectStatus:YES];
     
   } else if ( status==XMPP_CONN_FAIL ) {

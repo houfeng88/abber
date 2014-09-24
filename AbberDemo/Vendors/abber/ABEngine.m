@@ -97,9 +97,6 @@ static ABEngine *Engine = nil;
     }
   }
   
-  [_databaseQueue close];
-  _databaseQueue = nil;
-  
   xmpp_shutdown();
 }
 
