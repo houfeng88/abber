@@ -7,15 +7,9 @@
 //
 
 #import "ABMainViewController.h"
-
-#import "ABChatsViewController.h"
-#import "ABFriendsViewController.h"
-#import "ABFindViewController.h"
-#import "ABMoreViewController.h"
+#import "Common/TKAlertView.h"
 
 #import "ABSigninViewController.h"
-
-#import "Common/TKAlertView.h"
 
 @implementation ABMainViewController
 
@@ -23,20 +17,20 @@
 {
   [super viewDidLoad];
   
-  ABChatsViewController *chats = [[ABChatsViewController alloc] init];
-  UINavigationController *chatsNC = [[UINavigationController alloc] initWithRootViewController:chats];
+  _chatsVC = [[ABChatsViewController alloc] init];
+  UINavigationController *chatsNC = [[UINavigationController alloc] initWithRootViewController:_chatsVC];
   chatsNC.navigationBarHidden = YES;
   
-  ABFriendsViewController *friends = [[ABFriendsViewController alloc] init];
-  UINavigationController *friendsNC = [[UINavigationController alloc] initWithRootViewController:friends];
+  _friendsVC = [[ABFriendsViewController alloc] init];
+  UINavigationController *friendsNC = [[UINavigationController alloc] initWithRootViewController:_friendsVC];
   friendsNC.navigationBarHidden = YES;
   
-  ABFindViewController *find = [[ABFindViewController alloc] init];
-  UINavigationController *findNC = [[UINavigationController alloc] initWithRootViewController:find];
+  _findVC = [[ABFindViewController alloc] init];
+  UINavigationController *findNC = [[UINavigationController alloc] initWithRootViewController:_findVC];
   findNC.navigationBarHidden = YES;
   
-  ABMoreViewController *more = [[ABMoreViewController alloc] init];
-  UINavigationController *moreNC = [[UINavigationController alloc] initWithRootViewController:more];
+  _moreVC = [[ABMoreViewController alloc] init];
+  UINavigationController *moreNC = [[UINavigationController alloc] initWithRootViewController:_moreVC];
   moreNC.navigationBarHidden = YES;
   
   [self setViewControllers:@[ chatsNC, friendsNC, findNC, moreNC ] animated:NO];
@@ -66,6 +60,14 @@
   ABSigninViewController *signin = [[ABSigninViewController alloc] init];
   [self presentChildViewController:signin inView:self.view];
   signin.view.frame = self.view.bounds;
+}
+
+- (void)configEngine
+{
+  [[ABEngine sharedObject] addObserver:_chatsVC];
+  [[ABEngine sharedObject] addObserver:_friendsVC];
+  [[ABEngine sharedObject] addObserver:_findVC];
+  [[ABEngine sharedObject] addObserver:_moreVC];
 }
 
 

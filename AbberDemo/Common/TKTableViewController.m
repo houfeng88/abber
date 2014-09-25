@@ -10,11 +10,28 @@
 
 @implementation TKTableViewController
 
+- (id)init
+{
+  self = [super init];
+  if (self) {
+    _tableView = [[TKTableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+  }
+  return self;
+}
+
+- (id)initWithStyle:(UITableViewStyle)style
+{
+  self = [super init];
+  if (self) {
+    _tableView = [[TKTableView alloc] initWithFrame:CGRectZero style:style];
+  }
+  return self;
+}
+
 - (void)viewDidLoad
 {
   [super viewDidLoad];
   
-  _tableView = [[TKTableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
   _tableView.delegate = self;
   _tableView.dataSource = self;
   [_contentView addSubview:_tableView];
@@ -30,7 +47,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-  return 0;
+  return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

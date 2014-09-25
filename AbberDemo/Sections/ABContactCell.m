@@ -22,17 +22,31 @@
     _avatarView.image = TKCreateImage(@"default_avatar.png");
     [self.contentView addSubview:_avatarView];
     
-    _nicknameLabel = [UILabel singleLineLabelWithFont:[UIFont systemFontOfSize:14.0]
-                                            textColor:[UIColor blackColor]];
+    
+    _nicknameLabel = [UILabel labelWithFont:[UIFont systemFontOfSize:14.0]
+                                  textColor:[UIColor blackColor]
+                              textAlignment:NSTextAlignmentLeft
+                              lineBreakMode:NSLineBreakByTruncatingTail
+                              numberOfLines:1
+                            backgroundColor:[UIColor clearColor]];
     [self.contentView addSubview:_nicknameLabel];
     
-    _statusLabel = [UILabel singleLineLabelWithFont:[UIFont systemFontOfSize:10.0]
-                                          textColor:[UIColor darkGrayColor]];
+    _statusLabel = [UILabel labelWithFont:[UIFont systemFontOfSize:10.0]
+                                textColor:[UIColor darkGrayColor]
+                            textAlignment:NSTextAlignmentLeft
+                            lineBreakMode:NSLineBreakByTruncatingTail
+                            numberOfLines:1
+                          backgroundColor:[UIColor clearColor]];
     [self.contentView addSubview:_statusLabel];
     
-    _descLabel = [UILabel singleLineLabelWithFont:[UIFont systemFontOfSize:10.0]
-                                        textColor:[UIColor darkGrayColor]];
+    _descLabel = [UILabel labelWithFont:[UIFont systemFontOfSize:10.0]
+                              textColor:[UIColor darkGrayColor]
+                          textAlignment:NSTextAlignmentLeft
+                          lineBreakMode:NSLineBreakByTruncatingTail
+                          numberOfLines:1
+                        backgroundColor:[UIColor clearColor]];
     [self.contentView addSubview:_descLabel];
+    
   }
   return self;
 }
@@ -43,12 +57,16 @@
   
   _avatarView.frame = CGRectMake(10.0, 5.0, 40.0, 40.0);
   
+  
+  [_nicknameLabel sizeToFit];
   _nicknameLabel.frame = CGRectMake(_avatarView.rightX+5.0, 2.0,
                                     self.contentView.width-(_avatarView.rightX+5.0)-10.0, 25.0);
   
   [_statusLabel sizeToFit];
   _statusLabel.frame = CGRectMake(_nicknameLabel.leftX, _nicknameLabel.bottomY,
                                   _statusLabel.width, 15.0);
+  
+  [_descLabel sizeToFit];
   _descLabel.frame = CGRectMake(_statusLabel.rightX+5.0, _nicknameLabel.bottomY,
                                 _nicknameLabel.width-(_statusLabel.width+5.0), 15.0);
 }

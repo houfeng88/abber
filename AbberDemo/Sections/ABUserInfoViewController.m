@@ -10,4 +10,22 @@
 
 @implementation ABUserInfoViewController
 
+- (id)init
+{
+  self = [super initWithStyle:UITableViewStyleGrouped];
+  if (self) {
+    self.hidesBottomBarWhenPushed = YES;
+  }
+  return self;
+}
+
+- (void)viewDidLoad
+{
+  [super viewDidLoad];
+  [_navigationView showBackButton];
+  _navigationView.titleLabel.text = NSLocalizedString(@"Info", @"");
+  [_navigationView showRightButton];
+  _navigationView.rightButton.normalTitle = NSLocalizedString(@"Done", @"");
+}
+
 @end

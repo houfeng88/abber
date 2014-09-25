@@ -18,11 +18,9 @@
 - (void)viewDidLoad
 {
   [super viewDidLoad];
-  
   _navigationView.titleLabel.text = NSLocalizedString(@"Friends", @"");
   [_navigationView showRightButton];
   _navigationView.rightButton.normalTitle = NSLocalizedString(@"Add", @"");
-  
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -85,11 +83,6 @@
 
 
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-  return 1;
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
   return [_contactAry count];
@@ -99,17 +92,21 @@
 {
   ABContactCell *cell = (ABContactCell *)[tableView dequeueReusableCellWithClass:[ABContactCell class]];
   
-  cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
   
   ABContact *contact = [_contactAry objectAtIndex:indexPath.row];
   
   
-  NSString *name = TKStrOrLater(contact.memoname, contact.nickname);
-  
   //cell.avatarView.image = nil;
+  
+  NSString *name = TKStrOrLater(contact.memoname, contact.nickname);
   cell.nicknameLabel.text = TKStrOrLater(name, contact.jid);
-  cell.statusLabel.text = [[ABEngine sharedObject] statusString:contact.status];
+  
+  cell.statusLabel.text = contact.status;
+  
   cell.descLabel.text = contact.desc;
+  
+  
+  cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
   
   return cell;
 }
@@ -119,22 +116,15 @@
   return [ABContactCell heightForTableView:tableView object:nil];
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-  if ( indexPath.row==0 ) {
-    [[ABEngine sharedObject] sendText:@"ABCD" jid:@"tkbill@blah.im"];
-  } else if ( indexPath.row==1 ) {
-    NSString *path = TKPathForBundleResource(nil, @"btn_brown.png");
-    NSData *data = [[NSData alloc] initWithContentsOfFile:path];
-    [[ABEngine sharedObject] sendImage:data jid:@"tkbill@blah.im"];
-  }
-}
-
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
-  NSDictionary *contact = [_contactAry objectAtIndex:indexPath.row];
+  ABContact *contact = [_contactAry objectAtIndex:indexPath.row];
   ABContactInfoViewController *vc = [[ABContactInfoViewController alloc] initWithContact:contact];
   [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
 }
 
 @end

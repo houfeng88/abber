@@ -17,4 +17,6 @@
   TKTableView *_tableView;
 }
 
+- (id)initWithStyle:(UITableViewStyle)style;
+
 @end

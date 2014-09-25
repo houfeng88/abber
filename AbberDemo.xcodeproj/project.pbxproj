@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A00C77019D462BD00801B4D /* ABInputCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A00C76F19D462BD00801B4D /* ABInputCell.m */; };
 		0A0FF7B819C560A7000EFC44 /* ABEngineMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0FF7B719C560A7000EFC44 /* ABEngineMessage.m */; };
 		0A205D1219C3DA3600ED4EED /* ABMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A205D1019C3DA3600ED4EED /* ABMainViewController.m */; };
 		0A205D2A19C3F37D00ED4EED /* ABEngineStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A205D2919C3F37D00ED4EED /* ABEngineStorage.m */; };
@@ -17,7 +18,6 @@
 		0A2865D219B8E7B800F20312 /* ABInfoInputCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A2865D119B8E7B800F20312 /* ABInfoInputCell.m */; };
 		0A2865D519B8E7CA00F20312 /* ABInfoStaticCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A2865D419B8E7CA00F20312 /* ABInfoStaticCell.m */; };
 		0A2865DB19B8F13200F20312 /* ABUserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A2865DA19B8F13200F20312 /* ABUserInfoViewController.m */; };
-		0A31925519B968C500DDA368 /* ABInputCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A31925419B968C500DDA368 /* ABInputCell.m */; };
 		0A57476819D2E2A30000AFDF /* ABContact.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A57476719D2E2A30000AFDF /* ABContact.m */; };
 		0A5BAE701991382E001EF07E /* ABEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5BAE6F1991382E001EF07E /* ABEngine.m */; };
 		0A6E5506199F7A6A004BD577 /* ABChatsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6E5505199F7A6A004BD577 /* ABChatsViewController.m */; };
@@ -96,6 +96,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A00C76E19D462BD00801B4D /* ABInputCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABInputCell.h; sourceTree = "<group>"; };
+		0A00C76F19D462BD00801B4D /* ABInputCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABInputCell.m; sourceTree = "<group>"; };
 		0A0FF7B619C560A7000EFC44 /* ABEngineMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEngineMessage.h; sourceTree = "<group>"; };
 		0A0FF7B719C560A7000EFC44 /* ABEngineMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABEngineMessage.m; sourceTree = "<group>"; };
 		0A205D0F19C3DA3600ED4EED /* ABMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABMainViewController.h; sourceTree = "<group>"; };
@@ -116,8 +118,6 @@
 		0A2865D419B8E7CA00F20312 /* ABInfoStaticCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABInfoStaticCell.m; sourceTree = "<group>"; };
 		0A2865D919B8F13200F20312 /* ABUserInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABUserInfoViewController.h; sourceTree = "<group>"; };
 		0A2865DA19B8F13200F20312 /* ABUserInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABUserInfoViewController.m; sourceTree = "<group>"; };
-		0A31925319B968C500DDA368 /* ABInputCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABInputCell.h; sourceTree = "<group>"; };
-		0A31925419B968C500DDA368 /* ABInputCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABInputCell.m; sourceTree = "<group>"; };
 		0A57476619D2E2A30000AFDF /* ABContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABContact.h; sourceTree = "<group>"; };
 		0A57476719D2E2A30000AFDF /* ABContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABContact.m; sourceTree = "<group>"; };
 		0A5BAE6E1991382E001EF07E /* ABEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEngine.h; sourceTree = "<group>"; };
@@ -330,11 +330,11 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0A31925619B968D200DDA368 /* Common */ = {
+		0A31925619B968D200DDA368 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				0A31925319B968C500DDA368 /* ABInputCell.h */,
-				0A31925419B968C500DDA368 /* ABInputCell.m */,
+				0A00C76E19D462BD00801B4D /* ABInputCell.h */,
+				0A00C76F19D462BD00801B4D /* ABInputCell.m */,
 				0A2865D019B8E7B800F20312 /* ABInfoInputCell.h */,
 				0A2865D119B8E7B800F20312 /* ABInfoInputCell.m */,
 				0A2865D319B8E7CA00F20312 /* ABInfoStaticCell.h */,
@@ -342,7 +342,7 @@
 				23CB415919A1EF2A0024120D /* ABContactCell.h */,
 				23CB415A19A1EF2A0024120D /* ABContactCell.m */,
 			);
-			name = Common;
+			name = Cells;
 			sourceTree = "<group>";
 		};
 		0A6E54FD199F4A65004BD577 /* Signin */ = {
@@ -495,13 +495,13 @@
 		23C4BC72199DD1C8006E796C /* Sections */ = {
 			isa = PBXGroup;
 			children = (
-				0A6E5510199F7B30004BD577 /* Main */,
 				0A6E54FD199F4A65004BD577 /* Signin */,
+				0A6E5510199F7B30004BD577 /* Main */,
 				0A6E5511199F7B36004BD577 /* Chats */,
 				0A6E5512199F7B3C004BD577 /* Friends */,
 				0A6E5513199F7B43004BD577 /* Find */,
 				0A6E5514199F7B47004BD577 /* More */,
-				0A31925619B968D200DDA368 /* Common */,
+				0A31925619B968D200DDA368 /* Cells */,
 			);
 			path = Sections;
 			sourceTree = "<group>";
@@ -919,7 +919,6 @@
 				23F6C1CA1990A993005D2ED7 /* event.c in Sources */,
 				23F6C1D71990A993005D2ED7 /* thread.c in Sources */,
 				23C4BC84199DD1EF006E796C /* main.m in Sources */,
-				0A31925519B968C500DDA368 /* ABInputCell.m in Sources */,
 				0A9594E219A6316F007297B0 /* ABAddContactViewController.m in Sources */,
 				23C547281994B4B300B4C0F7 /* ABCommon.m in Sources */,
 				0A78E5F619CD256C004A7D6C /* TKTextField.m in Sources */,
@@ -933,6 +932,7 @@
 				23F6C1D61990A993005D2ED7 /* stanza.c in Sources */,
 				23F6C1CB1990A993005D2ED7 /* handler.c in Sources */,
 				23F6C1D21990A993005D2ED7 /* sasl.c in Sources */,
+				0A00C77019D462BD00801B4D /* ABInputCell.m in Sources */,
 				23F6C1CC1990A993005D2ED7 /* hash.c in Sources */,
 				0A78E5F819CD256C004A7D6C /* UITableViewExtentions.m in Sources */,
 				0A2865CC19B880F400F20312 /* ABEnginePresence.m in Sources */,

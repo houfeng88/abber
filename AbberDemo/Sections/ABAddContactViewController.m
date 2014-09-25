@@ -13,7 +13,7 @@
 
 - (id)init
 {
-  self = [super init];
+  self = [super initWithStyle:UITableViewStyleGrouped];
   if (self) {
     self.hidesBottomBarWhenPushed = YES;
   }
@@ -23,12 +23,10 @@
 - (void)viewDidLoad
 {
   [super viewDidLoad];
-  
   [_navigationView showBackButton];
   _navigationView.titleLabel.text = NSLocalizedString(@"Add", @"");
   [_navigationView showRightButton];
   _navigationView.rightButton.normalTitle = NSLocalizedString(@"Done", @"");
-  
 }
 
 

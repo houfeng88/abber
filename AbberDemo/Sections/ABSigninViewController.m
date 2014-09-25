@@ -13,20 +13,33 @@
 
 @implementation ABSigninViewController
 
+- (id)init
+{
+  self = [super initWithStyle:UITableViewStyleGrouped];
+  if (self) {
+  }
+  return self;
+}
+
 - (void)viewDidLoad
 {
   [super viewDidLoad];
-  
   _navigationView.titleLabel.text = @"Abber";
   
+  
+  UIView *footerView = [[UIView alloc] init];
+  footerView.frame = TKRect(0.0, 0.0, _tableView.width, 55.0);
+  
+  UIButton *button = [[UIButton alloc] init];
+  button.normalTitle = NSLocalizedString(@"Sign In", @"");
+  button.normalBackgroundImage = TKCreateResizableImage(@"btn_brown.png", TKInsets(9.0, 9.0, 9.0, 9.0));
+  [button addTarget:self action:@selector(signinButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+  button.frame = CGRectMake(10.0, 5.0, 300.0, 45.0);
+  [footerView addSubview:button];
+  
+  _tableView.tableFooterView = footerView;
 }
 
-
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-  return 1;
-}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -53,37 +66,6 @@
   [(TKTextField *)_accountField setNextField:_passwordField];
   [(TKTextField *)_passwordField setNextField:nil];
   return cell;
-}
-
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-  return 55.0;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-  return [[UIView alloc] init];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-  return 55.0;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-  UIView *footer = [[UIView alloc] init];
-  footer.frame = CGRectMake(0.0, 0.0, _tableView.width, 55.0);
-  
-  UIButton *button = [[UIButton alloc] init];
-  button.normalTitle = NSLocalizedString(@"Sign In", @"");
-  button.normalBackgroundImage = TKCreateResizableImage(@"btn_brown.png", TKInsets(9.0, 9.0, 9.0, 9.0));
-  [button addTarget:self action:@selector(signinButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-  button.frame = CGRectMake(10.0, 5.0, 300.0, 45.0);
-  [footer addSubview:button];
-  
-  return footer;
 }
 
 
@@ -125,21 +107,18 @@
   [[TKSettings sharedObject] synchronize];
   
   
+  ABMainViewController *main = (ABMainViewController *)(self.parentViewController);
+  
   ABEngine *engine = [ABEngine sharedObject];
   [engine removeAllObservers];
+  
   
   engine = [[ABEngine alloc] init];
   [ABEngine saveObject:engine];
   
   [engine addObserver:self];
-  
-  UITabBarController *main = (UITabBarController *)(self.parentViewController);
   [engine addObserver:main];
-  for ( UINavigationController *vc in main.viewControllers ) {
-    if ( [vc isKindOfClass:[UINavigationController class]] ) {
-      [engine addObserver:[vc.viewControllers firstObject]];
-    }
-  }
+  [main configEngine];
   
   [engine prepare];
   [engine connectWithAccount:acnt password:pswd];
@@ -169,7 +148,7 @@
         [engine disconnect];
       } else {
         [[ABEngine sharedObject] removeObserver:self];
-        [[ABEngine sharedObject] updatePresence:ABPresenceTypeAvailable];
+        [[ABEngine sharedObject] updatePresence:ABPresenceAvailable];
         
         [self HUDConnectYes];
       }
