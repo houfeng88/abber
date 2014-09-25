@@ -10,24 +10,12 @@
 
 @implementation TKViewController
 
-- (id)init
-{
-  self = [super init];
-  if (self) {
-    if ( [[[UIDevice currentDevice] systemVersion] floatValue]<7.0 ) {
-      self.wantsFullScreenLayout = YES;
-    }
-  }
-  return self;
-}
-
 - (void)viewDidLoad
 {
   [super viewDidLoad];
   
-  if ( [[[UIDevice currentDevice] systemVersion] floatValue]>=7.0 ) {
-    self.automaticallyAdjustsScrollViewInsets = NO;
-  }
+  self.automaticallyAdjustsScrollViewInsets = NO;
+  
   
   self.view.backgroundColor = [UIColor whiteColor];
   
@@ -49,22 +37,14 @@
   _contentView.backgroundColor = [UIColor clearColor];
   [self.view addSubview:_contentView];
   
+  [self addTapGesture];
+  
+  
   
   // TODO: ...
   _navigationView.backgroundImageView.image = TKCreateResizableImage(@"navbar_bg.png", TKInsets(2.0, 2.0, 2.0, 2.0));
   _navigationView.titleLabel.textColor = [UIColor whiteColor];
   _navigationView.backButton.normalBackgroundImage = TKCreateImage(@"btn_back.png");
-
-
-  UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                               action:@selector(gestureTap:)];
-  recognizer.cancelsTouchesInView = NO;
-  [self.view addGestureRecognizer:recognizer];
-}
-
-- (void)gestureTap:(UIGestureRecognizer *)recognizer
-{
-  [TKFindFirstResponderInView(self.view) resignFirstResponder];
 }
 
 
@@ -116,6 +96,20 @@
 - (void)rightButtonClicked:(id)sender
 {
   DDLogDebug(@"[client] Right button clicked");
+}
+
+
+- (void)addTapGesture
+{
+  UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                               action:@selector(tapGesture:)];
+  recognizer.cancelsTouchesInView = NO;
+  [self.view addGestureRecognizer:recognizer];
+}
+
+- (void)tapGesture:(UIGestureRecognizer *)recognizer
+{
+  [TKFindFirstResponderInView(self.view) resignFirstResponder];
 }
 
 @end

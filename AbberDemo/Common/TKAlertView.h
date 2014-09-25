@@ -10,13 +10,10 @@
 
 typedef void (^TKAlertViewBlock)(void);
 
-
 @interface TKAlertView : UIAlertView<
     UIAlertViewDelegate
 > {
-  
   NSMutableDictionary *_blockMap;
-  
 }
 
 - (id)initWithTitle:(NSString *)title message:(NSString *)message;
