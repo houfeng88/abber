@@ -63,24 +63,24 @@ int ABVcardRequestHandler(xmpp_conn_t * const conn,
   ABEngineCompletionHandler completion = (__bridge id)ABHandlexGetObject(userdata, @"completion");
   
   
-  ABContact *vcard = nil;
+  ABContact *contact = nil;
   NSError *error = nil;
   
-  xmpp_stanza_t *vCard = ABStanzaChildByName(stanza, @"vCard");
+  xmpp_stanza_t *vcard = ABStanzaChildByName(stanza, @"vCard");
   
   NSString *jid = ABStanzaGetAttribute(stanza, @"from");
-  vcard = [engine contactByJid:TKStrOrLater(jid, [engine bareJid])];
-  if ( !vcard ) {
-    vcard = [[ABContact alloc] init];
+  contact = [engine contactByJid:TKStrOrLater(jid, [engine bareJid])];
+  if ( !contact ) {
+    contact = [[ABContact alloc] init];
   }
   
-  xmpp_stanza_t *nickname = ABStanzaChildByName(vCard, @"NICKNAME");
-  vcard.nickname = ABStanzaGetText(nickname);
+  xmpp_stanza_t *nickname = ABStanzaChildByName(vcard, @"NICKNAME");
+  contact.nickname = ABStanzaGetText(nickname);
   
-  xmpp_stanza_t *desc = ABStanzaChildByName(vCard, @"DESC");
-  vcard.desc = ABStanzaGetText(desc);
+  xmpp_stanza_t *desc = ABStanzaChildByName(vcard, @"DESC");
+  contact.desc = ABStanzaGetText(desc);
   
-  [engine didReceiveVcard:vcard error:error completion:completion];
+  [engine didReceiveVcard:contact error:error completion:completion];
   
   
   ABHandlexDestroy(userdata);
@@ -123,6 +123,7 @@ int ABVcardUpdateHandler(xmpp_conn_t * const conn,
     
     xmpp_id_handler_add(_connection, ABVcardRequestHandler, TKCString(identifier), contextRef);
     
+    
     xmpp_stanza_t *iq = ABStanzaCreate(_connection->ctx, @"iq", nil);
     ABStanzaSetAttribute(iq, @"id", identifier);
     ABStanzaSetAttribute(iq, @"type", @"get");
@@ -157,6 +158,7 @@ int ABVcardUpdateHandler(xmpp_conn_t * const conn,
     if ( completion ) ABHandlexSetObject(contextRef, @"completion", [completion copy]);
     
     xmpp_id_handler_add(_connection, ABVcardUpdateHandler, TKCString(identifier), contextRef);
+    
     
     xmpp_stanza_t *iq = ABStanzaCreate(_connection->ctx, @"iq", nil);
     ABStanzaSetAttribute(iq, @"id", identifier);

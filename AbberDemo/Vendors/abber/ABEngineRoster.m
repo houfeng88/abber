@@ -10,13 +10,13 @@
 
 #import "ABEngineStorage.h"
 
-@interface ABEngine (IncomeRosterNotify)
+@interface ABEngine (RosterIncomeNotify)
 
 - (void)didReceiveRosterUpdate:(ABContact *)contact;
 
 @end
 
-@implementation ABEngine (IncomeRosterNotify)
+@implementation ABEngine (RosterIncomeNotify)
 
 - (void)didReceiveRosterUpdate:(ABContact *)contact
 {
@@ -52,37 +52,35 @@ int ABRosterPushHandler(xmpp_conn_t * const conn,
   xmpp_stanza_t *query = ABStanzaChildByName(stanza, @"query");
   xmpp_stanza_t *item = ABStanzaFirstChild(query);
   if ( item ) {
-    NSString *jid = ABStanzaGetAttribute(item, @"jid");
-    NSString *memoname = ABStanzaGetAttribute(item, @"name");
-    NSString *ask = ABStanzaGetAttribute(item, @"ask");
-    NSString *subscription = ABStanzaGetAttribute(item, @"subscription");
     
+    NSString *jid = ABStanzaGetAttribute(item, @"jid");
     if ( TKSNonempty(jid) ) {
-      if ( [@"remove" isEqualToString:subscription]) {
-        ABContact *contact = [[ABContact alloc] init];
-        contact.jid = jid;
-        
+      ABContact *contact = [engine contactByJid:jid];
+      if ( !contact ) {
+        contact = [[ABContact alloc] init];
+      }
+      contact.jid = jid;
+      contact.memoname = ABStanzaGetAttribute(item, @"name");
+      contact.ask = ABStanzaGetAttribute(item, @"ask");
+      contact.subscription = ABStanzaGetAttribute(item, @"subscription");
+      
+      if ( [@"remove" isEqualToString:contact.subscription] ) {
         [engine deleteContactByJid:jid];
+        [engine syncContacts];
         [engine didReceiveRosterUpdate:contact];
       } else {
-        ABContact *contact = [engine contactByJid:jid];
-        if ( !contact ) {
-          contact = [[ABContact alloc] init];
-        }
-        contact.jid = jid;
-        contact.memoname = memoname;
-        contact.relation = [engine relationFromAsk:ask subscription:subscription];
-        
         [engine saveContact:contact];
+        [engine syncContacts];
         [engine didReceiveRosterUpdate:contact];
       }
     }
+    
   }
   
   return 1;
 }
 
-@implementation ABEngine (IncomeRoster)
+@implementation ABEngine (RosterIncome)
 
 - (void)addRosterPushHandler
 {
@@ -193,27 +191,28 @@ int ABRosterRequestHandler(xmpp_conn_t * const conn,
     xmpp_stanza_t *query = ABStanzaChildByName(stanza, @"query");
     xmpp_stanza_t *item = ABStanzaFirstChild(query);
     while ( item ) {
-      NSString *jid = ABStanzaGetAttribute(item, @"jid");
-      NSString *memoname = ABStanzaGetAttribute(item, @"name");
-      NSString *ask = ABStanzaGetAttribute(item, @"ask");
-      NSString *subscription = ABStanzaGetAttribute(item, @"subscription");
       
+      NSString *jid = ABStanzaGetAttribute(item, @"jid");
       if ( TKSNonempty(jid) ) {
         ABContact *contact = [engine contactByJid:jid];
         if ( !contact ) {
           contact = [[ABContact alloc] init];
         }
         contact.jid = jid;
-        contact.memoname = memoname;
-        contact.relation = [engine relationFromAsk:ask subscription:subscription];
+        contact.memoname = ABStanzaGetAttribute(item, @"name");
+        contact.ask = ABStanzaGetAttribute(item, @"ask");
+        contact.subscription = ABStanzaGetAttribute(item, @"subscription");
+        
         [roster addObject:contact];
       }
+      
       item = ABStanzaNextChild(item);
     }
     
   }
   
   [engine saveRoster:roster];
+  [engine syncContacts];
   [engine didReceiveRoster:roster error:error completion:completion];
   
   
@@ -432,53 +431,6 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
     }
   }
   return NO;
-}
-
-
-- (NSInteger)relationFromAsk:(NSString *)ask subscription:(NSString *)subscription
-{
-  if ( [@"none" isEqualToString:subscription] ) {
-    if ( !TKSNonempty(ask) ) {
-      return ABSubscriptionTypeNone;
-    } else {
-      return ABSubscriptionTypeNoneOut;
-    }
-  } else if ( [@"to" isEqualToString:subscription] ) {
-    if ( !TKSNonempty(ask) ) {
-      return ABSubscriptionTypeTo;
-    } else {
-      return ABSubscriptionTypeToIn;
-    }
-  } else if ( [@"from" isEqualToString:subscription] ) {
-    if ( !TKSNonempty(ask) ) {
-      return ABSubscriptionTypeFrom;
-    } else {
-      return ABSubscriptionTypeFromOut;
-    }
-  } else if ( [@"both" isEqualToString:subscription] ) {
-    return ABSubscriptionTypeBoth;
-  }
-  return ABSubscriptionTypeNone;
-}
-
-- (NSString *)relationString:(NSInteger)relation
-{
-  if ( relation==ABSubscriptionTypeNone ) {
-    return NSLocalizedString(@"None", @"");
-  } else if ( relation==ABSubscriptionTypeNoneOut ) {
-    return NSLocalizedString(@"None+Out", @"");
-  } else if ( relation==ABSubscriptionTypeTo ) {
-    return NSLocalizedString(@"To", @"");
-  } else if ( relation==ABSubscriptionTypeToIn ) {
-    return NSLocalizedString(@"To+In", @"");
-  } else if ( relation==ABSubscriptionTypeFrom ) {
-    return NSLocalizedString(@"From", @"");
-  } else if ( relation==ABSubscriptionTypeFromOut ) {
-    return NSLocalizedString(@"From+Out", @"");
-  } else if ( relation==ABSubscriptionTypeBoth ) {
-    return NSLocalizedString(@"Both", @"");
-  }
-  return NSLocalizedString(@"None", @"");
 }
 
 @end

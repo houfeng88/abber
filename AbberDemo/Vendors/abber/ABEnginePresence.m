@@ -10,17 +10,15 @@
 
 #import "ABEngineStorage.h"
 
-#import "ABEngineRoster.h"
-
-@interface ABEngine (IncomePresenceNotify)
+@interface ABEngine (PresenceIncomeNotify)
 
 - (void)didReceiveFriendRequest:(NSString *)jid;
 
-- (void)didReceivePresence:(NSInteger)presence contact:(NSString *)jid;
+- (void)didReceiveStatus:(NSString *)status contact:(NSString *)jid;
 
 @end
 
-@implementation ABEngine (IncomePresenceNotify)
+@implementation ABEngine (PresenceIncomeNotify)
 
 - (void)didReceiveFriendRequest:(NSString *)jid
 {
@@ -36,14 +34,14 @@
 }
 
 
-- (void)didReceivePresence:(NSInteger)presence contact:(NSString *)jid
+- (void)didReceiveStatus:(NSString *)status contact:(NSString *)jid
 {
   dispatch_sync(dispatch_get_main_queue(), ^{
     NSArray *observerAry = [self observers];
     for ( NSUInteger i=0; i<[observerAry count]; ++i ) {
       id<ABEnginePresenceDelegate> delegate = [observerAry objectAtIndex:i];
-      if ( [delegate respondsToSelector:@selector(engine:didReceivePresence:contact:)] ) {
-        [delegate engine:self didReceivePresence:presence contact:jid];
+      if ( [delegate respondsToSelector:@selector(engine:didReceiveStatus:contact:)] ) {
+        [delegate engine:self didReceiveStatus:status contact:jid];
       }
     }
   });
@@ -69,7 +67,7 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
       
     } else if ( [@"subscribe" isEqualToString:type] ) {
       ABContact *contact = [engine contactByJid:jid];
-      if ( (contact) && (contact.relation==ABSubscriptionTypeTo) ) {
+      if ( ([@"to" isEqualToString:contact.subscription]) && (!TKSNonempty(contact.ask)) ) {
         [engine subscribedContact:jid];
       } else {
         [engine didReceiveFriendRequest:jid];
@@ -78,8 +76,8 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
       
     } else if ( [@"unavailable" isEqualToString:type] ) {
       ABContact *contact = [engine contactByJid:jid];
-      contact.status = ABPresenceTypeUnavailable;
-      [engine didReceivePresence:ABPresenceTypeUnavailable contact:jid];
+      contact.status = ABPresenceUnavailable;
+      [engine didReceiveStatus:ABPresenceUnavailable contact:jid];
     } else if ( [@"unsubscribe" isEqualToString:type] ) {
       
     } else if ( [@"unsubscribed" isEqualToString:type] ) {
@@ -88,24 +86,24 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
       NSString *show = ABStanzaGetText(ABStanzaChildByName(stanza, @"show"));
       if ( [@"chat" isEqualToString:show] ) {
         ABContact *contact = [engine contactByJid:jid];
-        contact.status = ABPresenceTypeChat;
-        [engine didReceivePresence:ABPresenceTypeChat contact:jid];
+        contact.status = ABPresenceChat;
+        [engine didReceiveStatus:ABPresenceChat contact:jid];
       } else if ( [@"away" isEqualToString:show] ) {
         ABContact *contact = [engine contactByJid:jid];
-        contact.status = ABPresenceTypeAway;
-        [engine didReceivePresence:ABPresenceTypeAway contact:jid];
+        contact.status = ABPresenceAway;
+        [engine didReceiveStatus:ABPresenceAway contact:jid];
       } else if ( [@"dnd" isEqualToString:show] ) {
         ABContact *contact = [engine contactByJid:jid];
-        contact.status = ABPresenceTypeDND;
-        [engine didReceivePresence:ABPresenceTypeDND contact:jid];
+        contact.status = ABPresenceDND;
+        [engine didReceiveStatus:ABPresenceDND contact:jid];
       } else if ( [@"xa" isEqualToString:show] ) {
         ABContact *contact = [engine contactByJid:jid];
-        contact.status = ABPresenceTypeXA;
-        [engine didReceivePresence:ABPresenceTypeXA contact:jid];
+        contact.status = ABPresenceXA;
+        [engine didReceiveStatus:ABPresenceXA contact:jid];
       } else {
         ABContact *contact = [engine contactByJid:jid];
-        contact.status = ABPresenceTypeAvailable;
-        [engine didReceivePresence:ABPresenceTypeAvailable contact:jid];
+        contact.status = ABPresenceAvailable;
+        [engine didReceiveStatus:ABPresenceAvailable contact:jid];
       }
     }
   }
@@ -113,7 +111,7 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
   return 1;
 }
 
-@implementation ABEngine (IncomePresence)
+@implementation ABEngine (PresenceIncome)
 
 - (void)addPresenceHandler
 {
@@ -131,18 +129,18 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
 
 @implementation ABEngine (Presence)
 
-- (BOOL)updatePresence:(int)type
+- (BOOL)updatePresence:(NSString *)status
 {
   if ( [self isConnected] ) {
-    if ( type==ABPresenceTypeAvailable ) {
+    if ( [ABPresenceAvailable isEqualToString:status] ) {
       [self sendString:@"<presence/>"];
-    } else if ( type==ABPresenceTypeChat ) {
+    } else if ( [ABPresenceChat isEqualToString:status] ) {
       [self sendString:@"<presence><show>chat</show></presence>"];
-    } else if ( type==ABPresenceTypeAway ) {
+    } else if ( [ABPresenceAway isEqualToString:status] ) {
       [self sendString:@"<presence><show>away</show></presence>"];
-    } else if ( type==ABPresenceTypeDND ) {
+    } else if ( [ABPresenceDND isEqualToString:status] ) {
       [self sendString:@"<presence><show>dnd</show></presence>"];
-    } else if ( type==ABPresenceTypeXA ) {
+    } else if ( [ABPresenceXA isEqualToString:status] ) {
       [self sendString:@"<presence><show>xa</show></presence>"];
     } else {
       [self sendString:@"<presence type=\"unavailable\"/>"];
@@ -223,25 +221,6 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
     }
   }
   return NO;
-}
-
-
-- (NSString *)statusString:(int)presence
-{
-  if ( presence==ABPresenceTypeUnavailable ) {
-    return NSLocalizedString(@"Unavailable", @"");
-  } else if ( presence==ABPresenceTypeAvailable ) {
-    return NSLocalizedString(@"Available", @"");
-  } else if ( presence==ABPresenceTypeChat ) {
-    return NSLocalizedString(@"Chat", @"");
-  } else if ( presence==ABPresenceTypeAway ) {
-    return NSLocalizedString(@"Away", @"");
-  } else if ( presence==ABPresenceTypeDND ) {
-    return NSLocalizedString(@"DND", @"");
-  } else if ( presence==ABPresenceTypeXA ) {
-    return NSLocalizedString(@"XA", @"");
-  }
-  return NSLocalizedString(@"Unavailable", @"");
 }
 
 @end

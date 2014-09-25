@@ -34,9 +34,6 @@
 {
   NSString *jid = contact.jid;
   if ( TKSNonempty(jid) ) {
-    ABContact *cnt = [self contactByJid:jid];
-    contact.status = cnt.status;
-    
     [self deleteContactByJid:jid];
     [_contactAry addObject:contact];
   }
@@ -44,13 +41,6 @@
 
 - (void)saveRoster:(NSArray *)roster
 {
-  for ( ABContact *it1 in _contactAry ) {
-    for ( ABContact *it2 in roster ) {
-      if ( [it1.jid isEqualToString:it2.jid] ) {
-        it2.status = it1.status;
-      }
-    }
-  }
   [_contactAry removeAllObjects];
   [_contactAry addObjectsFromArray:roster];
 }

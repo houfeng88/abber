@@ -8,13 +8,13 @@
 
 #import "ABEngineMessage.h"
 
-@interface ABEngine (IncomeMessageNotify)
+@interface ABEngine (MessageIncomeNotify)
 
 - (void)didReceiveMessage:(id)msg type:(NSString *)type jid:(NSString *)jid;
 
 @end
 
-@implementation ABEngine (IncomeMessageNotify)
+@implementation ABEngine (MessageIncomeNotify)
 
 - (void)didReceiveMessage:(id)msg type:(NSString *)type jid:(NSString *)jid
 {
@@ -65,7 +65,7 @@ int ABMessageHandler(xmpp_conn_t * const conn,
   return 1;
 }
 
-@implementation ABEngine (IncomeMessage)
+@implementation ABEngine (MessageIncome)
 
 - (void)addMessageHandler
 {

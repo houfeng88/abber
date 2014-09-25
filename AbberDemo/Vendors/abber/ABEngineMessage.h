@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "ABEngine.h"
 
-@interface ABEngine (IncomeMessage)
+@interface ABEngine (MessageIncome)
 
 - (void)addMessageHandler;
 - (void)removeMessageHandler;

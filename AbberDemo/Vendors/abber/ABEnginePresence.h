@@ -9,16 +9,14 @@
 #import <Foundation/Foundation.h>
 #import "ABEngine.h"
 
-typedef enum {
-  ABPresenceTypeUnavailable = 0,
-  ABPresenceTypeAvailable   = 1,
-  ABPresenceTypeChat        = 2,
-  ABPresenceTypeAway        = 3,
-  ABPresenceTypeDND         = 4,
-  ABPresenceTypeXA          = 5
-} ABPresenceType;
+#define ABPresenceUnavailable @"unavailable"
+#define ABPresenceAvailable   @"available"
+#define ABPresenceChat        @"chat"
+#define ABPresenceAway        @"away"
+#define ABPresenceDND         @"dnd"
+#define ABPresenceXA          @"xa"
 
-@interface ABEngine (IncomePresence)
+@interface ABEngine (PresenceIncome)
 
 - (void)addPresenceHandler;
 - (void)removePresenceHandler;
@@ -27,14 +25,12 @@ typedef enum {
 
 @interface ABEngine (Presence)
 
-- (BOOL)updatePresence:(NSInteger)type;
+- (BOOL)updatePresence:(NSString *)status;
 
 - (BOOL)subscribeContact:(NSString *)jid;
 - (BOOL)subscribedContact:(NSString *)jid;
 - (BOOL)unsubscribeContact:(NSString *)jid;
 - (BOOL)unsubscribedContact:(NSString *)jid;
-
-- (NSString *)statusString:(NSInteger)presence;
 
 @end
 
@@ -44,6 +40,6 @@ typedef enum {
 
 - (void)engine:(ABEngine *)engine didReceiveFriendRequest:(NSString *)jid;
 
-- (void)engine:(ABEngine *)engine didReceivePresence:(NSInteger)presence contact:(NSString *)jid;
+- (void)engine:(ABEngine *)engine didReceiveStatus:(NSString *)status contact:(NSString *)jid;
 
 @end
