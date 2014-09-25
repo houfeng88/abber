@@ -70,9 +70,15 @@
   } else if ( indexPath.row==2 ) {
     ABInfoStaticCell *cell = (ABInfoStaticCell *)[tableView dequeueReusableCellWithClass:[ABInfoStaticCell class]];
     cell.titleLabel.text = NSLocalizedString(@"Relation", @"");
-    cell.bodyLabel.text = [[NSString alloc] initWithFormat:@"%@%@",
-                           TKStrOrLater(_contact.subscription, @""),
-                           TKStrOrLater(_contact.ask, @"")];
+    NSMutableString *relation = [[NSMutableString alloc] init];
+    if ( TKSNonempty(_contact.subscription) ) {
+      [relation appendString:_contact.subscription];
+      if ( TKSNonempty(_contact.ask) ) {
+        [relation appendString:@"+"];
+        [relation appendString:_contact.ask];
+      }
+    }
+    cell.bodyLabel.text = relation;
     return cell;
   } else if ( indexPath.row==3 ) {
     ABInfoStaticCell *cell = (ABInfoStaticCell *)[tableView dequeueReusableCellWithClass:[ABInfoStaticCell class]];
