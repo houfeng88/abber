@@ -83,7 +83,7 @@ int ABMessageHandler(xmpp_conn_t * const conn,
 
 @implementation ABEngine (Message)
 
-- (BOOL)sendText:(NSString *)text jid:(NSString *)jid
+- (BOOL)sendMessage:(ABMessage *)msg
 {
 //  <message id='b4vs9km4'
 //           to='romeo@example.net'
@@ -91,110 +91,32 @@ int ABMessageHandler(xmpp_conn_t * const conn,
 //    <body>Wherefore art thou, Romeo?</body>
 //  </message>
   if ( [self isConnected] ) {
-    if ( TKSNonempty(jid) && TKSNonempty(text) ) {
+    if ( TKSNonempty(msg.to) ) {
       NSString *identifier = [[NSUUID UUID] UUIDString];
       
       xmpp_stanza_t *message = ABStanzaCreate(_connection->ctx, @"message", nil);
       ABStanzaSetAttribute(message, @"id", identifier);
       ABStanzaSetAttribute(message, @"type", @"chat");
-      ABStanzaSetAttribute(message, @"to", jid);
+      ABStanzaSetAttribute(message, @"to", msg.to);
       
-      NSString *ctype = @"text";
-      NSString *cbody = text;
+      NSString *ctype = nil;
+      NSString *cbody = nil;
+      
+      if ( [ABMessageAudio isEqualToString:msg.type] ) {
+        ctype = ABMessageAudio;
+        cbody = [msg.body base64EncodedStringWithOptions:0];
+      } else if ( [ABMessageImage isEqualToString:msg.type] ) {
+        ctype = ABMessageImage;
+        cbody = [msg.body base64EncodedStringWithOptions:0];
+      } else if ( [ABMessageNudge isEqualToString:msg.type] ) {
+        ctype = ABMessageNudge;
+        cbody = nil;
+      } else {
+        ctype = ABMessageText;
+        cbody = msg.body;
+      }
       
       xmpp_stanza_t *body = ABStanzaCreate(_connection->ctx, @"body", cbody);
-      ABStanzaSetAttribute(body, @"type", ctype);
-      ABStanzaAddChild(message, body);
-      
-      [self sendData:ABStanzaToData(message)];
-    }
-    
-    return YES;
-  }
-  return NO;
-}
-
-- (BOOL)sendAudio:(NSData *)audio jid:(NSString *)jid
-{
-//  <message id='b4vs9km4'
-//           to='romeo@example.net'
-//           type='chat'>
-//    <body>Wherefore art thou, Romeo?</body>
-//  </message>
-  if ( [self isConnected] ) {
-    if ( TKSNonempty(jid) && TKDNonempty(audio) ) {
-      NSString *identifier = [[NSUUID UUID] UUIDString];
-      
-      xmpp_stanza_t *message = ABStanzaCreate(_connection->ctx, @"message", nil);
-      ABStanzaSetAttribute(message, @"id", identifier);
-      ABStanzaSetAttribute(message, @"type", @"chat");
-      ABStanzaSetAttribute(message, @"to", jid);
-      
-      NSString *ctype = @"audio";
-      NSString *cbody = [audio base64EncodedStringWithOptions:0];
-      
-      xmpp_stanza_t *body = ABStanzaCreate(_connection->ctx, @"body", cbody);
-      ABStanzaSetAttribute(body, @"type", ctype);
-      ABStanzaAddChild(message, body);
-      
-      [self sendData:ABStanzaToData(message)];
-    }
-    
-    return YES;
-  }
-  return NO;
-}
-
-- (BOOL)sendImage:(NSData *)image jid:(NSString *)jid
-{
-//  <message id='b4vs9km4'
-//           to='romeo@example.net'
-//           type='chat'>
-//    <body>Wherefore art thou, Romeo?</body>
-//  </message>
-  if ( [self isConnected] ) {
-    if ( TKSNonempty(jid) && TKDNonempty(image) ) {
-      NSString *identifier = [[NSUUID UUID] UUIDString];
-      
-      xmpp_stanza_t *message = ABStanzaCreate(_connection->ctx, @"message", nil);
-      ABStanzaSetAttribute(message, @"id", identifier);
-      ABStanzaSetAttribute(message, @"type", @"chat");
-      ABStanzaSetAttribute(message, @"to", jid);
-      
-      NSString *ctype = @"image";
-      NSString *cbody = [image base64EncodedStringWithOptions:0];
-      
-      xmpp_stanza_t *body = ABStanzaCreate(_connection->ctx, @"body", cbody);
-      ABStanzaSetAttribute(body, @"type", ctype);
-      ABStanzaAddChild(message, body);
-      
-      [self sendData:ABStanzaToData(message)];
-    }
-    
-    return YES;
-  }
-  return NO;
-}
-
-- (BOOL)sendNudge:(NSString *)jid
-{
-//  <message id='b4vs9km4'
-//           to='romeo@example.net'
-//           type='chat'>
-//    <body>Wherefore art thou, Romeo?</body>
-//  </message>
-  if ( [self isConnected] ) {
-    if ( TKSNonempty(jid) ) {
-      NSString *identifier = [[NSUUID UUID] UUIDString];
-      
-      xmpp_stanza_t *message = ABStanzaCreate(_connection->ctx, @"message", nil);
-      ABStanzaSetAttribute(message, @"id", identifier);
-      ABStanzaSetAttribute(message, @"type", @"chat");
-      ABStanzaSetAttribute(message, @"to", jid);
-      
-      NSString *ctype = @"nudge";
-      
-      xmpp_stanza_t *body = ABStanzaCreate(_connection->ctx, @"body", nil);
       ABStanzaSetAttribute(body, @"type", ctype);
       ABStanzaAddChild(message, body);
       

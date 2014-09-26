@@ -7,8 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ABConfig.h"
 #import "ABCommon.h"
 #import "ABContact.h"
+#import "ABMessage.h"
 
 typedef void (^ABEngineCompletionHandler)(id result, NSError *error);
 

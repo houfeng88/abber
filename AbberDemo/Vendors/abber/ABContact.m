@@ -14,7 +14,7 @@
 {
   self = [super init];
   if (self) {
-    _status = @"Unavailable";
+    _status = @"unavailable";
   }
   return self;
 }
@@ -31,7 +31,8 @@
     _nickname = [aDecoder decodeObjectForKey:@"kNickname"];
     _desc = [aDecoder decodeObjectForKey:@"kDesc"];
     
-    _status = @"Unavailable";
+    
+    _status = @"unavailable";
     //_status = [aDecoder decodeObjectForKey:@"kStatus"];
   }
   return self;

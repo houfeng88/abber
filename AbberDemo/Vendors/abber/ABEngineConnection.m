@@ -7,7 +7,6 @@
 //
 
 #import "ABEngineConnection.h"
-#import "ABConfig.h"
 
 @interface ABEngine (ConnectionNotify)
 
