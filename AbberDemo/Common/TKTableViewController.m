@@ -37,6 +37,12 @@
   [_contentView addSubview:_tableView];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+  [super viewDidAppear:animated];
+  [_tableView deselectAllRowsAnimated:YES];
+}
+
 - (void)layoutViews
 {
   [super layoutViews];

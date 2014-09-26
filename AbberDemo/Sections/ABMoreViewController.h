@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ABMoreViewController : TKViewController {
+@interface ABMoreViewController : TKTableViewController {
 }
 
 @end

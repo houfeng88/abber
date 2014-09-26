@@ -23,7 +23,6 @@
 		0A5BAE701991382E001EF07E /* ABEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5BAE6F1991382E001EF07E /* ABEngine.m */; };
 		0A6E5506199F7A6A004BD577 /* ABChatsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6E5505199F7A6A004BD577 /* ABChatsViewController.m */; };
 		0A6E5509199F7A85004BD577 /* ABFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6E5508199F7A85004BD577 /* ABFriendsViewController.m */; };
-		0A6E550C199F7A93004BD577 /* ABFindViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6E550B199F7A93004BD577 /* ABFindViewController.m */; };
 		0A6E550F199F7A9F004BD577 /* ABMoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6E550E199F7A9F004BD577 /* ABMoreViewController.m */; };
 		0A78E5F019CD256C004A7D6C /* MBProgressHUDExtentions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A78E5DF19CD256B004A7D6C /* MBProgressHUDExtentions.m */; };
 		0A78E5F119CD256C004A7D6C /* TKAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A78E5E119CD256B004A7D6C /* TKAlertView.m */; };
@@ -51,8 +50,6 @@
 		23C4BCA8199DE669006E796C /* tab_icon_friends@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C4BC96199DE668006E796C /* tab_icon_friends@2x.png */; };
 		23C4BCAB199DE669006E796C /* tab_icon_more.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C4BC99199DE669006E796C /* tab_icon_more.png */; };
 		23C4BCAC199DE669006E796C /* tab_icon_more@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C4BC9A199DE669006E796C /* tab_icon_more@2x.png */; };
-		23C4BCAF199DE669006E796C /* tab_icon_find.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C4BC9D199DE669006E796C /* tab_icon_find.png */; };
-		23C4BCB0199DE669006E796C /* tab_icon_find@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C4BC9E199DE669006E796C /* tab_icon_find@2x.png */; };
 		23C4BCB1199DE669006E796C /* tabbar_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C4BC9F199DE669006E796C /* tabbar_bg.png */; };
 		23C4BCB2199DE669006E796C /* tabbar_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C4BCA0199DE669006E796C /* tabbar_bg@2x.png */; };
 		23C4BCB5199DE871006E796C /* default_avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C4BCB3199DE871006E796C /* default_avatar.png */; };
@@ -129,8 +126,6 @@
 		0A6E5505199F7A6A004BD577 /* ABChatsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABChatsViewController.m; sourceTree = "<group>"; };
 		0A6E5507199F7A85004BD577 /* ABFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABFriendsViewController.h; sourceTree = "<group>"; };
 		0A6E5508199F7A85004BD577 /* ABFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABFriendsViewController.m; sourceTree = "<group>"; };
-		0A6E550A199F7A93004BD577 /* ABFindViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABFindViewController.h; sourceTree = "<group>"; };
-		0A6E550B199F7A93004BD577 /* ABFindViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABFindViewController.m; sourceTree = "<group>"; };
 		0A6E550D199F7A9F004BD577 /* ABMoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABMoreViewController.h; sourceTree = "<group>"; };
 		0A6E550E199F7A9F004BD577 /* ABMoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABMoreViewController.m; sourceTree = "<group>"; };
 		0A78E5DE19CD256B004A7D6C /* MBProgressHUDExtentions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUDExtentions.h; sourceTree = "<group>"; };
@@ -175,8 +170,6 @@
 		23C4BC96199DE668006E796C /* tab_icon_friends@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_icon_friends@2x.png"; sourceTree = "<group>"; };
 		23C4BC99199DE669006E796C /* tab_icon_more.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_icon_more.png; sourceTree = "<group>"; };
 		23C4BC9A199DE669006E796C /* tab_icon_more@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_icon_more@2x.png"; sourceTree = "<group>"; };
-		23C4BC9D199DE669006E796C /* tab_icon_find.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_icon_find.png; sourceTree = "<group>"; };
-		23C4BC9E199DE669006E796C /* tab_icon_find@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_icon_find@2x.png"; sourceTree = "<group>"; };
 		23C4BC9F199DE669006E796C /* tabbar_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabbar_bg.png; sourceTree = "<group>"; };
 		23C4BCA0199DE669006E796C /* tabbar_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabbar_bg@2x.png"; sourceTree = "<group>"; };
 		23C4BCB3199DE871006E796C /* default_avatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_avatar.png; sourceTree = "<group>"; };
@@ -388,15 +381,6 @@
 			name = Friends;
 			sourceTree = "<group>";
 		};
-		0A6E5513199F7B43004BD577 /* Find */ = {
-			isa = PBXGroup;
-			children = (
-				0A6E550A199F7A93004BD577 /* ABFindViewController.h */,
-				0A6E550B199F7A93004BD577 /* ABFindViewController.m */,
-			);
-			name = Find;
-			sourceTree = "<group>";
-		};
 		0A6E5514199F7B47004BD577 /* More */ = {
 			isa = PBXGroup;
 			children = (
@@ -502,7 +486,6 @@
 				0A6E5510199F7B30004BD577 /* Main */,
 				0A6E5511199F7B36004BD577 /* Chats */,
 				0A6E5512199F7B3C004BD577 /* Friends */,
-				0A6E5513199F7B43004BD577 /* Find */,
 				0A6E5514199F7B47004BD577 /* More */,
 				0A31925619B968D200DDA368 /* Cells */,
 			);
@@ -528,8 +511,6 @@
 				23C4BC92199DE668006E796C /* tab_icon_chats@2x.png */,
 				23C4BC95199DE668006E796C /* tab_icon_friends.png */,
 				23C4BC96199DE668006E796C /* tab_icon_friends@2x.png */,
-				23C4BC9D199DE669006E796C /* tab_icon_find.png */,
-				23C4BC9E199DE669006E796C /* tab_icon_find@2x.png */,
 				23C4BC99199DE669006E796C /* tab_icon_more.png */,
 				23C4BC9A199DE669006E796C /* tab_icon_more@2x.png */,
 				23C4BC9F199DE669006E796C /* tabbar_bg.png */,
@@ -857,12 +838,10 @@
 				23C4BCC3199DF4EE006E796C /* btn_brown.png in Resources */,
 				23C4BCC7199DF523006E796C /* inputbar_bg.png in Resources */,
 				23C4BCAC199DE669006E796C /* tab_icon_more@2x.png in Resources */,
-				23C4BCAF199DE669006E796C /* tab_icon_find.png in Resources */,
 				23C4BCB1199DE669006E796C /* tabbar_bg.png in Resources */,
 				23C4BC8D199DDEDD006E796C /* navbar_bg.png in Resources */,
 				23C4BC64199DD17E006E796C /* btn_back.png in Resources */,
 				23C4BCBF199DF4A1006E796C /* badge_number.png in Resources */,
-				23C4BCB0199DE669006E796C /* tab_icon_find@2x.png in Resources */,
 				23C4BCBC199DF314006E796C /* badge_indicator@2x.png in Resources */,
 				23C4BCA7199DE669006E796C /* tab_icon_friends.png in Resources */,
 				23C4BCA8199DE669006E796C /* tab_icon_friends@2x.png in Resources */,
@@ -947,7 +926,6 @@
 				23F6C1D81990A993005D2ED7 /* tls.c in Sources */,
 				23F6C1D51990A993005D2ED7 /* sock.c in Sources */,
 				0A0FF7B819C560A7000EFC44 /* ABEngineMessage.m in Sources */,
-				0A6E550C199F7A93004BD577 /* ABFindViewController.m in Sources */,
 				0A2352A119B72030003BA4A6 /* ABEngineRoster.m in Sources */,
 				23F6C1CE1990A993005D2ED7 /* md5.c in Sources */,
 				0A78E5F019CD256C004A7D6C /* MBProgressHUDExtentions.m in Sources */,

@@ -25,15 +25,11 @@
   UINavigationController *friendsNC = [[UINavigationController alloc] initWithRootViewController:_friendsVC];
   friendsNC.navigationBarHidden = YES;
   
-  _findVC = [[ABFindViewController alloc] init];
-  UINavigationController *findNC = [[UINavigationController alloc] initWithRootViewController:_findVC];
-  findNC.navigationBarHidden = YES;
-  
   _moreVC = [[ABMoreViewController alloc] init];
   UINavigationController *moreNC = [[UINavigationController alloc] initWithRootViewController:_moreVC];
   moreNC.navigationBarHidden = YES;
   
-  [self setViewControllers:@[ chatsNC, friendsNC, findNC, moreNC ] animated:NO];
+  [self setViewControllers:@[ chatsNC, friendsNC, moreNC ] animated:NO];
   
   
   UITabBarItem *item = nil;
@@ -47,10 +43,6 @@
   item.image = TKCreateImage(@"tab_icon_friends.png");
   
   item = [self.tabBar.items objectAtIndex:2];
-  item.title = NSLocalizedString(@"Find", @"");
-  item.image = TKCreateImage(@"tab_icon_find.png");
-  
-  item = [self.tabBar.items objectAtIndex:3];
   item.title = NSLocalizedString(@"More", @"");
   item.image = TKCreateImage(@"tab_icon_more.png");
 }
@@ -66,7 +58,6 @@
 {
   [[ABEngine sharedObject] addObserver:_chatsVC];
   [[ABEngine sharedObject] addObserver:_friendsVC];
-  [[ABEngine sharedObject] addObserver:_findVC];
   [[ABEngine sharedObject] addObserver:_moreVC];
 }
 
