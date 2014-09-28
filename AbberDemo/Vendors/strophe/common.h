@@ -21,18 +21,15 @@
 
 #include <stdio.h>
 #include <stdarg.h>
-#ifndef _WIN32
-#include <stdint.h>
-#endif
 
 
 #include "strophe.h"
+#include "ostypes.h"
 #include "sock.h"
 #include "tls.h"
 #include "hash.h"
 #include "util.h"
 #include "parser.h"
-#include "thread.h"
 
 /** run-time context **/
 
@@ -148,6 +145,7 @@ struct _xmpp_handlist_t {
 #define SASL_MASK_PLAIN 0x01
 #define SASL_MASK_DIGESTMD5 0x02
 #define SASL_MASK_ANONYMOUS 0x04
+#define SASL_MASK_SCRAMSHA1 0x08
 
 typedef void (*xmpp_open_handler)(xmpp_conn_t * const conn);
 
@@ -189,7 +187,6 @@ struct _xmpp_conn_t {
     int send_queue_len;
     xmpp_send_queue_t *send_queue_head;
     xmpp_send_queue_t *send_queue_tail;
-    mutex_t *send_lock;
 
     /* xml parser */
     int reset_parser;

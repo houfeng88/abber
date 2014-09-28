@@ -24,11 +24,11 @@
 #else
 #include <sys/time.h>
 #include <time.h>
-#include <stdint.h>
 #endif
 
 #include "strophe.h"
 #include "common.h"
+#include "ostypes.h"
 #include "util.h"
 
 /** implement our own strdup that uses the ctx allocator */
@@ -49,7 +49,7 @@ char *xmpp_strdup(const xmpp_ctx_t * const ctx, const char * const s)
     len = strlen(s);
     copy = xmpp_alloc(ctx, len + 1);
     if (!copy) {
-        xmpp_error(ctx, "xmpp", "Failed to allocate required memory.");
+        xmpp_error(ctx, "xmpp", "failed to allocate required memory");
         return NULL;
     }
 
@@ -102,6 +102,6 @@ uint64_t time_elapsed(uint64_t t1, uint64_t t2)
  */
 void disconnect_mem_error(xmpp_conn_t * const conn)
 {
-    xmpp_error(conn->ctx, "xmpp", "Memory allocation error.");
+    xmpp_error(conn->ctx, "xmpp", "Memory allocation error");
     xmpp_disconnect(conn);
 }

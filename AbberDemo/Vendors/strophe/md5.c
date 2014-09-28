@@ -16,8 +16,8 @@
  * with every copy.
  *
  * To compute the message digest of a chunk of bytes, declare an
- * md5_ctx_t structure, pass it to md5_init, call md5_update as
- * needed on buffers full of bytes, and then call md5_final, which
+ * MD5Context structure, pass it to MD5Init, call MD5Update as
+ * needed on buffers full of bytes, and then call MD5Final, which
  * will fill a supplied 16-byte array with the digest.
  */
 
@@ -43,11 +43,14 @@
 	(cp)[3] = ((value) >> 24) & 0xFF; \
     } while(0)
 
+static void MD5Transform(uint32_t buf[4], const unsigned char inext[64],
+			 struct MD5Context *ctx);
+
 /*
  * Start MD5 accumulation.  Set bit count to 0 and buffer to mysterious
  * initialization constants.
  */
-void md5_init(md5_ctx_t *ctx)
+void MD5Init(struct MD5Context *ctx)
 {
     ctx->buf[0] = 0x67452301;
     ctx->buf[1] = 0xefcdab89;
@@ -64,7 +67,7 @@ void md5_init(md5_ctx_t *ctx)
  * Update context to reflect the concatenation of another buffer full
  * of bytes.
  */
-void md5_update(md5_ctx_t *ctx, unsigned char const *buf, uint32_t len)
+void MD5Update(struct MD5Context *ctx, unsigned char const *buf, uint32_t len)
 {
     uint32_t t;
 
@@ -88,7 +91,7 @@ void md5_update(md5_ctx_t *ctx, unsigned char const *buf, uint32_t len)
 	    return;
 	}
 	memcpy(p, buf, t);
-	md5_transform(ctx->buf, ctx->in, ctx);
+	MD5Transform(ctx->buf, ctx->in, ctx);
 	buf += t;
 	len -= t;
     }
@@ -96,7 +99,7 @@ void md5_update(md5_ctx_t *ctx, unsigned char const *buf, uint32_t len)
 
     while (len >= 64) {
 	memcpy(ctx->in, buf, 64);
-	md5_transform(ctx->buf, ctx->in, ctx);
+	MD5Transform(ctx->buf, ctx->in, ctx);
 	buf += 64;
 	len -= 64;
     }
@@ -110,7 +113,7 @@ void md5_update(md5_ctx_t *ctx, unsigned char const *buf, uint32_t len)
  * Final wrapup - pad to 64-byte boundary with the bit pattern 
  * 1 0* (64-bit count of bits processed, MSB-first)
  */
-void md5_final(unsigned char digest[16], md5_ctx_t *ctx)
+void MD5Final(unsigned char digest[16], struct MD5Context *ctx)
 {
     unsigned count;
     unsigned char *p;
@@ -130,7 +133,7 @@ void md5_final(unsigned char digest[16], md5_ctx_t *ctx)
     if (count < 8) {
 	/* Two lots of padding:  Pad the first block to 64 bytes */
 	memset(p, 0, count);
-	md5_transform(ctx->buf, ctx->in, ctx);
+	MD5Transform(ctx->buf, ctx->in, ctx);
 
 	/* Now fill the next block with 56 bytes */
 	memset(ctx->in, 0, 56);
@@ -143,7 +146,7 @@ void md5_final(unsigned char digest[16], md5_ctx_t *ctx)
     PUT_32BIT_LSB_FIRST(ctx->in + 56, ctx->bits[0]);
     PUT_32BIT_LSB_FIRST(ctx->in + 60, ctx->bits[1]);
 
-    md5_transform(ctx->buf, ctx->in, ctx);
+    MD5Transform(ctx->buf, ctx->in, ctx);
     PUT_32BIT_LSB_FIRST(digest, ctx->buf[0]);
     PUT_32BIT_LSB_FIRST(digest + 4, ctx->buf[1]);
     PUT_32BIT_LSB_FIRST(digest + 8, ctx->buf[2]);
@@ -176,11 +179,11 @@ void md5_final(unsigned char digest[16], md5_ctx_t *ctx)
 
 /*
  * The core of the MD5 algorithm, this alters an existing MD5 hash to
- * reflect the addition of 16 longwords of new data.  md5_update blocks
+ * reflect the addition of 16 longwords of new data.  MD5Update blocks
  * the data and converts bytes into longwords for this routine.
  */
-void md5_transform(uint32_t buf[4], const unsigned char inext[64],
-	md5_ctx_t *ctx)
+static void MD5Transform(uint32_t buf[4], const unsigned char inext[64],
+			 struct MD5Context *ctx)
 {
     register uint32_t a, b, c, d, i;
     uint32_t in[16];
@@ -272,7 +275,7 @@ void md5_transform(uint32_t buf[4], const unsigned char inext[64],
 
 #include <stdio.h>
 
-void md5_dump_bytes(unsigned char *b, int len)
+void MD5DumpBytes(unsigned char *b, int len)
 {
 	int i;
 	for (i=0; i<len; i++) {

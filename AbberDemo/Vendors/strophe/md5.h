@@ -11,31 +11,22 @@
 #ifndef MD5_H
 #define MD5_H
 
-/* we use the uint32_t type from stdint.h
- * if it is not available, add a typedef here:
- */
 /* make sure the stdint.h types are available */
-#if defined(_MSC_VER) /* Microsoft Visual C++ */
-  typedef unsigned int              uint32_t;
-#else
-#include <stdint.h>
-#endif
+#include "ostypes.h"
 
-typedef struct {
+struct MD5Context {
 	uint32_t buf[4];
 	uint32_t bits[2];
 	unsigned char in[64];
-} md5_ctx_t ;
+};
 
-void md5_init(md5_ctx_t *context);
-void md5_update(md5_ctx_t *context, unsigned char const *buf,
+void MD5Init(struct MD5Context *context);
+void MD5Update(struct MD5Context *context, unsigned char const *buf,
 	       uint32_t len);
-void md5_final(unsigned char digest[16], md5_ctx_t *context);
-void md5_transform(uint32_t buf[4], const unsigned char in[64],
-			md5_ctx_t *ctx);
+void MD5Final(unsigned char digest[16], struct MD5Context *context);
 
 #ifdef DEBUG_MD5
-void md5_dump_bytes(unsigned char *b, int len);
+void MD5DumpBytes(unsigned char *b, int len);
 #endif
 
 #endif /* !MD5_H */

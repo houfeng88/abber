@@ -47,7 +47,7 @@
 #define ECONNABORTED WSAECONNABORTED
 #endif
 
-#include "strophe.h"
+#include <strophe.h>
 #include "common.h"
 #include "parser.h"
 
@@ -232,7 +232,8 @@ void xmpp_run_once(xmpp_ctx_t *ctx, const unsigned long timeout)
     /* select errored */
     if (ret < 0) {
 	if (!sock_is_recoverable(sock_error()))
-	    xmpp_error(ctx, "xmpp", "Event watcher internal error %d.", sock_error());
+	    xmpp_error(ctx, "xmpp", "event watcher internal error %d", 
+		       sock_error());
 	return;
     }
     
@@ -252,14 +253,13 @@ void xmpp_run_once(xmpp_ctx_t *ctx, const unsigned long timeout)
 		/* check for error */
 		if (sock_connect_error(conn->sock) != 0) {
 		    /* connection failed */
-		    xmpp_debug(ctx, "xmpp", "Connection failed.");
+		    xmpp_debug(ctx, "xmpp", "connection failed");
 		    conn_disconnect(conn);
 		    break;
 		}
 
 		conn->state = XMPP_STATE_CONNECTED;
-		xmpp_debug(ctx, "xmpp", "Connection successful.");
-    xmpp_debug(ctx, "conn", "Connection state XMPP_STATE_CONNECTED.");
+		xmpp_debug(ctx, "xmpp", "connection successful");
 
 		
 		/* send stream init */
@@ -280,7 +280,7 @@ void xmpp_run_once(xmpp_ctx_t *ctx, const unsigned long timeout)
 		    if (!ret) {
 			/* parse error, we need to shut down */
 			/* FIXME */
-			xmpp_debug(ctx, "xmpp", "Parse error, disconnecting.");
+			xmpp_debug(ctx, "xmpp", "parse error, disconnecting");
 			conn_disconnect(conn);
 		    }
 		} else {
@@ -328,7 +328,7 @@ void xmpp_run(xmpp_ctx_t *ctx)
 
     ctx->loop_status = XMPP_LOOP_RUNNING;
     while (ctx->loop_status == XMPP_LOOP_RUNNING) {
-      xmpp_run_once(ctx, DEFAULT_TIMEOUT);
+	xmpp_run_once(ctx, DEFAULT_TIMEOUT);
     }
 
     xmpp_debug(ctx, "event", "Event loop completed.");
@@ -346,7 +346,6 @@ void xmpp_stop(xmpp_ctx_t *ctx)
 {
     xmpp_debug(ctx, "event", "Stopping event loop.");
 
-  if (ctx->loop_status == XMPP_LOOP_RUNNING) {
-    ctx->loop_status = XMPP_LOOP_QUIT;
-  }
+    if (ctx->loop_status == XMPP_LOOP_RUNNING)
+	ctx->loop_status = XMPP_LOOP_QUIT;
 }
