@@ -79,8 +79,6 @@
 		23F6C1CC1990A993005D2ED7 /* hash.c in Sources */ = {isa = PBXBuildFile; fileRef = 23F6C1AD1990A993005D2ED7 /* hash.c */; };
 		23F6C1CD1990A993005D2ED7 /* jid.c in Sources */ = {isa = PBXBuildFile; fileRef = 23F6C1AF1990A993005D2ED7 /* jid.c */; };
 		23F6C1CE1990A993005D2ED7 /* md5.c in Sources */ = {isa = PBXBuildFile; fileRef = 23F6C1B01990A993005D2ED7 /* md5.c */; };
-		23F6C1CF1990A993005D2ED7 /* oocontext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23F6C1B21990A993005D2ED7 /* oocontext.cpp */; };
-		23F6C1D01990A993005D2ED7 /* oostanza.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23F6C1B31990A993005D2ED7 /* oostanza.cpp */; };
 		23F6C1D11990A993005D2ED7 /* parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 23F6C1B51990A993005D2ED7 /* parser.c */; };
 		23F6C1D21990A993005D2ED7 /* sasl.c in Sources */ = {isa = PBXBuildFile; fileRef = 23F6C1B71990A993005D2ED7 /* sasl.c */; };
 		23F6C1D31990A993005D2ED7 /* sha1.c in Sources */ = {isa = PBXBuildFile; fileRef = 23F6C1B91990A993005D2ED7 /* sha1.c */; };
@@ -282,8 +280,6 @@
 		23F6C1AF1990A993005D2ED7 /* jid.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jid.c; sourceTree = "<group>"; };
 		23F6C1B01990A993005D2ED7 /* md5.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = md5.c; sourceTree = "<group>"; };
 		23F6C1B11990A993005D2ED7 /* md5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = md5.h; sourceTree = "<group>"; };
-		23F6C1B21990A993005D2ED7 /* oocontext.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = oocontext.cpp; sourceTree = "<group>"; };
-		23F6C1B31990A993005D2ED7 /* oostanza.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = oostanza.cpp; sourceTree = "<group>"; };
 		23F6C1B41990A993005D2ED7 /* ostypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ostypes.h; sourceTree = "<group>"; };
 		23F6C1B51990A993005D2ED7 /* parser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = parser.c; sourceTree = "<group>"; };
 		23F6C1B61990A993005D2ED7 /* parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = parser.h; sourceTree = "<group>"; };
@@ -296,7 +292,6 @@
 		23F6C1BD1990A993005D2ED7 /* sock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sock.h; sourceTree = "<group>"; };
 		23F6C1BE1990A993005D2ED7 /* stanza.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = stanza.c; sourceTree = "<group>"; };
 		23F6C1BF1990A993005D2ED7 /* strophe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = strophe.h; sourceTree = "<group>"; };
-		23F6C1C01990A993005D2ED7 /* strophepp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = strophepp.h; sourceTree = "<group>"; };
 		23F6C1C11990A993005D2ED7 /* thread.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = thread.c; sourceTree = "<group>"; };
 		23F6C1C21990A993005D2ED7 /* thread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = thread.h; sourceTree = "<group>"; };
 		23F6C1C31990A993005D2ED7 /* tls.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tls.c; sourceTree = "<group>"; };
@@ -732,9 +727,6 @@
 				23F6C1C41990A993005D2ED7 /* tls.h */,
 				23F6C1C51990A993005D2ED7 /* util.c */,
 				23F6C1C61990A993005D2ED7 /* util.h */,
-				23F6C1C01990A993005D2ED7 /* strophepp.h */,
-				23F6C1B21990A993005D2ED7 /* oocontext.cpp */,
-				23F6C1B31990A993005D2ED7 /* oostanza.cpp */,
 			);
 			path = strophe;
 			sourceTree = "<group>";
@@ -896,7 +888,6 @@
 				23C5473D1994C0E900B4C0F7 /* ABEngineConnection.m in Sources */,
 				23F6C1D11990A993005D2ED7 /* parser.c in Sources */,
 				23F6C1D91990A993005D2ED7 /* util.c in Sources */,
-				23F6C1D01990A993005D2ED7 /* oostanza.cpp in Sources */,
 				0A205D2A19C3F37D00ED4EED /* ABEngineStorage.m in Sources */,
 				0A205D1219C3DA3600ED4EED /* ABMainViewController.m in Sources */,
 				0A5BAE701991382E001EF07E /* ABEngine.m in Sources */,
@@ -911,7 +902,6 @@
 				0A2865CF19B8E1BD00F20312 /* ABContactInfoViewController.m in Sources */,
 				0A2865DB19B8F13200F20312 /* ABUserInfoViewController.m in Sources */,
 				0A78E5F119CD256C004A7D6C /* TKAlertView.m in Sources */,
-				23F6C1CF1990A993005D2ED7 /* oocontext.cpp in Sources */,
 				0A205D2D19C482D600ED4EED /* ABEngineVcard.m in Sources */,
 				0A78E5F419CD256C004A7D6C /* TKTableView.m in Sources */,
 				23F6C1D61990A993005D2ED7 /* stanza.c in Sources */,
