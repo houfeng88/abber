@@ -39,30 +39,30 @@ int ABRosterPushHandler(xmpp_conn_t * const conn,
 {
   DDLogCDebug(@"[roster] Roster push received.");
   
-  xmpp_stanza_t *iq = xmpp_stanza_new(conn->ctx);
-  xmpp_stanza_set_name(iq, "iq");
-  xmpp_stanza_set_attribute(iq, "id", xmpp_stanza_get_attribute(stanza, "id"));
-  xmpp_stanza_set_attribute(iq, "type", "result");
-  xmpp_send(conn, iq);
-  xmpp_stanza_release(iq);
+  xmpp_stanza_t *ciq = xmpp_stanza_new(conn->ctx);
+  xmpp_stanza_set_name(ciq, "iq");
+  xmpp_stanza_set_attribute(ciq, "id", xmpp_stanza_get_attribute(stanza, "id"));
+  xmpp_stanza_set_attribute(ciq, "type", "result");
+  xmpp_send(conn, ciq);
+  xmpp_stanza_release(ciq);
   
   
   ABEngine *engine = (__bridge ABEngine *)userdata;
   
-  xmpp_stanza_t *query = ABStanzaChildByName(stanza, @"query");
-  xmpp_stanza_t *item = ABStanzaFirstChild(query);
-  if ( item ) {
+  xmpp_stanza_t *cquery = ABStanzaChildByName(stanza, @"query");
+  xmpp_stanza_t *citem = ABStanzaFirstChild(cquery);
+  if ( citem ) {
     
-    NSString *jid = ABStanzaGetAttribute(item, @"jid");
+    NSString *jid = ABStanzaGetAttribute(citem, @"jid");
     if ( TKSNonempty(jid) ) {
       ABContact *contact = [engine contactByJid:jid];
       if ( !contact ) {
         contact = [[ABContact alloc] init];
+        contact.jid = jid;
       }
-      contact.jid = jid;
-      contact.memoname = ABStanzaGetAttribute(item, @"name");
-      contact.ask = ABStanzaGetAttribute(item, @"ask");
-      contact.subscription = ABStanzaGetAttribute(item, @"subscription");
+      contact.memoname = ABStanzaGetAttribute(citem, @"name");
+      contact.ask = ABStanzaGetAttribute(citem, @"ask");
+      contact.subscription = ABStanzaGetAttribute(citem, @"subscription");
       
       if ( [@"remove" isEqualToString:contact.subscription] ) {
         [engine deleteContactByJid:jid];
@@ -182,38 +182,43 @@ int ABRosterRequestHandler(xmpp_conn_t * const conn,
   ABEngine *engine = (__bridge id)ABHandlexGetNonretainedObject(userdata, @"engine");
   ABEngineCompletionHandler completion = (__bridge id)ABHandlexGetObject(userdata, @"completion");
   
-  
-  NSMutableArray *roster = [[NSMutableArray alloc] init];
+
   NSError *error = ABStanzaMakeError(stanza);
   
-  if ( !error ) {
+  if ( error ) {
+
+    [engine didReceiveRoster:nil error:error completion:completion];
     
-    xmpp_stanza_t *query = ABStanzaChildByName(stanza, @"query");
-    xmpp_stanza_t *item = ABStanzaFirstChild(query);
-    while ( item ) {
-      
-      NSString *jid = ABStanzaGetAttribute(item, @"jid");
+  } else {
+
+    NSMutableArray *roster = [[NSMutableArray alloc] init];
+
+    xmpp_stanza_t *cquery = ABStanzaChildByName(stanza, @"query");
+    xmpp_stanza_t *citem = ABStanzaFirstChild(cquery);
+    while ( citem ) {
+
+      NSString *jid = ABStanzaGetAttribute(citem, @"jid");
       if ( TKSNonempty(jid) ) {
         ABContact *contact = [engine contactByJid:jid];
         if ( !contact ) {
           contact = [[ABContact alloc] init];
+          contact.jid = jid;
         }
-        contact.jid = jid;
-        contact.memoname = ABStanzaGetAttribute(item, @"name");
-        contact.ask = ABStanzaGetAttribute(item, @"ask");
-        contact.subscription = ABStanzaGetAttribute(item, @"subscription");
-        
+        contact.memoname = ABStanzaGetAttribute(citem, @"name");
+        contact.ask = ABStanzaGetAttribute(citem, @"ask");
+        contact.subscription = ABStanzaGetAttribute(citem, @"subscription");
+
         [roster addObject:contact];
       }
-      
-      item = ABStanzaNextChild(item);
+
+      citem = ABStanzaNextChild(citem);
     }
-    
+
+    [engine saveRoster:roster];
+    [engine syncContacts];
+    [engine didReceiveRoster:roster error:error completion:completion];
+
   }
-  
-  [engine saveRoster:roster];
-  [engine syncContacts];
-  [engine didReceiveRoster:roster error:error completion:completion];
   
   
   ABHandlexDestroy(userdata);
@@ -229,11 +234,10 @@ int ABRosterAddHandler(xmpp_conn_t * const conn,
   ABEngine *engine = (__bridge id)ABHandlexGetNonretainedObject(userdata, @"engine");
   ABEngineCompletionHandler completion = (__bridge id)ABHandlexGetObject(userdata, @"completion");
   
-  
-  NSString *jid = ABJidBare(ABStanzaGetAttribute(stanza, @"to"));
-  NSError *error = ABStanzaMakeError(stanza);
-  
-  [engine didCompleteAddContact:jid error:error completion:completion];
+
+  [engine didCompleteUpdateContact:ABJidBare(ABStanzaGetAttribute(stanza, @"to"))
+                             error:ABStanzaMakeError(stanza)
+                        completion:completion];
   
   
   ABHandlexDestroy(userdata);
@@ -248,12 +252,11 @@ int ABRosterUpdateHandler(xmpp_conn_t * const conn,
   
   ABEngine *engine = (__bridge id)ABHandlexGetNonretainedObject(userdata, @"engine");
   ABEngineCompletionHandler completion = (__bridge id)ABHandlexGetObject(userdata, @"completion");
-  
-  
-  NSString *jid = ABJidBare(ABStanzaGetAttribute(stanza, @"to"));
-  NSError *error = ABStanzaMakeError(stanza);
-  
-  [engine didCompleteUpdateContact:jid error:error completion:completion];
+
+
+  [engine didCompleteUpdateContact:ABJidBare(ABStanzaGetAttribute(stanza, @"to"))
+                             error:ABStanzaMakeError(stanza)
+                        completion:completion];
   
   
   ABHandlexDestroy(userdata);
@@ -269,11 +272,10 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
   ABEngine *engine = (__bridge id)ABHandlexGetNonretainedObject(userdata, @"engine");
   ABEngineCompletionHandler completion = (__bridge id)ABHandlexGetObject(userdata, @"completion");
   
-  
-  NSString *jid = ABJidBare(ABStanzaGetAttribute(stanza, @"to"));
-  NSError *error = ABStanzaMakeError(stanza);
-  
-  [engine didCompleteUpdateContact:jid error:error completion:completion];
+
+  [engine didCompleteUpdateContact:ABJidBare(ABStanzaGetAttribute(stanza, @"to"))
+                             error:ABStanzaMakeError(stanza)
+                        completion:completion];
   
   
   ABHandlexDestroy(userdata);
@@ -297,22 +299,22 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
     xmpp_id_handler_add(_connection, ABRosterRequestHandler, TKCString(identifier), contextRef);
     
     
-    xmpp_stanza_t *iq = ABStanzaCreate(_connection->ctx, @"iq", nil);
-    ABStanzaSetAttribute(iq, @"id", identifier);
-    ABStanzaSetAttribute(iq, @"type", @"get");
+    xmpp_stanza_t *ciq = ABStanzaCreate(_connection->ctx, @"iq", nil);
+    ABStanzaSetAttribute(ciq, @"id", identifier);
+    ABStanzaSetAttribute(ciq, @"type", @"get");
     
-    xmpp_stanza_t *query = ABStanzaCreate(_connection->ctx, @"query", nil);
-    ABStanzaSetAttribute(query, @"xmlns", @"jabber:iq:roster");
-    ABStanzaAddChild(iq, query);
+    xmpp_stanza_t *cquery = ABStanzaCreate(_connection->ctx, @"query", nil);
+    ABStanzaSetAttribute(cquery, @"xmlns", @"jabber:iq:roster");
+    ABStanzaAddChild(ciq, cquery);
     
-    [self sendData:ABStanzaToData(iq)];
+    [self sendData:ABStanzaToData(ciq)];
     
     return YES;
   }
   return NO;
 }
 
-- (BOOL)addContact:(NSString *)jid name:(NSString *)name completion:(ABEngineCompletionHandler)completion
+- (BOOL)addContact:(NSString *)jid memoname:(NSString *)memoname completion:(ABEngineCompletionHandler)completion
 {
 //  <iq id='ph1xaz53' type='set'>
 //    <query xmlns='jabber:iq:roster'>
@@ -330,22 +332,22 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
       xmpp_id_handler_add(_connection, ABRosterAddHandler, TKCString(identifier), contextRef);
       
       
-      xmpp_stanza_t *iq = ABStanzaCreate(_connection->ctx, @"iq", nil);
-      ABStanzaSetAttribute(iq, @"id", identifier);
-      ABStanzaSetAttribute(iq, @"type", @"set");
+      xmpp_stanza_t *ciq = ABStanzaCreate(_connection->ctx, @"iq", nil);
+      ABStanzaSetAttribute(ciq, @"id", identifier);
+      ABStanzaSetAttribute(ciq, @"type", @"set");
       
-      xmpp_stanza_t *query = ABStanzaCreate(_connection->ctx, @"query", nil);
-      ABStanzaSetAttribute(query, @"xmlns", @"jabber:iq:roster");
-      ABStanzaAddChild(iq, query);
+      xmpp_stanza_t *cquery = ABStanzaCreate(_connection->ctx, @"query", nil);
+      ABStanzaSetAttribute(cquery, @"xmlns", @"jabber:iq:roster");
+      ABStanzaAddChild(ciq, cquery);
       
-      xmpp_stanza_t *item = ABStanzaCreate(_connection->ctx, @"item", nil);
-      ABStanzaSetAttribute(item, @"jid", jid);
-      if ( name ) {
-        ABStanzaSetAttribute(item, @"name", name);
+      xmpp_stanza_t *citem = ABStanzaCreate(_connection->ctx, @"item", nil);
+      ABStanzaSetAttribute(citem, @"jid", jid);
+      if ( memoname ) {
+        ABStanzaSetAttribute(citem, @"name", memoname);
       }
-      ABStanzaAddChild(query, item);
+      ABStanzaAddChild(cquery, citem);
       
-      [self sendData:ABStanzaToData(iq)];
+      [self sendData:ABStanzaToData(ciq)];
       
       return YES;
     }
@@ -353,7 +355,7 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
   return NO;
 }
 
-- (BOOL)updateContact:(NSString *)jid name:(NSString *)name completion:(ABEngineCompletionHandler)completion
+- (BOOL)updateContact:(NSString *)jid memoname:(NSString *)memoname completion:(ABEngineCompletionHandler)completion
 {
 //  <iq id='ph1xaz53' type='set'>
 //    <query xmlns='jabber:iq:roster'>
@@ -371,22 +373,22 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
       xmpp_id_handler_add(_connection, ABRosterUpdateHandler, TKCString(identifier), contextRef);
       
       
-      xmpp_stanza_t *iq = ABStanzaCreate(_connection->ctx, @"iq", nil);
-      ABStanzaSetAttribute(iq, @"id", identifier);
-      ABStanzaSetAttribute(iq, @"type", @"set");
+      xmpp_stanza_t *ciq = ABStanzaCreate(_connection->ctx, @"iq", nil);
+      ABStanzaSetAttribute(ciq, @"id", identifier);
+      ABStanzaSetAttribute(ciq, @"type", @"set");
       
-      xmpp_stanza_t *query = ABStanzaCreate(_connection->ctx, @"query", nil);
-      ABStanzaSetAttribute(query, @"xmlns", @"jabber:iq:roster");
-      ABStanzaAddChild(iq, query);
+      xmpp_stanza_t *cquery = ABStanzaCreate(_connection->ctx, @"query", nil);
+      ABStanzaSetAttribute(cquery, @"xmlns", @"jabber:iq:roster");
+      ABStanzaAddChild(ciq, cquery);
       
-      xmpp_stanza_t *item = ABStanzaCreate(_connection->ctx, @"item", nil);
-      ABStanzaSetAttribute(item, @"jid", jid);
-      if ( name ) {
-        ABStanzaSetAttribute(item, @"name", name);
+      xmpp_stanza_t *citem = ABStanzaCreate(_connection->ctx, @"item", nil);
+      ABStanzaSetAttribute(citem, @"jid", jid);
+      if ( memoname ) {
+        ABStanzaSetAttribute(citem, @"name", memoname);
       }
-      ABStanzaAddChild(query, item);
+      ABStanzaAddChild(cquery, citem);
       
-      [self sendData:ABStanzaToData(iq)];
+      [self sendData:ABStanzaToData(ciq)];
       
       return YES;
     }
@@ -412,20 +414,20 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
       xmpp_id_handler_add(_connection, ABRosterRemoveHandler, TKCString(identifier), contextRef);
       
       
-      xmpp_stanza_t *iq = ABStanzaCreate(_connection->ctx, @"iq", nil);
-      ABStanzaSetAttribute(iq, @"id", identifier);
-      ABStanzaSetAttribute(iq, @"type", @"set");
+      xmpp_stanza_t *ciq = ABStanzaCreate(_connection->ctx, @"iq", nil);
+      ABStanzaSetAttribute(ciq, @"id", identifier);
+      ABStanzaSetAttribute(ciq, @"type", @"set");
       
-      xmpp_stanza_t *query = ABStanzaCreate(_connection->ctx, @"query", nil);
-      ABStanzaSetAttribute(query, @"xmlns", @"jabber:iq:roster");
-      ABStanzaAddChild(iq, query);
+      xmpp_stanza_t *cquery = ABStanzaCreate(_connection->ctx, @"query", nil);
+      ABStanzaSetAttribute(cquery, @"xmlns", @"jabber:iq:roster");
+      ABStanzaAddChild(ciq, cquery);
       
-      xmpp_stanza_t *item = ABStanzaCreate(_connection->ctx, @"item", nil);
-      ABStanzaSetAttribute(item, @"jid", jid);
-      ABStanzaSetAttribute(item, @"subscription", @"remove");
-      ABStanzaAddChild(query, item);
+      xmpp_stanza_t *citem = ABStanzaCreate(_connection->ctx, @"item", nil);
+      ABStanzaSetAttribute(citem, @"jid", jid);
+      ABStanzaSetAttribute(citem, @"subscription", @"remove");
+      ABStanzaAddChild(cquery, citem);
       
-      [self sendData:ABStanzaToData(iq)];
+      [self sendData:ABStanzaToData(ciq)];
       
       return YES;
     }

@@ -56,56 +56,58 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
   DDLogCDebug(@"[presence] Presence received.");
   
   ABEngine *engine = (__bridge ABEngine *)userdata;
-  
-  NSString *type = ABStanzaGetAttribute(stanza, @"type");
-  NSString *jid = ABJidBare(ABStanzaGetAttribute(stanza, @"from"));
-  
-  if ( TKSNonempty(jid) ) {
+
+  NSString *from = ABJidBare(ABStanzaGetAttribute(stanza, @"from"));
+  if ( TKSNonempty(from) ) {
+
+    NSString *type = ABStanzaGetAttribute(stanza, @"type");
     if ( [@"error" isEqualToString:type] ) {
       
     } else if ( [@"probe" isEqualToString:type] ) {
       
     } else if ( [@"subscribe" isEqualToString:type] ) {
-      ABContact *contact = [engine contactByJid:jid];
+      ABContact *contact = [engine contactByJid:from];
       if ( ([@"to" isEqualToString:contact.subscription]) && (!TKSNonempty(contact.ask)) ) {
-        [engine subscribedContact:jid];
+        [engine subscribedContact:from];
       } else {
-        [engine didReceiveFriendRequest:jid];
+        [engine didReceiveFriendRequest:from];
       }
     } else if ( [@"subscribed" isEqualToString:type] ) {
       
     } else if ( [@"unavailable" isEqualToString:type] ) {
-      ABContact *contact = [engine contactByJid:jid];
+      ABContact *contact = [engine contactByJid:from];
       contact.status = ABPresenceUnavailable;
-      [engine didReceiveStatus:ABPresenceUnavailable contact:jid];
+      [engine didReceiveStatus:ABPresenceUnavailable contact:from];
     } else if ( [@"unsubscribe" isEqualToString:type] ) {
       
     } else if ( [@"unsubscribed" isEqualToString:type] ) {
       
     } else {
-      NSString *show = ABStanzaGetText(ABStanzaChildByName(stanza, @"show"));
+      xmpp_stanza_t *cshow = ABStanzaChildByName(stanza, @"show");
+      NSString *show = ABStanzaGetText(cshow);
       if ( [@"chat" isEqualToString:show] ) {
-        ABContact *contact = [engine contactByJid:jid];
+        ABContact *contact = [engine contactByJid:from];
         contact.status = ABPresenceChat;
-        [engine didReceiveStatus:ABPresenceChat contact:jid];
+        [engine didReceiveStatus:ABPresenceChat contact:from];
       } else if ( [@"away" isEqualToString:show] ) {
-        ABContact *contact = [engine contactByJid:jid];
+        ABContact *contact = [engine contactByJid:from];
         contact.status = ABPresenceAway;
-        [engine didReceiveStatus:ABPresenceAway contact:jid];
+        [engine didReceiveStatus:ABPresenceAway contact:from];
       } else if ( [@"dnd" isEqualToString:show] ) {
-        ABContact *contact = [engine contactByJid:jid];
+        ABContact *contact = [engine contactByJid:from];
         contact.status = ABPresenceDND;
-        [engine didReceiveStatus:ABPresenceDND contact:jid];
+        [engine didReceiveStatus:ABPresenceDND contact:from];
       } else if ( [@"xa" isEqualToString:show] ) {
-        ABContact *contact = [engine contactByJid:jid];
+        ABContact *contact = [engine contactByJid:from];
         contact.status = ABPresenceXA;
-        [engine didReceiveStatus:ABPresenceXA contact:jid];
+        [engine didReceiveStatus:ABPresenceXA contact:from];
       } else {
-        ABContact *contact = [engine contactByJid:jid];
+        ABContact *contact = [engine contactByJid:from];
         contact.status = ABPresenceAvailable;
-        [engine didReceiveStatus:ABPresenceAvailable contact:jid];
+        [engine didReceiveStatus:ABPresenceAvailable contact:from];
       }
     }
+
   }
   
   return 1;
@@ -157,11 +159,11 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
   if ( [self isConnected] ) {
     if ( TKSNonempty(jid) ) {
       
-      xmpp_stanza_t *presence = ABStanzaCreate(_connection->ctx, @"presence", nil);
-      ABStanzaSetAttribute(presence, @"to", jid);
-      ABStanzaSetAttribute(presence, @"type", @"subscribe");
+      xmpp_stanza_t *cpresence = ABStanzaCreate(_connection->ctx, @"presence", nil);
+      ABStanzaSetAttribute(cpresence, @"to", jid);
+      ABStanzaSetAttribute(cpresence, @"type", @"subscribe");
       
-      [self sendData:ABStanzaToData(presence)];
+      [self sendData:ABStanzaToData(cpresence)];
       
       return YES;
     }
@@ -175,11 +177,11 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
   if ( [self isConnected] ) {
     if ( TKSNonempty(jid) ) {
       
-      xmpp_stanza_t *presence = ABStanzaCreate(_connection->ctx, @"presence", nil);
-      ABStanzaSetAttribute(presence, @"to", jid);
-      ABStanzaSetAttribute(presence, @"type", @"subscribed");
+      xmpp_stanza_t *cpresence = ABStanzaCreate(_connection->ctx, @"presence", nil);
+      ABStanzaSetAttribute(cpresence, @"to", jid);
+      ABStanzaSetAttribute(cpresence, @"type", @"subscribed");
       
-      [self sendData:ABStanzaToData(presence)];
+      [self sendData:ABStanzaToData(cpresence)];
       
       return YES;
     }
@@ -193,11 +195,11 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
   if ( [self isConnected] ) {
     if ( TKSNonempty(jid) ) {
       
-      xmpp_stanza_t *presence = ABStanzaCreate(_connection->ctx, @"presence", nil);
-      ABStanzaSetAttribute(presence, @"to", jid);
-      ABStanzaSetAttribute(presence, @"type", @"unsubscribe");
+      xmpp_stanza_t *cpresence = ABStanzaCreate(_connection->ctx, @"presence", nil);
+      ABStanzaSetAttribute(cpresence, @"to", jid);
+      ABStanzaSetAttribute(cpresence, @"type", @"unsubscribe");
       
-      [self sendData:ABStanzaToData(presence)];
+      [self sendData:ABStanzaToData(cpresence)];
       
       return YES;
     }
@@ -211,11 +213,11 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
   if ( [self isConnected] ) {
     if ( TKSNonempty(jid) ) {
       
-      xmpp_stanza_t *presence = ABStanzaCreate(_connection->ctx, @"presence", nil);
-      ABStanzaSetAttribute(presence, @"to", jid);
-      ABStanzaSetAttribute(presence, @"type", @"unsubscribed");
+      xmpp_stanza_t *cpresence = ABStanzaCreate(_connection->ctx, @"presence", nil);
+      ABStanzaSetAttribute(cpresence, @"to", jid);
+      ABStanzaSetAttribute(cpresence, @"type", @"unsubscribed");
       
-      [self sendData:ABStanzaToData(presence)];
+      [self sendData:ABStanzaToData(cpresence)];
       
       return YES;
     }
