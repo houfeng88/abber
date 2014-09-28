@@ -701,6 +701,7 @@
 		23F6C1A61990A993005D2ED7 /* strophe */ = {
 			isa = PBXGroup;
 			children = (
+				0A4F717C19D86FAA0041E959 /* strophe.h */,
 				0A4F716419D86FAA0041E959 /* auth.c */,
 				0A4F716519D86FAA0041E959 /* common.h */,
 				0A4F716619D86FAA0041E959 /* conn.c */,
@@ -725,7 +726,6 @@
 				0A4F717919D86FAA0041E959 /* sock.c */,
 				0A4F717A19D86FAA0041E959 /* sock.h */,
 				0A4F717B19D86FAA0041E959 /* stanza.c */,
-				0A4F717C19D86FAA0041E959 /* strophe.h */,
 				0A4F717D19D86FAA0041E959 /* thread.c */,
 				0A4F717E19D86FAA0041E959 /* thread.h */,
 				0A4F717F19D86FAA0041E959 /* tls.c */,

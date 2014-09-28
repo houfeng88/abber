@@ -36,7 +36,7 @@
 static const uint8_t ipad = 0x36;
 static const uint8_t opad = 0x5C;
 
-static void SHA1(const uint8_t* data, size_t len,
+static void sha1(const uint8_t* data, size_t len,
                  uint8_t digest[SHA1_DIGEST_SIZE])
 {
     sha1_ctx_t ctx;
@@ -45,7 +45,7 @@ static void SHA1(const uint8_t* data, size_t len,
     sha1_final(&ctx, digest);
 }
 
-static void HMAC_SHA1(const uint8_t *key, size_t key_len,
+static void hmac_sha1(const uint8_t *key, size_t key_len,
                       const uint8_t *text, size_t len,
                       uint8_t digest[SHA1_DIGEST_SIZE])
 {
@@ -61,7 +61,7 @@ static void HMAC_SHA1(const uint8_t *key, size_t key_len,
         memcpy(key_pad, key, key_len);
     } else {
         /* according to RFC2104 */
-        SHA1(key, key_len, key_pad);
+        sha1(key, key_len, key_pad);
     }
 
     for (i = 0; i < BLOCK_SIZE; i++) {
@@ -80,7 +80,7 @@ static void HMAC_SHA1(const uint8_t *key, size_t key_len,
     sha1_final(&ctx, digest);
 }
 
-static void SCRAM_SHA1_Hi(const uint8_t *text, size_t len,
+static void scram_sha1_hi(const uint8_t *text, size_t len,
                           const uint8_t *salt, size_t salt_len, uint32_t i,
                           uint8_t digest[SHA1_DIGEST_SIZE])
 {
@@ -101,11 +101,11 @@ static void SCRAM_SHA1_Hi(const uint8_t *text, size_t len,
     memcpy(&tmp[salt_len], int1, sizeof(int1));
 
     /* 'text' for Hi is a 'key' for HMAC */
-    HMAC_SHA1(text, len, tmp, salt_len + sizeof(int1), digest);
+    hmac_sha1(text, len, tmp, salt_len + sizeof(int1), digest);
     memcpy(tmp, digest, SHA1_DIGEST_SIZE);
 
     for (j = 1; j < i; j++) {
-        HMAC_SHA1(text, len, tmp, SHA1_DIGEST_SIZE, tmp);
+        hmac_sha1(text, len, tmp, SHA1_DIGEST_SIZE, tmp);
         for (k = 0; k < SHA1_DIGEST_SIZE; k++) {
             digest[k] ^= tmp[k];
         }
@@ -120,8 +120,8 @@ void scram_sha1_client_key(const uint8_t *password, size_t len,
 
     /* XXX: Normalize(password) is omitted */
 
-    SCRAM_SHA1_Hi(password, len, salt, salt_len, i, salted);
-    HMAC_SHA1(salted, SHA1_DIGEST_SIZE, (uint8_t *)"Client Key",
+    scram_sha1_hi(password, len, salt, salt_len, i, salted);
+    hmac_sha1(salted, SHA1_DIGEST_SIZE, (uint8_t *)"Client Key",
               strlen("Client Key"), key);
 }
 
@@ -131,8 +131,8 @@ void scram_sha1_client_signature(const uint8_t ClientKey[SHA1_DIGEST_SIZE],
 {
     uint8_t stored[SHA1_DIGEST_SIZE];
 
-    SHA1(ClientKey, SHA1_DIGEST_SIZE, stored);
-    HMAC_SHA1(stored, SHA1_DIGEST_SIZE, AuthMessage, len, sign);
+    sha1(ClientKey, SHA1_DIGEST_SIZE, stored);
+    hmac_sha1(stored, SHA1_DIGEST_SIZE, AuthMessage, len, sign);
 }
 
 void scram_sha1_client_proof(const uint8_t ClientKey[SHA1_DIGEST_SIZE],

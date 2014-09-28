@@ -115,7 +115,7 @@ static void sha1_transform(uint32_t state[5], const uint8_t buffer[64]);
 
 
 #ifdef VERBOSE  /* SAK */
-void sha_print_context(sha1_ctx_t *context, char *msg){
+void sha1_print_context(sha1_ctx_t *context, char *msg){
   printf("%s (%d,%d) %x %x %x %x %x\n",
 	 msg,
 	 context->count[0], context->count[1], 
@@ -205,7 +205,7 @@ void sha1_update(sha1_ctx_t* context, const uint8_t* data, const size_t len)
     size_t i, j;
 
 #ifdef VERBOSE
-    sha_print_context(context, "before");
+    sha1_print_context(context, "before");
 #endif
 
     j = (context->count[0] >> 3) & 63;
@@ -223,7 +223,7 @@ void sha1_update(sha1_ctx_t* context, const uint8_t* data, const size_t len)
     memcpy(&context->buffer[j], &data[i], len - i);
 
 #ifdef VERBOSE
-    sha_print_context(context, "after ");
+    sha1_print_context(context, "after ");
 #endif
 }
 
