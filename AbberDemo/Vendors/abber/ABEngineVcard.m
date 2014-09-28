@@ -61,26 +61,27 @@ int ABVcardRequestHandler(xmpp_conn_t * const conn,
   
   ABEngine *engine = (__bridge id)ABHandlexGetNonretainedObject(userdata, @"engine");
   ABEngineCompletionHandler completion = (__bridge id)ABHandlexGetObject(userdata, @"completion");
+
   
-  
-  ABContact *contact = nil;
-  NSError *error = nil;
-  
-  xmpp_stanza_t *vcard = ABStanzaChildByName(stanza, @"vCard");
-  
-  NSString *jid = ABStanzaGetAttribute(stanza, @"from");
-  contact = [engine contactByJid:TKStrOrLater(jid, [engine bareJid])];
+  NSString *from = ABJidBare(ABStanzaGetAttribute(stanza, @"from"));
+
+  ABContact *contact = [engine contactByJid:from];
   if ( !contact ) {
     contact = [[ABContact alloc] init];
+    contact.jid = TKStrOrLater(from, [engine bareJid]);
   }
+
+  xmpp_stanza_t *cvcard = ABStanzaChildByName(stanza, @"vCard");
+
+  xmpp_stanza_t *cnickname = ABStanzaChildByName(cvcard, @"NICKNAME");
+  contact.nickname = ABStanzaGetText(cnickname);
+
+  xmpp_stanza_t *cdesc = ABStanzaChildByName(cvcard, @"DESC");
+  contact.desc = ABStanzaGetText(cdesc);
   
-  xmpp_stanza_t *nickname = ABStanzaChildByName(vcard, @"NICKNAME");
-  contact.nickname = ABStanzaGetText(nickname);
-  
-  xmpp_stanza_t *desc = ABStanzaChildByName(vcard, @"DESC");
-  contact.desc = ABStanzaGetText(desc);
-  
-  [engine didReceiveVcard:contact error:error completion:completion];
+  [engine didReceiveVcard:contact
+                    error:nil
+               completion:completion];
   
   
   ABHandlexDestroy(userdata);
@@ -95,12 +96,11 @@ int ABVcardUpdateHandler(xmpp_conn_t * const conn,
   
   ABEngine *engine = (__bridge id)ABHandlexGetNonretainedObject(userdata, @"engine");
   ABEngineCompletionHandler completion = (__bridge id)ABHandlexGetObject(userdata, @"completion");
-  
-  
-  NSString *jid = ABJidBare(ABStanzaGetAttribute(stanza, @"to"));
-  NSError *error = ABStanzaMakeError(stanza);
-  
-  [engine didCompleteUpdateVcard:jid error:error completion:completion];
+
+
+  [engine didCompleteUpdateVcard:ABJidBare(ABStanzaGetAttribute(stanza, @"to"))
+                           error:ABStanzaMakeError(stanza)
+                      completion:completion];
   
   
   ABHandlexDestroy(userdata);
@@ -109,7 +109,7 @@ int ABVcardUpdateHandler(xmpp_conn_t * const conn,
 
 @implementation ABEngine (Vcard)
 
-- (void)requestVcard:(NSString *)jid completion:(ABEngineCompletionHandler)completion
+- (BOOL)requestVcard:(NSString *)jid completion:(ABEngineCompletionHandler)completion
 {
 //  <iq from='stpeter@jabber.org/roundabout' id='v1' type='get'>
 //    <vCard xmlns='vcard-temp'/>
@@ -124,21 +124,24 @@ int ABVcardUpdateHandler(xmpp_conn_t * const conn,
     xmpp_id_handler_add(_connection, ABVcardRequestHandler, TKCString(identifier), contextRef);
     
     
-    xmpp_stanza_t *iq = ABStanzaCreate(_connection->ctx, @"iq", nil);
-    ABStanzaSetAttribute(iq, @"id", identifier);
-    ABStanzaSetAttribute(iq, @"type", @"get");
-    ABStanzaSetAttribute(iq, @"from", [self boundJid]);
-    ABStanzaSetAttribute(iq, @"to", TKStrOrLater(jid, nil));
+    xmpp_stanza_t *ciq = ABStanzaCreate(_connection->ctx, @"iq", nil);
+    ABStanzaSetAttribute(ciq, @"id", identifier);
+    ABStanzaSetAttribute(ciq, @"type", @"get");
+    ABStanzaSetAttribute(ciq, @"from", [self boundJid]);
+    ABStanzaSetAttribute(ciq, @"to", TKStrOrLater(jid, nil));
     
-    xmpp_stanza_t *vCard = ABStanzaCreate(_connection->ctx, @"vCard", nil);
-    ABStanzaSetAttribute(vCard, @"xmlns", @"vcard-temp");
-    ABStanzaAddChild(iq, vCard);
+    xmpp_stanza_t *cvcard = ABStanzaCreate(_connection->ctx, @"vCard", nil);
+    ABStanzaSetAttribute(cvcard, @"xmlns", @"vcard-temp");
+    ABStanzaAddChild(ciq, cvcard);
     
-    [self sendData:ABStanzaToData(iq)];
+    [self sendData:ABStanzaToData(ciq)];
+
+    return YES;
   }
+  return NO;
 }
 
-- (void)updateVcardWithNickname:(NSString *)nickname desc:(NSString *)desc completion:(ABEngineCompletionHandler)completion
+- (BOOL)updateVcardWithNickname:(NSString *)nickname desc:(NSString *)desc completion:(ABEngineCompletionHandler)completion
 {
 //  <iq id='v2' type='set'>
 //    <vCard xmlns='vcard-temp'>
@@ -160,23 +163,25 @@ int ABVcardUpdateHandler(xmpp_conn_t * const conn,
     xmpp_id_handler_add(_connection, ABVcardUpdateHandler, TKCString(identifier), contextRef);
     
     
-    xmpp_stanza_t *iq = ABStanzaCreate(_connection->ctx, @"iq", nil);
-    ABStanzaSetAttribute(iq, @"id", identifier);
-    ABStanzaSetAttribute(iq, @"type", @"set");
+    xmpp_stanza_t *ciq = ABStanzaCreate(_connection->ctx, @"iq", nil);
+    ABStanzaSetAttribute(ciq, @"id", identifier);
+    ABStanzaSetAttribute(ciq, @"type", @"set");
     
-    xmpp_stanza_t *vCard = ABStanzaCreate(_connection->ctx, @"vCard", nil);
-    ABStanzaSetAttribute(vCard, @"xmlns", @"vcard-temp");
+    xmpp_stanza_t *cvcard = ABStanzaCreate(_connection->ctx, @"vCard", nil);
+    ABStanzaSetAttribute(cvcard, @"xmlns", @"vcard-temp");
+    ABStanzaAddChild(ciq, cvcard);
+
+    xmpp_stanza_t *cnickname = ABStanzaCreate(_connection->ctx, @"NICKNAME", nickname);
+    ABStanzaAddChild(cvcard, cnickname);
+
+    xmpp_stanza_t *cdesc = ABStanzaCreate(_connection->ctx, @"DESC", desc);
+    ABStanzaAddChild(cvcard, cdesc);
     
-    xmpp_stanza_t *nm = ABStanzaCreate(_connection->ctx, @"NICKNAME", nickname);
-    ABStanzaAddChild(vCard, nm);
-    
-    xmpp_stanza_t *ds = ABStanzaCreate(_connection->ctx, @"DESC", desc);
-    ABStanzaAddChild(vCard, ds);
-    
-    ABStanzaAddChild(iq, vCard);
-    
-    [self sendData:ABStanzaToData(iq)];
+    [self sendData:ABStanzaToData(ciq)];
+
+    return YES;
   }
+  return NO;
 }
 
 @end

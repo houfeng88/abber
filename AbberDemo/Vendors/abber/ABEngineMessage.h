@@ -18,7 +18,7 @@
 
 @interface ABEngine (Message)
 
-- (BOOL)sendMessage:(ABMessage *)msg;
+- (BOOL)sendMessage:(ABMessage *)message;
 
 @end
 
@@ -26,6 +26,6 @@
 @protocol ABEngineMessageDelegate <NSObject>
 @optional
 
-- (void)engine:(ABEngine *)engine didReceiveMessage:(ABMessage *)msg;
+- (void)engine:(ABEngine *)engine didReceiveMessage:(ABMessage *)message;
 
 @end
