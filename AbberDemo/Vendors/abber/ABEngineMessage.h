@@ -26,6 +26,6 @@
 @protocol ABEngineMessageDelegate <NSObject>
 @optional
 
-- (void)engine:(ABEngine *)engine didReceiveMessage:(id)msg type:(NSString *)type jid:(NSString *)jid;
+- (void)engine:(ABEngine *)engine didReceiveMessage:(ABMessage *)msg;
 
 @end

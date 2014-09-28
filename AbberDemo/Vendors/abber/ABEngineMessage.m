@@ -10,20 +10,20 @@
 
 @interface ABEngine (MessageIncomeNotify)
 
-- (void)didReceiveMessage:(id)msg type:(NSString *)type jid:(NSString *)jid;
+- (void)didReceiveMessage:(ABMessage *)msg;
 
 @end
 
 @implementation ABEngine (MessageIncomeNotify)
 
-- (void)didReceiveMessage:(id)msg type:(NSString *)type jid:(NSString *)jid
+- (void)didReceiveMessage:(ABMessage *)msg
 {
   dispatch_sync(dispatch_get_main_queue(), ^{
     NSArray *observerAry = [self observers];
     for ( NSUInteger i=0; i<[observerAry count]; ++i ) {
       id<ABEngineMessageDelegate> delegate = [observerAry objectAtIndex:i];
-      if ( [delegate respondsToSelector:@selector(engine:didReceiveMessage:type:jid:)] ) {
-        [delegate engine:self didReceiveMessage:msg type:type jid:jid];
+        if ( [delegate respondsToSelector:@selector(engine:didReceiveMessage:)] ) {
+          [delegate engine:self didReceiveMessage:msg];
       }
     }
   });
@@ -38,28 +38,35 @@ int ABMessageHandler(xmpp_conn_t * const conn,
   DDLogCDebug(@"[message] Message received.");
   
   ABEngine *engine = (__bridge ABEngine *)userdata;
-  
-  NSString *type = ABStanzaGetAttribute(stanza, @"type");
-  NSString *jid = ABJidBare(ABStanzaGetAttribute(stanza, @"from"));
-  
-  if ( [@"chat" isEqualToString:type] ) {
-    xmpp_stanza_t *body = ABStanzaChildByName(stanza, @"body");
-    
-    NSString *ctype = ABStanzaGetAttribute(body, @"type");
-    NSString *cbody = ABStanzaGetText(body);
-    
-    if ( [@"audio" isEqualToString:ctype] ) {
-      NSData *audio = [[NSData alloc] initWithBase64EncodedString:cbody options:0];
-      [engine didReceiveMessage:audio type:@"audio" jid:jid];
-    } else if ( [@"image" isEqualToString:ctype] ) {
-      NSData *image = [[NSData alloc] initWithBase64EncodedString:cbody options:0];
-      [engine didReceiveMessage:image type:@"image" jid:jid];
-    } else if ( [@"nudge" isEqualToString:ctype] ) {
-      [engine didReceiveMessage:nil type:@"nudge" jid:jid];
-    } else {
-      [engine didReceiveMessage:cbody type:@"text" jid:jid];
+
+  NSString *from = ABJidBare(ABStanzaGetAttribute(stanza, @"from"));
+  if ( TKSNonempty(from) ) {
+
+    if ( ABStanzaIsType(stanza, @"chat") ) {
+
+      ABMessage *msg = [[ABMessage alloc] init];
+      msg.from = from;
+
+      xmpp_stanza_t *body = ABStanzaChildByName(stanza, @"body");
+
+      NSString *type = ABStanzaGetAttribute(body, @"type");
+      if ( [ABMessageAudio isEqualToString:type] ) {
+        msg.type = ABMessageAudio;
+        msg.content = [[NSData alloc] initWithBase64EncodedString:ABStanzaGetText(body) options:0];
+      } else if ( [ABMessageImage isEqualToString:type] ) {
+        msg.type = ABMessageImage;
+        msg.content = [[NSData alloc] initWithBase64EncodedString:ABStanzaGetText(body) options:0];
+      } else if ( [ABMessageNudge isEqualToString:type] ) {
+        msg.type = ABMessageNudge;
+        msg.content = nil;
+      } else {
+        msg.type = ABMessageText;
+        msg.content = ABStanzaGetText(body);
+      }
+      
+      [engine didReceiveMessage:msg];
+      
     }
-    
   }
   
   return 1;
@@ -92,38 +99,33 @@ int ABMessageHandler(xmpp_conn_t * const conn,
 //  </message>
   if ( [self isConnected] ) {
     if ( TKSNonempty(msg.to) ) {
-      NSString *identifier = [[NSUUID UUID] UUIDString];
-      
       xmpp_stanza_t *message = ABStanzaCreate(_connection->ctx, @"message", nil);
-      ABStanzaSetAttribute(message, @"id", identifier);
+      ABStanzaSetAttribute(message, @"id", [[NSUUID UUID] UUIDString]);
       ABStanzaSetAttribute(message, @"type", @"chat");
       ABStanzaSetAttribute(message, @"to", msg.to);
-      
-      NSString *ctype = nil;
-      NSString *cbody = nil;
-      
+
       if ( [ABMessageAudio isEqualToString:msg.type] ) {
-        ctype = ABMessageAudio;
-        cbody = [msg.body base64EncodedStringWithOptions:0];
+        xmpp_stanza_t *body = ABStanzaCreate(_connection->ctx, @"body", [msg.content base64EncodedStringWithOptions:0]);
+        ABStanzaSetAttribute(body, @"type", ABMessageAudio);
+        ABStanzaAddChild(message, body);
       } else if ( [ABMessageImage isEqualToString:msg.type] ) {
-        ctype = ABMessageImage;
-        cbody = [msg.body base64EncodedStringWithOptions:0];
+        xmpp_stanza_t *body = ABStanzaCreate(_connection->ctx, @"body", [msg.content base64EncodedStringWithOptions:0]);
+        ABStanzaSetAttribute(body, @"type", ABMessageImage);
+        ABStanzaAddChild(message, body);
       } else if ( [ABMessageNudge isEqualToString:msg.type] ) {
-        ctype = ABMessageNudge;
-        cbody = nil;
+        xmpp_stanza_t *body = ABStanzaCreate(_connection->ctx, @"body", nil);
+        ABStanzaSetAttribute(body, @"type", ABMessageNudge);
+        ABStanzaAddChild(message, body);
       } else {
-        ctype = ABMessageText;
-        cbody = msg.body;
+        xmpp_stanza_t *body = ABStanzaCreate(_connection->ctx, @"body", msg.content);
+        ABStanzaSetAttribute(body, @"type", ABMessageText);
+        ABStanzaAddChild(message, body);
       }
       
-      xmpp_stanza_t *body = ABStanzaCreate(_connection->ctx, @"body", cbody);
-      ABStanzaSetAttribute(body, @"type", ctype);
-      ABStanzaAddChild(message, body);
-      
       [self sendData:ABStanzaToData(message)];
+
+      return YES;
     }
-    
-    return YES;
   }
   return NO;
 }

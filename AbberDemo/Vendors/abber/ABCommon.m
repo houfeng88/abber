@@ -367,6 +367,14 @@ NSError       *ABStanzaMakeError(xmpp_stanza_t *stanza)
   return error;
 }
 
+BOOL           ABStanzaIsType(xmpp_stanza_t *stanza, NSString *type)
+{
+  if ( TKSNonempty(type) ) {
+    return [type isEqualToString:ABStanzaGetAttribute(stanza, @"type")];
+  }
+  return NO;
+}
+
 
 #pragma mark - Handler context
 

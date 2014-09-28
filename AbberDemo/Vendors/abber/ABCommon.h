@@ -46,6 +46,7 @@ NSString      *ABStanzaToString(xmpp_stanza_t *stanza);
 NSData        *ABStanzaToData(xmpp_stanza_t *stanza);
 
 NSError       *ABStanzaMakeError(xmpp_stanza_t *stanza);
+BOOL           ABStanzaIsType(xmpp_stanza_t *stanza, NSString *type);
 
 
 // Handler context

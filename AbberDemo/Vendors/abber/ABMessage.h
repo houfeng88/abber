@@ -18,6 +18,6 @@
 @property (nonatomic, copy) NSString *from;
 @property (nonatomic, copy) NSString *to;
 @property (nonatomic, copy) NSString *type;
-@property (nonatomic, strong) id body;
+@property (nonatomic, strong) id content;
 
 @end
