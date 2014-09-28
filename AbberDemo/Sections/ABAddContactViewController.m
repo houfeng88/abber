@@ -107,7 +107,7 @@
   NSString *memo = _memonameField.text;
   
   [[ABEngine sharedObject] addContact:acnt
-                                 name:memo
+                             memoname:memo
                            completion:^(id result, NSError *error) {
                              if ( error ) {
                                [self HUDAddNo];

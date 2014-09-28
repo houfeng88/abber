@@ -121,7 +121,7 @@
   NSString *memo = _memonameField.text;
 
   [[ABEngine sharedObject] updateContact:jid
-                                    name:TKStrOrLater(memo, @"")
+                                memoname:TKStrOrLater(memo, @"")
                               completion:^(id result, NSError *error) {
                                 if ( error ) {
                                   [self HUDChangeNo];
