@@ -422,7 +422,7 @@ char *sasl_scram_sha1(xmpp_ctx_t *ctx, const char *challenge,
     xmpp_snprintf(auth, auth_len, "%s,%s,%s", first_bare + 3, challenge,
                   response);
 
-    scram_sha1_clientKey((uint8_t *)password, strlen(password),
+    scram_sha1_client_key((uint8_t *)password, strlen(password),
                          (uint8_t *)sval, sval_len, (uint32_t)ival, key);
     scram_sha1_client_signature(key, (uint8_t *)auth, strlen(auth), sign);
     for (j = 0; j < SHA1_DIGEST_SIZE; j++) {

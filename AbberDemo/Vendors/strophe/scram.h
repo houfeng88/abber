@@ -24,7 +24,7 @@
 
 #include "sha1.h"
 
-void scram_sha1_clientKey(const uint8_t *password, size_t len,
+void scram_sha1_client_key(const uint8_t *password, size_t len,
                           const uint8_t *salt, size_t salt_len, uint32_t i,
                           uint8_t key[SHA1_DIGEST_SIZE]);
 

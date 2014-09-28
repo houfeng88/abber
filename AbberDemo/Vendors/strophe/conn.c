@@ -596,7 +596,6 @@ void xmpp_send_raw(xmpp_conn_t * const conn,
 		   const char * const data, const size_t len)
 {
     mutex_lock(conn->send_lock);
-
     xmpp_send_queue_t *item;
 
     if (conn->state != XMPP_STATE_CONNECTED) {
@@ -614,7 +613,7 @@ void xmpp_send_raw(xmpp_conn_t * const conn,
     item->data = xmpp_alloc(conn->ctx, len);
     if (!item->data) {
 	xmpp_free(conn->ctx, item);
-    mutex_unlock(conn->send_lock);
+	mutex_unlock(conn->send_lock);
 	return;
     }
     memcpy(item->data, data, len);
@@ -633,7 +632,6 @@ void xmpp_send_raw(xmpp_conn_t * const conn,
 	conn->send_queue_tail = item;
     }
     conn->send_queue_len++;
-
     mutex_unlock(conn->send_lock);
 }
 
