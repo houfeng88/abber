@@ -930,3 +930,21 @@ char *xmpp_stanza_get_attribute(xmpp_stanza_t * const stanza,
 
     return hash_get(stanza->attributes, name);
 }
+
+/** Get the error name of an iq stanza.
+ *
+ *  @param stanza a Strophe stanza object
+ *
+ *  @return a string with the name value or NULL on an error
+ */
+char *xmpp_stanza_get_error_name(xmpp_stanza_t * const stanza)
+{
+  xmpp_stanza_t *errorNode = xmpp_stanza_get_child_by_name(stanza, "error");
+  if ( errorNode ) {
+    xmpp_stanza_t *descNode = xmpp_stanza_get_children(errorNode);
+    if ( descNode ) {
+      return xmpp_stanza_get_name(descNode);
+    }
+  }
+  return NULL;
+}

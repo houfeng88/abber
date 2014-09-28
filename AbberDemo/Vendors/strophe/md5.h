@@ -14,19 +14,21 @@
 /* make sure the stdint.h types are available */
 #include "ostypes.h"
 
-struct MD5Context {
+typedef struct {
 	uint32_t buf[4];
 	uint32_t bits[2];
 	unsigned char in[64];
-};
+} md5_ctx_t ;
 
-void MD5Init(struct MD5Context *context);
-void MD5Update(struct MD5Context *context, unsigned char const *buf,
+void md5_init(md5_ctx_t *context);
+void md5_update(md5_ctx_t *context, unsigned char const *buf,
 	       uint32_t len);
-void MD5Final(unsigned char digest[16], struct MD5Context *context);
+void md5_final(unsigned char digest[16], md5_ctx_t *context);
+void md5_transform(uint32_t buf[4], const unsigned char in[64],
+			md5_ctx_t *ctx);
 
 #ifdef DEBUG_MD5
-void MD5DumpBytes(unsigned char *b, int len);
+void md5_dump_bytes(unsigned char *b, int len);
 #endif
 
 #endif /* !MD5_H */

@@ -23,7 +23,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <strophe.h>
+#include "strophe.h"
 
 #include "common.h"
 #include "util.h"
@@ -80,12 +80,13 @@ xmpp_conn_t *xmpp_conn_new(xmpp_ctx_t * const ctx)
 	conn->ctx = ctx;
 
 	conn->type = XMPP_UNKNOWN;
-        conn->state = XMPP_STATE_DISCONNECTED;
+	conn->state = XMPP_STATE_DISCONNECTED;
 	conn->sock = -1;
 	conn->tls = NULL;
 	conn->timeout_stamp = 0;
 	conn->error = 0;
 	conn->stream_error = NULL;
+	xmpp_debug(ctx, "conn", "Connection state XMPP_STATE_DISCONNECTED.");
 
 	/* default send parameters */
 	conn->blocking_send = 0;
@@ -93,6 +94,7 @@ xmpp_conn_t *xmpp_conn_new(xmpp_ctx_t * const ctx)
 	conn->send_queue_len = 0;
 	conn->send_queue_head = NULL;
 	conn->send_queue_tail = NULL;
+	conn->send_lock = mutex_create(conn->ctx);
 
 	/* default timeouts */
 	conn->connect_timeout = CONNECT_TIMEOUT;
@@ -268,6 +270,7 @@ int xmpp_conn_release(xmpp_conn_t * const conn)
 
         parser_free(conn->parser);
 	
+	mutex_destroy(conn->send_lock);
 	if (conn->domain) xmpp_free(ctx, conn->domain);
 	if (conn->jid) xmpp_free(ctx, conn->jid);
 	if (conn->bound_jid) xmpp_free(ctx, conn->bound_jid);
@@ -436,6 +439,7 @@ int xmpp_connect_client(xmpp_conn_t * const conn,
      * from within the event loop */
 
     conn->state = XMPP_STATE_CONNECTING;
+    xmpp_debug(conn->ctx, "conn", "Connection state XMPP_STATE_CONNECTING.");
     conn->timeout_stamp = time_stamp();
     xmpp_debug(conn->ctx, "xmpp", "attempting to connect to %s", connectdomain);
 
@@ -466,6 +470,7 @@ void conn_disconnect(xmpp_conn_t * const conn)
 {
     xmpp_debug(conn->ctx, "xmpp", "Closing socket.");
     conn->state = XMPP_STATE_DISCONNECTED;
+    xmpp_debug(conn->ctx, "conn", "Connection state XMPP_STATE_DISCONNECTED.");
     if (conn->tls) {
 	tls_stop(conn->tls);
 	tls_free(conn->tls);
@@ -590,17 +595,26 @@ void xmpp_send_raw_string(xmpp_conn_t * const conn,
 void xmpp_send_raw(xmpp_conn_t * const conn,
 		   const char * const data, const size_t len)
 {
+    mutex_lock(conn->send_lock);
+
     xmpp_send_queue_t *item;
 
-    if (conn->state != XMPP_STATE_CONNECTED) return;
+    if (conn->state != XMPP_STATE_CONNECTED) {
+    mutex_unlock(conn->send_lock);
+    return;
+    }
 
     /* create send queue item for queue */
     item = xmpp_alloc(conn->ctx, sizeof(xmpp_send_queue_t));
-    if (!item) return;
+    if (!item) {
+    mutex_unlock(conn->send_lock);
+    return;
+    }
 
     item->data = xmpp_alloc(conn->ctx, len);
     if (!item->data) {
 	xmpp_free(conn->ctx, item);
+    mutex_unlock(conn->send_lock);
 	return;
     }
     memcpy(item->data, data, len);
@@ -619,6 +633,8 @@ void xmpp_send_raw(xmpp_conn_t * const conn,
 	conn->send_queue_tail = item;
     }
     conn->send_queue_len++;
+
+    mutex_unlock(conn->send_lock);
 }
 
 /** Send an XML stanza to the XMPP server.
