@@ -306,8 +306,10 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
     xmpp_stanza_t *cquery = ABStanzaCreate(_connection->ctx, @"query", nil);
     ABStanzaSetAttribute(cquery, @"xmlns", @"jabber:iq:roster");
     ABStanzaAddChild(ciq, cquery);
+    ABStanzaRelease(cquery);
     
     [self sendData:ABStanzaToData(ciq)];
+    ABStanzaRelease(ciq);
     
     return YES;
   }
@@ -338,7 +340,6 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
       
       xmpp_stanza_t *cquery = ABStanzaCreate(_connection->ctx, @"query", nil);
       ABStanzaSetAttribute(cquery, @"xmlns", @"jabber:iq:roster");
-      ABStanzaAddChild(ciq, cquery);
       
       xmpp_stanza_t *citem = ABStanzaCreate(_connection->ctx, @"item", nil);
       ABStanzaSetAttribute(citem, @"jid", jid);
@@ -346,8 +347,13 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
         ABStanzaSetAttribute(citem, @"name", memoname);
       }
       ABStanzaAddChild(cquery, citem);
+      ABStanzaRelease(citem);
+
+      ABStanzaAddChild(ciq, cquery);
+      ABStanzaRelease(cquery);
       
       [self sendData:ABStanzaToData(ciq)];
+      ABStanzaRelease(ciq);
       
       return YES;
     }
@@ -379,7 +385,6 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
       
       xmpp_stanza_t *cquery = ABStanzaCreate(_connection->ctx, @"query", nil);
       ABStanzaSetAttribute(cquery, @"xmlns", @"jabber:iq:roster");
-      ABStanzaAddChild(ciq, cquery);
       
       xmpp_stanza_t *citem = ABStanzaCreate(_connection->ctx, @"item", nil);
       ABStanzaSetAttribute(citem, @"jid", jid);
@@ -387,8 +392,13 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
         ABStanzaSetAttribute(citem, @"name", memoname);
       }
       ABStanzaAddChild(cquery, citem);
+      ABStanzaRelease(citem);
+
+      ABStanzaAddChild(ciq, cquery);
+      ABStanzaRelease(cquery);
       
       [self sendData:ABStanzaToData(ciq)];
+      ABStanzaRelease(ciq);
       
       return YES;
     }
@@ -420,14 +430,18 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
       
       xmpp_stanza_t *cquery = ABStanzaCreate(_connection->ctx, @"query", nil);
       ABStanzaSetAttribute(cquery, @"xmlns", @"jabber:iq:roster");
-      ABStanzaAddChild(ciq, cquery);
       
       xmpp_stanza_t *citem = ABStanzaCreate(_connection->ctx, @"item", nil);
       ABStanzaSetAttribute(citem, @"jid", jid);
       ABStanzaSetAttribute(citem, @"subscription", @"remove");
       ABStanzaAddChild(cquery, citem);
+      ABStanzaRelease(citem);
+
+      ABStanzaAddChild(ciq, cquery);
+      ABStanzaRelease(cquery);
       
       [self sendData:ABStanzaToData(ciq)];
+      ABStanzaRelease(ciq);
       
       return YES;
     }

@@ -164,6 +164,7 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
       ABStanzaSetAttribute(cpresence, @"type", @"subscribe");
       
       [self sendData:ABStanzaToData(cpresence)];
+      ABStanzaRelease(cpresence);
       
       return YES;
     }
@@ -182,6 +183,7 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
       ABStanzaSetAttribute(cpresence, @"type", @"subscribed");
       
       [self sendData:ABStanzaToData(cpresence)];
+      ABStanzaRelease(cpresence);
       
       return YES;
     }
@@ -200,6 +202,7 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
       ABStanzaSetAttribute(cpresence, @"type", @"unsubscribe");
       
       [self sendData:ABStanzaToData(cpresence)];
+      ABStanzaRelease(cpresence);
       
       return YES;
     }
@@ -218,6 +221,7 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
       ABStanzaSetAttribute(cpresence, @"type", @"unsubscribed");
       
       [self sendData:ABStanzaToData(cpresence)];
+      ABStanzaRelease(cpresence);
       
       return YES;
     }

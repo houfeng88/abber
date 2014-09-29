@@ -133,8 +133,10 @@ int ABVcardUpdateHandler(xmpp_conn_t * const conn,
     xmpp_stanza_t *cvcard = ABStanzaCreate(_connection->ctx, @"vCard", nil);
     ABStanzaSetAttribute(cvcard, @"xmlns", @"vcard-temp");
     ABStanzaAddChild(ciq, cvcard);
+    ABStanzaRelease(cvcard);
     
     [self sendData:ABStanzaToData(ciq)];
+    ABStanzaRelease(ciq);
 
     return YES;
   }
@@ -169,15 +171,20 @@ int ABVcardUpdateHandler(xmpp_conn_t * const conn,
     
     xmpp_stanza_t *cvcard = ABStanzaCreate(_connection->ctx, @"vCard", nil);
     ABStanzaSetAttribute(cvcard, @"xmlns", @"vcard-temp");
-    ABStanzaAddChild(ciq, cvcard);
 
     xmpp_stanza_t *cnickname = ABStanzaCreate(_connection->ctx, @"NICKNAME", nickname);
     ABStanzaAddChild(cvcard, cnickname);
+    ABStanzaRelease(cnickname);
 
     xmpp_stanza_t *cdesc = ABStanzaCreate(_connection->ctx, @"DESC", desc);
     ABStanzaAddChild(cvcard, cdesc);
-    
+    ABStanzaRelease(cdesc);
+
+    ABStanzaAddChild(ciq, cvcard);
+    ABStanzaRelease(cvcard);
+
     [self sendData:ABStanzaToData(ciq)];
+    ABStanzaRelease(ciq);
 
     return YES;
   }

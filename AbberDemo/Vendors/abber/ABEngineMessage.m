@@ -108,21 +108,26 @@ int ABMessageHandler(xmpp_conn_t * const conn,
         xmpp_stanza_t *cbody = ABStanzaCreate(_connection->ctx, @"body", [message.content base64EncodedStringWithOptions:0]);
         ABStanzaSetAttribute(cbody, @"type", ABMessageAudio);
         ABStanzaAddChild(cmessage, cbody);
+        ABStanzaRelease(cbody);
       } else if ( [ABMessageImage isEqualToString:message.type] ) {
         xmpp_stanza_t *cbody = ABStanzaCreate(_connection->ctx, @"body", [message.content base64EncodedStringWithOptions:0]);
         ABStanzaSetAttribute(cbody, @"type", ABMessageImage);
         ABStanzaAddChild(cmessage, cbody);
+        ABStanzaRelease(cbody);
       } else if ( [ABMessageNudge isEqualToString:message.type] ) {
         xmpp_stanza_t *cbody = ABStanzaCreate(_connection->ctx, @"body", nil);
         ABStanzaSetAttribute(cbody, @"type", ABMessageNudge);
         ABStanzaAddChild(cmessage, cbody);
+        ABStanzaRelease(cbody);
       } else {
         xmpp_stanza_t *cbody = ABStanzaCreate(_connection->ctx, @"body", message.content);
         ABStanzaSetAttribute(cbody, @"type", ABMessageText);
         ABStanzaAddChild(cmessage, cbody);
+        ABStanzaRelease(cbody);
       }
       
       [self sendData:ABStanzaToData(cmessage)];
+      ABStanzaRelease(cmessage);
 
       return YES;
     }
