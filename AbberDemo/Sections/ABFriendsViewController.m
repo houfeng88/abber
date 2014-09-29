@@ -63,19 +63,19 @@
 }
 
 
-- (void)engine:(ABEngine *)engine didReceiveRosterUpdate:(NSDictionary *)item
+- (void)engine:(ABEngine *)engine didReceiveRosterUpdate:(ABContact *)contact
 {
   _contactAry = [[ABEngine sharedObject] contacts];
   [_tableView reloadData];
 }
 
-- (void)engine:(ABEngine *)engine didReceivePresence:(int)presence contact:(NSString *)jid
+- (void)engine:(ABEngine *)engine didReceiveStatus:(NSString *)status contact:(NSString *)jid
 {
   _contactAry = [[ABEngine sharedObject] contacts];
   [_tableView reloadData];
 }
 
-- (void)engine:(ABEngine *)engine didReceiveVcard:(NSDictionary *)vcard error:(NSError *)error
+- (void)engine:(ABEngine *)engine didReceiveVcard:(ABContact *)contact error:(NSError *)error
 {
   _contactAry = [[ABEngine sharedObject] contacts];
   [_tableView reloadData];
