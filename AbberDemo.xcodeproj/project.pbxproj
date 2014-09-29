@@ -52,6 +52,7 @@
 		0A78E5F719CD256C004A7D6C /* TKViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A78E5ED19CD256C004A7D6C /* TKViewController.m */; };
 		0A78E5F819CD256C004A7D6C /* UITableViewExtentions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A78E5EF19CD256C004A7D6C /* UITableViewExtentions.m */; };
 		0A9594E219A6316F007297B0 /* ABAddContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A9594E119A6316F007297B0 /* ABAddContactViewController.m */; };
+		0ABA274B19D938FA00559160 /* ABSessionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ABA274919D938FA00559160 /* ABSessionViewController.m */; };
 		23A44CF319A1A05B00EC8301 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 23A44CF219A1A05B00EC8301 /* libsqlite3.dylib */; };
 		23C4BC54199DB23F006E796C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C4BC53199DB23F006E796C /* QuartzCore.framework */; };
 		23C4BC64199DD17E006E796C /* btn_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C4BC60199DD17E006E796C /* btn_back.png */; };
@@ -179,6 +180,8 @@
 		0A78E5FE19CD2625004A7D6C /* ABCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ABCommon.h; sourceTree = "<group>"; };
 		0A9594E019A6316F007297B0 /* ABAddContactViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABAddContactViewController.h; sourceTree = "<group>"; };
 		0A9594E119A6316F007297B0 /* ABAddContactViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABAddContactViewController.m; sourceTree = "<group>"; };
+		0ABA274819D938FA00559160 /* ABSessionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABSessionViewController.h; sourceTree = "<group>"; };
+		0ABA274919D938FA00559160 /* ABSessionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABSessionViewController.m; sourceTree = "<group>"; };
 		23A44CF219A1A05B00EC8301 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		23C4BC53199DB23F006E796C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		23C4BC55199DB2B8006E796C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -362,6 +365,8 @@
 			children = (
 				0A6E5504199F7A6A004BD577 /* ABChatsViewController.h */,
 				0A6E5505199F7A6A004BD577 /* ABChatsViewController.m */,
+				0ABA274819D938FA00559160 /* ABSessionViewController.h */,
+				0ABA274919D938FA00559160 /* ABSessionViewController.m */,
 			);
 			name = Chats;
 			sourceTree = "<group>";
@@ -904,6 +909,7 @@
 				0A49C92119D58AB300B8CBA5 /* ABMessage.m in Sources */,
 				0A4F718819D86FAA0041E959 /* hash.c in Sources */,
 				23C4BC7B199DD1C8006E796C /* ABSigninViewController.m in Sources */,
+				0ABA274B19D938FA00559160 /* ABSessionViewController.m in Sources */,
 				0A4F718719D86FAA0041E959 /* handler.c in Sources */,
 				0A4F719219D86FAA0041E959 /* thread.c in Sources */,
 				0A2865CF19B8E1BD00F20312 /* ABContactInfoViewController.m in Sources */,
