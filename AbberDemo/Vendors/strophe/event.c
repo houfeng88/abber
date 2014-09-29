@@ -260,7 +260,6 @@ void xmpp_run_once(xmpp_ctx_t *ctx, const unsigned long timeout)
 
 		conn->state = XMPP_STATE_CONNECTED;
 		xmpp_debug(ctx, "xmpp", "connection successful");
-		xmpp_debug(ctx, "conn", "Connection state XMPP_STATE_CONNECTED.");
 
 		
 		/* send stream init */
