@@ -70,10 +70,10 @@
   
   CGFloat baseline = 20.0;
   
-  _backButton.frame = CGRectMake(5.0, baseline+((self.height-baseline)-40.0)/2.0, 60.0, 40.0);
-  _leftButton.frame = CGRectMake(5.0, baseline+((self.height-baseline)-40.0)/2.0, 60.0, 40.0);
-  _titleLabel.frame = CGRectMake(5.0+60.0+5.0, baseline, self.width-(5.0+60.0+5.0)*2.0, self.height-baseline);
-  _rightButton.frame = CGRectMake(self.width-5.0-60.0, baseline+((self.height-baseline)-40.0)/2.0, 60.0, 40.0);
+  _backButton.frame = CGRectMake(5.0, baseline+((self.height-baseline)-40.0)/2.0, 50.0, 40.0);
+  _leftButton.frame = CGRectMake(5.0, baseline+((self.height-baseline)-40.0)/2.0, 50.0, 40.0);
+  _titleLabel.frame = CGRectMake(5.0+50.0+5.0, baseline, self.width-(5.0+50.0+5.0)*2.0, self.height-baseline);
+  _rightButton.frame = CGRectMake(self.width-5.0-60.0, baseline+((self.height-baseline)-40.0)/2.0, 50.0, 40.0);
   
 }
 
