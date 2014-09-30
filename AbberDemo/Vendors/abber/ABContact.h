@@ -14,11 +14,14 @@
 }
 
 @property (nonatomic, copy) NSString *jid;
+
 @property (nonatomic, copy) NSString *memoname;
 @property (nonatomic, copy) NSString *ask;
 @property (nonatomic, copy) NSString *subscription;
 
 @property (nonatomic, copy) NSString *nickname;
+@property (nonatomic, copy) NSString *gender;
+@property (nonatomic, copy) NSString *birthday;
 @property (nonatomic, copy) NSString *desc;
 
 
