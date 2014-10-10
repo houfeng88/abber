@@ -143,10 +143,15 @@ int ABVcardUpdateHandler(xmpp_conn_t * const conn,
   return NO;
 }
 
-- (BOOL)updateVcard:(NSDictionary *)info completion:(ABEngineCompletionHandler)completion
+- (BOOL)updateVcardWithNickname:(NSString *)nickname desc:(NSString *)desc completion:(ABEngineCompletionHandler)completion
 {
 //  <iq id='v2' type='set'>
 //    <vCard xmlns='vcard-temp'>
+//      <NICKNAME>nickname</NICKNAME>
+//      <PHOTO>
+//        <TYPE>image/png</TYPE>
+//        <BINVAL>Base64-encoded-avatar-file-here!</BINVAL>
+//      </PHOTO>
 //      <DESC>desc</DESC>
 //    </vCard>
 //  </iq>
@@ -167,8 +172,9 @@ int ABVcardUpdateHandler(xmpp_conn_t * const conn,
     xmpp_stanza_t *cvcard = ABStanzaCreate(_connection->ctx, @"vCard", nil);
     ABStanzaSetAttribute(cvcard, @"xmlns", @"vcard-temp");
 
-    NSData *data = [NSJSONSerialization dataWithJSONObject:info options:0 error:NULL];
-    NSString *desc = [data base64EncodedStringWithOptions:0];
+    xmpp_stanza_t *cnickname = ABStanzaCreate(_connection->ctx, @"NICKNAME", nickname);
+    ABStanzaAddChild(cvcard, cnickname);
+    ABStanzaRelease(cnickname);
 
     xmpp_stanza_t *cdesc = ABStanzaCreate(_connection->ctx, @"DESC", desc);
     ABStanzaAddChild(cvcard, cdesc);

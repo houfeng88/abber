@@ -37,7 +37,7 @@ int ABRosterPushHandler(xmpp_conn_t * const conn,
                         xmpp_stanza_t * const stanza,
                         void * const userdata)
 {
-  DDLogCDebug(@"[roster] Roster push received.");
+  DDLogCDebug(@"[roster] Roster push received");
   
   xmpp_stanza_t *ciq = xmpp_stanza_new(conn->ctx);
   xmpp_stanza_set_name(ciq, "iq");
@@ -177,7 +177,7 @@ int ABRosterRequestHandler(xmpp_conn_t * const conn,
                            xmpp_stanza_t * const stanza,
                            void * const userdata)
 {
-  DDLogCDebug(@"[roster] Roster request complete.");
+  DDLogCDebug(@"[roster] Roster request complete");
   
   ABEngine *engine = (__bridge id)ABHandlexGetNonretainedObject(userdata, @"engine");
   ABEngineCompletionHandler completion = (__bridge id)ABHandlexGetObject(userdata, @"completion");
@@ -229,7 +229,7 @@ int ABRosterAddHandler(xmpp_conn_t * const conn,
                        xmpp_stanza_t * const stanza,
                        void * const userdata)
 {
-  DDLogCDebug(@"[roster] Roster add complete.");
+  DDLogCDebug(@"[roster] Roster add complete");
   
   ABEngine *engine = (__bridge id)ABHandlexGetNonretainedObject(userdata, @"engine");
   ABEngineCompletionHandler completion = (__bridge id)ABHandlexGetObject(userdata, @"completion");
@@ -248,7 +248,7 @@ int ABRosterUpdateHandler(xmpp_conn_t * const conn,
                           xmpp_stanza_t * const stanza,
                           void * const userdata)
 {
-  DDLogCDebug(@"[roster] Roster update complete.");
+  DDLogCDebug(@"[roster] Roster update complete");
   
   ABEngine *engine = (__bridge id)ABHandlexGetNonretainedObject(userdata, @"engine");
   ABEngineCompletionHandler completion = (__bridge id)ABHandlexGetObject(userdata, @"completion");
@@ -267,7 +267,7 @@ int ABRosterRemoveHandler(xmpp_conn_t * const conn,
                           xmpp_stanza_t * const stanza,
                           void * const userdata)
 {
-  DDLogCDebug(@"[roster] Roster remove complete.");
+  DDLogCDebug(@"[roster] Roster remove complete");
   
   ABEngine *engine = (__bridge id)ABHandlexGetNonretainedObject(userdata, @"engine");
   ABEngineCompletionHandler completion = (__bridge id)ABHandlexGetObject(userdata, @"completion");

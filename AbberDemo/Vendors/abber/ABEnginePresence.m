@@ -14,7 +14,7 @@
 
 - (void)didReceiveFriendRequest:(NSString *)jid;
 
-- (void)didReceiveStatus:(NSString *)status contact:(NSString *)jid;
+- (void)didReceivePresenceUpdate:(NSString *)jid;
 
 @end
 
@@ -34,14 +34,14 @@
 }
 
 
-- (void)didReceiveStatus:(NSString *)status contact:(NSString *)jid
+- (void)didReceivePresenceUpdate:(NSString *)jid
 {
   dispatch_sync(dispatch_get_main_queue(), ^{
     NSArray *observerAry = [self observers];
     for ( NSUInteger i=0; i<[observerAry count]; ++i ) {
       id<ABEnginePresenceDelegate> delegate = [observerAry objectAtIndex:i];
-      if ( [delegate respondsToSelector:@selector(engine:didReceiveStatus:contact:)] ) {
-        [delegate engine:self didReceiveStatus:status contact:jid];
+      if ( [delegate respondsToSelector:@selector(engine:didReceivePresenceUpdate:)] ) {
+        [delegate engine:self didReceivePresenceUpdate:jid];
       }
     }
   });
@@ -53,7 +53,7 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
                       xmpp_stanza_t * const stanza,
                       void * const userdata)
 {
-  DDLogCDebug(@"[presence] Presence received.");
+  DDLogCDebug(@"[presence] Presence received");
   
   ABEngine *engine = (__bridge ABEngine *)userdata;
 
@@ -77,7 +77,7 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
     } else if ( [@"unavailable" isEqualToString:type] ) {
       ABContact *contact = [engine contactByJid:from];
       contact.status = ABPresenceUnavailable;
-      [engine didReceiveStatus:ABPresenceUnavailable contact:from];
+      [engine didReceivePresenceUpdate:from];
     } else if ( [@"unsubscribe" isEqualToString:type] ) {
       
     } else if ( [@"unsubscribed" isEqualToString:type] ) {
@@ -88,23 +88,23 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
       if ( [@"chat" isEqualToString:show] ) {
         ABContact *contact = [engine contactByJid:from];
         contact.status = ABPresenceChat;
-        [engine didReceiveStatus:ABPresenceChat contact:from];
+        [engine didReceivePresenceUpdate:from];
       } else if ( [@"away" isEqualToString:show] ) {
         ABContact *contact = [engine contactByJid:from];
         contact.status = ABPresenceAway;
-        [engine didReceiveStatus:ABPresenceAway contact:from];
+        [engine didReceivePresenceUpdate:from];
       } else if ( [@"dnd" isEqualToString:show] ) {
         ABContact *contact = [engine contactByJid:from];
         contact.status = ABPresenceDND;
-        [engine didReceiveStatus:ABPresenceDND contact:from];
+        [engine didReceivePresenceUpdate:from];
       } else if ( [@"xa" isEqualToString:show] ) {
         ABContact *contact = [engine contactByJid:from];
         contact.status = ABPresenceXA;
-        [engine didReceiveStatus:ABPresenceXA contact:from];
+        [engine didReceivePresenceUpdate:from];
       } else {
         ABContact *contact = [engine contactByJid:from];
         contact.status = ABPresenceAvailable;
-        [engine didReceiveStatus:ABPresenceAvailable contact:from];
+        [engine didReceivePresenceUpdate:from];
       }
     }
 
@@ -131,18 +131,18 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
 
 @implementation ABEngine (Presence)
 
-- (BOOL)updatePresence:(NSString *)status
+- (BOOL)updatePresence:(NSString *)presence
 {
   if ( [self isConnected] ) {
-    if ( [ABPresenceAvailable isEqualToString:status] ) {
+    if ( [ABPresenceAvailable isEqualToString:presence] ) {
       [self sendString:@"<presence/>"];
-    } else if ( [ABPresenceChat isEqualToString:status] ) {
+    } else if ( [ABPresenceChat isEqualToString:presence] ) {
       [self sendString:@"<presence><show>chat</show></presence>"];
-    } else if ( [ABPresenceAway isEqualToString:status] ) {
+    } else if ( [ABPresenceAway isEqualToString:presence] ) {
       [self sendString:@"<presence><show>away</show></presence>"];
-    } else if ( [ABPresenceDND isEqualToString:status] ) {
+    } else if ( [ABPresenceDND isEqualToString:presence] ) {
       [self sendString:@"<presence><show>dnd</show></presence>"];
-    } else if ( [ABPresenceXA isEqualToString:status] ) {
+    } else if ( [ABPresenceXA isEqualToString:presence] ) {
       [self sendString:@"<presence><show>xa</show></presence>"];
     } else {
       [self sendString:@"<presence type=\"unavailable\"/>"];

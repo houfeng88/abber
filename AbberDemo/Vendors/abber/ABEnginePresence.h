@@ -25,7 +25,7 @@
 
 @interface ABEngine (Presence)
 
-- (BOOL)updatePresence:(NSString *)status;
+- (BOOL)updatePresence:(NSString *)presence;
 
 - (BOOL)subscribeContact:(NSString *)jid;
 - (BOOL)subscribedContact:(NSString *)jid;
@@ -40,6 +40,6 @@
 
 - (void)engine:(ABEngine *)engine didReceiveFriendRequest:(NSString *)jid;
 
-- (void)engine:(ABEngine *)engine didReceiveStatus:(NSString *)status contact:(NSString *)jid;
+- (void)engine:(ABEngine *)engine didReceivePresenceUpdate:(NSString *)jid;
 
 @end

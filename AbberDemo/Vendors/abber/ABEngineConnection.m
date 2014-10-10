@@ -69,20 +69,20 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
   
   if ( status==XMPP_CONN_CONNECT ) {
     
-    DDLogCDebug(@"[conn] Handler: connected.");
+    DDLogCDebug(@"[conn] xmpp connected");
     NSString *root = TKPathForDocumentResource([engine bareJid]);
     TKCreateDirectory(root);
     [engine didReceiveConnectStatus:YES];
     
   } else if ( status==XMPP_CONN_FAIL ) {
     
-    DDLogCDebug(@"[conn] Handler: failed.");
+    DDLogCDebug(@"[conn] xmpp failed");
     xmpp_stop(conn->ctx);
     [engine didReceiveConnectStatus:NO];
     
   } else if ( status==XMPP_CONN_DISCONNECT ) {
     
-    DDLogCDebug(@"[conn] Handler: disconnected.");
+    DDLogCDebug(@"[conn] xmpp disconnected");
     xmpp_stop(conn->ctx);
     [engine didDisconnected];
     
@@ -103,7 +103,7 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
   
   if ( ret==XMPP_EOK ) {
     xmpp_run(_connection->ctx);
-    [self cleanup];
+    [self cleanUp];
   } else {
     [self didReceiveConnectStatus:NO];
   }

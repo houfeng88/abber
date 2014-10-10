@@ -26,12 +26,23 @@
 {
   [super viewDidLoad];
   _navigationView.titleLabel.text = NSLocalizedString(@"More", @"");
-  [_navigationView showRightButton];
-  _navigationView.rightButton.normalTitle = NSLocalizedString(@"Sign Out", @"");
+  
+  
+  UIView *footerView = [[UIView alloc] init];
+  footerView.frame = TKRect(0.0, 0.0, _tableView.width, 55.0);
+  
+  UIButton *button = [[UIButton alloc] init];
+  button.normalTitle = NSLocalizedString(@"Sign Out", @"");
+  button.normalBackgroundImage = TKCreateResizableImage(@"btn_brown.png", TKInsets(9.0, 9.0, 9.0, 9.0));
+  [button addTarget:self action:@selector(signoutButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+  button.frame = CGRectMake(10.0, 5.0, 300.0, 45.0);
+  [footerView addSubview:button];
+  
+  _tableView.tableFooterView = footerView;
 }
 
 
-- (void)rightButtonClicked:(id)sender
+- (void)signoutButtonClicked:(id)sender
 {
   [[ABEngine sharedObject] disconnect];
   

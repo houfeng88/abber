@@ -38,8 +38,7 @@ typedef enum {
 - (void)prepare;
 - (BOOL)connectWithAccount:(NSString *)acnt password:(NSString *)pswd;
 - (void)disconnect;
-- (void)stopRunLoop;
-- (void)cleanup;
+- (void)cleanUp;
 
 - (NSString *)account;
 - (NSString *)password;

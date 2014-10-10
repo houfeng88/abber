@@ -37,7 +37,7 @@ static ABEngine *Engine = nil;
 
 - (BOOL)connectWithAccount:(NSString *)acnt password:(NSString *)pswd
 {
-  DDLogDebug(@"[engine] Launch connect");
+  DDLogDebug(@"[engine] Begin connecting");
   if ( [self isConnecting] || [self isConnected] ) {
     return YES;
   }
@@ -74,19 +74,13 @@ static ABEngine *Engine = nil;
 
 - (void)disconnect
 {
-  DDLogDebug(@"[engine] Launch disconnect");
+  DDLogDebug(@"[engine] Begin disconnecting");
   xmpp_disconnect(_connection);
 }
 
-- (void)stopRunLoop
+- (void)cleanUp
 {
-  DDLogDebug(@"[engine] Launch stop run loop");
-  xmpp_stop(_connection->ctx);
-}
-
-- (void)cleanup
-{
-  DDLogDebug(@"[engine] Cleanup context");
+  DDLogDebug(@"[engine] Clean up context");
   
   if ( _connection ) {
     xmpp_ctx_t *ctx = _connection->ctx;
@@ -171,7 +165,7 @@ static ABEngine *Engine = nil;
   if ( [self isConnected] ) {
     if ( TKDNonempty(data) ) {
       xmpp_send_raw(_connection, [data bytes], [data length]);
-      xmpp_debug(_connection->ctx, "conn", "SENT: %s", [data bytes]);
+      xmpp_debug(_connection->ctx, "engine", "SENT: %s", [data bytes]);
     }
   }
 }
@@ -181,7 +175,7 @@ static ABEngine *Engine = nil;
   if ( [self isConnected] ) {
     if ( TKSNonempty(string) ) {
       xmpp_send_raw(_connection, [string UTF8String], [string lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);
-      xmpp_debug(_connection->ctx, "conn", "SENT: %s", [string UTF8String]);
+      xmpp_debug(_connection->ctx, "engine", "SENT: %s", [string UTF8String]);
     }
   }
 }

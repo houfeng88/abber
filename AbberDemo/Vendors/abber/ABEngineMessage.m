@@ -35,7 +35,7 @@ int ABMessageHandler(xmpp_conn_t * const conn,
                      xmpp_stanza_t * const stanza,
                      void * const userdata)
 {
-  DDLogCDebug(@"[message] Message received.");
+  DDLogCDebug(@"[message] Message received");
   
   ABEngine *engine = (__bridge ABEngine *)userdata;
 
