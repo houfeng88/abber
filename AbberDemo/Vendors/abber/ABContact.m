@@ -19,37 +19,37 @@
   return self;
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder
+- (id)initWithCoder:(NSCoder *)coder
 {
   self = [super init];
   if (self) {
-    _jid = [aDecoder decodeObjectForKey:@"kJid"];
-    _memoname = [aDecoder decodeObjectForKey:@"kMemoname"];
-    _ask = [aDecoder decodeObjectForKey:@"kAsk"];
-    _subscription = [aDecoder decodeObjectForKey:@"kSubscription"];
+    _jid = [coder decodeObjectForKey:@"kJid"];
+    _memoname = [coder decodeObjectForKey:@"kMemoname"];
+    _ask = [coder decodeObjectForKey:@"kAsk"];
+    _subscription = [coder decodeObjectForKey:@"kSubscription"];
     
-    _nickname = [aDecoder decodeObjectForKey:@"kNickname"];
-    _desc = [aDecoder decodeObjectForKey:@"kDesc"];
+    _nickname = [coder decodeObjectForKey:@"kNickname"];
+    _desc = [coder decodeObjectForKey:@"kDesc"];
     
     
     _status = @"unavailable";
-    //_status = [aDecoder decodeObjectForKey:@"kStatus"];
+    //_status = [coder decodeObjectForKey:@"kStatus"];
   }
   return self;
 }
 
-- (void)encodeWithCoder:(NSCoder *)aCoder
+- (void)encodeWithCoder:(NSCoder *)coder
 {
-  [aCoder encodeObject:_jid forKey:@"kJid"];
-  [aCoder encodeObject:_memoname forKey:@"kMemoname"];
-  [aCoder encodeObject:_ask forKey:@"kAsk"];
-  [aCoder encodeObject:_subscription forKey:@"kSubscription"];
+  [coder encodeObject:_jid forKey:@"kJid"];
+  [coder encodeObject:_memoname forKey:@"kMemoname"];
+  [coder encodeObject:_ask forKey:@"kAsk"];
+  [coder encodeObject:_subscription forKey:@"kSubscription"];
   
-  [aCoder encodeObject:_nickname forKey:@"kNickname"];
-  [aCoder encodeObject:_desc forKey:@"kDesc"];
+  [coder encodeObject:_nickname forKey:@"kNickname"];
+  [coder encodeObject:_desc forKey:@"kDesc"];
   
   
-  //[aCoder encodeObject:_status forKey:@"kStatus"];
+  //[coder encodeObject:_status forKey:@"kStatus"];
 }
 
 @end

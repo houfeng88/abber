@@ -12,7 +12,7 @@
 @interface ABEngine (Vcard)
 
 - (BOOL)requestVcard:(NSString *)jid completion:(ABEngineCompletionHandler)completion;
-- (BOOL)updateVcardWithNickname:(NSString *)nickname desc:(NSString *)desc completion:(ABEngineCompletionHandler)completion;
+- (BOOL)updateVcard:(NSDictionary *)vcard completion:(ABEngineCompletionHandler)completion;
 
 @end
 

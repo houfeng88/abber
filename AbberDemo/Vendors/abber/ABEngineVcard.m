@@ -57,7 +57,7 @@ int ABVcardRequestHandler(xmpp_conn_t * const conn,
                           xmpp_stanza_t * const stanza,
                           void * const userdata)
 {
-  DDLogCDebug(@"[vcard] Vcard request complete.");
+  DDLogCDebug(@"[vcard] Vcard request complete");
   
   ABEngine *engine = (__bridge id)ABHandlexGetNonretainedObject(userdata, @"engine");
   ABEngineCompletionHandler completion = (__bridge id)ABHandlexGetObject(userdata, @"completion");
@@ -72,12 +72,13 @@ int ABVcardRequestHandler(xmpp_conn_t * const conn,
   }
 
   xmpp_stanza_t *cvcard = ABStanzaChildByName(stanza, @"vCard");
-
-  xmpp_stanza_t *cnickname = ABStanzaChildByName(cvcard, @"NICKNAME");
-  contact.nickname = ABStanzaGetText(cnickname);
-
   xmpp_stanza_t *cdesc = ABStanzaChildByName(cvcard, @"DESC");
-  contact.desc = ABStanzaGetText(cdesc);
+  
+  NSData *data = [[NSData alloc] initWithBase64EncodedString:ABStanzaGetText(cdesc) options:0];
+  NSDictionary *vcard = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
+  
+  contact.nickname = [vcard objectForKey:@"nickname"];
+  contact.desc = [vcard objectForKey:@"desc"];
   
   [engine didReceiveVcard:contact
                     error:nil
@@ -92,7 +93,7 @@ int ABVcardUpdateHandler(xmpp_conn_t * const conn,
                          xmpp_stanza_t * const stanza,
                          void * const userdata)
 {
-  DDLogCDebug(@"[vcard] Vcard update complete.");
+  DDLogCDebug(@"[vcard] Vcard update complete");
   
   ABEngine *engine = (__bridge id)ABHandlexGetNonretainedObject(userdata, @"engine");
   ABEngineCompletionHandler completion = (__bridge id)ABHandlexGetObject(userdata, @"completion");
@@ -143,7 +144,7 @@ int ABVcardUpdateHandler(xmpp_conn_t * const conn,
   return NO;
 }
 
-- (BOOL)updateVcardWithNickname:(NSString *)nickname desc:(NSString *)desc completion:(ABEngineCompletionHandler)completion
+- (BOOL)updateVcard:(NSDictionary *)vcard completion:(ABEngineCompletionHandler)completion
 {
 //  <iq id='v2' type='set'>
 //    <vCard xmlns='vcard-temp'>
@@ -165,17 +166,16 @@ int ABVcardUpdateHandler(xmpp_conn_t * const conn,
     xmpp_id_handler_add(_connection, ABVcardUpdateHandler, TKCString(identifier), contextRef);
     
     
+    NSData *data = [NSJSONSerialization dataWithJSONObject:vcard options:0 error:NULL];
+    NSString *desc = [data base64EncodedStringWithOptions:0];
+    
     xmpp_stanza_t *ciq = ABStanzaCreate(_connection->ctx, @"iq", nil);
     ABStanzaSetAttribute(ciq, @"id", identifier);
     ABStanzaSetAttribute(ciq, @"type", @"set");
     
     xmpp_stanza_t *cvcard = ABStanzaCreate(_connection->ctx, @"vCard", nil);
     ABStanzaSetAttribute(cvcard, @"xmlns", @"vcard-temp");
-
-    xmpp_stanza_t *cnickname = ABStanzaCreate(_connection->ctx, @"NICKNAME", nickname);
-    ABStanzaAddChild(cvcard, cnickname);
-    ABStanzaRelease(cnickname);
-
+    
     xmpp_stanza_t *cdesc = ABStanzaCreate(_connection->ctx, @"DESC", desc);
     ABStanzaAddChild(cvcard, cdesc);
     ABStanzaRelease(cdesc);
