@@ -25,7 +25,8 @@ typedef enum {
     TKObserving
 > {
   xmpp_conn_t *_connection;
-  
+
+  ABContact *_user;
   NSMutableArray *_contactAry;
   
   

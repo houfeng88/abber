@@ -11,6 +11,13 @@
 
 @interface ABEngine (Storage)
 
+// user
+- (ABContact *)user;
+
+- (void)loadUser;
+- (void)syncUser;
+
+
 // contact
 - (NSArray *)contacts;
 - (ABContact *)contactByJid:(NSString *)jid;

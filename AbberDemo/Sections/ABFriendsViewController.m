@@ -69,7 +69,7 @@
   [_tableView reloadData];
 }
 
-- (void)engine:(ABEngine *)engine didReceiveStatus:(NSString *)status contact:(NSString *)jid
+- (void)engine:(ABEngine *)engine didReceivePresenceUpdate:(NSString *)jid
 {
   _contactAry = [[ABEngine sharedObject] contacts];
   [_tableView reloadData];

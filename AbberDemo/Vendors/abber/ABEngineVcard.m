@@ -71,22 +71,20 @@ int ABVcardRequestHandler(xmpp_conn_t * const conn,
 
   NSString *from = ABJidBare(ABStanzaGetAttribute(stanza, @"from"));
   if ( TKSNonempty(from) ) {
-    ABContact *contact = [engine contactByJid:from];
+    ABContact *contact = [engine contactOrNewByJid:from];
     contact.nickname = [vcard objectForKey:@"nickname"];
     contact.desc = [vcard objectForKey:@"desc"];
-    [engine didReceiveVcard:contact
-                      error:nil
-                 completion:completion];
+    [engine syncContacts];
+    [engine didReceiveVcard:contact error:nil completion:completion];
   } else {
-    ABContact *contact = [[ABContact alloc] init];
+    ABContact *contact = [engine user];
     contact.nickname = [vcard objectForKey:@"nickname"];
     contact.desc = [vcard objectForKey:@"desc"];
-    [engine didReceiveVcard:contact
-                      error:nil
-                 completion:completion];
+    [engine syncUser];
+    [engine didReceiveVcard:contact error:nil completion:completion];
   }
-  
-  
+
+
   ABHandlexDestroy(userdata);
   return 0;
 }
