@@ -125,6 +125,13 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+  if ( indexPath.row==0 ) {
+    //[[ABEngine sharedObject] updateVcard:@{ @"nickname":@"Cara", @"desc":@"It's me." } completion:NULL];
+    [[ABEngine sharedObject] requestVcard:nil completion:NULL];
+  } else if ( indexPath.row==1 ) {
+    ABContact *cnt = [[ABEngine sharedObject] user];
+    NSLog(@"%@", cnt);
+  }
 }
 
 @end
