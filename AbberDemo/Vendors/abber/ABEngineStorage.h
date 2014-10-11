@@ -14,6 +14,7 @@
 // contact
 - (NSArray *)contacts;
 - (ABContact *)contactByJid:(NSString *)jid;
+- (ABContact *)contactOrNewByJid:(NSString *)jid;
 
 - (void)saveContact:(ABContact *)contact;
 - (void)saveRoster:(NSArray *)roster;

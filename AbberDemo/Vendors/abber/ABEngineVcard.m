@@ -62,27 +62,29 @@ int ABVcardRequestHandler(xmpp_conn_t * const conn,
   ABEngine *engine = (__bridge id)ABHandlexGetNonretainedObject(userdata, @"engine");
   ABEngineCompletionHandler completion = (__bridge id)ABHandlexGetObject(userdata, @"completion");
 
-  
-  NSString *from = ABJidBare(ABStanzaGetAttribute(stanza, @"from"));
-
-  ABContact *contact = [engine contactByJid:from];
-  if ( !contact ) {
-    contact = [[ABContact alloc] init];
-    contact.jid = TKStrOrLater(from, [engine bareJid]);
-  }
 
   xmpp_stanza_t *cvcard = ABStanzaChildByName(stanza, @"vCard");
   xmpp_stanza_t *cdesc = ABStanzaChildByName(cvcard, @"DESC");
-  
-  NSData *data = [[NSData alloc] initWithBase64EncodedString:ABStanzaGetText(cdesc) options:0];
-  NSDictionary *vcard = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
-  
-  contact.nickname = [vcard objectForKey:@"nickname"];
-  contact.desc = [vcard objectForKey:@"desc"];
-  
-  [engine didReceiveVcard:contact
-                    error:nil
-               completion:completion];
+
+  NSDictionary *vcard = ABDictionaryFromBase64String(ABStanzaGetText(cdesc));
+
+
+  NSString *from = ABJidBare(ABStanzaGetAttribute(stanza, @"from"));
+  if ( TKSNonempty(from) ) {
+    ABContact *contact = [engine contactByJid:from];
+    contact.nickname = [vcard objectForKey:@"nickname"];
+    contact.desc = [vcard objectForKey:@"desc"];
+    [engine didReceiveVcard:contact
+                      error:nil
+                 completion:completion];
+  } else {
+    ABContact *contact = [[ABContact alloc] init];
+    contact.nickname = [vcard objectForKey:@"nickname"];
+    contact.desc = [vcard objectForKey:@"desc"];
+    [engine didReceiveVcard:contact
+                      error:nil
+                 completion:completion];
+  }
   
   
   ABHandlexDestroy(userdata);
@@ -164,10 +166,7 @@ int ABVcardUpdateHandler(xmpp_conn_t * const conn,
     if ( completion ) ABHandlexSetObject(contextRef, @"completion", [completion copy]);
     
     xmpp_id_handler_add(_connection, ABVcardUpdateHandler, TKCString(identifier), contextRef);
-    
-    
-    NSData *data = [NSJSONSerialization dataWithJSONObject:vcard options:0 error:NULL];
-    NSString *desc = [data base64EncodedStringWithOptions:0];
+
     
     xmpp_stanza_t *ciq = ABStanzaCreate(_connection->ctx, @"iq", nil);
     ABStanzaSetAttribute(ciq, @"id", identifier);
@@ -175,8 +174,8 @@ int ABVcardUpdateHandler(xmpp_conn_t * const conn,
     
     xmpp_stanza_t *cvcard = ABStanzaCreate(_connection->ctx, @"vCard", nil);
     ABStanzaSetAttribute(cvcard, @"xmlns", @"vcard-temp");
-    
-    xmpp_stanza_t *cdesc = ABStanzaCreate(_connection->ctx, @"DESC", desc);
+
+    xmpp_stanza_t *cdesc = ABStanzaCreate(_connection->ctx, @"DESC", ABBase64StringFromDictionary(vcard));
     ABStanzaAddChild(cvcard, cdesc);
     ABStanzaRelease(cdesc);
 

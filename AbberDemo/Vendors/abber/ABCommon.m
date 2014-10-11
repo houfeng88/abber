@@ -426,3 +426,44 @@ void  ABHandlexSetNonretainedObject(void *contextRef, NSString *key, id object)
   NSValue *value = [NSValue valueWithNonretainedObject:object];
   ABHandlexSetObject(contextRef, key, value);
 }
+
+
+#pragma mark - Encode and decode
+
+NSString     *ABBase64StringFromData(NSData *data)
+{
+  NSString *string = nil;
+  if ( data ) {
+    string = [data base64EncodedStringWithOptions:0];
+  }
+  return string;
+}
+
+NSString     *ABBase64StringFromDictionary(NSDictionary *dictionary)
+{
+  NSString *string = nil;
+  if ( dictionary ) {
+    NSData *data = [NSJSONSerialization dataWithJSONObject:dictionary options:0 error:NULL];
+    string = ABBase64StringFromData(data);
+  }
+  return string;
+}
+
+NSData       *ABDataFromBase64String(NSString *string)
+{
+  NSData *data = nil;
+  if ( string ) {
+    data = [[NSData alloc] initWithBase64EncodedString:string options:0];
+  }
+  return data;
+}
+
+NSDictionary *ABDictionaryFromBase64String(NSString *string)
+{
+  NSDictionary *dictionary = nil;
+  NSData *data = ABDataFromBase64String(string);
+  if ( data ) {
+    dictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
+  }
+  return dictionary;
+}

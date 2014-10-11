@@ -55,11 +55,7 @@ int ABRosterPushHandler(xmpp_conn_t * const conn,
     
     NSString *jid = ABStanzaGetAttribute(citem, @"jid");
     if ( TKSNonempty(jid) ) {
-      ABContact *contact = [engine contactByJid:jid];
-      if ( !contact ) {
-        contact = [[ABContact alloc] init];
-        contact.jid = jid;
-      }
+      ABContact *contact = [engine contactOrNewByJid:jid];
       contact.memoname = ABStanzaGetAttribute(citem, @"name");
       contact.ask = ABStanzaGetAttribute(citem, @"ask");
       contact.subscription = ABStanzaGetAttribute(citem, @"subscription");
@@ -199,11 +195,7 @@ int ABRosterRequestHandler(xmpp_conn_t * const conn,
 
       NSString *jid = ABStanzaGetAttribute(citem, @"jid");
       if ( TKSNonempty(jid) ) {
-        ABContact *contact = [engine contactByJid:jid];
-        if ( !contact ) {
-          contact = [[ABContact alloc] init];
-          contact.jid = jid;
-        }
+        ABContact *contact = [engine contactOrNewByJid:jid];
         contact.memoname = ABStanzaGetAttribute(citem, @"name");
         contact.ask = ABStanzaGetAttribute(citem, @"ask");
         contact.subscription = ABStanzaGetAttribute(citem, @"subscription");

@@ -52,10 +52,10 @@ int ABMessageHandler(xmpp_conn_t * const conn,
       NSString *type = ABStanzaGetAttribute(cbody, @"type");
       if ( [ABMessageAudio isEqualToString:type] ) {
         message.type = ABMessageAudio;
-        message.content = [[NSData alloc] initWithBase64EncodedString:ABStanzaGetText(cbody) options:0];
+        message.content = ABDataFromBase64String(ABStanzaGetText(cbody));
       } else if ( [ABMessageImage isEqualToString:type] ) {
         message.type = ABMessageImage;
-        message.content = [[NSData alloc] initWithBase64EncodedString:ABStanzaGetText(cbody) options:0];
+        message.content = ABDataFromBase64String(ABStanzaGetText(cbody));
       } else if ( [ABMessageNudge isEqualToString:type] ) {
         message.type = ABMessageNudge;
         message.content = nil;
@@ -105,12 +105,12 @@ int ABMessageHandler(xmpp_conn_t * const conn,
       ABStanzaSetAttribute(cmessage, @"to", message.to);
 
       if ( [ABMessageAudio isEqualToString:message.type] ) {
-        xmpp_stanza_t *cbody = ABStanzaCreate(_connection->ctx, @"body", [message.content base64EncodedStringWithOptions:0]);
+        xmpp_stanza_t *cbody = ABStanzaCreate(_connection->ctx, @"body", ABBase64StringFromData(message.content));
         ABStanzaSetAttribute(cbody, @"type", ABMessageAudio);
         ABStanzaAddChild(cmessage, cbody);
         ABStanzaRelease(cbody);
       } else if ( [ABMessageImage isEqualToString:message.type] ) {
-        xmpp_stanza_t *cbody = ABStanzaCreate(_connection->ctx, @"body", [message.content base64EncodedStringWithOptions:0]);
+        xmpp_stanza_t *cbody = ABStanzaCreate(_connection->ctx, @"body", ABBase64StringFromData(message.content));
         ABStanzaSetAttribute(cbody, @"type", ABMessageImage);
         ABStanzaAddChild(cmessage, cbody);
         ABStanzaRelease(cbody);

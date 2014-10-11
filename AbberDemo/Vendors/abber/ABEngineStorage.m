@@ -29,6 +29,16 @@
   return nil;
 }
 
+- (ABContact *)contactOrNewByJid:(NSString *)jid
+{
+  ABContact *contact = [self contactByJid:jid];
+  if ( !contact ) {
+    contact = [[ABContact alloc] init];
+    contact.jid = jid;
+  }
+  return contact;
+}
+
 
 - (void)saveContact:(ABContact *)contact
 {

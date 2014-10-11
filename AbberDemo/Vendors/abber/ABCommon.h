@@ -56,3 +56,10 @@ void *ABHandlexGetObject(void *contextRef, NSString *key);
 void  ABHandlexSetObject(void *contextRef, NSString *key, id object);
 void *ABHandlexGetNonretainedObject(void *contextRef, NSString *key);
 void  ABHandlexSetNonretainedObject(void *contextRef, NSString *key, id object);
+
+
+// Encode and decode
+NSString     *ABBase64StringFromData(NSData *data);
+NSString     *ABBase64StringFromDictionary(NSDictionary *dictionary);
+NSData       *ABDataFromBase64String(NSString *string);
+NSDictionary *ABDictionaryFromBase64String(NSString *string);
