@@ -137,7 +137,8 @@
 - (void)engine:(ABEngine *)engine didReceiveConnectStatus:(BOOL)status
 {
   if ( status ) {
-    
+
+    [[ABEngine sharedObject] loadUser];
     [[ABEngine sharedObject] loadContacts];
     
     [[ABEngine sharedObject] requestRosterWithCompletion:^(id result, NSError *error) {

@@ -10,6 +10,40 @@
 
 @implementation ABEngine (Storage)
 
+#pragma mark - user
+
+- (ABContact *)user
+{
+  return _user;
+}
+
+
+- (void)loadUser
+{
+  NSString *root = TKPathForDocumentResource([self bareJid]);
+  NSString *path = [root stringByAppendingPathComponent:@"user.db"];
+
+  NSData *data = [[NSData alloc] initWithContentsOfFile:path];
+  ABContact *user = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+
+  if ( !user ) {
+    user = [[ABContact alloc] init];
+    user.jid = [self bareJid];
+  }
+
+  _user = user;
+}
+
+- (void)syncUser
+{
+  NSString *root = TKPathForDocumentResource([self bareJid]);
+  NSString *path = [root stringByAppendingPathComponent:@"user.db"];
+
+  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:_user];
+  [data writeToFile:path atomically:YES];
+}
+
+
 #pragma mark - contact
 
 - (NSArray *)contacts
@@ -72,7 +106,7 @@
 - (void)loadContacts
 {
   NSString *root = TKPathForDocumentResource([self bareJid]);
-  NSString *path = [root stringByAppendingPathComponent:@"contact.db"];
+  NSString *path = [root stringByAppendingPathComponent:@"contacts.db"];
   
   NSData *data = [[NSData alloc] initWithContentsOfFile:path];
   NSArray *ary = [NSKeyedUnarchiver unarchiveObjectWithData:data];
@@ -84,7 +118,7 @@
 - (void)syncContacts
 {
   NSString *root = TKPathForDocumentResource([self bareJid]);
-  NSString *path = [root stringByAppendingPathComponent:@"contact.db"];
+  NSString *path = [root stringByAppendingPathComponent:@"contacts.db"];
   
   NSData *data = [NSKeyedArchiver archivedDataWithRootObject:_contactAry];
   [data writeToFile:path atomically:YES];
