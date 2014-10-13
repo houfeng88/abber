@@ -46,6 +46,15 @@
   _tableView.tableFooterView = footerView;
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+  [super viewDidAppear:animated];
+  [[ABEngine sharedObject] requestVcard:_contact.jid
+                             completion:^(id result, NSError *error) {
+                               [_tableView reloadData];
+                             }];
+}
+
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {

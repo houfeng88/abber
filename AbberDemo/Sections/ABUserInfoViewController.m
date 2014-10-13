@@ -31,6 +31,15 @@
   _navigationView.rightButton.normalTitle = NSLocalizedString(@"Done", @"");
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+  [super viewDidAppear:animated];
+  [[ABEngine sharedObject] requestVcard:nil
+                             completion:^(id result, NSError *error) {
+                               [_tableView reloadData];
+                             }];
+}
+
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
