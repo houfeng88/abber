@@ -11,14 +11,18 @@
 
 @interface ABEngine (Storage)
 
-// user
+// Path
+- (void)createRootDirectory;
+
+
+// User
 - (ABContact *)user;
 
 - (void)loadUser;
 - (void)syncUser;
 
 
-// contact
+// Contact
 - (NSArray *)contacts;
 - (ABContact *)contactByJid:(NSString *)jid;
 - (ABContact *)contactOrNewByJid:(NSString *)jid;
@@ -32,9 +36,9 @@
 - (void)syncContacts;
 
 
-// session
+// Session
 
 
-// message
+// Message
 
 @end

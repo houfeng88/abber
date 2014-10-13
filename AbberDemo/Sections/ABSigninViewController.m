@@ -138,6 +138,7 @@
 {
   if ( status ) {
 
+    [[ABEngine sharedObject] createRootDirectory];
     [[ABEngine sharedObject] loadUser];
     [[ABEngine sharedObject] loadContacts];
     

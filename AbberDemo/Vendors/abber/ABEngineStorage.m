@@ -10,6 +10,16 @@
 
 @implementation ABEngine (Storage)
 
+#pragma mark - Path
+
+- (void)createRootDirectory
+{
+  NSString *root = TKPathForDocumentResource([self bareJid]);
+  TKCreateDirectory(root);
+}
+
+
+
 #pragma mark - user
 
 - (ABContact *)user

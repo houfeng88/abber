@@ -70,8 +70,6 @@ void ABConnectionHandler(xmpp_conn_t * const conn,
   if ( status==XMPP_CONN_CONNECT ) {
     
     DDLogCDebug(@"[conn] xmpp connected");
-    NSString *root = TKPathForDocumentResource([engine bareJid]);
-    TKCreateDirectory(root);
     [engine didReceiveConnectStatus:YES];
     
   } else if ( status==XMPP_CONN_FAIL ) {
