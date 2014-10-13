@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface ABUserInfoViewController : TKTableViewController {
+  UITextField *_nicknameField;
+  UITextField *_descField;
 }
 
 @end

@@ -49,7 +49,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-  return 5;
+  return 6;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -90,6 +90,11 @@
     cell.titleLabel.text = NSLocalizedString(@"Desc", @"");
     cell.bodyLabel.text = _contact.desc;
     return cell;
+  } else if ( indexPath.row==5 ) {
+    ABInfoStaticCell *cell = (ABInfoStaticCell *)[tableView dequeueReusableCellWithClass:[ABInfoStaticCell class]];
+    cell.titleLabel.text = NSLocalizedString(@"Status", @"");
+    cell.bodyLabel.text = _contact.status;
+    return cell;
   }
   return nil;
 }
@@ -105,6 +110,8 @@
   } else if ( indexPath.row==3 ) {
     return [ABInfoStaticCell heightForTableView:tableView object:nil];
   } else if ( indexPath.row==4 ) {
+    return [ABInfoStaticCell heightForTableView:tableView object:nil];
+  } else if ( indexPath.row==5 ) {
     return [ABInfoStaticCell heightForTableView:tableView object:nil];
   }
   return 0.0;
