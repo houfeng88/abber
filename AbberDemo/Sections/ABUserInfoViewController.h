@@ -11,6 +11,8 @@
 @interface ABUserInfoViewController : TKTableViewController {
   UITextField *_nicknameField;
   UITextField *_descField;
+  
+  ABContact *_user;
 }
 
 @end

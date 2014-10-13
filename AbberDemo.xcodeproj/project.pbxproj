@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0A00C77019D462BD00801B4D /* ABInputCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A00C76F19D462BD00801B4D /* ABInputCell.m */; };
+		0A0238E519EC37D10090A5E4 /* ABStaticCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0238E419EC37D10090A5E4 /* ABStaticCell.m */; };
 		0A0FF7B819C560A7000EFC44 /* ABEngineMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0FF7B719C560A7000EFC44 /* ABEngineMessage.m */; };
 		0A205D1219C3DA3600ED4EED /* ABMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A205D1019C3DA3600ED4EED /* ABMainViewController.m */; };
 		0A205D2A19C3F37D00ED4EED /* ABEngineStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A205D2919C3F37D00ED4EED /* ABEngineStorage.m */; };
@@ -96,6 +97,8 @@
 /* Begin PBXFileReference section */
 		0A00C76E19D462BD00801B4D /* ABInputCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABInputCell.h; sourceTree = "<group>"; };
 		0A00C76F19D462BD00801B4D /* ABInputCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABInputCell.m; sourceTree = "<group>"; };
+		0A0238E319EC37D10090A5E4 /* ABStaticCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABStaticCell.h; sourceTree = "<group>"; };
+		0A0238E419EC37D10090A5E4 /* ABStaticCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABStaticCell.m; sourceTree = "<group>"; };
 		0A0FF7B619C560A7000EFC44 /* ABEngineMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEngineMessage.h; sourceTree = "<group>"; };
 		0A0FF7B719C560A7000EFC44 /* ABEngineMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABEngineMessage.m; sourceTree = "<group>"; };
 		0A205D0F19C3DA3600ED4EED /* ABMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABMainViewController.h; sourceTree = "<group>"; };
@@ -332,6 +335,8 @@
 			children = (
 				0A00C76E19D462BD00801B4D /* ABInputCell.h */,
 				0A00C76F19D462BD00801B4D /* ABInputCell.m */,
+				0A0238E319EC37D10090A5E4 /* ABStaticCell.h */,
+				0A0238E419EC37D10090A5E4 /* ABStaticCell.m */,
 				0A2865D019B8E7B800F20312 /* ABInfoInputCell.h */,
 				0A2865D119B8E7B800F20312 /* ABInfoInputCell.m */,
 				0A2865D319B8E7CA00F20312 /* ABInfoStaticCell.h */,
@@ -909,6 +914,7 @@
 				0A49C92119D58AB300B8CBA5 /* ABMessage.m in Sources */,
 				0A4F718819D86FAA0041E959 /* hash.c in Sources */,
 				23C4BC7B199DD1C8006E796C /* ABSigninViewController.m in Sources */,
+				0A0238E519EC37D10090A5E4 /* ABStaticCell.m in Sources */,
 				0ABA274B19D938FA00559160 /* ABSessionViewController.m in Sources */,
 				0A4F718719D86FAA0041E959 /* handler.c in Sources */,
 				0A4F719219D86FAA0041E959 /* thread.c in Sources */,

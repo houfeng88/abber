@@ -35,11 +35,13 @@
 {
   [super viewDidAppear:animated];
   
-  @weakify(self);
-  [_tableView addInitialRefreshControlWithRefreshBlock:^{
-    @strongify(self);
-    [self requestContacts];
-  }];
+  if ( !(_tableView.initialRefreshControl) ) {
+    @weakify(self);
+    [_tableView addInitialRefreshControlWithRefreshBlock:^{
+      @strongify(self);
+      [self requestContacts];
+    }];
+  }
 }
 
 
@@ -125,7 +127,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  [[ABEngine sharedObject] requestVcard:nil completion:NULL];
 }
 
 @end
