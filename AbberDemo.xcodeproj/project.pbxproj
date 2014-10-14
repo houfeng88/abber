@@ -11,6 +11,7 @@
 		0A0238E519EC37D10090A5E4 /* ABStaticCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0238E419EC37D10090A5E4 /* ABStaticCell.m */; };
 		0A0E023C19ED54EF0020AA0D /* ABUserStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0E023B19ED54EF0020AA0D /* ABUserStatusViewController.m */; };
 		0A0E023F19ED5BE60020AA0D /* ABAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0E023E19ED5BE60020AA0D /* ABAboutViewController.m */; };
+		0A0E024219ED781A0020AA0D /* ABMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0E024119ED781A0020AA0D /* ABMessageCell.m */; };
 		0A0FF7B819C560A7000EFC44 /* ABEngineMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0FF7B719C560A7000EFC44 /* ABEngineMessage.m */; };
 		0A205D1219C3DA3600ED4EED /* ABMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A205D1019C3DA3600ED4EED /* ABMainViewController.m */; };
 		0A205D2A19C3F37D00ED4EED /* ABEngineStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A205D2919C3F37D00ED4EED /* ABEngineStorage.m */; };
@@ -105,6 +106,8 @@
 		0A0E023B19ED54EF0020AA0D /* ABUserStatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABUserStatusViewController.m; sourceTree = "<group>"; };
 		0A0E023D19ED5BE60020AA0D /* ABAboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABAboutViewController.h; sourceTree = "<group>"; };
 		0A0E023E19ED5BE60020AA0D /* ABAboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABAboutViewController.m; sourceTree = "<group>"; };
+		0A0E024019ED781A0020AA0D /* ABMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABMessageCell.h; sourceTree = "<group>"; };
+		0A0E024119ED781A0020AA0D /* ABMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABMessageCell.m; sourceTree = "<group>"; };
 		0A0FF7B619C560A7000EFC44 /* ABEngineMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABEngineMessage.h; sourceTree = "<group>"; };
 		0A0FF7B719C560A7000EFC44 /* ABEngineMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABEngineMessage.m; sourceTree = "<group>"; };
 		0A205D0F19C3DA3600ED4EED /* ABMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABMainViewController.h; sourceTree = "<group>"; };
@@ -349,6 +352,8 @@
 				0A2865D419B8E7CA00F20312 /* ABInfoStaticCell.m */,
 				23CB415919A1EF2A0024120D /* ABContactCell.h */,
 				23CB415A19A1EF2A0024120D /* ABContactCell.m */,
+				0A0E024019ED781A0020AA0D /* ABMessageCell.h */,
+				0A0E024119ED781A0020AA0D /* ABMessageCell.m */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -908,6 +913,7 @@
 			files = (
 				23C4BC82199DD1EF006E796C /* AppDelegate.m in Sources */,
 				0A6E5509199F7A85004BD577 /* ABFriendsViewController.m in Sources */,
+				0A0E024219ED781A0020AA0D /* ABMessageCell.m in Sources */,
 				0A57476819D2E2A30000AFDF /* ABContact.m in Sources */,
 				0A4F719319D86FAA0041E959 /* tls.c in Sources */,
 				23C5473D1994C0E900B4C0F7 /* ABEngineConnection.m in Sources */,

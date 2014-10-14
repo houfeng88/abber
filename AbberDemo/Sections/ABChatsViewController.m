@@ -9,6 +9,8 @@
 #import "ABChatsViewController.h"
 #import "ABStaticCell.h"
 
+#import "ABSessionViewController.h"
+
 @implementation ABChatsViewController
 
 - (id)init
@@ -80,6 +82,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+  NSDictionary *context = [_sessionAry objectAtIndex:indexPath.row];
+  ABSessionViewController *vc = [[ABSessionViewController alloc] initWithContext:context];
+  [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

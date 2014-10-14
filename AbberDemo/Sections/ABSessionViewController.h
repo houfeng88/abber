@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface ABSessionViewController : TKTableViewController {
+  NSDictionary *_context;
 }
+
+- (id)initWithContext:(NSDictionary *)context;
 
 @end
