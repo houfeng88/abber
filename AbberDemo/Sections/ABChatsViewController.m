@@ -15,7 +15,7 @@
 {
   self = [super init];
   if (self) {
-    _sessionMap = [[NSMutableDictionary alloc] init];
+    _sessionAry = [[NSMutableArray alloc] init];
   }
   return self;
 }
@@ -31,30 +31,47 @@
 {
   NSString *jid = message.from;
   if ( TKSNonempty(jid) ) {
-    NSMutableArray *messageAry = [_sessionMap objectForKey:jid];
+    NSDictionary *context = [self contextByJid:jid];
+    NSMutableArray *messageAry = [context objectForKey:@"messageAry"];
+    
     if ( messageAry ) {
       [messageAry addObject:message];
     } else {
       messageAry = [[NSMutableArray alloc] init];
       [messageAry addObject:message];
-      [_sessionMap setObject:messageAry forKey:jid];
+      [_sessionAry addObject:@{ @"jid":jid, @"messageAry":messageAry }];
     }
     
     [_tableView reloadData];
   }
 }
 
+- (NSDictionary *)contextByJid:(NSString *)jid
+{
+  if ( TKSNonempty(jid) ) {
+    for ( NSDictionary *context in _sessionAry ) {
+      if ( [jid isEqualToString:[context objectForKey:@"jid"]] ) {
+        return context;
+      }
+    }
+  }
+  return nil;
+}
+
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-  return [[_sessionMap allKeys] count];
+  return [_sessionAry count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
   ABStaticCell *cell = (ABStaticCell *)[tableView dequeueReusableCellWithClass:[ABStaticCell class]];
   
-  cell.titleLabel.text = [[_sessionMap allKeys] objectAtIndex:indexPath.row];
+  NSDictionary *context = [_sessionAry objectAtIndex:indexPath.row];
+  NSString *jid = [context objectForKey:@"jid"];
+  
+  cell.titleLabel.text = jid;
   
   cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
   
