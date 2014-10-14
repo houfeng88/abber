@@ -136,16 +136,22 @@ int ABPresenceHandler(xmpp_conn_t * const conn,
   if ( [self isConnected] ) {
     if ( [ABPresenceAvailable isEqualToString:presence] ) {
       [self sendString:@"<presence/>"];
+      _user.status = ABPresenceAvailable;
     } else if ( [ABPresenceChat isEqualToString:presence] ) {
       [self sendString:@"<presence><show>chat</show></presence>"];
+      _user.status = ABPresenceChat;
     } else if ( [ABPresenceAway isEqualToString:presence] ) {
       [self sendString:@"<presence><show>away</show></presence>"];
+      _user.status = ABPresenceAway;
     } else if ( [ABPresenceDND isEqualToString:presence] ) {
       [self sendString:@"<presence><show>dnd</show></presence>"];
+      _user.status = ABPresenceDND;
     } else if ( [ABPresenceXA isEqualToString:presence] ) {
       [self sendString:@"<presence><show>xa</show></presence>"];
+      _user.status = ABPresenceXA;
     } else {
       [self sendString:@"<presence type=\"unavailable\"/>"];
+      _user.status = ABPresenceUnavailable;
     }
     return YES;
   }

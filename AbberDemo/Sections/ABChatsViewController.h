@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ABChatsViewController : TKViewController {
+@interface ABChatsViewController : TKTableViewController {
+  NSMutableDictionary *_sessionMap;
 }
 
 @end

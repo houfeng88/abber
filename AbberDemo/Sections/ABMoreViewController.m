@@ -12,6 +12,9 @@
 #import "ABMainViewController.h"
 
 #import "ABUserInfoViewController.h"
+#import "ABUserStatusViewController.h"
+
+#import "ABAboutViewController.h"
 
 @implementation ABMoreViewController
 
@@ -40,6 +43,12 @@
   [footerView addSubview:button];
   
   _tableView.tableFooterView = footerView;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+  [super viewWillAppear:animated];
+  [_tableView reloadData];
 }
 
 
@@ -103,9 +112,13 @@
       ABUserInfoViewController *vc = [[ABUserInfoViewController alloc] init];
       [self.navigationController pushViewController:vc animated:YES];
     } else if ( row==1 ) {
+      ABUserStatusViewController *vc = [[ABUserStatusViewController alloc] init];
+      [self.navigationController pushViewController:vc animated:YES];
     }
   } else if ( section==1 ) {
     if ( row==0 ) {
+      ABAboutViewController *vc = [[ABAboutViewController alloc] init];
+      [self.navigationController pushViewController:vc animated:YES];
     }
   }
 }

@@ -9,9 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface ABSessionViewController : TKTableViewController {
-  ABContact *_contact;
 }
-
-- (id)initWithContact:(ABContact *)contact;
 
 @end

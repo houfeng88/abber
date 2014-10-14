@@ -10,20 +10,10 @@
 
 @implementation ABSessionViewController
 
-- (id)initWithContact:(ABContact *)contact
-{
-  self = [super init];
-  if (self) {
-    _contact = contact;
-  }
-  return self;
-}
-
 - (void)viewDidLoad
 {
   [super viewDidLoad];
   [_navigationView showBackButton];
-  _navigationView.titleLabel.text = TKStrOrLater(_contact.memoname, _contact.nickname);
 }
 
 @end
