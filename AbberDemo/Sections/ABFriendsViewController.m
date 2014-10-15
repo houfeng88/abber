@@ -27,23 +27,27 @@
 {
   [super viewWillAppear:animated];
   
+  @weakify(self);
+  [_tableView addInitialRefreshControlWithRefreshBlock:^{
+    @strongify(self);
+    [self requestContacts];
+  }];
+  
+  
   _contactAry = [[ABEngine sharedObject] contacts];
   [_tableView reloadData];
 }
 
-- (void)viewDidAppear:(BOOL)animated
+
+- (void)setSessionManager:(ABSessionManager *)manager
 {
-  [super viewDidAppear:animated];
+  _sessionManager = manager;
   
-  if ( !(_tableView.initialRefreshControl) ) {
-    @weakify(self);
-    [_tableView addInitialRefreshControlWithRefreshBlock:^{
-      @strongify(self);
-      [self requestContacts];
-    }];
+  _contactAry = [[ABEngine sharedObject] contacts];
+  if ( [self viewAppeared] ) {
+    [_tableView reloadData];
   }
 }
-
 
 
 - (void)rightButtonClicked:(id)sender
@@ -56,11 +60,9 @@
 - (void)requestContacts
 {
   [[ABEngine sharedObject] requestRosterWithCompletion:^(id result, NSError *error) {
-    
     _contactAry = [[ABEngine sharedObject] contacts];
     [_tableView reloadData];
     [_tableView.initialRefreshControl endRefreshing];
-    
   }];
 }
 
@@ -97,16 +99,10 @@
   
   ABContact *contact = [_contactAry objectAtIndex:indexPath.row];
   
-  
   //cell.avatarView.image = nil;
-  
-  NSString *name = TKStrOrLater(contact.memoname, contact.nickname);
-  cell.nicknameLabel.text = TKStrOrLater(name, contact.jid);
-  
+  cell.nicknameLabel.text = TKStrOrLater(contact.memoname, contact.jid);
   cell.statusLabel.text = contact.status;
-  
   cell.descLabel.text = contact.desc;
-  
   
   cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
   

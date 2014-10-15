@@ -9,6 +9,8 @@
 #import "ABMainViewController.h"
 #import "Common/TKAlertView.h"
 
+#import "ABSessionManager.h"
+
 #import "ABSigninViewController.h"
 
 @implementation ABMainViewController
@@ -45,20 +47,20 @@
   item = [self.tabBar.items objectAtIndex:2];
   item.title = NSLocalizedString(@"More", @"");
   item.image = TKCreateImage(@"tab_icon_more.png");
-}
-
-- (void)presentSignin
-{
-  ABSigninViewController *signin = [[ABSigninViewController alloc] init];
-  [self presentChildViewController:signin inView:self.view];
-  signin.view.frame = self.view.bounds;
-}
-
-- (void)configEngine
-{
-  [[ABEngine sharedObject] addObserver:_chatsVC];
-  [[ABEngine sharedObject] addObserver:_friendsVC];
-  [[ABEngine sharedObject] addObserver:_moreVC];
+  
+  
+  
+  ABEngine *engine = [ABEngine sharedObject];
+  
+  ABSessionManager *manager = [[ABSessionManager alloc] initWithJid:[engine bareJid]];
+  
+  _chatsVC.sessionManager = manager;
+  _friendsVC.sessionManager = manager;
+  _moreVC.sessionManager = manager;
+  
+  [engine addObserver:_chatsVC];
+  [engine addObserver:_friendsVC];
+  [engine addObserver:_moreVC];
 }
 
 

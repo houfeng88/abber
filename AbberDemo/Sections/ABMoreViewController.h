@@ -7,8 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ABSessionManager.h"
 
 @interface ABMoreViewController : TKTableViewController {
+  ABSessionManager *_sessionManager;
+  
+  ABContact *_user;
 }
+
+@property (nonatomic, strong) ABSessionManager *sessionManager;
 
 @end

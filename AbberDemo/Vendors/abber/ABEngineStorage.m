@@ -12,10 +12,9 @@
 
 #pragma mark - Path
 
-- (void)createRootDirectory
+- (NSString *)storagePath
 {
-  NSString *root = TKPathForDocumentResource([self bareJid]);
-  TKCreateDirectory(root);
+  return TKPathForDocumentResource([self bareJid]);
 }
 
 
@@ -30,8 +29,7 @@
 
 - (void)loadUser
 {
-  NSString *root = TKPathForDocumentResource([self bareJid]);
-  NSString *path = [root stringByAppendingPathComponent:@"user.db"];
+  NSString *path = [[self storagePath] stringByAppendingPathComponent:@"user.db"];
 
   NSData *data = [[NSData alloc] initWithContentsOfFile:path];
   ABContact *user = [NSKeyedUnarchiver unarchiveObjectWithData:data];
@@ -46,8 +44,7 @@
 
 - (void)syncUser
 {
-  NSString *root = TKPathForDocumentResource([self bareJid]);
-  NSString *path = [root stringByAppendingPathComponent:@"user.db"];
+  NSString *path = [[self storagePath] stringByAppendingPathComponent:@"user.db"];
 
   NSData *data = [NSKeyedArchiver archivedDataWithRootObject:_user];
   [data writeToFile:path atomically:YES];
@@ -108,6 +105,7 @@
       ABContact *it = [_contactAry objectAtIndex:i];
       if ( [jid isEqualToString:it.jid] ) {
         [_contactAry removeObjectAtIndex:i];
+        return;
       }
     }
   }
@@ -116,20 +114,18 @@
 
 - (void)loadContacts
 {
-  NSString *root = TKPathForDocumentResource([self bareJid]);
-  NSString *path = [root stringByAppendingPathComponent:@"contacts.db"];
+  NSString *path = [[self storagePath] stringByAppendingPathComponent:@"contacts.db"];
   
   NSData *data = [[NSData alloc] initWithContentsOfFile:path];
-  NSArray *ary = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+  NSArray *contactAry = [NSKeyedUnarchiver unarchiveObjectWithData:data];
   
   _contactAry = [[NSMutableArray alloc] init];
-  [_contactAry addObjectsFromArray:ary];
+  [_contactAry addObjectsFromArray:contactAry];
 }
 
 - (void)syncContacts
 {
-  NSString *root = TKPathForDocumentResource([self bareJid]);
-  NSString *path = [root stringByAppendingPathComponent:@"contacts.db"];
+  NSString *path = [[self storagePath] stringByAppendingPathComponent:@"contacts.db"];
   
   NSData *data = [NSKeyedArchiver archivedDataWithRootObject:_contactAry];
   [data writeToFile:path atomically:YES];

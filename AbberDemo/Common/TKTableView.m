@@ -29,22 +29,19 @@
 {
   if ( !_initialRefreshControl ) {
     _initialRefreshControl = [[UIRefreshControl alloc] init];
-  }
-  if ( _initialRefreshControl.superview!=self ) {
-    [_initialRefreshControl removeFromSuperview];
     [self addSubview:_initialRefreshControl];
-  }
-  [_initialRefreshControl sendToBack];
-  UITableViewController *tvc = [[UITableViewController alloc] init];
-  tvc.tableView = self;
-  tvc.refreshControl = _initialRefreshControl;
-  
-  _initialRefreshBlock = [block copy];
-  if ( _initialRefreshBlock ) {
+    [_initialRefreshControl sendToBack];
+    
+    UITableViewController *tvc = [[UITableViewController alloc] init];
+    tvc.tableView = self;
+    tvc.refreshControl = _initialRefreshControl;
+    
     [_initialRefreshControl addTarget:self
                                action:@selector(initialValueChanged:)
                      forControlEvents:UIControlEventValueChanged];
   }
+  
+  _initialRefreshBlock = [block copy];
 }
 
 - (void)removeInitialRefreshControl
@@ -86,29 +83,24 @@
   if ( self.contentSize.height>=self.height ) {
     if ( !_infiniteRefreshControl ) {
       _infiniteRefreshControl = [[TKRefreshControl alloc] init];
-    }
-    if ( _infiniteRefreshControl.superview!=self ) {
-      [_infiniteRefreshControl removeFromSuperview];
       [self addSubview:_infiniteRefreshControl];
-    }
-    [_infiniteRefreshControl sendToBack];
-    
-    [_infiniteRefreshControl sizeToFit];
-    _infiniteRefreshControl.frame = CGRectMake(0.0, MAX(self.contentSize.height, self.height),
-                                               _infiniteRefreshControl.width,
-                                               _infiniteRefreshControl.height);
-    
-    UIEdgeInsets edgeInsets = self.contentInset;
-    edgeInsets.bottom = _infiniteRefreshControl.height;
-    [self setContentInset:edgeInsets];
-    
-    
-    _infiniteRefreshBlock = [block copy];
-    if ( _infiniteRefreshBlock ) {
+      [_infiniteRefreshControl sendToBack];
+      
+      [_infiniteRefreshControl sizeToFit];
+      _infiniteRefreshControl.frame = CGRectMake(0.0, MAX(self.contentSize.height, self.height),
+                                                 _infiniteRefreshControl.width,
+                                                 _infiniteRefreshControl.height);
+      
+      UIEdgeInsets edgeInsets = self.contentInset;
+      edgeInsets.bottom = _infiniteRefreshControl.height;
+      [self setContentInset:edgeInsets];
+      
       [_infiniteRefreshControl addTarget:self
                                   action:@selector(infiniteValueChanged:)
                         forControlEvents:UIControlEventValueChanged];
     }
+    
+    _infiniteRefreshBlock = [block copy];
   }
 }
 

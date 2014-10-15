@@ -9,12 +9,12 @@
 #import "ABMoreViewController.h"
 #import "ABStaticCell.h"
 
-#import "ABMainViewController.h"
-
 #import "ABUserInfoViewController.h"
 #import "ABUserStatusViewController.h"
 
 #import "ABAboutViewController.h"
+
+#import "ABSigninViewController.h"
 
 @implementation ABMoreViewController
 
@@ -48,7 +48,15 @@
 - (void)viewWillAppear:(BOOL)animated
 {
   [super viewWillAppear:animated];
+  _user = [[ABEngine sharedObject] user];
   [_tableView reloadData];
+}
+
+
+
+- (void)setSessionManager:(ABSessionManager *)manager
+{
+  _sessionManager = manager;
 }
 
 
@@ -56,8 +64,8 @@
 {
   [[ABEngine sharedObject] disconnect];
   
-  ABMainViewController *main = (ABMainViewController *)([self tabBarController]);
-  [main presentSignin];
+  UIWindow *window = [[[UIApplication sharedApplication] delegate] window];
+  window.rootViewController = [[ABSigninViewController alloc] init];
 }
 
 
@@ -81,18 +89,15 @@
 {
   ABStaticCell *cell = (ABStaticCell *)[tableView dequeueReusableCellWithClass:[ABStaticCell class]];
   
-  NSInteger section = indexPath.section;
-  NSInteger row = indexPath.row;
-  
-  if ( section==0 ) {
-    if ( row==0 ) {
+  if ( indexPath.section==0 ) {
+    if ( indexPath.row==0 ) {
       cell.titleLabel.text = NSLocalizedString(@"Profile", @"");
-    } else if ( row==1 ) {
+    } else if ( indexPath.row==1 ) {
       cell.titleLabel.text = NSLocalizedString(@"Status", @"");
-      cell.bodyLabel.text = [[[ABEngine sharedObject] user] status];
+      cell.bodyLabel.text = _user.status;
     }
-  } else if ( section==1 ) {
-    if ( row==0 ) {
+  } else if ( indexPath.section==1 ) {
+    if ( indexPath.row==0 ) {
       cell.titleLabel.text = NSLocalizedString(@"About", @"");
     }
   }
@@ -104,19 +109,16 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  NSInteger section = indexPath.section;
-  NSInteger row = indexPath.row;
-  
-  if ( section==0 ) {
-    if ( row==0 ) {
+  if ( indexPath.section==0 ) {
+    if ( indexPath.row==0 ) {
       ABUserInfoViewController *vc = [[ABUserInfoViewController alloc] init];
       [self.navigationController pushViewController:vc animated:YES];
-    } else if ( row==1 ) {
+    } else if ( indexPath.row==1 ) {
       ABUserStatusViewController *vc = [[ABUserStatusViewController alloc] init];
       [self.navigationController pushViewController:vc animated:YES];
     }
-  } else if ( section==1 ) {
-    if ( row==0 ) {
+  } else if ( indexPath.section==1 ) {
+    if ( indexPath.row==0 ) {
       ABAboutViewController *vc = [[ABAboutViewController alloc] init];
       [self.navigationController pushViewController:vc animated:YES];
     }

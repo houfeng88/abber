@@ -107,19 +107,13 @@
   [[TKSettings sharedObject] synchronize];
   
   
-  ABMainViewController *main = (ABMainViewController *)(self.parentViewController);
-  
   ABEngine *engine = [ABEngine sharedObject];
   [engine removeAllObservers];
-  
   
   engine = [[ABEngine alloc] init];
   [ABEngine saveObject:engine];
   
   [engine addObserver:self];
-  [engine addObserver:main];
-  [main configEngine];
-  
   [engine prepare];
   [engine connectWithAccount:acnt password:pswd];
   [engine addRosterPushHandler];
@@ -137,24 +131,22 @@
 - (void)engine:(ABEngine *)engine didReceiveConnectStatus:(BOOL)status
 {
   if ( status ) {
-
-    [[ABEngine sharedObject] createRootDirectory];
-    [[ABEngine sharedObject] loadUser];
-    [[ABEngine sharedObject] loadContacts];
+    
+    TKCreateDirectory([engine storagePath]);
+    [engine loadUser];
+    [engine loadContacts];
     
     [[ABEngine sharedObject] requestRosterWithCompletion:^(id result, NSError *error) {
-      
       if ( error ) {
         [self HUDConnectNo];
-        
         [engine disconnect];
       } else {
+        UIWindow *window = [[[UIApplication sharedApplication] delegate] window];
+        window.rootViewController = [[ABMainViewController alloc] init];
         [[ABEngine sharedObject] removeObserver:self];
         [[ABEngine sharedObject] updatePresence:ABPresenceAvailable];
-        
         [self HUDConnectYes];
       }
-    
     }];
     
   } else {

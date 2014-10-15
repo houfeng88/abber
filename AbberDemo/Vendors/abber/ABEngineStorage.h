@@ -12,7 +12,7 @@
 @interface ABEngine (Storage)
 
 // Path
-- (void)createRootDirectory;
+- (NSString *)storagePath;
 
 
 // User

@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 
-#import "Sections/ABMainViewController.h"
+#import "Sections/ABSigninViewController.h"
 
 @implementation AppDelegate
 
@@ -21,9 +21,7 @@
   
   _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   
-  ABMainViewController *main = [[ABMainViewController alloc] init];
-  _window.rootViewController = main;
-  [main presentSignin];
+  _window.rootViewController = [[ABSigninViewController alloc] init];
   
   _window.backgroundColor = [UIColor whiteColor];
   [_window makeKeyAndVisible];

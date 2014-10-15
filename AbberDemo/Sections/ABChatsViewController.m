@@ -13,15 +13,6 @@
 
 @implementation ABChatsViewController
 
-- (id)init
-{
-  self = [super init];
-  if (self) {
-    _sessionAry = [[NSMutableArray alloc] init];
-  }
-  return self;
-}
-
 - (void)viewDidLoad
 {
   [super viewDidLoad];
@@ -29,35 +20,30 @@
 }
 
 
-- (void)engine:(ABEngine *)engine didReceiveMessage:(ABMessage *)message
+- (void)setSessionManager:(ABSessionManager *)sessionManager
 {
-  NSString *jid = message.from;
-  if ( TKSNonempty(jid) ) {
-    NSDictionary *context = [self contextByJid:jid];
-    NSMutableArray *messageAry = [context objectForKey:@"messageAry"];
-    
-    if ( messageAry ) {
-      [messageAry addObject:message];
-    } else {
-      messageAry = [[NSMutableArray alloc] init];
-      [messageAry addObject:message];
-      [_sessionAry addObject:@{ @"jid":jid, @"messageAry":messageAry }];
-    }
-    
+  _sessionManager = sessionManager;
+  
+  _sessionAry = [_sessionManager sessionAry];
+  if ( [self viewAppeared] ) {
     [_tableView reloadData];
   }
 }
 
-- (NSDictionary *)contextByJid:(NSString *)jid
+- (void)engine:(ABEngine *)engine didReceiveMessage:(ABMessage *)message
 {
-  if ( TKSNonempty(jid) ) {
-    for ( NSDictionary *context in _sessionAry ) {
-      if ( [jid isEqualToString:[context objectForKey:@"jid"]] ) {
-        return context;
-      }
-    }
+  NSString *jid = message.from;
+  
+  [_sessionManager addSession:jid];
+  
+  NSMutableArray *messageAry = (NSMutableArray *)[_sessionManager messageAryForJid:jid];
+  [messageAry addObject:message];
+  
+  
+  _sessionAry = [_sessionManager sessionAry];
+  if ( [self viewAppeared] ) {
+    [_tableView reloadData];
   }
-  return nil;
 }
 
 
@@ -70,9 +56,7 @@
 {
   ABStaticCell *cell = (ABStaticCell *)[tableView dequeueReusableCellWithClass:[ABStaticCell class]];
   
-  NSDictionary *context = [_sessionAry objectAtIndex:indexPath.row];
-  NSString *jid = [context objectForKey:@"jid"];
-  
+  NSString *jid = [_sessionAry objectAtIndex:indexPath.row];
   cell.titleLabel.text = jid;
   
   cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -82,9 +66,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  NSDictionary *context = [_sessionAry objectAtIndex:indexPath.row];
-  ABSessionViewController *vc = [[ABSessionViewController alloc] initWithContext:context];
-  [self.navigationController pushViewController:vc animated:YES];
+//  NSDictionary *context = [_sessionAry objectAtIndex:indexPath.row];
+//  ABSessionViewController *vc = [[ABSessionViewController alloc] initWithContext:context];
+//  [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

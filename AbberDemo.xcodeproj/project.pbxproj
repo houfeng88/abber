@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0A00C77019D462BD00801B4D /* ABInputCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A00C76F19D462BD00801B4D /* ABInputCell.m */; };
+		0A0209FC19ED86B40075AA69 /* ABSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0209FB19ED86B40075AA69 /* ABSessionManager.m */; };
 		0A0238E519EC37D10090A5E4 /* ABStaticCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0238E419EC37D10090A5E4 /* ABStaticCell.m */; };
 		0A0E023C19ED54EF0020AA0D /* ABUserStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0E023B19ED54EF0020AA0D /* ABUserStatusViewController.m */; };
 		0A0E023F19ED5BE60020AA0D /* ABAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0E023E19ED5BE60020AA0D /* ABAboutViewController.m */; };
@@ -100,6 +101,8 @@
 /* Begin PBXFileReference section */
 		0A00C76E19D462BD00801B4D /* ABInputCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABInputCell.h; sourceTree = "<group>"; };
 		0A00C76F19D462BD00801B4D /* ABInputCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABInputCell.m; sourceTree = "<group>"; };
+		0A0209FA19ED86B40075AA69 /* ABSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABSessionManager.h; sourceTree = "<group>"; };
+		0A0209FB19ED86B40075AA69 /* ABSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABSessionManager.m; sourceTree = "<group>"; };
 		0A0238E319EC37D10090A5E4 /* ABStaticCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABStaticCell.h; sourceTree = "<group>"; };
 		0A0238E419EC37D10090A5E4 /* ABStaticCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABStaticCell.m; sourceTree = "<group>"; };
 		0A0E023A19ED54EF0020AA0D /* ABUserStatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABUserStatusViewController.h; sourceTree = "<group>"; };
@@ -372,6 +375,8 @@
 			children = (
 				0A205D0F19C3DA3600ED4EED /* ABMainViewController.h */,
 				0A205D1019C3DA3600ED4EED /* ABMainViewController.m */,
+				0A0209FA19ED86B40075AA69 /* ABSessionManager.h */,
+				0A0209FB19ED86B40075AA69 /* ABSessionManager.m */,
 			);
 			name = Main;
 			sourceTree = "<group>";
@@ -940,6 +945,7 @@
 				0A2865DB19B8F13200F20312 /* ABUserInfoViewController.m in Sources */,
 				0A78E5F119CD256C004A7D6C /* TKAlertView.m in Sources */,
 				0A4F718F19D86FAA0041E959 /* snprintf.c in Sources */,
+				0A0209FC19ED86B40075AA69 /* ABSessionManager.m in Sources */,
 				0A205D2D19C482D600ED4EED /* ABEngineVcard.m in Sources */,
 				0A78E5F419CD256C004A7D6C /* TKTableView.m in Sources */,
 				0A4F718919D86FAA0041E959 /* jid.c in Sources */,

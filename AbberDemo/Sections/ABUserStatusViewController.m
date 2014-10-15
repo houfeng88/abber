@@ -44,10 +44,11 @@
 {
   ABStaticCell *cell = (ABStaticCell *)[tableView dequeueReusableCellWithClass:[ABStaticCell class]];
   
-  ABContact *user = [[ABEngine sharedObject] user];
   NSString *status = [_statusAry objectAtIndex:indexPath.row];
+  
   cell.titleLabel.text = status;
-  if ( [status isEqualToString:user.status] ) {
+  
+  if ( [status isEqualToString:[[[ABEngine sharedObject] user] status]] ) {
     cell.accessoryType = UITableViewCellAccessoryCheckmark;
   } else {
     cell.accessoryType = UITableViewCellAccessoryNone;

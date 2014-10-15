@@ -18,8 +18,4 @@
   ABMoreViewController *_moreVC;
 }
 
-- (void)presentSignin;
-
-- (void)configEngine;
-
 @end

@@ -7,9 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ABSessionManager.h"
 
 @interface ABChatsViewController : TKTableViewController {
-  NSMutableArray *_sessionAry;
+  ABSessionManager *_sessionManager;
+  
+  NSArray *_sessionAry;
 }
+
+@property (nonatomic, strong) ABSessionManager *sessionManager;
 
 @end
