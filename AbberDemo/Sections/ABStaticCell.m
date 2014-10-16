@@ -40,7 +40,7 @@
   
   _titleLabel.frame = CGRectMake(10.0,
                                  2.0,
-                                 90.0,
+                                 200.0,
                                  self.contentView.height-2*2.0);
   
   _bodyLabel.frame = CGRectMake(_titleLabel.rightX+5.0,

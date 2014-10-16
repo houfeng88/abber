@@ -130,6 +130,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
   ABContact *contact = [_contactAry objectAtIndex:indexPath.row];
+  [_sessionManager addSession:contact.jid];
   NSMutableArray *messageAry = (NSMutableArray *)[_sessionManager messageAryForJid:contact.jid];
   
   ABSessionViewController *vc = [[ABSessionViewController alloc] initWithJid:contact.jid messageAry:messageAry];

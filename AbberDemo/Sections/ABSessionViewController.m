@@ -15,6 +15,8 @@
 {
   self = [super init];
   if (self) {
+    self.hidesBottomBarWhenPushed = YES;
+    
     [[ABEngine sharedObject] addObserver:self];
     
     _jid = jid;

@@ -48,8 +48,6 @@
 {
   [_initialRefreshControl removeFromSuperview];
   _initialRefreshControl = nil;
-  
-  _initialRefreshBlock = nil;
 }
 
 - (void)updateInitialRefreshControlTitle:(NSString *)title
@@ -109,8 +107,6 @@
   [_infiniteRefreshControl removeFromSuperview];
   _infiniteRefreshControl = nil;
   
-  _infiniteRefreshBlock = nil;
-  
   UIEdgeInsets edgeInsets = self.contentInset;
   edgeInsets.bottom = 0.0;
   [self setContentInset:edgeInsets];
@@ -148,11 +144,11 @@
     _initialRefreshControl.frame = CGRectMake(0.0, MIN(offsetY, maxY), self.width, _initialRefreshControl.height);
     
     // At middle
-//    if ( offsetY<maxY ) {
-//      _initialRefreshControl.frame = CGRectMake(0.0, (offsetY+maxY)/2.0, self.width, _initialRefreshControl.height);
-//    } else {
-//      _initialRefreshControl.frame = CGRectMake(0.0, maxY, self.width, _initialRefreshControl.height);
-//    }
+    //    if ( offsetY<maxY ) {
+    //      _initialRefreshControl.frame = CGRectMake(0.0, (offsetY+maxY)/2.0, self.width, _initialRefreshControl.height);
+    //    } else {
+    //      _initialRefreshControl.frame = CGRectMake(0.0, maxY, self.width, _initialRefreshControl.height);
+    //    }
   }
   
   if ( _infiniteRefreshControl ) {
