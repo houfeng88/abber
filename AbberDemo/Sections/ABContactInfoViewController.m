@@ -32,6 +32,8 @@
   [_navigationView showRightButton];
   _navigationView.rightButton.normalTitle = NSLocalizedString(@"Done", @"");
   
+  [self addResignGestureInView:_tableView];
+  
   
   UIView *footerView = [[UIView alloc] init];
   footerView.frame = CGRectMake(0.0, 0.0, _tableView.width, 65.0);

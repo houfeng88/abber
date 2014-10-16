@@ -37,9 +37,6 @@
   _contentView.backgroundColor = [UIColor clearColor];
   [self.view addSubview:_contentView];
   
-  [self addTapGesture];
-  
-  
   
   // TODO: ...
   _navigationView.backgroundImageView.image = TKCreateResizableImage(@"navbar_bg.png", TKInsets(2.0, 2.0, 2.0, 2.0));
@@ -99,15 +96,23 @@
 }
 
 
-- (void)addTapGesture
+- (void)addResignGestureInView:(UIView *)view
 {
-  UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                               action:@selector(tapGesture:)];
-  recognizer.cancelsTouchesInView = NO;
-  [self.view addGestureRecognizer:recognizer];
+  if ( !_resignRecognizer ) {
+    _resignRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                action:@selector(resignGesture:)];
+    _resignRecognizer.cancelsTouchesInView = NO;
+    [view addGestureRecognizer:_resignRecognizer];
+  }
 }
 
-- (void)tapGesture:(UIGestureRecognizer *)recognizer
+- (void)removeResignGestureInView:(UIView *)view
+{
+  [view removeGestureRecognizer:_resignRecognizer];
+  _resignRecognizer = nil;
+}
+
+- (void)resignGesture:(UIGestureRecognizer *)recognizer
 {
   [TKFindFirstResponderInView(self.view) resignFirstResponder];
 }

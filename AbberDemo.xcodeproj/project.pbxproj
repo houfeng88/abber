@@ -10,6 +10,7 @@
 		0A00C77019D462BD00801B4D /* ABInputCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A00C76F19D462BD00801B4D /* ABInputCell.m */; };
 		0A0209FC19ED86B40075AA69 /* ABSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0209FB19ED86B40075AA69 /* ABSessionManager.m */; };
 		0A0238E519EC37D10090A5E4 /* ABStaticCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0238E419EC37D10090A5E4 /* ABStaticCell.m */; };
+		0A02551819EFFC400033DF15 /* ABMessageInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A02551719EFFC400033DF15 /* ABMessageInputView.m */; };
 		0A0E023C19ED54EF0020AA0D /* ABUserStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0E023B19ED54EF0020AA0D /* ABUserStatusViewController.m */; };
 		0A0E023F19ED5BE60020AA0D /* ABAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0E023E19ED5BE60020AA0D /* ABAboutViewController.m */; };
 		0A0E024219ED781A0020AA0D /* ABMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0E024119ED781A0020AA0D /* ABMessageCell.m */; };
@@ -105,6 +106,8 @@
 		0A0209FB19ED86B40075AA69 /* ABSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABSessionManager.m; sourceTree = "<group>"; };
 		0A0238E319EC37D10090A5E4 /* ABStaticCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABStaticCell.h; sourceTree = "<group>"; };
 		0A0238E419EC37D10090A5E4 /* ABStaticCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABStaticCell.m; sourceTree = "<group>"; };
+		0A02551619EFFC400033DF15 /* ABMessageInputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABMessageInputView.h; sourceTree = "<group>"; };
+		0A02551719EFFC400033DF15 /* ABMessageInputView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABMessageInputView.m; sourceTree = "<group>"; };
 		0A0E023A19ED54EF0020AA0D /* ABUserStatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABUserStatusViewController.h; sourceTree = "<group>"; };
 		0A0E023B19ED54EF0020AA0D /* ABUserStatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABUserStatusViewController.m; sourceTree = "<group>"; };
 		0A0E023D19ED5BE60020AA0D /* ABAboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABAboutViewController.h; sourceTree = "<group>"; };
@@ -388,6 +391,8 @@
 				0A6E5505199F7A6A004BD577 /* ABChatsViewController.m */,
 				0ABA274819D938FA00559160 /* ABSessionViewController.h */,
 				0ABA274919D938FA00559160 /* ABSessionViewController.m */,
+				0A02551619EFFC400033DF15 /* ABMessageInputView.h */,
+				0A02551719EFFC400033DF15 /* ABMessageInputView.m */,
 			);
 			name = Chats;
 			sourceTree = "<group>";
@@ -968,6 +973,7 @@
 				0A6E5506199F7A6A004BD577 /* ABChatsViewController.m in Sources */,
 				23CB415B19A1EF2A0024120D /* ABContactCell.m in Sources */,
 				0A4F719119D86FAA0041E959 /* stanza.c in Sources */,
+				0A02551819EFFC400033DF15 /* ABMessageInputView.m in Sources */,
 				0A78E5F519CD256C004A7D6C /* TKTableViewController.m in Sources */,
 				0A2865D219B8E7B800F20312 /* ABInfoInputCell.m in Sources */,
 				0A2865D519B8E7CA00F20312 /* ABInfoStaticCell.m in Sources */,

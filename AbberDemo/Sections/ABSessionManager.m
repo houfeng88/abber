@@ -43,11 +43,16 @@
 - (void)addSession:(NSString *)session
 {
   if ( TKSNonempty(session) ) {
-    NSMutableArray *messageAry = [[NSMutableArray alloc] init];
-    [_messageAryMap setObject:messageAry forKey:session];
-    
-    NSString *path = [TKPathForDocumentResource(_jid) stringByAppendingPathComponent:@"sessions.db"];
-    [_sessionAry writeToFile:path atomically:YES];
+    if ( ![_messageAryMap objectForKey:session] ) {
+      [_sessionAry addObject:session];
+      
+      NSMutableArray *messageAry = [[NSMutableArray alloc] init];
+      [_messageAryMap setObject:messageAry forKey:session];
+      
+      
+      NSString *path = [TKPathForDocumentResource(_jid) stringByAppendingPathComponent:@"sessions.db"];
+      [_sessionAry writeToFile:path atomically:YES];
+    }
   }
 }
 

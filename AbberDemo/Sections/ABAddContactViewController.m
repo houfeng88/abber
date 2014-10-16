@@ -27,6 +27,8 @@
   _navigationView.titleLabel.text = NSLocalizedString(@"Add", @"");
   [_navigationView showRightButton];
   _navigationView.rightButton.normalTitle = NSLocalizedString(@"Done", @"");
+  
+  [self addResignGestureInView:_tableView];
 }
 
 

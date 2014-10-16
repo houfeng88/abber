@@ -280,8 +280,9 @@ NSString      *ABStanzaGetText(xmpp_stanza_t *stanza)
 {
   NSString *text = nil;
   if ( stanza ) {
+    // TODO: ...
     xmpp_stanza_t *child = xmpp_stanza_get_children(stanza);
-    if ( (child) && (child->next==NULL) ) {
+    if ( (child) && (child->type==XMPP_STANZA_TEXT) ) {
       char *string = xmpp_stanza_get_text_ptr(child);
       text = TKOString(string);
     }

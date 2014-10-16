@@ -9,12 +9,13 @@
 #import "ABMoreViewController.h"
 #import "ABStaticCell.h"
 
+#import "ABSigninViewController.h"
+
+
 #import "ABUserInfoViewController.h"
 #import "ABUserStatusViewController.h"
 
 #import "ABAboutViewController.h"
-
-#import "ABSigninViewController.h"
 
 @implementation ABMoreViewController
 
@@ -43,13 +44,6 @@
   [footerView addSubview:button];
   
   _tableView.tableFooterView = footerView;
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-  [super viewWillAppear:animated];
-  _user = [[ABEngine sharedObject] user];
-  [_tableView reloadData];
 }
 
 
@@ -94,7 +88,6 @@
       cell.titleLabel.text = NSLocalizedString(@"Profile", @"");
     } else if ( indexPath.row==1 ) {
       cell.titleLabel.text = NSLocalizedString(@"Status", @"");
-      cell.bodyLabel.text = _user.status;
     }
   } else if ( indexPath.section==1 ) {
     if ( indexPath.row==0 ) {

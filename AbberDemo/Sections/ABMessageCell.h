@@ -12,12 +12,12 @@
   UILabel *_titleLabel;
   UILabel *_bodyLabel;
   
-  BOOL _received;
+  ABMessage *_message;
 }
 
 @property (nonatomic, strong, readonly) UILabel *titleLabel;
 @property (nonatomic, strong, readonly) UILabel *bodyLabel;
 
-- (void)updateReceived:(BOOL)received;
+- (void)updateWithMessage:(ABMessage *)message;
 
 @end

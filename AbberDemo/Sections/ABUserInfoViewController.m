@@ -31,6 +31,8 @@
   _navigationView.titleLabel.text = NSLocalizedString(@"Info", @"");
   [_navigationView showRightButton];
   _navigationView.rightButton.normalTitle = NSLocalizedString(@"Done", @"");
+  
+  [self addResignGestureInView:_tableView];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -111,7 +113,8 @@
     [vcard setObject:_descField.text forKey:@"desc"];
   }
   
-  [[ABEngine sharedObject] updateVcard:TKMapOrLater(vcard, nil) completion:^(id result, NSError *error) {
+  [[ABEngine sharedObject] updateVcard:TKMapOrLater(vcard, nil)
+                            completion:^(id result, NSError *error) {
     if ( error ) {
       [self HUDUpdateNo];
     } else {

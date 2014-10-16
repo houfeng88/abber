@@ -13,6 +13,8 @@
 
 #import "ABContactInfoViewController.h"
 
+#import "ABSessionViewController.h"
+
 @implementation ABFriendsViewController
 
 - (void)viewDidLoad
@@ -21,21 +23,26 @@
   _navigationView.titleLabel.text = NSLocalizedString(@"Friends", @"");
   [_navigationView showRightButton];
   _navigationView.rightButton.normalTitle = NSLocalizedString(@"Add", @"");
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-  [super viewWillAppear:animated];
   
   @weakify(self);
   [_tableView addInitialRefreshControlWithRefreshBlock:^{
     @strongify(self);
     [self requestContacts];
   }];
-  
-  
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+  [super viewWillAppear:animated];
   _contactAry = [[ABEngine sharedObject] contacts];
   [_tableView reloadData];
+}
+
+
+- (void)rightButtonClicked:(id)sender
+{
+  ABAddContactViewController *vc = [[ABAddContactViewController alloc] init];
+  [self.navigationController pushViewController:vc animated:YES];
 }
 
 
@@ -47,13 +54,6 @@
   if ( [self viewAppeared] ) {
     [_tableView reloadData];
   }
-}
-
-
-- (void)rightButtonClicked:(id)sender
-{
-  ABAddContactViewController *vc = [[ABAddContactViewController alloc] init];
-  [self.navigationController pushViewController:vc animated:YES];
 }
 
 
@@ -70,19 +70,25 @@
 - (void)engine:(ABEngine *)engine didReceiveRosterUpdate:(ABContact *)contact
 {
   _contactAry = [[ABEngine sharedObject] contacts];
-  [_tableView reloadData];
+  if ( [self viewAppeared] ) {
+    [_tableView reloadData];
+  }
 }
 
 - (void)engine:(ABEngine *)engine didReceivePresenceUpdate:(NSString *)jid
 {
   _contactAry = [[ABEngine sharedObject] contacts];
-  [_tableView reloadData];
+  if ( [self viewAppeared] ) {
+    [_tableView reloadData];
+  }
 }
 
 - (void)engine:(ABEngine *)engine didReceiveVcard:(ABContact *)contact error:(NSError *)error
 {
   _contactAry = [[ABEngine sharedObject] contacts];
-  [_tableView reloadData];
+  if ( [self viewAppeared] ) {
+    [_tableView reloadData];
+  }
 }
 
 
@@ -123,6 +129,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+  ABContact *contact = [_contactAry objectAtIndex:indexPath.row];
+  NSMutableArray *messageAry = (NSMutableArray *)[_sessionManager messageAryForJid:contact.jid];
+  
+  ABSessionViewController *vc = [[ABSessionViewController alloc] initWithJid:contact.jid messageAry:messageAry];
+  [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

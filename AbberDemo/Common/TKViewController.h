@@ -17,6 +17,8 @@
   
   BOOL _viewAppeared;
   NSUInteger _appearedTimes;
+  
+  UITapGestureRecognizer *_resignRecognizer;
 }
 
 @property (nonatomic, readonly) BOOL viewAppeared;
@@ -27,5 +29,8 @@
 - (void)backButtonClicked:(id)sender;
 - (void)leftButtonClicked:(id)sender;
 - (void)rightButtonClicked:(id)sender;
+
+- (void)addResignGestureInView:(UIView *)view;
+- (void)removeResignGestureInView:(UIView *)view;
 
 @end

@@ -7,11 +7,22 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ABSessionManager.h"
+#import "ABMessageInputView.h"
 
-@interface ABSessionViewController : TKTableViewController {
-  NSDictionary *_context;
+@interface ABSessionViewController : TKViewController<
+  UITableViewDataSource,
+  UITableViewDelegate
+> {
+  UITableView *_tableView;
+  ABMessageInputView *_inputView;
+  
+  CGFloat _keyboardHeight;
+  
+  NSString *_jid;
+  NSMutableArray *_messageAry;
 }
 
-- (id)initWithContext:(NSDictionary *)context;
+- (id)initWithJid:(NSString *)jid messageAry:(NSMutableArray *)messageAry;
 
 @end

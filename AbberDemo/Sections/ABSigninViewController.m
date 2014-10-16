@@ -26,6 +26,8 @@
   [super viewDidLoad];
   _navigationView.titleLabel.text = @"Abber";
   
+  [self addResignGestureInView:_tableView];
+  
   
   UIView *footerView = [[UIView alloc] init];
   footerView.frame = TKRect(0.0, 0.0, _tableView.width, 55.0);

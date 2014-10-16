@@ -44,6 +44,7 @@
 {
   ABStaticCell *cell = (ABStaticCell *)[tableView dequeueReusableCellWithClass:[ABStaticCell class]];
   
+  
   NSString *status = [_statusAry objectAtIndex:indexPath.row];
   
   cell.titleLabel.text = status;

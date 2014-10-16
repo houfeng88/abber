@@ -50,7 +50,7 @@
                                            attributes:@{ NSFontAttributeName:_bodyLabel.font }
                                               context:nil];
   
-  if ( _received ) {
+  if ( TKSNonempty(_message.from) ) {
     _bodyLabel.frame = CGRectMake(10.0, _titleLabel.bottomY+2.0, BoxWidth, rect.size.height);
   } else {
     _bodyLabel.frame = CGRectMake(self.contentView.width-10.0-BoxWidth, _titleLabel.bottomY+2.0, BoxWidth, rect.size.height);
@@ -65,10 +65,10 @@
   height += 15.0;
   
   height += 2.0;
-  CGRect rect = [object boundingRectWithSize:CGSizeMake(BoxWidth, 10000.0)
-                                              options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
-                                           attributes:@{ NSFontAttributeName:[UIFont systemFontOfSize:14.0] }
-                                              context:nil];
+  CGRect rect = [[object content] boundingRectWithSize:CGSizeMake(BoxWidth, 10000.0)
+                                               options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
+                                            attributes:@{ NSFontAttributeName:[UIFont systemFontOfSize:14.0] }
+                                               context:nil];
   height += rect.size.height;
   
   height += 2.0;
@@ -77,17 +77,23 @@
 }
 
 
-- (void)updateReceived:(BOOL)received
+- (void)updateWithMessage:(ABMessage *)message
 {
-  _received = received;
+  _message = message;
   
-  if ( _received ) {
+  if ( TKSNonempty(_message.from) ) {
+    _titleLabel.text = _message.from;
+    _bodyLabel.text = _message.content;
+    
     _titleLabel.textAlignment = NSTextAlignmentLeft;
     _titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     
     _bodyLabel.textAlignment = NSTextAlignmentLeft;
     _bodyLabel.lineBreakMode = NSLineBreakByWordWrapping;
   } else {
+    _titleLabel.text = [[[ABEngine sharedObject] user] jid];
+    _bodyLabel.text = _message.content;
+    
     _titleLabel.textAlignment = NSTextAlignmentRight;
     _titleLabel.lineBreakMode = NSLineBreakByTruncatingHead;
     

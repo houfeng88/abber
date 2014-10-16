@@ -13,10 +13,26 @@
 
 @implementation ABChatsViewController
 
+- (id)init
+{
+  self = [super init];
+  if (self) {
+    self.hidesBottomBarWhenPushed = YES;
+  }
+  return self;
+}
+
 - (void)viewDidLoad
 {
   [super viewDidLoad];
   _navigationView.titleLabel.text = NSLocalizedString(@"Chats", @"");
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+  [super viewWillAppear:animated];
+  _sessionAry = [_sessionManager sessionAry];
+  [_tableView reloadData];
 }
 
 
@@ -66,9 +82,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//  NSDictionary *context = [_sessionAry objectAtIndex:indexPath.row];
-//  ABSessionViewController *vc = [[ABSessionViewController alloc] initWithContext:context];
-//  [self.navigationController pushViewController:vc animated:YES];
+  NSString *jid = [_sessionAry objectAtIndex:indexPath.row];
+  NSMutableArray *messageAry = (NSMutableArray *)[_sessionManager messageAryForJid:jid];
+  
+  ABSessionViewController *vc = [[ABSessionViewController alloc] initWithJid:jid messageAry:messageAry];
+  [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end
