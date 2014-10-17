@@ -116,38 +116,15 @@
   [[ABEngine sharedObject] updateVcard:TKMapOrLater(vcard, nil)
                             completion:^(id result, NSError *error) {
     if ( error ) {
-      [self HUDUpdateNo];
+      [self HUDNo:NSLocalizedString(@"Change failed", @"")];
     } else {
       _user = [[ABEngine sharedObject] user];
       _user.nickname = _nicknameField.text;
       _user.desc = _descField.text;
       [[ABEngine sharedObject] syncUser];
-      [self HUDUpdateYes];
+      [self HUDYes:NO];
     }
   }];
-}
-
-
-- (void)HUDStart
-{
-  [MBProgressHUD presentProgressHUD:self.view
-                               info:nil
-                            offsetY:0.0];
-}
-
-- (void)HUDUpdateYes
-{
-  [MBProgressHUD dismissHUD:self.view
-                immediately:NO
-            completionBlock:NULL];
-}
-
-- (void)HUDUpdateNo
-{
-  [MBProgressHUD presentTextHUD:self.view
-                           info:NSLocalizedString(@"Change failed", @"")
-                        offsetY:0.0
-                completionBlock:NULL];
 }
 
 @end

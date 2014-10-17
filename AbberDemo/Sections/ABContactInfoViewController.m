@@ -138,9 +138,9 @@
                                 memoname:TKStrOrLater(memo, @"")
                               completion:^(id result, NSError *error) {
                                 if ( error ) {
-                                  [self HUDChangeNo];
+                                  [self HUDNo:NSLocalizedString(@"Change failed", @"")];
                                 } else {
-                                  [self HUDChangeYes];
+                                  [self HUDYes:NO];
                                 }
                               }];
 }
@@ -154,51 +154,11 @@
   [[ABEngine sharedObject] removeContact:jid
                               completion:^(id result, NSError *error) {
                                 if ( error ) {
-                                  [self HUDDeleteNo];
+                                  [self HUDNo:NSLocalizedString(@"Delete failed", @"")];
                                 } else {
-                                  [self HUDDeleteYes];
+                                  [self HUDYes:YES];
                                 }
                               }];
-}
-
-
-- (void)HUDStart
-{
-  [MBProgressHUD presentProgressHUD:self.view
-                               info:nil
-                            offsetY:0.0];
-}
-
-- (void)HUDChangeYes
-{
-  [MBProgressHUD dismissHUD:self.view
-                immediately:NO
-            completionBlock:NULL];
-}
-
-- (void)HUDChangeNo
-{
-  [MBProgressHUD presentTextHUD:self.view
-                           info:NSLocalizedString(@"Change failed", @"")
-                        offsetY:0.0
-                completionBlock:NULL];
-}
-
-- (void)HUDDeleteYes
-{
-  [MBProgressHUD dismissHUD:self.view
-                immediately:NO
-            completionBlock:^{
-              [self.navigationController popViewControllerAnimated:YES];
-            }];
-}
-
-- (void)HUDDeleteNo
-{
-  [MBProgressHUD presentTextHUD:self.view
-                           info:NSLocalizedString(@"Delete failed", @"")
-                        offsetY:0.0
-                completionBlock:NULL];
 }
 
 @end

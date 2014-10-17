@@ -30,6 +30,10 @@
 - (void)leftButtonClicked:(id)sender;
 - (void)rightButtonClicked:(id)sender;
 
+- (void)HUDStart;
+- (void)HUDYes:(BOOL)dismiss;
+- (void)HUDNo:(NSString *)info;
+
 - (void)addResignGestureInView:(UIView *)view;
 - (void)removeResignGestureInView:(UIView *)view;
 

@@ -96,6 +96,34 @@
 }
 
 
+- (void)HUDStart
+{
+  [MBProgressHUD presentProgressHUD:self.view
+                               info:nil
+                            offsetY:0.0];
+}
+
+- (void)HUDYes:(BOOL)dismiss
+{
+  [MBProgressHUD dismissHUD:self.view
+                immediately:NO
+            completionBlock:^{
+              if ( dismiss ) {
+                [self.navigationController popViewControllerAnimated:YES];
+              }
+            }];
+}
+
+- (void)HUDNo:(NSString *)info
+{
+  [MBProgressHUD presentTextHUD:self.view
+                           info:info
+                        offsetY:0.0
+                completionBlock:NULL];
+}
+
+
+
 - (void)addResignGestureInView:(UIView *)view
 {
   if ( !_resignRecognizer ) {

@@ -140,50 +140,25 @@
     
     [[ABEngine sharedObject] requestRosterWithCompletion:^(id result, NSError *error) {
       if ( error ) {
-        [self HUDConnectNo];
+        [self HUDNo:NSLocalizedString(@"Sign in failed", @"")];
         [engine disconnect];
       } else {
-        UIWindow *window = [[[UIApplication sharedApplication] delegate] window];
-        window.rootViewController = [[ABMainViewController alloc] init];
         [[ABEngine sharedObject] removeObserver:self];
         [[ABEngine sharedObject] updatePresence:ABPresenceAvailable];
-        [self HUDConnectYes];
+        [self HUDYes:NO];
+        UIWindow *window = [[[UIApplication sharedApplication] delegate] window];
+        window.rootViewController = [[ABMainViewController alloc] init];
       }
     }];
     
   } else {
-    [self HUDConnectNo];
+    [self HUDNo:NSLocalizedString(@"Sign in failed", @"")];
   }
 }
 
 - (void)engineDidDisconnected:(ABEngine *)engine
 {
-  [self HUDConnectNo];
-}
-
-
-- (void)HUDStart
-{
-  [MBProgressHUD presentProgressHUD:self.view
-                               info:nil
-                            offsetY:0.0];
-}
-
-- (void)HUDConnectYes
-{
-  [MBProgressHUD dismissHUD:self.view
-                immediately:NO
-            completionBlock:^{
-              [self.parentViewController dismissChildViewController:self];
-            }];
-}
-
-- (void)HUDConnectNo
-{
-  [MBProgressHUD presentTextHUD:self.view
-                           info:NSLocalizedString(@"Sign in failed", @"")
-                        offsetY:0.0
-                completionBlock:NULL];
+  [self HUDNo:NSLocalizedString(@"Sign in failed", @"")];
 }
 
 @end

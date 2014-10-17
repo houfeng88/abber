@@ -112,37 +112,12 @@
                              memoname:memo
                            completion:^(id result, NSError *error) {
                              if ( error ) {
-                               [self HUDAddNo];
+                               [self HUDNo:NSLocalizedString(@"Add failed", @"")];
                              } else {
-                               [self HUDAddYes];
+                               [self HUDYes:YES];
                              }
                            }];
   [[ABEngine sharedObject] subscribeContact:acnt];
-}
-
-
-- (void)HUDStart
-{
-  [MBProgressHUD presentProgressHUD:self.view
-                               info:nil
-                            offsetY:0.0];
-}
-
-- (void)HUDAddYes
-{
-  [MBProgressHUD dismissHUD:self.view
-                immediately:NO
-            completionBlock:^{
-              [self.navigationController popViewControllerAnimated:YES];
-            }];
-}
-
-- (void)HUDAddNo
-{
-  [MBProgressHUD presentTextHUD:self.view
-                           info:NSLocalizedString(@"Add failed", @"")
-                        offsetY:0.0
-                completionBlock:NULL];
 }
 
 @end
